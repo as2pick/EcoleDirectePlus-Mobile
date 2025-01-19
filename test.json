@@ -1,0 +1,22 @@
+{
+    "data": {
+        "proposition": [
+            "1ST2S",
+            "2CIEL",
+            "1BPSN_n'est pas utilisée",
+            "2BPASSP",
+            "1BPMCV",
+            "1GEN-D",
+            "1BPGA_n'est pas utilisée",
+            "1GEN-F",
+            "1GEN-A",
+            "1GEN-C",
+            "1GEN-E",
+            "1BPAGOMV",
+            "1GEN-B",
+            "1STMG",
+            "1STI2D"
+        ],
+        "question": "Quelle est votre classe ?"
+    }
+}
