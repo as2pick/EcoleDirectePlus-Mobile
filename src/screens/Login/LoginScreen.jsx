@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import SelectableModal from "../../components/others/SelectableModal.jsx";
 import { getApiMessage } from "../../constants/api/codes.js";
-import { useError } from "../../context/ErrorContext.jsx";
 import { useSingIn } from "../../context/SignInContext.jsx";
 
 /** READ CAREFULLY COMMENTS !!!
@@ -19,7 +18,7 @@ import { useSingIn } from "../../context/SignInContext.jsx";
  */
 export default function LoginScreen() {
     const { signIn, a2fInfos, setChoice, setA2fInfos, signOut } = useSingIn();
-    const { triggerError } = useError();
+
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [modalVisible, setModalVisible] = useState(false);
