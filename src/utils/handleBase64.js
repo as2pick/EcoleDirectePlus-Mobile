@@ -1,4 +1,6 @@
-import { decode, encode } from "base-64";
+import base64 from "base-64";
+
+const { decode, encode } = base64;
 
 class base64Handler {
     encode(rawInput) {

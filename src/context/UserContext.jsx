@@ -11,6 +11,7 @@ const userContext = createContext();
 export const UserProvider = ({ children }) => {
     // user data
     const [globalUserData, setGlobalUserData] = useState(null);
+    // const [activeConnectionToken, ]
 
     useEffect(() => {
         if (!globalUserData) return;
