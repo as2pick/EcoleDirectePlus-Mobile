@@ -13,9 +13,7 @@ import { useUser } from "./UserContext";
 const signInContext = createContext();
 
 export const SignInProvider = ({ children }) => {
-    // app config
-
-    const { setGlobalUserData } = useUser();
+    const { setGlobalUserData, setUserAccesToken } = useUser();
 
     const authReducer = (state, action) => {
         switch (action.type) {
@@ -41,12 +39,6 @@ export const SignInProvider = ({ children }) => {
         }
     };
 
-    const defaultLoginDatas = {
-        identifiant: null,
-        motdepasse: null,
-        fa: null,
-        userId: null,
-    };
     const defaultA2fInfos = {
         a2fToken: null,
         identifiant: null,
@@ -58,7 +50,6 @@ export const SignInProvider = ({ children }) => {
     const [mcqDatas, setMcqDatas] = useState("");
     const [a2fInfos, setA2fInfos] = useState(defaultA2fInfos);
     const [choice, setChoice] = useState("");
-    const [loginDatas, setLoginDatas] = useState(defaultLoginDatas);
 
     const [state, dispatch] = useReducer(authReducer, {
         isLoading: true,
@@ -73,13 +64,13 @@ export const SignInProvider = ({ children }) => {
             if (credentials) {
                 const getConnectionDatas = JSON.parse(credentials.password);
 
-                const accountData = await authService.login({
+                const { token, data } = await authService.login({
                     authConnectionDatas: getConnectionDatas,
                 });
 
-                dispatch({ type: "RESTORE_TOKEN", token: accountData.token });
-                setGlobalUserData(accountData.data.accounts[0]);
-
+                dispatch({ type: "RESTORE_TOKEN", token });
+                setGlobalUserData(data.accounts[0]);
+                setUserAccesToken(token);
                 console.log("Token restored !");
             } else {
                 console.log("Login required !");
@@ -111,6 +102,7 @@ export const SignInProvider = ({ children }) => {
                     motdepasse: encodeURIComponent(password),
                 });
                 dispatch({ type: "SIGN_IN", token: token });
+                setUserAccesToken(token);
                 setGlobalUserData(account);
                 break;
             case 250:
@@ -144,7 +136,6 @@ export const SignInProvider = ({ children }) => {
     };
     useEffect(() => {
         // Fetch the token from storage then navigate to our appropriate place
-        console.log("LOADED");
         bootstrapAsync();
     }, []);
 
@@ -182,15 +173,9 @@ export const SignInProvider = ({ children }) => {
             });
     }, [a2fInfos.fa]);
 
-    useEffect(() => {
-        if (!state) return;
-        console.log(state, "STATE");
-    }, [state]);
-
     const authContext = useMemo(
         () => ({
             signIn: handleLogin, // data passed auto
-
             signOut: handleSignOut,
             mcqDatas,
             choice,

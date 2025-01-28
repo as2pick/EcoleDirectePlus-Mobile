@@ -16,13 +16,4 @@ export default function App() {
         </UserProvider>
     );
 }
-// <UserProvider>
-//     <AppSettingsProvider>
-//         <LoginProvider>
-//             <GlobalAppProvider>
-//                 <LoginScreen />
-//             </GlobalAppProvider>
-//         </LoginProvider>
-//     </AppSettingsProvider>
-// </UserProvider>
 

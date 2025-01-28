@@ -11,11 +11,6 @@ import SelectableModal from "../../components/others/SelectableModal.jsx";
 import { getApiMessage } from "../../constants/api/codes.js";
 import { useSingIn } from "../../context/SignInContext.jsx";
 
-/** READ CAREFULLY COMMENTS !!!
- * - Handle auto connection (when we open the app, we are autolog)
- * - Handle anwser error (in popup list)
- * - Handle bad login data (id, pswrd)
- */
 export default function LoginScreen() {
     const { signIn, mcqDatas, setChoice, setMcqDatas, signOut } = useSingIn();
 

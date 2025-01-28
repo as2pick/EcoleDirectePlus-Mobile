@@ -5,10 +5,6 @@ import { getResponseChoices, sendResponseChoice } from "./doubleAuth";
 
 const authService = {
     login: async ({ username = "", password = "", authConnectionDatas = null }) => {
-        if (username == "" && password == "" && authConnectionDatas != null) {
-            console.log("Restoring token in authService.js");
-        }
-
         return await fetchApi(
             "https://api.ecoledirecte.com/v3/login.awp?{API_VERSION}",
             {
@@ -48,9 +44,6 @@ const authService = {
         ).then((response) => (response.code === 200 ? true : false));
     },
     saveCredentials: async (token, userId, loginDatas) => {
-        console.log(
-            `Credentials saved ! token: ${token}, userId:${userId}, loginDatas:${JSON.stringify(loginDatas)}`
-        );
         Keychain.setGenericPassword(
             JSON.stringify({ userLoginToken: token, userId: userId }),
             JSON.stringify(loginDatas)
