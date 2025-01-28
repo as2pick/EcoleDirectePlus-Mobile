@@ -4,13 +4,13 @@ const globalAppContext = createContext();
 
 export const GlobalAppProvider = ({ children }) => {
     // global states
-    const [value, setValue] = useState("Hello World !");
+    const [isConnected, setIsConnected] = useState(false);
     const contextValue = useMemo(
         () => ({
-            value,
-            setValue,
+            isConnected,
+            setIsConnected,
         }),
-        [value]
+        [isConnected]
     );
 
     return (

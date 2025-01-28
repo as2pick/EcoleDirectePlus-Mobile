@@ -9,12 +9,13 @@ import React, {
 import { getApiMessage } from "../constants/api/codes";
 
 import authService from "../services/login/authService";
+import { useGlobalApp } from "./GlobalAppContext";
 import { useUser } from "./UserContext";
 const signInContext = createContext();
 
 export const SignInProvider = ({ children }) => {
     const { setGlobalUserData, setUserAccesToken } = useUser();
-
+    const { setIsConnected } = useGlobalApp();
     const authReducer = (state, action) => {
         switch (action.type) {
             case "RESTORE_TOKEN":
@@ -57,6 +58,12 @@ export const SignInProvider = ({ children }) => {
         userToken: null,
     });
 
+    const setUserData = (data, token) => {
+        setGlobalUserData(data.accounts[0]);
+        setUserAccesToken(token);
+        setIsConnected(true);
+    };
+
     const bootstrapAsync = async () => {
         try {
             const credentials = await authService.restoreCredentials();
@@ -69,8 +76,7 @@ export const SignInProvider = ({ children }) => {
                 });
 
                 dispatch({ type: "RESTORE_TOKEN", token });
-                setGlobalUserData(data.accounts[0]);
-                setUserAccesToken(token);
+                setUserData(data, token);
                 console.log("Token restored !");
             } else {
                 console.log("Login required !");
@@ -102,8 +108,7 @@ export const SignInProvider = ({ children }) => {
                     motdepasse: encodeURIComponent(password),
                 });
                 dispatch({ type: "SIGN_IN", token: token });
-                setUserAccesToken(token);
-                setGlobalUserData(account);
+                setUserData(data, token);
                 break;
             case 250:
                 const getChoices = await authService.startA2fProcess(token);
@@ -170,6 +175,8 @@ export const SignInProvider = ({ children }) => {
                     accountData.data.accounts[0].id,
                     a2fInfos
                 );
+                dispatch({ type: "SIGN_IN", token: accountData.data });
+                setUserData(accountData.data, accountData.token);
             });
     }, [a2fInfos.fa]);
 

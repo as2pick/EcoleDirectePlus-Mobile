@@ -5,15 +5,15 @@ import { UserProvider } from "./context/UserContext";
 import LoginScreen from "./screens/Login/LoginScreen";
 export default function App() {
     return (
-        <UserProvider>
+        <GlobalAppProvider>
             <AppSettingsProvider>
-                <SignInProvider>
-                    <GlobalAppProvider>
+                <UserProvider>
+                    <SignInProvider>
                         <LoginScreen />
-                    </GlobalAppProvider>
-                </SignInProvider>
+                    </SignInProvider>
+                </UserProvider>
             </AppSettingsProvider>
-        </UserProvider>
+        </GlobalAppProvider>
     );
 }
 
