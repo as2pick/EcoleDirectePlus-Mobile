@@ -17,7 +17,7 @@ import { useSingIn } from "../../context/SignInContext.jsx";
  * - Handle bad login data (id, pswrd)
  */
 export default function LoginScreen() {
-    const { signIn, a2fInfos, setChoice, setA2fInfos, signOut } = useSingIn();
+    const { signIn, mcqDatas, setChoice, setMcqDatas, signOut } = useSingIn();
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -35,26 +35,26 @@ export default function LoginScreen() {
 
     // outdated token ca87873a-984a-4568-a1b6-41222bb7fc25
     const handleModalSubmit = async (item) => {
-        setChoice(a2fInfos.choices[item]);
+        setChoice(mcqDatas.choices[item]);
 
-        setA2fInfos("");
+        setMcqDatas("");
     };
-    // on a2fInfos
+    // on mcqDatas
     useEffect(() => {
-        if (!a2fInfos) return;
+        if (!mcqDatas) return;
 
-        if (!"choices" && (!"question") in a2fInfos) {
+        if (!"choices" && (!"question") in mcqDatas) {
             const message = getApiMessage(1005);
             // provoquer une erreur avec le screen d'error (not implemented yet)
         }
 
         setLoginStates((prevState) => ({
             ...prevState,
-            decodedChoices: [...Object.keys(a2fInfos.choices)],
-            decodedQuestion: [...Object.keys(a2fInfos.question)[0]],
+            decodedChoices: [...Object.keys(mcqDatas.choices)],
+            decodedQuestion: [...Object.keys(mcqDatas.question)[0]],
         }));
         toggleModal();
-    }, [a2fInfos]);
+    }, [mcqDatas]);
 
     return (
         <View style={styles.container}>
