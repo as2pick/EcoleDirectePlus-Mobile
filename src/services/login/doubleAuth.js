@@ -23,7 +23,6 @@ export const getResponseChoices = async (token) => {
         headers: {
             "X-Token": token,
         },
-        method: "POST",
     };
     const responseDoubleAuthGetChoices = await fetchApi(
         "https://api.ecoledirecte.com/v3/connexion/doubleauth.awp?verbe=get&{API_VERSION}",
@@ -57,7 +56,6 @@ export const sendResponseChoice = async (token, choice) => {
         headers: {
             "X-Token": token,
         },
-        method: "POST",
     };
 
     const fetchDoubleAuth = await fetchApi(

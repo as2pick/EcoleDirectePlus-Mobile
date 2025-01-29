@@ -12,17 +12,19 @@ export const UserProvider = ({ children }) => {
     // user data
     const [globalUserData, setGlobalUserData] = useState(null);
     const [userAccesToken, setUserAccesToken] = useState(null);
+    // const [userId, setUserId] = useState("");
     // const [activeConnectionToken, ]
 
     useEffect(() => {
         if (!globalUserData) return;
-        console.log("USERCONTEXT.JSX GLOBALUSERDATA", globalUserData);
+        // console.log("USERCONTEXT.JSX GLOBALUSERDATA", globalUserData);
     }, [globalUserData]);
 
     const contextValueUser = useMemo(
         () => ({
             globalUserData,
             userAccesToken,
+
             setGlobalUserData,
             setUserAccesToken,
         }),

@@ -19,7 +19,6 @@ const authService = {
                               isReLogin: false,
                               uuid: "",
                           },
-                method: "POST",
             }
         );
     },
@@ -39,7 +38,6 @@ const authService = {
                 headers: {
                     "X-Token": token,
                 },
-                method: "POST",
             }
         ).then((response) => (response.code === 200 ? true : false));
     },

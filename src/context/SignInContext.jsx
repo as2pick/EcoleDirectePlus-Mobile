@@ -30,12 +30,14 @@ export const SignInProvider = ({ children }) => {
                     ...state,
                     isSignOut: false,
                     userToken: action.token,
+                    isLoading: false,
                 };
             case "SIGN_OUT":
                 return {
                     ...state,
                     isSignOut: true,
                     userToken: null,
+                    isLoading: false,
                 };
         }
     };
@@ -80,12 +82,18 @@ export const SignInProvider = ({ children }) => {
                 console.log("Token restored !");
             } else {
                 console.log("Login required !");
+
+                dispatch({ type: "SIGN_OUT" });
             }
         } catch (error) {
             console.error("ERROR IN BOOTSTRAP ASYNC", error);
+
             dispatch({ type: "SIGN_OUT" });
         }
     };
+    useEffect(() => {
+        console.log(state, "STATE");
+    }, [state]);
 
     const handleLogin = async ({ username, password }) => {
         const apiLoginData = await authService.login({
@@ -107,6 +115,7 @@ export const SignInProvider = ({ children }) => {
                     identifiant: encodeURIComponent(username),
                     motdepasse: encodeURIComponent(password),
                 });
+
                 dispatch({ type: "SIGN_IN", token: token });
                 setUserData(data, token);
                 break;
@@ -145,6 +154,8 @@ export const SignInProvider = ({ children }) => {
     }, []);
 
     const handleA2fSubmit = async (choice) => {
+        // dispatch({ type: "LOADING" });
+
         const fa = await authService.submitFormA2f(a2fInfos.a2fToken, choice);
         setA2fInfos((prevState) => ({
             ...prevState,
@@ -184,13 +195,14 @@ export const SignInProvider = ({ children }) => {
         () => ({
             signIn: handleLogin, // data passed auto
             signOut: handleSignOut,
+            state,
             mcqDatas,
             choice,
             setMcqDatas,
             setChoice,
         }),
 
-        [mcqDatas, choice]
+        [mcqDatas, choice, state]
     );
 
     return (

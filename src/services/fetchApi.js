@@ -1,3 +1,5 @@
+import { API } from "../constants/api/api";
+
 export default async function fetchApi(url, requestPayload = {}) {
     try {
         const defaultHeaders = {
@@ -14,7 +16,15 @@ export default async function fetchApi(url, requestPayload = {}) {
                 "body" in requestPayload
                     ? `data=${JSON.stringify(requestPayload.body)}`
                     : "data={}",
+            method: "method" in requestPayload ? requestPayload.method : "POST",
         };
+
+        url = url.includes("{API_VERSION}")
+            ? url.replace("{API_VERSION}", `v=${API.API_VERSION}`)
+            : url;
+        url = url.includes("{USER_ID}")
+            ? url.replace("{USER_ID}", await API.USER_ID)
+            : url;
         const apiResponse = await fetch(url, requestConfig);
 
         if (!apiResponse.ok) {
