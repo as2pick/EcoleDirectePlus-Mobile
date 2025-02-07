@@ -49,6 +49,8 @@ const authService = {
     },
     restoreCredentials: async () => Keychain.getGenericPassword(),
     deleteCredentials: async () => Keychain.resetGenericPassword(),
+    getUserId: async () =>
+        await JSON.parse(await Keychain.getGenericPassword()).username.userId,
 };
 
 export default authService;

@@ -1,10 +1,4 @@
-import React, {
-    createContext,
-    useContext,
-    useEffect,
-    useMemo,
-    useState,
-} from "react";
+import React, { createContext, useContext, useMemo, useState } from "react";
 
 const userContext = createContext();
 
@@ -12,23 +6,25 @@ export const UserProvider = ({ children }) => {
     // user data
     const [globalUserData, setGlobalUserData] = useState(null);
     const [userAccesToken, setUserAccesToken] = useState(null);
-    // const [userId, setUserId] = useState("");
-    // const [activeConnectionToken, ]
 
-    useEffect(() => {
-        if (!globalUserData) return;
-        // console.log("USERCONTEXT.JSX GLOBALUSERDATA", globalUserData);
-    }, [globalUserData]);
+    // timetable
+    const [sortedTimetableData, setSortedTimetableData] = useState(null);
 
     const contextValueUser = useMemo(
         () => ({
             globalUserData,
             userAccesToken,
 
+            // timetable
+            sortedTimetableData,
+            setSortedTimetableData,
+
+            //
+
             setGlobalUserData,
             setUserAccesToken,
         }),
-        [globalUserData, userAccesToken]
+        [globalUserData, userAccesToken, sortedTimetableData]
     );
     return (
         <userContext.Provider value={contextValueUser}>

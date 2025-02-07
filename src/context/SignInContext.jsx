@@ -8,10 +8,20 @@ import React, {
 } from "react";
 import { getApiMessage } from "../constants/api/codes";
 
+import { API } from "../constants/api/api";
 import authService from "../services/login/authService";
 import { useGlobalApp } from "./GlobalAppContext";
 import { useUser } from "./UserContext";
+
 const signInContext = createContext();
+
+const defaultA2fInfos = {
+    a2fToken: null,
+    identifiant: null,
+    motdepasse: null,
+    fa: null,
+    userId: null,
+};
 
 export const SignInProvider = ({ children }) => {
     const { setGlobalUserData, setUserAccesToken } = useUser();
@@ -42,14 +52,6 @@ export const SignInProvider = ({ children }) => {
         }
     };
 
-    const defaultA2fInfos = {
-        a2fToken: null,
-        identifiant: null,
-        motdepasse: null,
-        fa: null,
-        userId: null,
-    };
-
     const [mcqDatas, setMcqDatas] = useState("");
     const [a2fInfos, setA2fInfos] = useState(defaultA2fInfos);
     const [choice, setChoice] = useState("");
@@ -64,6 +66,7 @@ export const SignInProvider = ({ children }) => {
         setGlobalUserData(data.accounts[0]);
         setUserAccesToken(token);
         setIsConnected(true);
+        API.USER_ID = data.accounts[0].id;
     };
 
     const bootstrapAsync = async () => {
@@ -91,15 +94,13 @@ export const SignInProvider = ({ children }) => {
             dispatch({ type: "SIGN_OUT" });
         }
     };
-    useEffect(() => {
-        console.log(state, "STATE");
-    }, [state]);
 
     const handleLogin = async ({ username, password }) => {
         const apiLoginData = await authService.login({
             username: username,
             password: password,
         });
+
         setA2fInfos((prevState) => ({
             ...prevState,
             identifiant: encodeURIComponent(username),
@@ -118,6 +119,7 @@ export const SignInProvider = ({ children }) => {
 
                 dispatch({ type: "SIGN_IN", token: token });
                 setUserData(data, token);
+                console.log("SETTED 200");
                 break;
             case 250:
                 const getChoices = await authService.startA2fProcess(token);
@@ -149,7 +151,8 @@ export const SignInProvider = ({ children }) => {
         setGlobalUserData(null);
     };
     useEffect(() => {
-        // Fetch the token from storage then navigate to our appropriate place
+        // Ftch the token from storage then navigate to our appropriate place
+
         bootstrapAsync();
     }, []);
 
@@ -170,7 +173,7 @@ export const SignInProvider = ({ children }) => {
     }, [choice]);
 
     useEffect(() => {
-        if (!a2fInfos.fa) return;
+        if (!a2fInfos.fa || a2fInfos.fa.length === 0) return;
 
         authService
             .login({
@@ -190,6 +193,12 @@ export const SignInProvider = ({ children }) => {
                 setUserData(accountData.data, accountData.token);
             });
     }, [a2fInfos.fa]);
+
+    useEffect(() => {
+        if (state.isLoading || state.isSignOut || !state.userToken) return;
+
+        console.log(state, "connected!");
+    }, [state]);
 
     const authContext = useMemo(
         () => ({

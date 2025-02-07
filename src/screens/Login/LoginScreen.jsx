@@ -67,7 +67,7 @@ export default function LoginScreen() {
                 secureTextEntry
             />
             <TouchableOpacity
-                onPress={() => signIn({ username, password })}
+                onPress={() => signIn({ username: username, password: password })}
                 style={{
                     backgroundColor: "#0F0",
                     padding: 10,

@@ -1,6 +1,5 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { useEffect } from "react";
 import { useSingIn } from "../context/SignInContext";
 import { useUser } from "../context/UserContext";
 import SplashScreen from "../screens/Splash/SplashScreen";
@@ -12,10 +11,6 @@ const Stack = createNativeStackNavigator();
 export default function AuthNavigator() {
     const { userAccesToken } = useUser();
     const { state } = useSingIn();
-
-    useEffect(() => {
-        console.log(state, "STATE");
-    }, [state]);
 
     return (
         <NavigationContainer>
