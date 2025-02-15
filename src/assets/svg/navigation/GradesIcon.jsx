@@ -1,4 +1,4 @@
-import Svg, { Path } from "react-native-svg";
+import Svg, { Circle, Path } from "react-native-svg";
 
 export const GradesIcon = ({ width, height, props = {} }) => {
     return (
@@ -10,6 +10,14 @@ export const GradesIcon = ({ width, height, props = {} }) => {
             <Path
                 d="M70.5 46V43C70.5 41.3431 69.1569 40 67.5 40C65.8431 40 64.5 41.3431 64.5 43V46H61.5C59.8431 46 58.5 47.3431 58.5 49C58.5 50.6569 59.8431 52 61.5 52H64.5V55C64.5 56.6569 65.8431 58 67.5 58C69.1569 58 70.5 56.6569 70.5 55V52H73.5C75.1569 52 76.5 50.6569 76.5 49C76.5 47.3431 75.1569 46 73.5 46H70.5Z"
                 fill="white"
+            />
+            <Circle
+                cx="50"
+                cy="50"
+                r="37"
+                stroke="white"
+                strokeWidth="6"
+                fill="none"
             />
         </Svg>
     );
