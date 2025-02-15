@@ -1,6 +1,6 @@
 import Svg, { Path } from "react-native-svg";
 
-export const MessagingIcon = ({ width, height, props = {} }) => {
+export default function MessagingIcon({ width, height, props = {} }) {
     return (
         <Svg viewBox="0 0 100 100" width={width} height={height} {...props}>
             <Path
@@ -17,5 +17,5 @@ export const MessagingIcon = ({ width, height, props = {} }) => {
             />
         </Svg>
     );
-};
+}
 

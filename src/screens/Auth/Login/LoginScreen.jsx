@@ -1,17 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
-import {
-    ActivityIndicator,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
-} from "react-native";
-import SelectableModal from "../../../components/others/SelectableModal.jsx";
+import { StyleSheet, Text, TextInput, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+
+import EDPLogo from "../../../assets/svg/EDPLogo.jsx";
+import Checkbox from "../../../components/CheckBox.jsx";
 import { getApiMessage } from "../../../constants/api/codes.js";
 import { useSingIn } from "../../../context/SignInContext.jsx";
 
-export default function LoginScreen() {
+export default function LoginScreen({ theme }) {
     const { signIn, mcqDatas, setChoice, setMcqDatas, signOut } = useSingIn();
 
     const [username, setUsername] = useState("");
@@ -52,7 +48,73 @@ export default function LoginScreen() {
     }, [mcqDatas]);
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
+            <View style={styles.logo.logoOutline}>
+                <EDPLogo size={64} />
+            </View>
+            <Text style={styles.logo.text}>Ecole Directe Plus</Text>
+            <View>
+                <TextInput
+                    placeholder="Identifiant"
+                    style={[styles.input, { borderColor: theme.colors.border }]}
+                />
+                <TextInput
+                    placeholder="Mot de passe"
+                    style={[styles.input, { borderColor: theme.colors.border }]}
+                />
+                <Checkbox />
+            </View>
+        </SafeAreaView>
+    );
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+
+        alignItems: "center",
+    },
+    logo: {
+        logoOutline: {
+            backgroundColor: "rgb(25, 25, 56)",
+            padding: 10,
+            borderRadius: 10,
+            marginTop: 62,
+        },
+        text: {
+            fontWeight: 900,
+            // letterSpacing: "",
+            marginTop: 28,
+
+            fontSize: 32,
+            color: "rgb(186,193,255)",
+        },
+    },
+
+    input: {
+        // height: 40,
+        // borderColor: "gray",
+        // borderWidth: 1,
+        // marginBottom: 12,
+        // paddingHorizontal: 8,
+        borderRadius: 14,
+        borderWidth: 0.8,
+    },
+    error: {
+        color: "red",
+        marginBottom: 12,
+    },
+    button: {},
+    buttonText: {
+        color: "#fff",
+        fontSize: 16,
+    },
+});
+
+/*
+
+
+<View style={styles.container}>
             <TextInput
                 style={styles.input}
                 placeholder="Username"
@@ -102,30 +164,6 @@ export default function LoginScreen() {
                 question={loginStates.decodedQuestion}
             />
         </View>
-    );
-}
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    input: {
-        height: 40,
-        borderColor: "gray",
-        borderWidth: 1,
-        marginBottom: 12,
-        paddingHorizontal: 8,
-    },
-    error: {
-        color: "red",
-        marginBottom: 12,
-    },
-    button: {},
-    buttonText: {
-        color: "#fff",
-        fontSize: 16,
-    },
-});
+*/
 

@@ -1,8 +1,8 @@
-import { DashboardIcon } from "../../../assets/svg/navigation/DashboardIcon";
-import { GradesIcon } from "../../../assets/svg/navigation/GradesIcon";
-import { HomeworksIcon } from "../../../assets/svg/navigation/HomeworksIcon";
-import { MessagingIcon } from "../../../assets/svg/navigation/MessagingIcon";
-import { TimetableIcon } from "../../../assets/svg/navigation/TimetableIcon";
+import DashboardIcon from "../../../assets/svg/navigation/DashboardIcon";
+import GradesIcon from "../../../assets/svg/navigation/GradesIcon";
+import HomeworksIcon from "../../../assets/svg/navigation/HomeworksIcon";
+import MessagingIcon from "../../../assets/svg/navigation/MessagingIcon";
+import TimetableIcon from "../../../assets/svg/navigation/TimetableIcon";
 import GradesScreen from "../../../screens/Client/Grades/GradesScreen";
 import HomeScreen from "../../../screens/Client/Home/HomeScreen";
 import HomeworksScreen from "../../../screens/Client/Homeworks/HomeworksScreen";

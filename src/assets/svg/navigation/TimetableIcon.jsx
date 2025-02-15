@@ -1,7 +1,7 @@
 import * as React from "react";
 import Svg, { Path } from "react-native-svg";
 
-export const TimetableIcon = ({ width, height, props = {} }) => {
+export default function TimetableIcon({ width, height, props = {} }) {
     return (
         <Svg
             width={width}
@@ -26,5 +26,5 @@ export const TimetableIcon = ({ width, height, props = {} }) => {
             />
         </Svg>
     );
-};
+}
 

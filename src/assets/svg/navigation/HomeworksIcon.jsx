@@ -1,6 +1,6 @@
 import Svg, { Path, Rect } from "react-native-svg";
 
-export const HomeworksIcon = ({ width, height, props = {} }) => {
+export default function HomeworksIcon({ width, height, props = {} }) {
     return (
         <Svg width={width} height={height} viewBox="0 0 100 100" {...props}>
             <Path
@@ -72,5 +72,5 @@ export const HomeworksIcon = ({ width, height, props = {} }) => {
             />
         </Svg>
     );
-};
+}
 

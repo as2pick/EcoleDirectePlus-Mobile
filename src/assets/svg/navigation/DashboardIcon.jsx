@@ -1,6 +1,6 @@
 import Svg, { Path } from "react-native-svg";
 
-export const DashboardIcon = ({ width, height, props = {} }) => {
+export default function DashboardIcon({ width, height, props = {} }) {
     return (
         <Svg width={width} height={height} viewBox="0 0 100 100" {...props}>
             <Path
@@ -29,5 +29,5 @@ export const DashboardIcon = ({ width, height, props = {} }) => {
             />
         </Svg>
     );
-};
+}
 

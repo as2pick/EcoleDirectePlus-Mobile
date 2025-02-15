@@ -1,6 +1,6 @@
 import Svg, { Circle, Path } from "react-native-svg";
 
-export const GradesIcon = ({ width, height, props = {} }) => {
+export default function ({ width, height, props = {} }) {
     return (
         <Svg width={width} height={height} viewBox="0 0 100 100" {...props}>
             <Path
@@ -21,5 +21,5 @@ export const GradesIcon = ({ width, height, props = {} }) => {
             />
         </Svg>
     );
-};
+}
 
