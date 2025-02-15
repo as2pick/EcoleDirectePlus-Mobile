@@ -1,15 +1,12 @@
-import { useTheme } from "@react-navigation/native";
-import { Text } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Text, View } from "react-native";
 
-export default function GradesScreen() {
-    const { colors } = useTheme();
-
-    console.log(colors);
+export default function GradesScreen({ theme }) {
     return (
-        <SafeAreaView>
-            <Text>This is the Grades Page !</Text>
-        </SafeAreaView>
+        <View>
+            <Text style={{ color: theme.colors.text }}>
+                This is the Grades Page !
+            </Text>
+        </View>
     );
 }
 
