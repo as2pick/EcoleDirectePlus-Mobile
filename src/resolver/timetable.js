@@ -1,4 +1,5 @@
 import fetchApi from "../services/fetchApi";
+import { textToHSL } from "../utils/colorGenerator";
 import makeUniqueIds from "../utils/uniqueIds";
 
 const convertData = (arrayData = []) => {
@@ -43,16 +44,18 @@ const convertData = (arrayData = []) => {
         convertedTimetable.push(converter);
     });
 
-    // Grouping courses by day (no nested weeks)
     convertedTimetable.forEach((course) => {
         const day = course.startCourse.date;
         if (!finalTimetable[day]) {
             finalTimetable[day] = [];
         }
+        const [h, s, l] = textToHSL(course.libelle);
+
+        course["color"] = `hsl(${h}, ${s}%, ${l}%)`;
+
         finalTimetable[day].push(course);
     });
 
-    // Sorting the courses by start time for each day
     Object.keys(finalTimetable).forEach((date) => {
         finalTimetable[date].sort((a, b) => {
             const [ah, am] = a.startCourse.time.split(":").map(Number);
@@ -61,11 +64,11 @@ const convertData = (arrayData = []) => {
         });
     });
 
-    // Now just returning the list of days with courses
     const sortedDays = Object.keys(finalTimetable).sort(
         (a, b) => new Date(a) - new Date(b)
     );
 
+    // console.log(finalTimetable);
     return sortedDays.map((day) => ({
         date: day,
         courses: finalTimetable[day],
