@@ -99,6 +99,7 @@ export function hslToRgb(h, s, l) {
 
 export function rgbToHsl(r, g, b) {
     let h, s, l;
+
     r /= 255;
     g /= 255;
     b /= 255;
@@ -125,10 +126,7 @@ export function rgbToHsl(r, g, b) {
 
     if (h < 0) h += 360;
 
-    h = Math.round(h * 100) / 100;
-    s = Math.round(s * 100 * 100) / 100;
-    l = Math.round(l * 100 * 100) / 100;
-    return [h, s, l];
+    return [Math.round(h), Math.round(s * 100), Math.round(l * 100)];
 }
 export const cssRgbToRgb = (text) => text.match(/\d+/g);
 
