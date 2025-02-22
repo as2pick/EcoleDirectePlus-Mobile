@@ -40,7 +40,6 @@ export default function SelectableModal({
             </Text>
         </TouchableOpacity>
     );
-
     return (
         <Modal
             visible={visible}
@@ -54,7 +53,7 @@ export default function SelectableModal({
                     <FlatList
                         data={items}
                         renderItem={renderItem}
-                        keyExtractor={(item) => item}
+                        keyExtractor={(item, index) => index.toString()}
                         contentContainerStyle={{ paddingVertical: 10 }}
                         style={styles.flatList}
                     />
