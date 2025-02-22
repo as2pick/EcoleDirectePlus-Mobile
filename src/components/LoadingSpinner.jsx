@@ -11,7 +11,7 @@ import Svg, { Circle } from "react-native-svg";
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
-const LoadingSpinner = () => {
+const LoadingSpinner = ({ size }) => {
     const rotateValue = useSharedValue(0);
 
     const animatedProps = useAnimatedProps(() => {
@@ -28,7 +28,7 @@ const LoadingSpinner = () => {
 
     useEffect(() => {
         rotateValue.value = withRepeat(
-            withTiming(360, { duration: 1200, easing: Easing.linear }),
+            withTiming(360, { duration: 1000, easing: Easing.linear }),
             -1,
             false
         );
@@ -36,7 +36,7 @@ const LoadingSpinner = () => {
 
     return (
         <View>
-            <Svg height="100" width="100" viewBox="0 0 100 100">
+            <Svg height={size} width={size} viewBox="0 0 100 100">
                 <AnimatedCircle
                     animatedProps={animatedProps}
                     cx="50"

@@ -1,27 +1,9 @@
-import Svg, { LinearGradient, Path, Stop } from "react-native-svg";
+import Svg, { Path } from "react-native-svg";
 
-export default function CheckIcon({ size = 30, props = {} }) {
+export default function CheckIcon({ size = 30, fill = "white", props = {} }) {
     return (
-        <Svg
-            viewBox="0 0 91 86"
-            xmlns="http://www.w3.org/2000/svg"
-            role="img"
-            width={size}
-            height={size}
-            {...props}
-        >
-            <Path
-                fill="url(#gradient)"
-                d="M89.9985 24V0H31.9985C21.3319 0.833333 0 7.3 0 38.5C5.50049 26.5 17.499 24 21.4985 24H89.9985Z"
-            />
-            <Path
-                fill="url(#gradient)"
-                d="M90.0017 55V31.5H27.0016C-9.00047 31.5 -9.00055 86 27.0016 86H90.0017V62.5H27.0016C22.0011 62.5 22.0013 55 27.0016 55H90.0017Z"
-            />
-            <LinearGradient id="gradient">
-                <Stop className="start" offset="0%" stopColor="#B4C9FF" />
-                <Stop className="end" offset="100%" stopColor="#C1B7FF" />
-            </LinearGradient>
+        <Svg width={size} height={size} viewBox="0 0 126 90" fill={fill}>
+            <Path d="M3.00999 29.4982L4.7539 27.7442C8.77118 23.7036 15.3475 23.8312 19.205 28.0246L47.306 58.5723C48.849 60.2496 51.4795 60.3007 53.0864 58.6844L108.318 3.13256C112.228 -0.799963 118.591 -0.799963 122.501 3.13256L122.99 3.62419C126.868 7.5247 126.868 13.8249 122.99 17.7254L52.9741 88.147C51.4102 89.72 48.8649 89.72 47.301 88.147L3.00999 43.5994C-0.868052 39.6989 -0.868055 33.3987 3.00999 29.4982Z"></Path>
         </Svg>
     );
 }
