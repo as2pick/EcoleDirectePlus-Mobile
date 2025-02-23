@@ -6,7 +6,7 @@ export const UserProvider = ({ children }) => {
     // user data
     const [globalUserData, setGlobalUserData] = useState(null);
     const [userAccesToken, setUserAccesToken] = useState(null);
-
+    const [isConnected, setIsConnected] = useState(false);
     // timetable
     const [sortedTimetableData, setSortedTimetableData] = useState(null);
 
@@ -14,6 +14,7 @@ export const UserProvider = ({ children }) => {
         () => ({
             globalUserData,
             userAccesToken,
+            isConnected,
 
             // timetable
             sortedTimetableData,
@@ -23,8 +24,9 @@ export const UserProvider = ({ children }) => {
 
             setGlobalUserData,
             setUserAccesToken,
+            setIsConnected,
         }),
-        [globalUserData, userAccesToken, sortedTimetableData]
+        [globalUserData, userAccesToken, sortedTimetableData, isConnected]
     );
     return (
         <userContext.Provider value={contextValueUser}>

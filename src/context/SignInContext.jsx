@@ -10,7 +10,6 @@ import { getApiMessage } from "../constants/api/codes";
 
 import { API } from "../constants/api/api";
 import authService from "../services/login/authService";
-import { useGlobalApp } from "./GlobalAppContext";
 import { useUser } from "./UserContext";
 
 const signInContext = createContext();
@@ -24,8 +23,8 @@ const defaultA2fInfos = {
 };
 
 export const SignInProvider = ({ children }) => {
-    const { setGlobalUserData, setUserAccesToken } = useUser();
-    const { setIsConnected } = useGlobalApp();
+    const { setGlobalUserData, setUserAccesToken, setIsConnected } = useUser();
+
     const authReducer = (state, action) => {
         switch (action.type) {
             case "RESTORE_TOKEN":
@@ -55,6 +54,9 @@ export const SignInProvider = ({ children }) => {
     const [mcqDatas, setMcqDatas] = useState("");
     const [a2fInfos, setA2fInfos] = useState(defaultA2fInfos);
     const [choice, setChoice] = useState("");
+    const [successLogin, setSuccedLogin] = useState(false);
+    const [apiError, setApiError] = useState(null);
+    const [keepConnected, setKeepConnected] = useState(true);
 
     const [state, dispatch] = useReducer(authReducer, {
         isLoading: true,
@@ -65,8 +67,10 @@ export const SignInProvider = ({ children }) => {
     const setUserData = (data, token) => {
         setGlobalUserData(data.accounts[0]);
         setUserAccesToken(token);
-        setIsConnected(true);
+        setSuccedLogin(true);
+
         API.USER_ID = data.accounts[0].id;
+        setIsConnected(true);
     };
 
     const bootstrapAsync = async () => {
@@ -95,7 +99,8 @@ export const SignInProvider = ({ children }) => {
         }
     };
 
-    const handleLogin = async ({ username, password }) => {
+    const handleLogin = async ({ username, password, keepConnected }) => {
+        setKeepConnected(keepConnected);
         const apiLoginData = await authService.login({
             username: username,
             password: password,
@@ -112,10 +117,12 @@ export const SignInProvider = ({ children }) => {
             case 200:
                 const { data } = apiLoginData;
                 const account = data.accounts[0];
-                await authService.saveCredentials(token, account.id, {
-                    identifiant: encodeURIComponent(username),
-                    motdepasse: encodeURIComponent(password),
-                });
+                if (keepConnected) {
+                    await authService.saveCredentials(token, account.id, {
+                        identifiant: encodeURIComponent(username),
+                        motdepasse: encodeURIComponent(password),
+                    });
+                }
 
                 dispatch({ type: "SIGN_IN", token: token });
                 setUserData(data, token);
@@ -137,6 +144,7 @@ export const SignInProvider = ({ children }) => {
 
                 if (message) {
                     console.log(message);
+                    setApiError(message);
                 } else
                     console.log({
                         error: "Bad error",
@@ -180,16 +188,19 @@ export const SignInProvider = ({ children }) => {
                 authConnectionDatas: a2fInfos,
             })
             .then((accountData) => {
+                console.log(accountData);
                 dispatch({
                     type: "SIGN_IN",
                     token: accountData.token,
                 });
-                authService.saveCredentials(
-                    accountData.token,
-                    accountData.data.accounts[0].id,
-                    a2fInfos
-                );
-                dispatch({ type: "SIGN_IN", token: accountData.data });
+                if (keepConnected) {
+                    authService.saveCredentials(
+                        accountData.token,
+                        accountData.data.accounts[0].id,
+                        a2fInfos
+                    );
+                }
+                // dispatch({ type: "SIGN_IN", token: accountData.data });
                 setUserData(accountData.data, accountData.token);
             });
     }, [a2fInfos.fa]);
@@ -207,11 +218,15 @@ export const SignInProvider = ({ children }) => {
             state,
             mcqDatas,
             choice,
+            successLogin,
+            apiError,
             setMcqDatas,
             setChoice,
+            setSuccedLogin,
+            setApiError,
         }),
 
-        [mcqDatas, choice, state]
+        [mcqDatas, choice, state, successLogin, apiError]
     );
 
     return (

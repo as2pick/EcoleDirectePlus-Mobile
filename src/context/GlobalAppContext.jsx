@@ -1,17 +1,11 @@
-import React, { createContext, useContext, useMemo, useState } from "react";
+import React, { createContext, useContext, useMemo } from "react";
 
 const globalAppContext = createContext();
 
 export const GlobalAppProvider = ({ children }) => {
     // global states
-    const [isConnected, setIsConnected] = useState(false);
-    const contextValue = useMemo(
-        () => ({
-            isConnected,
-            setIsConnected,
-        }),
-        [isConnected]
-    );
+
+    const contextValue = useMemo(() => ({}), []);
 
     return (
         <globalAppContext.Provider value={contextValue}>

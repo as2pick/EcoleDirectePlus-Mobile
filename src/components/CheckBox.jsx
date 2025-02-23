@@ -29,7 +29,7 @@ export default function Checkbox({
                     )}
                 </View>
             </TouchableOpacity>
-            <Text style={[styles.text, { color: colors.text.txt1 }]}>{libelle}</Text>
+            <Text style={[styles.text, { color: colors.txt.txt1 }]}>{libelle}</Text>
         </View>
     );
 }

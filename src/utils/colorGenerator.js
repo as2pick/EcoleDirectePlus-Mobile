@@ -128,5 +128,16 @@ export function rgbToHsl(r, g, b) {
 
     return [Math.round(h), Math.round(s * 100), Math.round(l * 100)];
 }
-export const cssRgbToRgb = (text) => text.match(/\d+/g);
+export const cssRgbToRgb = (text) => {
+    let [x, y, z] = text.match(/\d+/g);
+
+    return [x, y, z];
+};
+
+export const cssRgbToHsl = (text) => {
+    const [r, g, b] = cssRgbToRgb(text);
+
+    const [h, s, l] = rgbToHsl(r, g, b);
+    return [h, s, l];
+};
 

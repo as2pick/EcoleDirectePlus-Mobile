@@ -1,40 +1,58 @@
+import { useNavigation } from "@react-navigation/native";
 import React, { useCallback, useEffect, useState } from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
 import EDPLogo from "../../../assets/svg/EDPLogo.jsx";
 import Checkbox from "../../../components/CheckBox.jsx";
+import OverLoader from "../../../components/LoadingSpinner/OverLoader.jsx";
+import SelectableModal from "../../../components/SelectableModal.jsx";
 import { getApiMessage } from "../../../constants/api/codes.js";
 import { useSingIn } from "../../../context/SignInContext.jsx";
+import { cssRgbToHsl } from "../../../utils/colorGenerator.js";
 
 export default function LoginScreen({ theme }) {
-    const { signIn, mcqDatas, setChoice, setMcqDatas, signOut } = useSingIn();
+    const navigation = useNavigation();
+
+    const {
+        signIn,
+        mcqDatas,
+        setChoice,
+        setMcqDatas,
+        apiError,
+        setApiError,
+        state,
+    } = useSingIn();
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [modalVisible, setModalVisible] = useState(false);
+    const [keepConnected, setKeepConnected] = useState(true);
     const [loginStates, setLoginStates] = useState({
         loading: false,
-
         decodedChoices: [],
         decodedQuestion: null,
     });
+    const [loading, setLoading] = useState(null);
+    const [showLoader, setShowLoader] = useState(false);
+
+    useEffect(() => {
+        if (!state || !apiError) return;
+        setLoading(false);
+    }, [state, apiError]);
 
     const toggleModal = useCallback(() => {
         setModalVisible((lastState) => !lastState);
     }, []);
 
-    // outdated token ca87873a-984a-4568-a1b6-41222bb7fc25
     const handleModalSubmit = async (item) => {
+        setLoading(true);
         setChoice(mcqDatas.choices[item]);
-
         setMcqDatas("");
     };
-    // on mcqDatas
+
     useEffect(() => {
         if (!mcqDatas) return;
-
-        if (!"choices" && (!"question") in mcqDatas) {
+        if (!("choices" in mcqDatas) || !("question" in mcqDatas)) {
             const message = getApiMessage(1005);
             // provoquer une erreur avec le screen d'error (not implemented yet)
         }
@@ -42,27 +60,158 @@ export default function LoginScreen({ theme }) {
         setLoginStates((prevState) => ({
             ...prevState,
             decodedChoices: [...Object.keys(mcqDatas.choices)],
-            decodedQuestion: [...Object.keys(mcqDatas.question)[0]],
+            decodedQuestion: Object.keys(mcqDatas.question)[0],
         }));
+        setLoading(false);
         toggleModal();
     }, [mcqDatas]);
 
+    const [h, s, l] = cssRgbToHsl(theme.colors.border);
+    const borderColor = `hsl(${h}, ${s - 60}%, ${l - 34}%)`;
+
     return (
-        <SafeAreaView style={styles.container}>
-            <View style={styles.logo.logoOutline}>
-                <EDPLogo size={64} />
+        <SafeAreaView style={[styles.container]}>
+            <OverLoader
+                bgOpacityValue={0.54}
+                loaderStyles={styles.loader}
+                timing={800}
+                triggerStateArr={[loading, setLoading]}
+                triggerViewArr={[showLoader, setShowLoader]}
+            />
+
+            <View style={styles.form}>
+                <View
+                    style={[
+                        {
+                            borderColor,
+                            backgroundColor: theme.colors.bg.bg1,
+                        },
+                        styles.logo.logoOutline,
+                    ]}
+                >
+                    <EDPLogo size={64} />
+                </View>
+                <View
+                    style={[
+                        {
+                            borderColor,
+                            backgroundColor: theme.colors.bg.bg1,
+                        },
+                        styles.logo.textOutline,
+                    ]}
+                >
+                    <Text style={styles.logo.text}>Connexion</Text>
+                </View>
+
+                <View style={[styles.input.box]}>
+                    <View style={styles.input.cases}>
+                        <TextInput
+                            placeholder="Identifiant"
+                            onChangeText={(data) => {
+                                setApiError(null);
+                                setUsername(data);
+                            }}
+                            value={username}
+                            style={[
+                                styles.input.case,
+                                {
+                                    borderColor: theme.colors.border,
+                                    backgroundColor: theme.colors.background,
+                                    color: theme.colors.txt.txt1,
+                                },
+                            ]}
+                        />
+                        <TextInput
+                            placeholder="Mot de passe"
+                            onChangeText={(data) => {
+                                setApiError(null);
+                                setPassword(data);
+                            }}
+                            value={password}
+                            secureTextEntry
+                            style={[
+                                styles.input.case,
+                                {
+                                    borderColor: theme.colors.border,
+                                    backgroundColor: theme.colors.background,
+                                    color: theme.colors.txt.txt1,
+                                },
+                            ]}
+                        />
+
+                        <Checkbox
+                            initialValue={keepConnected}
+                            onValueChange={(v) => setKeepConnected(v)}
+                            libelle="Rester connecté"
+                        />
+                    </View>
+                </View>
+
+                <TouchableOpacity
+                    onPress={() => {
+                        setLoading(true);
+                        signIn({
+                            username: username,
+                            password: password,
+                            keepConnected: keepConnected,
+                        });
+                        setApiError(null);
+                    }}
+                    style={{ theme: theme }}
+                >
+                    <Text
+                        style={[
+                            {
+                                color: theme.colors.txt.txt1,
+                                borderColor: theme.colors.border,
+                            },
+                            styles.button,
+                        ]}
+                    >
+                        {"Se connecter      ➜"}
+                    </Text>
+                </TouchableOpacity>
             </View>
-            <Text style={styles.logo.text}>Ecole Directe Plus</Text>
+            {apiError && (
+                <Text
+                    style={{
+                        color: "rgb(240, 90, 90)",
+                        padding: 12,
+                        backgroundColor: theme.colors.bg.bg2,
+                        borderColor: "rgb(240, 60, 60)",
+                        borderWidth: 0.9,
+                        borderRadius: 12,
+                    }}
+                >
+                    {apiError}
+                </Text>
+            )}
+            <View style={styles.infos}>
+                <TouchableOpacity
+                    onPress={() => {
+                        navigation.navigate("PrivacyPolicy");
+                    }}
+                >
+                    <Text
+                        style={[
+                            styles.privacyPolicy,
+                            {
+                                color: theme.colors.txt.txt2,
+                            },
+                        ]}
+                    >
+                        Politique de confidentialité et Conditions d'utilisation
+                    </Text>
+                </TouchableOpacity>
+            </View>
             <View>
-                <TextInput
-                    placeholder="Identifiant"
-                    style={[styles.input, { borderColor: theme.colors.border }]}
+                <SelectableModal
+                    visible={modalVisible}
+                    onClose={toggleModal}
+                    items={loginStates.decodedChoices}
+                    onSelect={handleModalSubmit}
+                    question={loginStates.decodedQuestion}
                 />
-                <TextInput
-                    placeholder="Mot de passe"
-                    style={[styles.input, { borderColor: theme.colors.border }]}
-                />
-                <Checkbox />
             </View>
         </SafeAreaView>
     );
@@ -71,99 +220,76 @@ export default function LoginScreen({ theme }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-
+        alignItems: "center",
+    },
+    loader: {
+        position: "absolute",
+        left: 0,
+        top: 0,
+        right: 0,
+        bottom: 0,
+        zIndex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "rgb(10, 10, 10)",
+    },
+    form: {
+        height: "80%",
+        width: "100%",
+        justifyContent: "space-evenly",
+        flexDirection: "column",
         alignItems: "center",
     },
     logo: {
+        box: { flexDirection: "column", alignItems: "center" },
         logoOutline: {
-            backgroundColor: "rgb(25, 25, 56)",
+            borderWidth: 1,
             padding: 10,
             borderRadius: 10,
-            marginTop: 62,
         },
         text: {
             fontWeight: 900,
-            // letterSpacing: "",
-            marginTop: 28,
-
             fontSize: 32,
             color: "rgb(186,193,255)",
         },
+        textOutline: {
+            paddingHorizontal: 17,
+            paddingVertical: 4,
+            borderWidth: 1,
+            borderRadius: 10,
+        },
+    },
+    input: {
+        box: {
+            width: "100%",
+            paddingHorizontal: 20,
+            borderRadius: 23,
+        },
+        cases: { gap: 20 },
+        case: {
+            borderRadius: 14,
+            borderWidth: 0.8,
+            paddingHorizontal: 14,
+            fontSize: 16,
+            overflow: "hidden",
+        },
     },
 
-    input: {
-        // height: 40,
-        // borderColor: "gray",
-        // borderWidth: 1,
-        // marginBottom: 12,
-        // paddingHorizontal: 8,
-        borderRadius: 14,
-        borderWidth: 0.8,
+    button: {
+        borderWidth: 1.4,
+
+        borderRadius: 12,
+        paddingVertical: 7,
+        paddingHorizontal: 16,
     },
-    error: {
-        color: "red",
-        marginBottom: 12,
+
+    infos: {
+        position: "absolute",
+        bottom: 20,
     },
-    button: {},
-    buttonText: {
-        color: "#fff",
-        fontSize: 16,
+    privacyPolicy: {
+        maxWidth: 210,
+        textAlign: "center",
     },
 });
-
-/*
-
-
-<View style={styles.container}>
-            <TextInput
-                style={styles.input}
-                placeholder="Username"
-                value={username}
-                onChangeText={setUsername}
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Password"
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry
-            />
-            <TouchableOpacity
-                onPress={() => signIn({ username: username, password: password })}
-                style={{
-                    backgroundColor: "#0F0",
-                    padding: 10,
-                    borderRadius: 5,
-                    textAlign: "center",
-                }}
-                disabled={loginStates.loading}
-            >
-                <Text>{"Connect"}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-                onPress={signOut}
-                style={{
-                    backgroundColor: "#f00",
-                    top: "20",
-                    padding: 10,
-                    borderRadius: 5,
-                    textAlign: "center",
-                }}
-            >
-                <Text>DISCONECT (temporary)</Text>
-            </TouchableOpacity>
-
-            {loginStates.loading && (
-                <ActivityIndicator size="large" color="#B1B1B1" />
-            )}
-            <SelectableModal
-                visible={modalVisible}
-                onClose={toggleModal}
-                items={loginStates.decodedChoices}
-                onSelect={handleModalSubmit}
-                question={loginStates.decodedQuestion}
-            />
-        </View>
-
-*/
 
