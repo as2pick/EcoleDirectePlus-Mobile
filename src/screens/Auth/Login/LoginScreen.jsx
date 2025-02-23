@@ -2,8 +2,11 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useCallback, useEffect, useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import DiscordLogo from "../../../assets/svg/DiscordLogo.jsx";
 import EDPLogo from "../../../assets/svg/EDPLogo.jsx";
+import GithubLogo from "../../../assets/svg/GithubLogo.jsx";
 import Checkbox from "../../../components/CheckBox.jsx";
+import LinkButton from "../../../components/LinkButton.jsx";
 import OverLoader from "../../../components/LoadingSpinner/OverLoader.jsx";
 import SelectableModal from "../../../components/SelectableModal.jsx";
 import { getApiMessage } from "../../../constants/api/codes.js";
@@ -71,6 +74,17 @@ export default function LoginScreen({ theme }) {
 
     return (
         <SafeAreaView style={[styles.container]}>
+            <SafeAreaView style={styles.logos}>
+                <LinkButton url={"https://discord.gg/AKAqXfTgvE"}>
+                    <DiscordLogo fill={theme.colors.txt.txt3} size={28} />
+                </LinkButton>
+
+                <LinkButton
+                    url={"https://github.com/as2pick/EcoleDirectePlus-Mobile"}
+                >
+                    <GithubLogo fill={theme.colors.txt.txt3} size={28} />
+                </LinkButton>
+            </SafeAreaView>
             <OverLoader
                 bgOpacityValue={0.54}
                 loaderStyles={styles.loader}
@@ -221,6 +235,14 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: "center",
+    },
+    logos: {
+        flexDirection: "row",
+        position: "absolute",
+        top: 0,
+        left: 0,
+        marginLeft: 12,
+        gap: 16,
     },
     loader: {
         position: "absolute",
