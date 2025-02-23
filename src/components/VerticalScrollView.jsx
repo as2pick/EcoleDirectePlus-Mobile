@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import {
     Gesture,
@@ -21,22 +21,57 @@ const {
 export default function VerticalScrollView({ children, arrayLength, getIndex }) {
     const translateY = useSharedValue(0);
     const pageIndex = useSharedValue(0);
+    const [activePageIndex, setActivePageIndex] = useState(0);
 
     useDerivedValue(() => {
         runOnJS(getIndex)(pageIndex.value);
     });
 
-    // Gestion du swipe vertical
     const gesture = Gesture.Pan()
         .onUpdate((event) => {
-            translateY.value = -pageIndex.value * height + event.translationY;
+            if (
+                event.translationY > 0 && // up swipe (< 0 -> down ; > 0 -> up)
+                activePageIndex + 1 !== arrayLength - 1 && // check page index (if not at end or start)
+                activePageIndex === 0 // check if we are at first index  (last element)
+            ) {
+                if (event.translationY > 800) {
+                    translateY.value = translateY.value;
+                }
+                translateY.value = withSpring(event.translationY * 0.2, {
+                    stiffness: 200,
+                    damping: 20,
+                });
+            } else if (
+                event.translationY < 0 && // down swipe (< 0 -> down ; > 0 -> up)
+                activePageIndex + 1 !== arrayLength - 1 && // check page index (if not at end or start)
+                activePageIndex === arrayLength - 1 // check if we are at least index (last element)
+            ) {
+                if (event.translationY < -800) {
+                    translateY.value = translateY.value;
+                }
+                translateY.value = withSpring(
+                    -pageIndex.value * height + event.translationY * 0.2,
+                    {
+                        stiffness: 200,
+                        damping: 20,
+                    }
+                );
+            } else {
+                translateY.value = withSpring(
+                    -pageIndex.value * height + event.translationY,
+                    {
+                        stiffness: 200,
+                        damping: 20,
+                    }
+                );
+            }
         })
         .onEnd((event) => {
             let newIndex = pageIndex.value;
 
-            if (event.translationY < -25 && newIndex < arrayLength - 1) {
+            if (event.translationY < -50 && newIndex < arrayLength - 1) {
                 newIndex += 1;
-            } else if (event.translationY > 25 && newIndex > 0) {
+            } else if (event.translationY > 50 && newIndex > 0) {
                 newIndex -= 1;
             }
 
@@ -45,6 +80,8 @@ export default function VerticalScrollView({ children, arrayLength, getIndex }) 
                 stiffness: 100,
                 damping: 15,
             });
+
+            runOnJS(setActivePageIndex)(newIndex);
         });
 
     const animatedStyle = useAnimatedStyle(() => ({
@@ -68,6 +105,6 @@ export default function VerticalScrollView({ children, arrayLength, getIndex }) 
 
 const styles = StyleSheet.create({
     container: { flex: 1 },
-    page: { width: "100%", height: height },
+    page: { width: "100%", height },
 });
 
