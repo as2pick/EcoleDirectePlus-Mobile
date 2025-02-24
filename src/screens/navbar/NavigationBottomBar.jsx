@@ -2,6 +2,7 @@
 import { useTheme } from "@react-navigation/native";
 import React, { useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { CONFIG } from "../../constants/config";
 
 const NavigationBottomBar = ({ state, descriptors, navigation }) => {
     const [isPressedIn, setIsPressedIn] = useState(false);
@@ -11,7 +12,14 @@ const NavigationBottomBar = ({ state, descriptors, navigation }) => {
 
     return (
         <View
-            style={[styles.container, { backgroundColor: colors.navbar.background }]}
+            style={[
+                styles.container,
+                {
+                    backgroundColor: colors.navbar.background,
+                    borderTopColor: colors.navbar.border,
+                    borderWidth: 1.2,
+                },
+            ]}
         >
             {state.routes.map((route, index) => {
                 const { options } = descriptors[route.key];
@@ -83,7 +91,7 @@ const styles = StyleSheet.create({
     tab: {
         flex: 1,
         alignItems: "center",
-        height: 79,
+        height: CONFIG.tabBarHeight, // 79
         justifyContent: "center",
     },
     iconPadding: { padding: 5, borderRadius: 6 },
