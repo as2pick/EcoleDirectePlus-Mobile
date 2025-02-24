@@ -360,8 +360,6 @@ export default function PrivacyPolicyScreen({ theme }) {
                     <Paragraph>
                         {"APIs et services tiers :\n"}
                         {"- EcoleDirecte\n"}
-                        {"- ImgBB\n"}
-                        {"- Discord Webhooks"}
                     </Paragraph>
                     <Paragraph>
                         {"Dépendances \n"}

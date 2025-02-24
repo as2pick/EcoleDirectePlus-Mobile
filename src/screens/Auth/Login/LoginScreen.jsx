@@ -95,24 +95,28 @@ export default function LoginScreen({ theme }) {
 
             <View style={styles.form}>
                 <View
-                    style={[
-                        {
-                            borderColor,
-                            backgroundColor: theme.colors.bg.bg1,
-                        },
-                        styles.logo.logoOutline,
-                    ]}
+                    style={
+                        [
+                            // {
+                            //     borderColor,
+                            //     backgroundColor: theme.colors.bg.bg1,
+                            // },
+                            // styles.logo.logoOutline,
+                        ]
+                    }
                 >
-                    <EDPLogo size={64} />
+                    <EDPLogo size={110} />
                 </View>
                 <View
-                    style={[
-                        {
-                            borderColor,
-                            backgroundColor: theme.colors.bg.bg1,
-                        },
-                        styles.logo.textOutline,
-                    ]}
+                    style={
+                        [
+                            // {
+                            //     borderColor,
+                            //     backgroundColor: theme.colors.bg.bg1,
+                            // },
+                            // styles.logo.textOutline,
+                        ]
+                    }
                 >
                     <Text style={styles.logo.text}>Connexion</Text>
                 </View>
@@ -271,7 +275,7 @@ const styles = StyleSheet.create({
         },
         text: {
             fontWeight: 900,
-            fontSize: 32,
+            fontSize: 48,
             color: "rgb(186,193,255)",
         },
         textOutline: {
