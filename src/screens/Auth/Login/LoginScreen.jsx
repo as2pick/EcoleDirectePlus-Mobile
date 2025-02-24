@@ -2,9 +2,11 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useCallback, useEffect, useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import AccountIcon from "../../../assets/svg/AccountIcon.jsx";
 import DiscordLogo from "../../../assets/svg/DiscordLogo.jsx";
 import EDPLogo from "../../../assets/svg/EDPLogo.jsx";
 import GithubLogo from "../../../assets/svg/GithubLogo.jsx";
+import KeyIcon from "../../../assets/svg/KeyIcon.jsx";
 import Checkbox from "../../../components/CheckBox.jsx";
 import LinkButton from "../../../components/LinkButton.jsx";
 import OverLoader from "../../../components/LoadingSpinner/OverLoader.jsx";
@@ -96,43 +98,57 @@ export default function LoginScreen({ theme }) {
             <View style={styles.form}>
                 <View style={styles.logo.box}>
                     <EDPLogo size={88} />
-                    <Text style={styles.logo.text}>Connexion</Text>
+                    <Text
+                        style={[styles.logo.text, { color: theme.colors.txt.txt3 }]}
+                    >
+                        Connexion
+                    </Text>
                 </View>
                 <View style={[styles.input.box]}>
                     <View style={styles.input.cases}>
-                        <TextInput
-                            placeholder="Identifiant"
-                            onChangeText={(data) => {
-                                setApiError(null);
-                                setUsername(data);
-                            }}
-                            value={username}
-                            style={[
-                                styles.input.case,
-                                {
-                                    borderColor: theme.colors.border,
-                                    backgroundColor: theme.colors.background,
-                                    color: theme.colors.txt.txt1,
-                                },
-                            ]}
-                        />
-                        <TextInput
-                            placeholder="Mot de passe"
-                            onChangeText={(data) => {
-                                setApiError(null);
-                                setPassword(data);
-                            }}
-                            value={password}
-                            secureTextEntry
-                            style={[
-                                styles.input.case,
-                                {
-                                    borderColor: theme.colors.border,
-                                    backgroundColor: theme.colors.background,
-                                    color: theme.colors.txt.txt1,
-                                },
-                            ]}
-                        />
+                        <View style={styles.input.logos}>
+                            <TextInput
+                                placeholder="Identifiant"
+                                onChangeText={(data) => {
+                                    setApiError(null);
+                                    setUsername(data);
+                                }}
+                                value={username}
+                                style={[
+                                    styles.input.case,
+                                    {
+                                        borderColor: theme.colors.border,
+                                        backgroundColor: theme.colors.background,
+                                        color: theme.colors.txt.txt1,
+                                    },
+                                ]}
+                            />
+                            <View style={styles.input.icon}>
+                                <AccountIcon />
+                            </View>
+                        </View>
+                        <View style={styles.input.logos}>
+                            <TextInput
+                                placeholder="Mot de passe"
+                                onChangeText={(data) => {
+                                    setApiError(null);
+                                    setPassword(data);
+                                }}
+                                value={password}
+                                secureTextEntry
+                                style={[
+                                    styles.input.case,
+                                    {
+                                        borderColor: theme.colors.border,
+                                        backgroundColor: theme.colors.background,
+                                        color: theme.colors.txt.txt1,
+                                    },
+                                ]}
+                            />
+                            <View style={styles.input.icon}>
+                                <KeyIcon />
+                            </View>
+                        </View>
                         <View style={styles.checkBox}>
                             <Checkbox
                                 initialValue={keepConnected}
@@ -222,8 +238,8 @@ const styles = StyleSheet.create({
     logos: {
         flexDirection: "row",
         position: "absolute",
-        top: 0,
-        left: 0,
+        top: 12,
+        left: 8,
         marginLeft: 12,
         gap: 16,
     },
@@ -259,7 +275,6 @@ const styles = StyleSheet.create({
         text: {
             fontWeight: 900,
             fontSize: 48,
-            color: "rgb(186,193,255)",
         },
         textOutline: {
             paddingHorizontal: 17,
@@ -279,8 +294,16 @@ const styles = StyleSheet.create({
             borderRadius: 14,
             borderWidth: 0.8,
             paddingHorizontal: 14,
+            paddingRight: 42, // 30(logo size)+12(right 12)
             fontSize: 16,
             overflow: "hidden",
+        },
+        logos: {
+            justifyContent: "center",
+        },
+        icon: {
+            right: 12,
+            position: "absolute",
         },
     },
 
