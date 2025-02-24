@@ -28,6 +28,7 @@ export const THEMES = {
                 active_icon_bg: "rgb(34, 34, 52)",
                 icons_bg: "rgb(17, 17, 38)",
                 background: "rgb(12, 12, 32)",
+                border: "rgb(23, 23, 41)",
             },
 
             border: "rgb(92, 113, 250)",
@@ -39,3 +40,4 @@ export const THEMES = {
 export const getCurrentTheme = () => {
     return useTheme();
 };
+
