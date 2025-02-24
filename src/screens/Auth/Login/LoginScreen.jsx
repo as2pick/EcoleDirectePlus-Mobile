@@ -94,33 +94,10 @@ export default function LoginScreen({ theme }) {
             />
 
             <View style={styles.form}>
-                <View
-                    style={
-                        [
-                            // {
-                            //     borderColor,
-                            //     backgroundColor: theme.colors.bg.bg1,
-                            // },
-                            // styles.logo.logoOutline,
-                        ]
-                    }
-                >
-                    <EDPLogo size={110} />
-                </View>
-                <View
-                    style={
-                        [
-                            // {
-                            //     borderColor,
-                            //     backgroundColor: theme.colors.bg.bg1,
-                            // },
-                            // styles.logo.textOutline,
-                        ]
-                    }
-                >
+                <View style={styles.logo.box}>
+                    <EDPLogo size={88} />
                     <Text style={styles.logo.text}>Connexion</Text>
                 </View>
-
                 <View style={[styles.input.box]}>
                     <View style={styles.input.cases}>
                         <TextInput
@@ -156,12 +133,13 @@ export default function LoginScreen({ theme }) {
                                 },
                             ]}
                         />
-
-                        <Checkbox
-                            initialValue={keepConnected}
-                            onValueChange={(v) => setKeepConnected(v)}
-                            libelle="Rester connecté"
-                        />
+                        <View style={styles.checkBox}>
+                            <Checkbox
+                                initialValue={keepConnected}
+                                onValueChange={(v) => setKeepConnected(v)}
+                                libelle="Rester connecté"
+                            />
+                        </View>
                     </View>
                 </View>
 
@@ -182,6 +160,7 @@ export default function LoginScreen({ theme }) {
                             {
                                 color: theme.colors.txt.txt1,
                                 borderColor: theme.colors.border,
+                                transform: [{ scale: 1.2 }],
                             },
                             styles.button,
                         ]}
@@ -248,6 +227,9 @@ const styles = StyleSheet.create({
         marginLeft: 12,
         gap: 16,
     },
+    checkBox: {
+        marginLeft: "5%",
+    },
     loader: {
         position: "absolute",
         left: 0,
@@ -260,14 +242,15 @@ const styles = StyleSheet.create({
         backgroundColor: "rgb(10, 10, 10)",
     },
     form: {
-        height: "80%",
+        marginTop: 26,
+        height: "82%",
         width: "100%",
         justifyContent: "space-evenly",
         flexDirection: "column",
         alignItems: "center",
     },
     logo: {
-        box: { flexDirection: "column", alignItems: "center" },
+        box: { alignItems: "center", gap: 26 },
         logoOutline: {
             borderWidth: 1,
             padding: 10,
