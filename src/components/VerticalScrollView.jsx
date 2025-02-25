@@ -22,6 +22,7 @@ export default function VerticalScrollView({ children, arrayLength, getIndex }) 
     const translateY = useSharedValue(0);
     const pageIndex = useSharedValue(0);
     const [activePageIndex, setActivePageIndex] = useState(0);
+    let isCatched = false;
 
     useDerivedValue(() => {
         runOnJS(getIndex)(pageIndex.value);
@@ -60,8 +61,8 @@ export default function VerticalScrollView({ children, arrayLength, getIndex }) 
                 translateY.value = withSpring(
                     -pageIndex.value * height + event.translationY,
                     {
-                        stiffness: 200,
-                        damping: 20,
+                        stiffness: 225,
+                        damping: 50,
                     }
                 );
             }
