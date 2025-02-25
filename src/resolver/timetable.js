@@ -1,5 +1,6 @@
 import fetchApi from "../services/fetchApi";
 import { textToHSL } from "../utils/colorGenerator";
+import { toMilliseconds } from "../utils/time";
 import makeUniqueIds from "../utils/uniqueIds";
 
 const convertData = (arrayData = []) => {
@@ -68,12 +69,53 @@ const convertData = (arrayData = []) => {
         (a, b) => new Date(a) - new Date(b)
     );
 
-    // console.log(finalTimetable);
     return sortedDays.map((day) => ({
         date: day,
         courses: finalTimetable[day],
     }));
 };
+
+function getTimePercentage(time, startDayTime, interval) {
+    const [hours, minutes] = time.split(":").map(Number);
+    const msTime = hours * 3600000 + minutes * 60000;
+    return (((msTime - startDayTime) / interval) * 100).toFixed(2);
+}
+
+function sizeTimetable(timetableData = []) {
+    const hours = {};
+
+    timetableData.forEach((data) => {
+        const startTimes = data.courses.map((course) =>
+            toMilliseconds(...course.startCourse.time.split(":"))
+        );
+        const endTimes = data.courses.map((course) =>
+            toMilliseconds(...course.endCourse.time.split(":"))
+        );
+
+        const first = Math.min(...startTimes);
+        const last = Math.max(...endTimes);
+        const interval = last - first;
+
+        hours[data.date] = { first, last, interval };
+    });
+
+    timetableData.forEach((data, index) => {
+        data.courses.forEach((course, i) => {
+            const startMs = toMilliseconds(...course.startCourse.time.split(":"));
+            const endMs = toMilliseconds(...course.endCourse.time.split(":"));
+
+            const placing = getTimePercentage(
+                course.startCourse.time,
+                hours[data.date].first,
+                hours[data.date].interval
+            );
+            const height = ((endMs - startMs) / hours[data.date].interval) * 100;
+
+            timetableData[index].courses[i].height = height;
+            timetableData[index].courses[i].placing = placing;
+        });
+    });
+}
 
 export default async function getTimetable(token) {
     const timetableResponse = await fetchApi(
@@ -81,7 +123,7 @@ export default async function getTimetable(token) {
         {
             body: {
                 dateDebut: "2025-02-10", // dynamique
-                dateFin: "2025-02-17", // dynamique
+                dateFin: "2025-02-16", // dynamique
                 avecTrous: false,
             },
             headers: {
@@ -91,6 +133,8 @@ export default async function getTimetable(token) {
     );
 
     const timetable = convertData(await timetableResponse.data);
+    const sizedTimetable = sizeTimetable(timetable);
+    console.log(sizedTimetable);
     return timetable;
 }
 
