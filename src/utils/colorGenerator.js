@@ -63,39 +63,6 @@ export function hslToRgb(h, s, l) {
 
     return [r, g, b];
 }
-// export function rgbToHsl(r, g, b) {
-//     r /= 255;
-//     g /= 255;
-//     b /= 255;
-//     console.log(r, g, b);
-//     let max = Math.max(r, g, b);
-//     let min = Math.min(r, g, b);
-
-//     let h, l;
-//     let s = (max + min) / 2;
-//     if (max === min) {
-//         h = s = 0;
-//     } else {
-//         let d = max - min;
-//         l = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-
-//         switch (max) {
-//             case r:
-//                 h = (g - b) / d + (g < b ? 6 : 0);
-//                 break;
-//             case g:
-//                 h = (b - r) / d + 2;
-//                 break;
-//             case b:
-//                 h = (r - g) / d + 4;
-//                 break;
-//         }
-
-//         h /= 6;
-//     }
-
-//     return [h * 360, s * 100, l * 100];
-// }
 
 export function rgbToHsl(r, g, b) {
     let h, s, l;
@@ -139,5 +106,10 @@ export const cssRgbToHsl = (text) => {
 
     const [h, s, l] = rgbToHsl(r, g, b);
     return [h, s, l];
+};
+
+export const isDarkColor = (hsl) => {
+    const lightness = parseFloat(hsl.match(/,\s*(\d+)%\)$/)[1]);
+    return lightness < 50;
 };
 
