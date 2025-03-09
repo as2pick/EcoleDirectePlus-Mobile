@@ -113,3 +113,10 @@ export const isDarkColor = (hsl) => {
     return lightness < 50;
 };
 
+export const addOpacityToCssRgb = (text, a) => {
+    if (a > 1) return "rgb(255, 100, 20)";
+
+    const [r, g, b] = cssRgbToRgb(text);
+    return `rgba(${r}, ${g}, ${b}, ${a})`;
+};
+
