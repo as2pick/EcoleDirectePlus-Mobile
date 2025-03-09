@@ -1,5 +1,7 @@
+import { CONFIG } from "../constants/config";
 import fetchApi from "../services/fetchApi";
 import { textToHSL } from "../utils/colorGenerator";
+import { addDaysToDateString, getPreviousMonday } from "../utils/date";
 import { toMilliseconds } from "../utils/time";
 import makeUniqueIds from "../utils/uniqueIds";
 
@@ -39,7 +41,7 @@ const convertData = (arrayData = []) => {
             room: salle,
             classGroup: classe,
             group: groupe,
-            libelle: text,
+            libelle: text.toUpperCase(),
         };
 
         convertedTimetable.push(converter);
@@ -83,6 +85,8 @@ function getTimePercentage(time, startDayTime, interval) {
 
 function sizeTimetable(timetableData = []) {
     const hours = {};
+    const maxTime = [];
+    const minTime = [];
 
     timetableData.forEach((data) => {
         const startTimes = data.courses.map((course) =>
@@ -97,6 +101,8 @@ function sizeTimetable(timetableData = []) {
         const interval = last - first;
 
         hours[data.date] = { first, last, interval };
+        first !== 0 ? minTime.push(first) : null;
+        maxTime.push(last);
     });
 
     timetableData.forEach((data, index) => {
@@ -109,21 +115,25 @@ function sizeTimetable(timetableData = []) {
                 hours[data.date].first,
                 hours[data.date].interval
             );
+
             const height = ((endMs - startMs) / hours[data.date].interval) * 100;
 
             timetableData[index].courses[i].height = height;
             timetableData[index].courses[i].placing = placing;
         });
     });
+
+    return timetableData;
 }
 
 export default async function getTimetable(token) {
+    const previousMonday = getPreviousMonday(CONFIG.today);
     const timetableResponse = await fetchApi(
         "https://api.ecoledirecte.com/v3/E/{USER_ID}/emploidutemps.awp?verbe=get&{API_VERSION}",
         {
             body: {
-                dateDebut: "2025-02-10", // dynamique
-                dateFin: "2025-02-16", // dynamique
+                dateDebut: previousMonday, // dynamique
+                dateFin: addDaysToDateString(previousMonday, 6), // dynamique
                 avecTrous: false,
             },
             headers: {
@@ -134,7 +144,7 @@ export default async function getTimetable(token) {
 
     const timetable = convertData(await timetableResponse.data);
     const sizedTimetable = sizeTimetable(timetable);
-    console.log(sizedTimetable);
-    return timetable;
+
+    return sizedTimetable;
 }
 
