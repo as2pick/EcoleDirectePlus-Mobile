@@ -7,10 +7,10 @@ import DiscordLogo from "../../../assets/svg/DiscordLogo.jsx";
 import EDPLogo from "../../../assets/svg/EDPLogo.jsx";
 import GithubLogo from "../../../assets/svg/GithubLogo.jsx";
 import KeyIcon from "../../../assets/svg/KeyIcon.jsx";
+import A2fSelectableModal from "../../../components/A2fSelectableModal.jsx";
 import Checkbox from "../../../components/CheckBox.jsx";
 import LinkButton from "../../../components/LinkButton.jsx";
 import OverLoader from "../../../components/LoadingSpinner/OverLoader.jsx";
-import SelectableModal from "../../../components/SelectableModal.jsx";
 import { getApiMessage } from "../../../constants/api/codes.js";
 import { useSingIn } from "../../../context/SignInContext.jsx";
 import { cssRgbToHsl } from "../../../utils/colorGenerator.js";
@@ -218,7 +218,7 @@ export default function LoginScreen({ theme }) {
                 </TouchableOpacity>
             </View>
             <View>
-                <SelectableModal
+                <A2fSelectableModal
                     visible={modalVisible}
                     onClose={toggleModal}
                     items={loginStates.decodedChoices}

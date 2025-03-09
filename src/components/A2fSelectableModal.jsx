@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { addOpacityToCssRgb } from "../utils/colorGenerator";
 
-export default function SelectableModal({
+export default function A2fSelectableModal({
     visible,
     onClose,
     items,

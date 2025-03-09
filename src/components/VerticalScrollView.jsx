@@ -70,9 +70,9 @@ export default function VerticalScrollView({ children, arrayLength, getIndex }) 
         .onEnd((event) => {
             let newIndex = pageIndex.value;
 
-            if (event.translationY < -50 && newIndex < arrayLength - 1) {
+            if (event.translationY < -35 && newIndex < arrayLength - 1) {
                 newIndex += 1;
-            } else if (event.translationY > 50 && newIndex > 0) {
+            } else if (event.translationY > 35 && newIndex > 0) {
                 newIndex -= 1;
             }
 
