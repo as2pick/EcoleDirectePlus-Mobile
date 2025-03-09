@@ -100,6 +100,7 @@ export const SignInProvider = ({ children }) => {
     };
 
     const handleLogin = async ({ username, password, keepConnected }) => {
+        console.log(username, password, keepConnected);
         setKeepConnected(keepConnected);
         const apiLoginData = await authService.login({
             username: username,
@@ -126,7 +127,6 @@ export const SignInProvider = ({ children }) => {
 
                 dispatch({ type: "SIGN_IN", token: token });
                 setUserData(data, token);
-                console.log("SETTED 200");
                 break;
             case 250:
                 const getChoices = await authService.startA2fProcess(token);
@@ -139,9 +139,9 @@ export const SignInProvider = ({ children }) => {
                     a2fToken: token,
                 }));
                 break;
+
             default:
                 const message = getApiMessage(apiLoginData.code);
-
                 if (message) {
                     console.log(message);
                     setApiError(message);
@@ -150,6 +150,7 @@ export const SignInProvider = ({ children }) => {
                         error: "Bad error",
                     });
                 setA2fInfos("");
+                break;
         }
     };
 
