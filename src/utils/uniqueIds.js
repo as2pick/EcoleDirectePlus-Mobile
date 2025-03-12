@@ -10,4 +10,18 @@ const makeUniqueIds = (arr) => {
     });
 };
 
+export const getCourseWithWebId = (wantedWebId, timetableObj) => {
+    let wantedCourse = null;
+    timetableObj.forEach((day) => {
+        day.courses.forEach((course, i) => {
+            if (course.webId === wantedWebId) {
+                wantedCourse = course;
+            }
+        });
+    });
+
+    console.log(wantedCourse);
+};
+
 export default makeUniqueIds;
+
