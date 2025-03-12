@@ -51,20 +51,14 @@ Meet the Ecole Directe Plus community by joining the [Discord server](https://di
 
 ## Contributing
 
-Ecole Directe Plus is built on React. We use VITE development environment to work. Here is how to setup:
+Ecole Directe Plus is built on React Native. We use METRO development environment to work. Here is how to setup:
 
 ```bash
 # install dependencies
 npm install
 
 # run on localhost
-npm run dev
-
-# host the website
-npm run host
-
-# run preview of the build
-npm run preview
+npm run start
 ```
 
 ## Code of Conduct
