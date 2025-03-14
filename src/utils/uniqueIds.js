@@ -19,8 +19,6 @@ export const getCourseWithWebId = (wantedWebId, timetableObj) => {
             }
         });
     });
-
-    console.log(wantedCourse);
 };
 
 export default makeUniqueIds;

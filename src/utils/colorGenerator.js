@@ -1,14 +1,14 @@
 import { sha256 } from "js-sha256";
 
-export function textToHSL(
-    str,
+export function textToHSL({
+    text,
     salt = "",
-    initialS = 42,
-    initialL = 73,
-    variationS = 10,
-    variationL = 10
-) {
-    const int = parseInt(sha256(str + salt), 16);
+    initialS = 43, // 42
+    initialL = 73, // 73
+    variationS = 10, // 10
+    variationL = 10,
+}) {
+    const int = parseInt(sha256(text + salt), 16);
     const l = int % 10000;
     const h = Math.round((int % 10 ** 8) / 10 ** 4);
     const s = Math.round((int % 10 ** 12) / 10 ** 8);
