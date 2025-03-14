@@ -52,7 +52,7 @@ const convertData = (arrayData = []) => {
         if (!finalTimetable[day]) {
             finalTimetable[day] = [];
         }
-        const [h, s, l] = textToHSL(course.libelle);
+        const [h, s, l] = textToHSL({ text: course.libelle });
 
         course["color"] = `hsl(${h}, ${s}%, ${l}%)`;
 
@@ -88,12 +88,12 @@ function sizeTimetable(timetableData = []) {
     const maxTime = [];
     const minTime = [];
 
-    timetableData.forEach((data) => {
+    timetableData.forEach((data, index) => {
         const startTimes = data.courses.map((course) =>
-            toMilliseconds(...course.startCourse.time.split(":"))
+            toMilliseconds(course.startCourse.time)
         );
         const endTimes = data.courses.map((course) =>
-            toMilliseconds(...course.endCourse.time.split(":"))
+            toMilliseconds(course.endCourse.time)
         );
 
         const first = Math.min(...startTimes);
@@ -102,13 +102,16 @@ function sizeTimetable(timetableData = []) {
 
         hours[data.date] = { first, last, interval };
         first !== 0 ? minTime.push(first) : null;
+
+        timetableData[index]["isJustNoon"] = last <= CONFIG.middleNoonCourseTime;
+
         maxTime.push(last);
     });
 
     timetableData.forEach((data, index) => {
         data.courses.forEach((course, i) => {
-            const startMs = toMilliseconds(...course.startCourse.time.split(":"));
-            const endMs = toMilliseconds(...course.endCourse.time.split(":"));
+            const startMs = toMilliseconds(course.startCourse.time);
+            const endMs = toMilliseconds(course.endCourse.time);
 
             const placing = getTimePercentage(
                 course.startCourse.time,
@@ -118,16 +121,19 @@ function sizeTimetable(timetableData = []) {
 
             const height = ((endMs - startMs) / hours[data.date].interval) * 100;
 
-            timetableData[index].courses[i].height = height;
-            timetableData[index].courses[i].placing = placing;
+            timetableData[index].courses[i].height = timetableData[index].isJustNoon
+                ? height / 2.5 // to limit size (for ex wednesday 8h -> 12h so is splitted to middle (environ))
+                : height; // else normal
+            timetableData[index].courses[i].placing = timetableData[index].isJustNoon
+                ? placing / 2.5 // to limit size (for ex wednesday 8h -> 12h so is splitted to middle (environ))
+                : placing; // else normal
         });
     });
-
     return timetableData;
 }
 
 export default async function getTimetable(token) {
-    const previousMonday = getPreviousMonday(CONFIG.today);
+    const previousMonday = getPreviousMonday(CONFIG.dateNow);
     const timetableResponse = await fetchApi(
         "https://api.ecoledirecte.com/v3/E/{USER_ID}/emploidutemps.awp?verbe=get&{API_VERSION}",
         {

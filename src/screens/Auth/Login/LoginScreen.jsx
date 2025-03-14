@@ -90,7 +90,7 @@ export default function LoginScreen({ theme }) {
             <OverLoader
                 bgOpacityValue={0.54}
                 loaderStyles={styles.loader}
-                timing={800}
+                annimationStartTiming={800}
                 triggerStateArr={[loading, setLoading]}
                 triggerViewArr={[showLoader, setShowLoader]}
             />

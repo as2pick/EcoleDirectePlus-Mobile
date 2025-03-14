@@ -10,7 +10,7 @@ import Animated, {
 import LoadingSpinner from "./LoadingSpinner";
 
 export default function OverLoader({
-    timing, // in ms (1000 ex)
+    annimationStartTiming, // in ms (1000 ex)
     bgOpacityValue, // float or int <1
     triggerStateArr, // to say "start visible process", "start not visible process"
     triggerViewArr, // to say "visible", "not visible"
@@ -39,20 +39,26 @@ export default function OverLoader({
                 setTriggerView(true);
                 runOnUI(() => {
                     "worklet";
-                    loadingOpacity.value = withTiming(1, { duration: timing });
+                    loadingOpacity.value = withTiming(1, {
+                        duration: annimationStartTiming,
+                    });
                     backgroundLoadingOpacity.value = withTiming(bgOpacityValue, {
-                        duration: timing,
+                        duration: annimationStartTiming,
                     });
                 })();
             } else {
                 runOnUI(() => {
                     "worklet";
-                    loadingOpacity.value = withTiming(0, { duration: timing });
+                    loadingOpacity.value = withTiming(0, {
+                        duration: annimationStartTiming,
+                    });
                     backgroundLoadingOpacity.value = withTiming(
                         0,
-                        { duration: timing },
+                        { duration: annimationStartTiming },
                         (finished) => {
-                            if (finished) runOnJS(setTriggerView)(false);
+                            if (finished) {
+                                runOnJS(setTriggerView)(false);
+                            }
                         }
                     );
                 })();

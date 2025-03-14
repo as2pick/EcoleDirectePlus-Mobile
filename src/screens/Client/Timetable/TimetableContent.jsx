@@ -7,7 +7,8 @@ import {
     View,
 } from "react-native";
 
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import OverLoader from "../../../components/LoadingSpinner/OverLoader";
 import VerticalScrollView from "../../../components/VerticalScrollView";
 import { CONFIG } from "../../../constants/config";
 import { GLOBALS_DATAS } from "../../../constants/device/globals";
@@ -25,6 +26,8 @@ height -= CONFIG.upper + 24; // ??? but works fine
 export default function TimetableContent({ route }) {
     const { theme } = route.params;
 
+    const navigation = useNavigation();
+
     const [loading, setLoading] = useState(true);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [timetableDates, setTimetableDates] = useState(null);
@@ -35,6 +38,7 @@ export default function TimetableContent({ route }) {
     });
     const [activeSelected, setActiveSelected] = useState(null);
     const [activeDate, setActiveDate] = useState("");
+    const [showLoader, setShowLoader] = useState(false);
 
     const { userAccesToken, sortedTimetableData, setSortedTimetableData } =
         useUser();
@@ -67,7 +71,15 @@ export default function TimetableContent({ route }) {
     }, [sortedTimetableData]);
 
     if (loading) {
-        return <Text style={{ color: theme.colors.txt.txt1 }}>Loading...</Text>;
+        return (
+            <OverLoader
+                bgOpacityValue={0.7}
+                loaderStyles={styles.loader}
+                annimationStartTiming={1000}
+                triggerStateArr={[loading, setLoading]}
+                triggerViewArr={[showLoader, setShowLoader]}
+            />
+        );
     }
 
     return (
@@ -130,13 +142,15 @@ export default function TimetableContent({ route }) {
                 >
                     {!loading &&
                         sortedTimetableData?.map((currentDay, index) => {
+                            const { isJustNoon } = currentDay;
                             return (
                                 <View
                                     key={index}
                                     style={{
                                         width: "100%",
-                                        height: height - 100, // idk why but works on other devices ?
+                                        height: height - 100, // idk why but... works on other devices ?
                                         top: 20,
+
                                         alignItems: "center",
                                         position: "absolute",
                                         zIndex: 10,
@@ -177,9 +191,6 @@ export default function TimetableContent({ route }) {
                                             ? "hsl(0, 100%, 100%)"
                                             : "hsl(0, 0%, 0%)";
 
-                                        if (height <= CONFIG.minCourseSize) {
-                                            console.log(course, "MIN !");
-                                        }
                                         return (
                                             <TouchableOpacity
                                                 key={webId}
@@ -208,9 +219,12 @@ export default function TimetableContent({ route }) {
                                                         overflow: "hidden",
                                                     },
                                                 ]}
-                                                // onPress={() => {
-                                                //     console.log("pressed", course);
-                                                // }}
+                                                onPress={() => {
+                                                    navigation.navigate(
+                                                        "timetable_course_detail",
+                                                        { courseData: course }
+                                                    );
+                                                }}
                                             >
                                                 <View
                                                     style={{
@@ -311,17 +325,16 @@ export default function TimetableContent({ route }) {
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1 },
-    page: { width: "100%", height },
-    courses: {
-        // marginHorizontal: 12,
-    },
-    coursesBox: {
-        // gap: 18,
-        // justifyContent: "space-between",
-
-        padding: 24,
-        position: "relative",
+    loader: {
+        position: "absolute",
+        left: 0,
+        top: 0,
+        right: 0,
+        bottom: 0,
+        zIndex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "rgb(10, 10, 10)",
     },
 });
 
