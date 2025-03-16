@@ -179,8 +179,6 @@ export default function TimetableContent({ route }) {
                                             height,
                                         } = course;
 
-                                        const currentCourse =
-                                            sortedTimetableData[index].courses[i];
                                         const dynamicColor = isDarkColor(color)
                                             ? "hsl(0, 100%, 100%)"
                                             : "hsl(0, 0%, 0%)";
@@ -229,8 +227,7 @@ export default function TimetableContent({ route }) {
                                                     <View
                                                         style={{
                                                             position: "absolute",
-                                                            backgroundColor:
-                                                                currentCourse.color,
+                                                            backgroundColor: color,
                                                             borderRadius: 6,
                                                             paddingHorizontal: 8,
                                                             paddingVertical: 2,
@@ -248,13 +245,11 @@ export default function TimetableContent({ route }) {
                                                     <View
                                                         style={{
                                                             flexDirection:
-                                                                currentCourse.height <=
-                                                                17
+                                                                height <= 17
                                                                     ? "row"
                                                                     : "column",
                                                             gap:
-                                                                currentCourse.height <=
-                                                                17
+                                                                height <= 17
                                                                     ? 4.5
                                                                     : 2,
                                                             position: "absolute",
@@ -286,7 +281,7 @@ export default function TimetableContent({ route }) {
                                                         style={{
                                                             position: "absolute",
                                                             right: 0,
-                                                            color: currentCourse.color,
+                                                            color: color,
                                                             fontWeight: 600,
                                                             fontSize: 14,
                                                         }}
