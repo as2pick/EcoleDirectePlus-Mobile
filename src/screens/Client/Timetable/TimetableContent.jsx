@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
     SafeAreaView,
     StyleSheet,
@@ -9,7 +9,8 @@ import {
 
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
-import { OverLoader, VerticalScrollView } from "../../../components";
+import { OverLoader } from "../../../components";
+import VerticalScrollView from "../../../components/Layout/VerticalScrollView";
 import { CONFIG } from "../../../constants/config";
 import { GLOBALS_DATAS } from "../../../constants/device/globals";
 import { useUser } from "../../../context/UserContext";
@@ -27,6 +28,7 @@ export default function TimetableContent({ route }) {
     const navigation = useNavigation();
 
     const [loading, setLoading] = useState(true);
+    const scrollViewRef = useRef(null);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [timetableDates, setTimetableDates] = useState(null);
     const [currentDay, setCurrentDay] = useState(null);
@@ -133,10 +135,20 @@ export default function TimetableContent({ route }) {
                         </Text>
                     </TouchableOpacity>
                 </View>
-
+                {/* <TouchableOpacity
+                    style={{
+                        position: "absolute",
+                        width: 50,
+                        height: 50,
+                        backgroundColor: "red",
+                        zIndex: 1000,
+                    }}
+                    onPress={() => scrollViewRef.current?.scrollToIndex(0)}
+                ></TouchableOpacity> */}
                 <VerticalScrollView
                     arrayLength={sortedTimetableData?.length}
                     getIndex={(i) => setCurrentIndex(i)}
+                    ref={scrollViewRef}
                 >
                     {!loading &&
                         sortedTimetableData?.map((currentDay, index) => {
