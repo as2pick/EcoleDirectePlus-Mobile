@@ -1,7 +1,7 @@
 import { useNavigation, useTheme } from "@react-navigation/native";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import BackArrow from "../assets/svg/BackArrow";
+import BackArrow from "../../assets/svg/BackArrow";
 
 export default function CustomTopHeader({
     headerTitle,

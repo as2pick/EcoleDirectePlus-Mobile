@@ -12,7 +12,7 @@ import Animated, {
     useSharedValue,
     withSpring,
 } from "react-native-reanimated";
-import { GLOBALS_DATAS } from "../constants/device/globals";
+import { GLOBALS_DATAS } from "../../constants/device/globals";
 
 const {
     screen: { height },

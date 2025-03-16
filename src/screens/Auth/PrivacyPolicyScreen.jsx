@@ -4,7 +4,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import BackArrow from "../../assets/svg/BackArrow";
 import CopyLeft from "../../assets/svg/CopyLeft";
-import LinkText from "../../components/LinkText";
+import LinkText from "../../components/UI/LinkText";
 
 const COLABORATORS = {
     main: {

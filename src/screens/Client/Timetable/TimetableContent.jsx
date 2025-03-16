@@ -8,8 +8,8 @@ import {
 } from "react-native";
 
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import OverLoader from "../../../components/LoadingSpinner/OverLoader";
-import VerticalScrollView from "../../../components/VerticalScrollView";
+import VerticalScrollView from "../../../components/Layout/VerticalScrollView";
+import OverLoader from "../../../components/UI/LoadingSpinner/OverLoader";
 import { CONFIG } from "../../../constants/config";
 import { GLOBALS_DATAS } from "../../../constants/device/globals";
 import { useUser } from "../../../context/UserContext";
@@ -178,12 +178,6 @@ export default function TimetableContent({ route }) {
                                             placing,
                                             height,
                                         } = course;
-                                        // console.log(
-                                        //     isCancelled,
-                                        //     isDispensed,
-                                        //     isEdited,
-                                        //     libelle
-                                        // );
 
                                         const currentCourse =
                                             sortedTimetableData[index].courses[i];
@@ -304,7 +298,7 @@ export default function TimetableContent({ route }) {
                                                             position: "absolute",
                                                             bottom: 0,
                                                             right: 0,
-                                                            fontSize: 15,
+                                                            fontSize: 13,
                                                             color: theme.colors.txt
                                                                 .txt1,
                                                         }}
@@ -337,85 +331,4 @@ const styles = StyleSheet.create({
         backgroundColor: "rgb(10, 10, 10)",
     },
 });
-
-/*
-
-import React, { useRef, useState } from "react";
-import { Animated, Button, StyleSheet, TextInput, View } from "react-native";
-
-const App = () => {
-    const [id, setId] = useState("");
-    const animatedValues = useRef({}).current;
-
-    const animateView = (viewId) => {
-        if (animatedValues[viewId]) {
-            Animated.timing(animatedValues[viewId], {
-                toValue: 1,
-                duration: 1000,
-                useNativeDriver: true,
-            }).start();
-        }
-    };
-
-    const getAnimatedStyle = (viewId) => {
-        if (!animatedValues[viewId]) {
-            animatedValues[viewId] = new Animated.Value(0);
-        }
-
-        return {
-            opacity: animatedValues[viewId],
-            transform: [
-                {
-                    translateY: animatedValues[viewId].interpolate({
-                        inputRange: [0, 1],
-                        outputRange: [100, 0],
-                    }),
-                },
-            ],
-        };
-    };
-
-    return (
-        <View style={styles.container}>
-            <TextInput
-                style={styles.input}
-                placeholder="Entrez l'ID de la vue"
-                value={id}
-                onChangeText={setId}
-            />
-            <Button title="Animer" onPress={() => animateView(id)} />
-            <Animated.View style={[styles.box, getAnimatedStyle("4090")]} key="4090">
-                </Animated.View>
-                <Animated.View style={[styles.box, getAnimatedStyle("4091")]} key="4091">
-                </Animated.View>
-            </View>
-        );
-    };
-    
-    const styles = StyleSheet.create({
-        container: {
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-        },
-        input: {
-            height: 40,
-            borderColor: "gray",
-            borderWidth: 1,
-            marginBottom: 20,
-            paddingHorizontal: 10,
-        },
-        box: {
-            width: 100,
-            height: 100,
-            backgroundColor: "tomato",
-            marginVertical: 10,
-        },
-    });
-    
-    export default App;
-    
-    
-
-*/
 

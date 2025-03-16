@@ -1,7 +1,7 @@
 import { useTheme } from "@react-navigation/native";
 import React, { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import CheckIcon from "../assets/svg/CheckIcon";
+import CheckIcon from "../../assets/svg/CheckIcon";
 
 export default function Checkbox({
     initialValue = false,
