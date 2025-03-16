@@ -158,14 +158,16 @@ const sortedTimetable = async (timetable) => {
     return FinalSortedTimetable;
 };
 
-export default async function getTimetable(token) {
-    const previousMonday = getPreviousMonday(CONFIG.dateNow);
+export default async function getTimetable(token, offset = 0) {
+    const baseMonday = getPreviousMonday(CONFIG.dateNow);
+    const requestedMonday = addDaysToDateString(baseMonday, offset * 7);
+
     const timetableResponse = await fetchApi(
-        "https://api.ecoledirecte.com/v3/E/{USER_ID}/emploidutemps.awp?verbe=get&{API_VERSION}",
+        `https://api.ecoledirecte.com/v3/E/{USER_ID}/emploidutemps.awp?verbe=get&{API_VERSION}`,
         {
             body: {
-                dateDebut: previousMonday, // dynamique
-                dateFin: addDaysToDateString(previousMonday, 6), // dynamique
+                dateDebut: requestedMonday,
+                dateFin: addDaysToDateString(requestedMonday, 6),
                 avecTrous: false,
             },
             headers: {
@@ -174,8 +176,7 @@ export default async function getTimetable(token) {
         }
     );
 
-    const timetable = await sortedTimetable(timetableResponse.data);
-
-    return timetable;
+    // Trie et retourne l'emploi du temps de cette semaine
+    return sortedTimetable(timetableResponse.data);
 }
 
