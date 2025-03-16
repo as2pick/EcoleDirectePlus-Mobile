@@ -227,64 +227,18 @@ export default function CourseDetails({ route }) {
                     </View>
                 </View>
                 <View>
-                    <Separation />
-                    <View
-                        style={{
-                            flexDirection: "row",
-                            alignItems: "center",
-                            marginLeft: "12.5%",
-                            marginVertical: "7%",
-                        }}
-                    >
-                        <HourglassIcon />
-                        <Text
-                            style={{
-                                color: colors.txt.txt1,
-                                fontSize: 17.5,
-                                fontWeight: 600,
-                                marginLeft: 30,
-                            }}
-                        >{`${timing}`}</Text>
-                    </View>
-                    <Separation />
-                    <View
-                        style={{
-                            flexDirection: "column",
-                            marginLeft: "12.5%",
-                            marginVertical: "7%",
-                            gap: 10,
-                        }}
-                    >
-                        <View style={{ flexDirection: "row", alignItems: "center" }}>
-                            <PersonIcon />
-                            <Text
-                                style={{
-                                    color: colors.txt.txt1,
-                                    fontSize: 17.5,
-                                    fontWeight: 600,
-                                    marginLeft: 30,
-                                }}
-                            >{`${teacher}`}</Text>
-                        </View>
-                        <View style={{ flexDirection: "row", alignItems: "center" }}>
-                            <DoorOpenIcon />
-                            <Text
-                                style={{
-                                    color: colors.txt.txt1,
-                                    fontSize: 17.5,
-                                    fontWeight: 600,
-                                    marginLeft: 30,
-                                }}
-                            >{`${room}`}</Text>
-                        </View>
-                        {group && (
+                    {timing && (
+                        <>
+                            <Separation />
                             <View
                                 style={{
                                     flexDirection: "row",
                                     alignItems: "center",
+                                    marginLeft: "12.5%",
+                                    marginVertical: "7%",
                                 }}
                             >
-                                <PeoplesIcon />
+                                <HourglassIcon />
                                 <Text
                                     style={{
                                         color: colors.txt.txt1,
@@ -292,11 +246,78 @@ export default function CourseDetails({ route }) {
                                         fontWeight: 600,
                                         marginLeft: 30,
                                     }}
-                                >{`${group}`}</Text>
+                                >{`${timing}`}</Text>
                             </View>
-                        )}
-                    </View>
+                        </>
+                    )}
+
                     <Separation />
+                    {!teacher ||
+                        !room ||
+                        (!group && (
+                            <>
+                                <View
+                                    style={{
+                                        flexDirection: "column",
+                                        marginLeft: "12.5%",
+                                        marginVertical: "7%",
+                                        gap: 10,
+                                    }}
+                                >
+                                    <View
+                                        style={{
+                                            flexDirection: "row",
+                                            alignItems: "center",
+                                        }}
+                                    >
+                                        <PersonIcon />
+                                        <Text
+                                            style={{
+                                                color: colors.txt.txt1,
+                                                fontSize: 17.5,
+                                                fontWeight: 600,
+                                                marginLeft: 30,
+                                            }}
+                                        >{`${teacher}`}</Text>
+                                    </View>
+                                    <View
+                                        style={{
+                                            flexDirection: "row",
+                                            alignItems: "center",
+                                        }}
+                                    >
+                                        <DoorOpenIcon />
+                                        <Text
+                                            style={{
+                                                color: colors.txt.txt1,
+                                                fontSize: 17.5,
+                                                fontWeight: 600,
+                                                marginLeft: 30,
+                                            }}
+                                        >{`${room}`}</Text>
+                                    </View>
+                                    {group && (
+                                        <View
+                                            style={{
+                                                flexDirection: "row",
+                                                alignItems: "center",
+                                            }}
+                                        >
+                                            <PeoplesIcon />
+                                            <Text
+                                                style={{
+                                                    color: colors.txt.txt1,
+                                                    fontSize: 17.5,
+                                                    fontWeight: 600,
+                                                    marginLeft: 30,
+                                                }}
+                                            >{`${group}`}</Text>
+                                        </View>
+                                    )}
+                                </View>
+                                <Separation />
+                            </>
+                        ))}
                 </View>
                 <View
                     style={{
