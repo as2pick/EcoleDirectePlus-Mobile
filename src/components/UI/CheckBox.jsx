@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import CheckIcon from "../../assets/svg/CheckIcon";
 
-export default function Checkbox({
+export default function CheckBox({
     initialValue = false,
     onValueChange,
     libelle = "",
