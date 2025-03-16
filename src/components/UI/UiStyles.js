@@ -1,3 +1,5 @@
+import { StyleSheet } from "react-native";
+
 export const UiStyles = StyleSheet.create({
     title: {
         fontSize: 26,

@@ -4,7 +4,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import BackArrow from "../../assets/svg/BackArrow";
 import CopyLeft from "../../assets/svg/CopyLeft";
-import LinkText from "../../components/UI/LinkText";
+import { LinkText, Separation, Subtitle, Title } from "../../components";
 
 const COLABORATORS = {
     main: {
@@ -20,22 +20,6 @@ const COLABORATORS = {
         // xav35000: "https://github.com/xav35000",
         "As de Pique": "https://github.com/as2pick",
     },
-};
-
-const Title = ({ customStyle = {}, children }) => {
-    const { colors } = useTheme();
-    return (
-        <Text style={[styles.title, customStyle, { color: colors.txt.txt1 }]}>
-            {children}
-        </Text>
-    );
-};
-
-const Subtitle = ({ children }) => {
-    const { colors } = useTheme();
-    return (
-        <Text style={[styles.subtitle, { color: colors.txt.txt1 }]}>{children}</Text>
-    );
 };
 
 const Paragraph = ({ customStyle = {}, children }) => {
@@ -61,20 +45,6 @@ const Link = ({ href, isPeople = false, children }) => {
         <LinkText url={href} styles={styles}>
             {children}
         </LinkText>
-    );
-};
-
-const Separation = () => {
-    const { colors } = useTheme();
-    return (
-        <View style={styles.separationParent}>
-            <View
-                style={[
-                    styles.separationChildren,
-                    { backgroundColor: colors.txt.txt1 },
-                ]}
-            />
-        </View>
     );
 };
 

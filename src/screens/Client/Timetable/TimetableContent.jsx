@@ -8,8 +8,8 @@ import {
 } from "react-native";
 
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import VerticalScrollView from "../../../components/Layout/VerticalScrollView";
-import OverLoader from "../../../components/UI/LoadingSpinner/OverLoader";
+
+import { OverLoader, VerticalScrollView } from "../../../components";
 import { CONFIG } from "../../../constants/config";
 import { GLOBALS_DATAS } from "../../../constants/device/globals";
 import { useUser } from "../../../context/UserContext";

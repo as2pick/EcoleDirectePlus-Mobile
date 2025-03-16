@@ -7,7 +7,7 @@ import Animated, {
     useSharedValue,
     withTiming,
 } from "react-native-reanimated";
-import LoadingSpinner from "./LoadingSpinner";
+import LoadingSpinner from "./Loader";
 
 export default function OverLoader({
     annimationStartTiming, // in ms (1000 ex)

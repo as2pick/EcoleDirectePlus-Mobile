@@ -1,3 +1,4 @@
+import { useTheme } from "@react-navigation/native";
 import { View } from "react-native";
 import { UiStyles } from "./UiStyles";
 

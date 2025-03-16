@@ -7,10 +7,12 @@ import DiscordLogo from "../../../assets/svg/DiscordLogo.jsx";
 import EDPLogo from "../../../assets/svg/EDPLogo.jsx";
 import GithubLogo from "../../../assets/svg/GithubLogo.jsx";
 import KeyIcon from "../../../assets/svg/KeyIcon.jsx";
-import A2fSelectableModal from "../../../components/Modal/A2fSelectableModal.jsx";
-import Checkbox from "../../../components/UI/CheckBox.jsx";
-import LinkButton from "../../../components/UI/LinkButton.jsx";
-import OverLoader from "../../../components/UI/LoadingSpinner/OverLoader.jsx";
+import {
+    A2fSelectableModal,
+    LinkButton,
+    OverLoader,
+} from "../../../components/index.js";
+
 import { getApiMessage } from "../../../constants/api/codes.js";
 import { useSingIn } from "../../../context/SignInContext.jsx";
 import { cssRgbToHsl } from "../../../utils/colorGenerator.js";
