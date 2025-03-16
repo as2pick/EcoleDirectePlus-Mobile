@@ -14,8 +14,6 @@ import { CONFIG } from "../../../constants/config";
 import { GLOBALS_DATAS } from "../../../constants/device/globals";
 import { useUser } from "../../../context/UserContext";
 import getTimetable from "../../../resolver/timetable";
-import { isDarkColor } from "../../../utils/colorGenerator";
-import { formatFrenchDate } from "../../../utils/date";
 
 let {
     screen: { height, width },
@@ -62,7 +60,7 @@ export default function TimetableContent({ route }) {
     useEffect(() => {
         if (!sortedTimetableData || !timetableDates) return;
         setCurrentDay(sortedTimetableData[timetableDates[currentIndex]]);
-        setActiveDate(formatFrenchDate(sortedTimetableData[currentIndex].date));
+        setActiveDate(sortedTimetableData[currentIndex].iSODate);
     }, [currentIndex, sortedTimetableData, timetableDates]);
 
     useEffect(() => {
@@ -177,11 +175,8 @@ export default function TimetableContent({ route }) {
                                             color,
                                             placing,
                                             height,
+                                            textColor,
                                         } = course;
-
-                                        const dynamicColor = isDarkColor(color)
-                                            ? "hsl(0, 100%, 100%)"
-                                            : "hsl(0, 0%, 0%)";
 
                                         return (
                                             <TouchableOpacity
@@ -236,7 +231,7 @@ export default function TimetableContent({ route }) {
                                                         <Text
                                                             style={{
                                                                 fontSize: 16,
-                                                                color: dynamicColor,
+                                                                color: textColor,
                                                             }}
                                                         >
                                                             {libelle}

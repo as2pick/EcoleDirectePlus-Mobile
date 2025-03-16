@@ -1,7 +1,11 @@
 import { CONFIG } from "../constants/config";
 import fetchApi from "../services/fetchApi";
-import { textToHSL } from "../utils/colorGenerator";
-import { addDaysToDateString, getPreviousMonday } from "../utils/date";
+import { isDarkColor, textToHSL } from "../utils/colorGenerator";
+import {
+    addDaysToDateString,
+    formatFrenchDate,
+    getPreviousMonday,
+} from "../utils/date";
 import { toMilliseconds } from "../utils/time";
 import makeUniqueIds from "../utils/uniqueIds";
 
@@ -46,7 +50,6 @@ const convertData = (arrayData = []) => {
 
         convertedTimetable.push(converter);
     });
-
     convertedTimetable.forEach((course) => {
         const day = course.startCourse.date;
         if (!finalTimetable[day]) {
@@ -55,6 +58,10 @@ const convertData = (arrayData = []) => {
         const [h, s, l] = textToHSL({ text: course.libelle });
 
         course["color"] = `hsl(${h}, ${s}%, ${l}%)`;
+
+        course["textColor"] = isDarkColor(course.color)
+            ? "hsl(0, 100%, 100%)"
+            : "hsl(0, 0%, 0%)";
 
         finalTimetable[day].push(course);
     });
@@ -132,6 +139,25 @@ function sizeTimetable(timetableData = []) {
     return timetableData;
 }
 
+const otherEdits = (timetableData = []) => {
+    timetableData.forEach((_, index) => {
+        timetableData[index]["iSODate"] = formatFrenchDate(
+            timetableData[index].date
+        );
+    });
+
+    return timetableData;
+};
+
+const sortedTimetable = async (timetable) => {
+    const newTimetable = convertData(await timetable);
+    const sizedTimetable = sizeTimetable(newTimetable);
+
+    const FinalSortedTimetable = otherEdits(sizedTimetable);
+
+    return FinalSortedTimetable;
+};
+
 export default async function getTimetable(token) {
     const previousMonday = getPreviousMonday(CONFIG.dateNow);
     const timetableResponse = await fetchApi(
@@ -148,9 +174,8 @@ export default async function getTimetable(token) {
         }
     );
 
-    const timetable = convertData(await timetableResponse.data);
-    const sizedTimetable = sizeTimetable(timetable);
+    const timetable = await sortedTimetable(timetableResponse.data);
 
-    return sizedTimetable;
+    return timetable;
 }
 
