@@ -45,13 +45,42 @@ const VerticalScrollView = forwardRef(({ children, arrayLength, getIndex }, ref)
 
     const gesture = Gesture.Pan()
         .onUpdate((event) => {
-            translateY.value = withSpring(
-                -pageIndex.value * height + event.translationY,
-                {
-                    stiffness: 225,
-                    damping: 50,
+            if (
+                event.translationY > 0 && // up swipe (< 0 -> down ; > 0 -> up)
+                activePageIndex + 1 !== arrayLength - 1 && // check page index (if not at end or start)
+                activePageIndex === 0 // check if we are at first index  (last element)
+            ) {
+                if (event.translationY > 800) {
+                    translateY.value = translateY.value;
                 }
-            );
+                translateY.value = withSpring(event.translationY * 0.2, {
+                    stiffness: 200,
+                    damping: 20,
+                });
+            } else if (
+                event.translationY < 0 && // down swipe (< 0 -> down ; > 0 -> up)
+                activePageIndex + 1 !== arrayLength - 1 && // check page index (if not at end or start)
+                activePageIndex === arrayLength - 1 // check if we are at least index (last element)
+            ) {
+                if (event.translationY < -800) {
+                    translateY.value = translateY.value;
+                }
+                translateY.value = withSpring(
+                    -pageIndex.value * height + event.translationY * 0.2,
+                    {
+                        stiffness: 200,
+                        damping: 20,
+                    }
+                );
+            } else {
+                translateY.value = withSpring(
+                    -pageIndex.value * height + event.translationY,
+                    {
+                        stiffness: 225,
+                        damping: 50,
+                    }
+                );
+            }
         })
         .onEnd((event) => {
             let newIndex = pageIndex.value;
