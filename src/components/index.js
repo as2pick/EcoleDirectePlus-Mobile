@@ -1,4 +1,3 @@
-export { default as VerticalScrollView } from "./Layout/VerticalScrollView";
 export { default as A2fSelectableModal } from "./Modal/A2fSelectableModal";
 export { default as CustomTopHeader } from "./Navigation/CustomTopHeader";
 export { default as CheckBox } from "./UI/CheckBox";

@@ -19,6 +19,7 @@ export const THEMES = {
                 bg3: "rgb(94, 94, 136)",
                 bg4: "rgb(50, 50, 87)",
                 bg5: "rgb(197, 197, 247)",
+                bg6: "rgb(64, 64, 130)",
             },
             txt: {
                 txt1: "rgb(255, 255, 255)",
