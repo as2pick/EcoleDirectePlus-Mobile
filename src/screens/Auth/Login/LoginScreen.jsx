@@ -9,6 +9,7 @@ import GithubLogo from "../../../assets/svg/GithubLogo.jsx";
 import KeyIcon from "../../../assets/svg/KeyIcon.jsx";
 import {
     A2fSelectableModal,
+    CheckBox,
     LinkButton,
     OverLoader,
 } from "../../../components/index.js";
@@ -152,7 +153,7 @@ export default function LoginScreen({ theme }) {
                             </View>
                         </View>
                         <View style={styles.checkBox}>
-                            <Checkbox
+                            <CheckBox
                                 initialValue={keepConnected}
                                 onValueChange={(v) => setKeepConnected(v)}
                                 libelle="Rester connecté"
