@@ -25,23 +25,22 @@ height -= CONFIG.upper + 24; // ??? but works fine
 export default function TimetableContent({ route }) {
     const { theme } = route.params;
 
+    const { userAccesToken, sortedTimetableData, setSortedTimetableData } =
+        useUser();
+
     const navigation = useNavigation();
 
-    const [loading, setLoading] = useState(true);
     const scrollViewRef = useRef(null);
+
+    const [activeDate, setActiveDate] = useState("");
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [loading, setLoading] = useState(true);
+    const [showLoader, setShowLoader] = useState(false);
     const [timetableDates, setTimetableDates] = useState(null);
-    const [currentDay, setCurrentDay] = useState(null);
     const [timetableViewDims, setTimetableViewDims] = useState({
         width: 0,
         height: 0,
     });
-    const [activeSelected, setActiveSelected] = useState(null);
-    const [activeDate, setActiveDate] = useState("");
-    const [showLoader, setShowLoader] = useState(false);
-
-    const { userAccesToken, sortedTimetableData, setSortedTimetableData } =
-        useUser();
 
     useFocusEffect(
         useCallback(() => {
@@ -61,7 +60,6 @@ export default function TimetableContent({ route }) {
 
     useEffect(() => {
         if (!sortedTimetableData || !timetableDates) return;
-        setCurrentDay(sortedTimetableData[timetableDates[currentIndex]]);
         setActiveDate(sortedTimetableData[currentIndex].iSODate);
     }, [currentIndex, sortedTimetableData, timetableDates]);
 
