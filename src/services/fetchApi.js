@@ -3,8 +3,7 @@ import { API } from "../constants/api/api";
 export default async function fetchApi(url, requestPayload = {}) {
     try {
         const defaultHeaders = {
-            "User-Agent":
-                "Mozilla/5.0 (X11; Linux x86_64; rv:134.0) Gecko/20100101 Firefox/134.0",
+            "User-Agent": `EDMOBILE v${API.API_VERSION}`,
         };
         const requestConfig = {
             ...requestPayload,
