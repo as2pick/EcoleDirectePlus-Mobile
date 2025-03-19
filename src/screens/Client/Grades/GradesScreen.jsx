@@ -1,12 +1,11 @@
-import { Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import InDev from "../../../components/UI/InDev";
 
 export default function GradesScreen({ theme }) {
     return (
-        <View>
-            <Text style={{ color: theme.colors.txt.txt1 }}>
-                This is the Grades Page !
-            </Text>
-        </View>
+        <SafeAreaView>
+            <InDev />
+        </SafeAreaView>
     );
 }
 

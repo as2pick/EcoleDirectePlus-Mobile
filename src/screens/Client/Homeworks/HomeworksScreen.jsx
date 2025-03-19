@@ -1,11 +1,10 @@
 import React from "react";
-import { SafeAreaView, Text } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import InDev from "../../../components/UI/InDev";
 export default function HomeworksScreen({ theme }) {
     return (
         <SafeAreaView>
-            <Text style={{ color: theme.colors.txt.txt1 }}>
-                This is the homeworks Page !
-            </Text>
+            <InDev />
         </SafeAreaView>
     );
 }

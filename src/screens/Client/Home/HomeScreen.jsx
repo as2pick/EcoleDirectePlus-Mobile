@@ -1,22 +1,23 @@
 import { Button } from "@react-navigation/elements";
-import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { SafeAreaView } from "react-native";
 import * as Keychain from "react-native-keychain";
-import { Title } from "../../../components";
+import { SafeAreaView } from "react-native-safe-area-context";
+import InDev from "../../../components/UI/InDev";
+import { useUser } from "../../../context/UserContext";
 
 export default function HomeScreen() {
-    const navigation = useNavigation();
+    const { setIsConnected } = useUser();
     return (
         <SafeAreaView>
-            <Title>This is the home Page !</Title>
             <Button
                 onPress={async () => {
                     await Keychain.resetGenericPassword();
+                    await setIsConnected(false);
                 }}
             >
-                CLICK HERE !
+                Disconect and forget secrets
             </Button>
+            <InDev />
         </SafeAreaView>
     );
 }
