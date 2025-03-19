@@ -31,7 +31,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
         // justifyContent: "center",
         marginHorizontal: "2%",
-        top: "7%",
     },
     children: {
         borderWidth: 2,
