@@ -118,7 +118,7 @@ export default function CourseDetails({ route }) {
             <CustomTopHeader
                 headerTitle={"Retour à l'emploi du temps"}
                 backArrow={{ color: "white", size: 24 }}
-                height={23}
+                height={33}
                 backgroundColor={colors.background}
             />
             <View
