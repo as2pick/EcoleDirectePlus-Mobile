@@ -61,6 +61,8 @@ npm install
 npm run start
 ```
 
+need new readme
+
 ## Code of Conduct
 
 In order to ensure that the Ecole Directe Plus community is welcoming to all, please review and abide by the [Code of Conduct](https://github.com/Magic-Fishes/Ecole-Directe-Plus/blob/main/CODE_OF_CONDUCT.md).
