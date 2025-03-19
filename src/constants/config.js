@@ -4,5 +4,6 @@ export const CONFIG = {
     dateNow: new Date().toISOString().split("T")[0],
     minCourseSize: 10, // %,
     middleNoonCourseTime: 48600000, // ms
+    discordInviteLink: "https://discord.gg/AKAqXfTgvE",
 };
 
