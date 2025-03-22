@@ -2,7 +2,6 @@
 import { useTheme } from "@react-navigation/native";
 import React, { useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { CONFIG } from "../../constants/config";
 
 const NavigationBottomBar = ({ state, descriptors, navigation }) => {
@@ -12,7 +11,7 @@ const NavigationBottomBar = ({ state, descriptors, navigation }) => {
     const { colors } = useTheme();
 
     return (
-        <SafeAreaView
+        <View
             style={[
                 styles.container,
                 {
@@ -80,7 +79,7 @@ const NavigationBottomBar = ({ state, descriptors, navigation }) => {
                     </TouchableOpacity>
                 );
             })}
-        </SafeAreaView>
+        </View>
     );
 };
 
