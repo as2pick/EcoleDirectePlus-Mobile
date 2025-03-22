@@ -173,9 +173,9 @@ export default async function getTimetable(token, offset = 0) {
             headers: {
                 "X-Token": token,
             },
+            method: "POST",
         }
     );
-
     // Trie et retourne l'emploi du temps de cette semaine
     return sortedTimetable(timetableResponse.data);
 }
