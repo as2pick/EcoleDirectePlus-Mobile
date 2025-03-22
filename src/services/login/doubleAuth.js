@@ -18,11 +18,13 @@ const ConvertOutput = (data) => {
     };
 };
 
-export const getResponseChoices = async (token) => {
+export const getResponseChoices = async (token, gtk) => {
     const requestParams = {
         headers: {
             "X-Token": token,
+            "X-GTK": gtk,
         },
+        method: "POST",
     };
     const responseDoubleAuthGetChoices = await fetchApi(
         "https://api.ecoledirecte.com/v3/connexion/doubleauth.awp?verbe=get&{API_VERSION}",
@@ -48,14 +50,16 @@ export const getResponseChoices = async (token) => {
     };
 };
 
-export const sendResponseChoice = async (token, choice) => {
+export const sendResponseChoice = async (token, gtk, choice) => {
     const requestParams = {
         body: {
             choix: choice,
         },
         headers: {
             "X-Token": token,
+            "X-GTK": gtk,
         },
+        method: "POST",
     };
 
     const fetchDoubleAuth = await fetchApi(

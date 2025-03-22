@@ -57,6 +57,7 @@ export const SignInProvider = ({ children }) => {
     const [successLogin, setSuccedLogin] = useState(false);
     const [apiError, setApiError] = useState(null);
     const [keepConnected, setKeepConnected] = useState(true);
+    const [gtk, setGtk] = useState("");
 
     const [state, dispatch] = useReducer(authReducer, {
         isLoading: true,
@@ -78,10 +79,13 @@ export const SignInProvider = ({ children }) => {
             const credentials = await authService.restoreCredentials();
 
             if (credentials) {
+                const gtk = await authService.generateGTK();
+
                 const getConnectionDatas = JSON.parse(credentials.password);
 
                 const { token, data } = await authService.login({
                     authConnectionDatas: getConnectionDatas,
+                    headers: { Cookie: gtk, "X-GTK": gtk.split("=")[1] },
                 });
 
                 dispatch({ type: "RESTORE_TOKEN", token });
@@ -102,11 +106,17 @@ export const SignInProvider = ({ children }) => {
     const handleLogin = async ({ username, password, keepConnected }) => {
         console.log(username, password, keepConnected);
         setKeepConnected(keepConnected);
+        const gtkCookie = await authService.generateGTK();
+        setGtk(gtkCookie.split("=")[1]);
         const apiLoginData = await authService.login({
             username: username,
             password: password,
+            headers: {
+                Cookie: await gtkCookie,
+                "X-GTK": await gtkCookie.split("=")[1],
+            },
         });
-
+        console.log(apiLoginData);
         setA2fInfos((prevState) => ({
             ...prevState,
             identifiant: encodeURIComponent(username),
@@ -129,7 +139,7 @@ export const SignInProvider = ({ children }) => {
                 setUserData(data, token);
                 break;
             case 250:
-                const getChoices = await authService.startA2fProcess(token);
+                const getChoices = await authService.startA2fProcess(token, gtk);
                 setMcqDatas({
                     choices: getChoices.choices,
                     question: getChoices.question,
@@ -168,7 +178,7 @@ export const SignInProvider = ({ children }) => {
     const handleA2fSubmit = async (choice) => {
         // dispatch({ type: "LOADING" });
 
-        const fa = await authService.submitFormA2f(a2fInfos.a2fToken, choice);
+        const fa = await authService.submitFormA2f(a2fInfos.a2fToken, gtk, choice);
         setA2fInfos((prevState) => ({
             ...prevState,
             fa: [{ ...fa.data }],
@@ -187,9 +197,12 @@ export const SignInProvider = ({ children }) => {
         authService
             .login({
                 authConnectionDatas: a2fInfos,
+                headers: {
+                    Cookie: `GTK=${gtk}`,
+                    "X-GTK": gtk,
+                },
             })
             .then((accountData) => {
-                console.log(accountData);
                 dispatch({
                     type: "SIGN_IN",
                     token: accountData.token,

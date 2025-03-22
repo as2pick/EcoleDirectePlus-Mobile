@@ -1,10 +1,25 @@
 import fetchApi from "../fetchApi";
 
 import * as Keychain from "react-native-keychain";
+import { getCookiesFromResponse } from "../responseUtils";
 import { getResponseChoices, sendResponseChoice } from "./doubleAuth";
 
 const authService = {
-    login: async ({ username = "", password = "", authConnectionDatas = null }) => {
+    generateGTK: async () => {
+        const rawGtkResponse = await fetchApi(
+            "https://api.ecoledirecte.com/v3/login.awp?gtk=1&{API_VERSION}",
+            { method: "GET" }
+        );
+
+        return getCookiesFromResponse(rawGtkResponse);
+    },
+    login: async ({
+        username = "",
+        password = "",
+        authConnectionDatas = null,
+        headers,
+    }) => {
+        console.log(headers);
         return await fetchApi(
             "https://api.ecoledirecte.com/v3/login.awp?{API_VERSION}",
             {
@@ -19,16 +34,18 @@ const authService = {
                               isReLogin: false,
                               uuid: "",
                           },
+                method: "POST",
+                headers: headers,
             }
         );
     },
 
-    startA2fProcess: async (token) => {
-        return await getResponseChoices(token);
+    startA2fProcess: async (token, gtk) => {
+        return await getResponseChoices(token, gtk);
     },
 
-    submitFormA2f: async (token, choice) => {
-        return await sendResponseChoice(token, choice);
+    submitFormA2f: async (token, gtk, choice) => {
+        return await sendResponseChoice(token, gtk, choice);
     },
 
     checkTokenValidity: async (token, userId) => {
@@ -38,6 +55,7 @@ const authService = {
                 headers: {
                     "X-Token": token,
                 },
+                method: "POST",
             }
         ).then((response) => (response.code === 200 ? true : false));
     },
