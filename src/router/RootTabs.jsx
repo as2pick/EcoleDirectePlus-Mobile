@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useMemo } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import NavigationBottomBar from "../screens/navbar/NavigationBottomBar";
+import NavigationBottomBar from "../components/Navigation/NavigationBottomBar";
 import clientScreens from "./display/client/indexClient";
 const Tab = createBottomTabNavigator();
 

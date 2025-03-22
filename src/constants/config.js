@@ -1,5 +1,5 @@
 export const CONFIG = {
-    tabBarHeight: 79,
+    tabBarHeight: 87,
     upper: 26,
     dateNow: new Date().toISOString().split("T")[0],
     minCourseSize: 10, // %,
