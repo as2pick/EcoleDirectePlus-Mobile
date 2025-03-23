@@ -1,4 +1,4 @@
-import RootProviders from "./providers";
+import RootProviders from "./provider";
 import AuthNavigator from "./router/AuthNavigator";
 
 export default function App() {
