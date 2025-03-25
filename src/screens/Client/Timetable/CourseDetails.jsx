@@ -112,7 +112,7 @@ export default function CourseDetails({ route }) {
     } else {
         timing = "Erreur lors de la lecture du temps";
     }
-
+    console.log(!teacher || !room || !group);
     return (
         <View style={{ flex: 2, backgroundColor: colors.bg.bg2 }}>
             <CustomTopHeader
@@ -252,7 +252,7 @@ export default function CourseDetails({ route }) {
                     )}
 
                     <Separation />
-                    {(!teacher || !room || !group) && (
+                    {(teacher || room || group) && (
                         <>
                             <View
                                 style={{
