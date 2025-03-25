@@ -252,72 +252,70 @@ export default function CourseDetails({ route }) {
                     )}
 
                     <Separation />
-                    {!teacher ||
-                        !room ||
-                        (!group && (
-                            <>
+                    {(!teacher || !room || !group) && (
+                        <>
+                            <View
+                                style={{
+                                    flexDirection: "column",
+                                    marginLeft: "12.5%",
+                                    marginVertical: "7%",
+                                    gap: 10,
+                                }}
+                            >
                                 <View
                                     style={{
-                                        flexDirection: "column",
-                                        marginLeft: "12.5%",
-                                        marginVertical: "7%",
-                                        gap: 10,
+                                        flexDirection: "row",
+                                        alignItems: "center",
                                     }}
                                 >
-                                    <View
+                                    <PersonIcon />
+                                    <Text
                                         style={{
-                                            flexDirection: "row",
-                                            alignItems: "center",
+                                            color: colors.txt.txt1,
+                                            fontSize: 17.5,
+                                            fontWeight: 600,
+                                            marginLeft: 30,
                                         }}
-                                    >
-                                        <PersonIcon />
-                                        <Text
-                                            style={{
-                                                color: colors.txt.txt1,
-                                                fontSize: 17.5,
-                                                fontWeight: 600,
-                                                marginLeft: 30,
-                                            }}
-                                        >{`${teacher}`}</Text>
-                                    </View>
-                                    <View
-                                        style={{
-                                            flexDirection: "row",
-                                            alignItems: "center",
-                                        }}
-                                    >
-                                        <DoorOpenIcon />
-                                        <Text
-                                            style={{
-                                                color: colors.txt.txt1,
-                                                fontSize: 17.5,
-                                                fontWeight: 600,
-                                                marginLeft: 30,
-                                            }}
-                                        >{`${room}`}</Text>
-                                    </View>
-                                    {group && (
-                                        <View
-                                            style={{
-                                                flexDirection: "row",
-                                                alignItems: "center",
-                                            }}
-                                        >
-                                            <PeoplesIcon />
-                                            <Text
-                                                style={{
-                                                    color: colors.txt.txt1,
-                                                    fontSize: 17.5,
-                                                    fontWeight: 600,
-                                                    marginLeft: 30,
-                                                }}
-                                            >{`${group}`}</Text>
-                                        </View>
-                                    )}
+                                    >{`${teacher}`}</Text>
                                 </View>
-                                <Separation />
-                            </>
-                        ))}
+                                <View
+                                    style={{
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                    }}
+                                >
+                                    <DoorOpenIcon />
+                                    <Text
+                                        style={{
+                                            color: colors.txt.txt1,
+                                            fontSize: 17.5,
+                                            fontWeight: 600,
+                                            marginLeft: 30,
+                                        }}
+                                    >{`${room}`}</Text>
+                                </View>
+                                {group && (
+                                    <View
+                                        style={{
+                                            flexDirection: "row",
+                                            alignItems: "center",
+                                        }}
+                                    >
+                                        <PeoplesIcon />
+                                        <Text
+                                            style={{
+                                                color: colors.txt.txt1,
+                                                fontSize: 17.5,
+                                                fontWeight: 600,
+                                                marginLeft: 30,
+                                            }}
+                                        >{`${group}`}</Text>
+                                    </View>
+                                )}
+                            </View>
+                            <Separation />
+                        </>
+                    )}
                 </View>
                 <View
                     style={{
