@@ -41,10 +41,10 @@ const convertData = (arrayData = []) => {
                 date: end_date.split(" ")[0],
                 time: end_date.split(" ")[1],
             },
-            teacher: prof,
-            room: salle,
-            classGroup: classe,
-            group: groupe,
+            teacher: prof && prof.trim() === "" ? undefined : prof,
+            room: salle && salle.trim() === "" ? undefined : salle,
+            classGroup: classe && classe.trim() === "" ? undefined : classe,
+            group: groupe && groupe.trim() === "" ? undefined : groupe,
             libelle: text.toUpperCase(),
         };
 
@@ -176,7 +176,6 @@ export default async function getTimetable(token, offset = 0) {
             method: "POST",
         }
     );
-    // Trie et retourne l'emploi du temps de cette semaine
     return sortedTimetable(timetableResponse.data);
 }
 
