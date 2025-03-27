@@ -7,8 +7,10 @@ import { useUser } from "../../../context/UserContext";
 
 export default function HomeScreen() {
     const { setIsConnected } = useUser();
+
     return (
         <SafeAreaView>
+            {/* <EDPLogo /> */}
             <Button
                 onPress={async () => {
                     await Keychain.resetGenericPassword();
@@ -18,6 +20,17 @@ export default function HomeScreen() {
                 Disconect and forget secrets
             </Button>
             <InDev />
+            {/* <View
+                style={{
+                    position: "absolute",
+                    width: 300,
+                    height: 300,
+                    backgroundColor: "white",
+                    justifyContent: "center",
+                    alignItems: "center",
+                }}
+            > */}
+            {/* </View> */}
         </SafeAreaView>
     );
 }
