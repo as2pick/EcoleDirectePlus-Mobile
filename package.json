@@ -16,6 +16,7 @@
         "@react-navigation/stack": "^7.1.2",
         "base-64": "^1.0.0",
         "js-sha256": "^0.11.0",
+        "lottie-react-native": "^7.2.2",
         "react": "18.3.1",
         "react-native": "^0.76.6",
         "react-native-gesture-handler": "^2.22.1",
