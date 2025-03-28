@@ -15,7 +15,6 @@ import { useUser } from "./UserContext";
 const signInContext = createContext();
 
 const defaultA2fInfos = {
-    a2fToken: null,
     identifiant: null,
     motdepasse: null,
     fa: null,
@@ -23,7 +22,12 @@ const defaultA2fInfos = {
 };
 
 export const SignInProvider = ({ children }) => {
-    const { setGlobalUserData, setUserAccesToken, setIsConnected } = useUser();
+    const {
+        setGlobalUserData,
+        globalUserData /* --> useless, just for display */,
+        setUserAccesToken,
+        setIsConnected,
+    } = useUser();
 
     const authReducer = (state, action) => {
         switch (action.type) {
@@ -58,6 +62,7 @@ export const SignInProvider = ({ children }) => {
     const [apiError, setApiError] = useState(null);
     const [keepConnected, setKeepConnected] = useState(true);
     const [gtk, setGtk] = useState("");
+    const [a2fToken, setA2fToken] = useState("");
 
     const [state, dispatch] = useReducer(authReducer, {
         isLoading: true,
@@ -69,7 +74,6 @@ export const SignInProvider = ({ children }) => {
         setGlobalUserData(data.accounts[0]);
         setUserAccesToken(token);
         setSuccedLogin(true);
-
         API.USER_ID = data.accounts[0].id;
         setIsConnected(true);
     };
@@ -77,46 +81,53 @@ export const SignInProvider = ({ children }) => {
     const bootstrapAsync = async () => {
         try {
             const credentials = await authService.restoreCredentials();
-
             if (credentials) {
-                const gtk = await authService.generateGTK();
+                const gtkCookie = await authService.generateGTK();
 
                 const getConnectionDatas = JSON.parse(credentials.password);
 
-                const { token, data } = await authService.login({
-                    authConnectionDatas: getConnectionDatas,
-                    headers: { Cookie: gtk, "X-GTK": gtk.split("=")[1] },
-                });
-
-                dispatch({ type: "RESTORE_TOKEN", token });
-                setUserData(data, token);
-                console.log("Token restored !");
+                authService
+                    .login({
+                        authConnectionDatas: getConnectionDatas,
+                        headers: {
+                            Cookie: gtkCookie,
+                            "X-GTK": gtkCookie.split("=")[1],
+                        },
+                    })
+                    .then(({ data, token }) => {
+                        dispatch({ type: "RESTORE_TOKEN", token });
+                        setUserData(data, token);
+                    })
+                    .catch((error) =>
+                        console.error("Error in login of restoring token : ", error)
+                    );
+                // here token is restored sucessfully
+                console.log("Token renewed sucessfully");
             } else {
-                console.log("Login required !");
-
+                // need to login
+                console.log("No existing token or invalid ID, please login");
                 dispatch({ type: "SIGN_OUT" });
             }
         } catch (error) {
             console.error("ERROR IN BOOTSTRAP ASYNC", error);
-
             dispatch({ type: "SIGN_OUT" });
         }
     };
 
     const handleLogin = async ({ username, password, keepConnected }) => {
-        console.log(username, password, keepConnected);
+        // console.log(username, password, keepConnected);
+
         setKeepConnected(keepConnected);
+
         const gtkCookie = await authService.generateGTK();
-        setGtk(gtkCookie.split("=")[1]);
         const apiLoginData = await authService.login({
             username: username,
             password: password,
             headers: {
-                Cookie: await gtkCookie,
+                Cookie: gtkCookie,
                 "X-GTK": await gtkCookie.split("=")[1],
             },
         });
-        console.log(apiLoginData);
         setA2fInfos((prevState) => ({
             ...prevState,
             identifiant: encodeURIComponent(username),
@@ -124,6 +135,7 @@ export const SignInProvider = ({ children }) => {
         }));
 
         const { token } = apiLoginData;
+
         switch (apiLoginData.code) {
             case 200:
                 const { data } = apiLoginData;
@@ -139,17 +151,15 @@ export const SignInProvider = ({ children }) => {
                 setUserData(data, token);
                 break;
             case 250:
-                const getChoices = await authService.startA2fProcess(token, gtk);
-                setMcqDatas({
-                    choices: getChoices.choices,
-                    question: getChoices.question,
-                });
-                setA2fInfos((prevState) => ({
-                    ...prevState,
-                    a2fToken: token,
-                }));
-                break;
+                authService.startA2fProcess(token).then(({ choices, question }) =>
+                    setMcqDatas({
+                        choices: choices,
+                        question: question,
+                    })
+                );
+                setA2fToken(token);
 
+                break;
             default:
                 const message = getApiMessage(apiLoginData.code);
                 if (message) {
@@ -171,19 +181,19 @@ export const SignInProvider = ({ children }) => {
     };
     useEffect(() => {
         // Ftch the token from storage then navigate to our appropriate place
-
         bootstrapAsync();
     }, []);
 
     const handleA2fSubmit = async (choice) => {
-        // dispatch({ type: "LOADING" });
+        authService.submitFormA2f(a2fToken, choice).then((fa) =>
+            setA2fInfos((prevState) => ({
+                ...prevState,
+                fa: [{ ...fa.data }],
+            }))
+        );
 
-        const fa = await authService.submitFormA2f(a2fInfos.a2fToken, gtk, choice);
-        setA2fInfos((prevState) => ({
-            ...prevState,
-            fa: [{ ...fa.data }],
-        }));
         setChoice("");
+        authService.generateGTK().then((gtkCookie) => setGtk(gtkCookie));
     };
 
     useEffect(() => {
@@ -198,8 +208,9 @@ export const SignInProvider = ({ children }) => {
             .login({
                 authConnectionDatas: a2fInfos,
                 headers: {
-                    Cookie: `GTK=${gtk}`,
-                    "X-GTK": gtk,
+                    Cookie: gtk, // we call login so generate new GTK (generated before in handleA2fSubmit)
+                    "X-GTK": gtk.split("=")[1], // we call login so generate new GTK (generated before in handleA2fSubmit)
+                    "X-Token": a2fToken,
                 },
             })
             .then((accountData) => {
@@ -214,15 +225,16 @@ export const SignInProvider = ({ children }) => {
                         a2fInfos
                     );
                 }
-                // dispatch({ type: "SIGN_IN", token: accountData.data });
                 setUserData(accountData.data, accountData.token);
             });
     }, [a2fInfos.fa]);
 
     useEffect(() => {
         if (state.isLoading || state.isSignOut || !state.userToken) return;
-
-        console.log(state, "connected!");
+        // here we are connected
+        console.log(
+            `Sucessfully connected as ${globalUserData.prenom} ${globalUserData.nom}`
+        );
     }, [state]);
 
     const authContext = useMemo(

@@ -18,11 +18,10 @@ const ConvertOutput = (data) => {
     };
 };
 
-export const getResponseChoices = async (token, gtk) => {
+export const getResponseChoices = async (token) => {
     const requestParams = {
         headers: {
             "X-Token": token,
-            "X-GTK": gtk,
         },
         method: "POST",
     };
@@ -50,14 +49,13 @@ export const getResponseChoices = async (token, gtk) => {
     };
 };
 
-export const sendResponseChoice = async (token, gtk, choice) => {
+export const sendResponseChoice = async (token, choice) => {
     const requestParams = {
         body: {
             choix: choice,
         },
         headers: {
             "X-Token": token,
-            "X-GTK": gtk,
         },
         method: "POST",
     };

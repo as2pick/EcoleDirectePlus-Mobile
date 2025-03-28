@@ -19,7 +19,6 @@ const authService = {
         authConnectionDatas = null,
         headers,
     }) => {
-        console.log(headers);
         return await fetchApi(
             "https://api.ecoledirecte.com/v3/login.awp?{API_VERSION}",
             {
@@ -40,12 +39,12 @@ const authService = {
         );
     },
 
-    startA2fProcess: async (token, gtk) => {
-        return await getResponseChoices(token, gtk);
+    startA2fProcess: async (token) => {
+        return await getResponseChoices(token);
     },
 
-    submitFormA2f: async (token, gtk, choice) => {
-        return await sendResponseChoice(token, gtk, choice);
+    submitFormA2f: async (token, choice) => {
+        return await sendResponseChoice(token, choice);
     },
 
     checkTokenValidity: async (token, userId) => {
