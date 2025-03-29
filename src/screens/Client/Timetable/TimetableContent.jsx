@@ -9,7 +9,7 @@ import {
 
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
-import RoadFinish from "../../../assets/svg/RoadFinish";
+import RoadFinish from "../../../../assets/svg/RoadFinish";
 import { OverLoader } from "../../../components";
 import VerticalScrollView from "../../../components/Layout/VerticalScrollView";
 import { CONFIG } from "../../../constants/config";

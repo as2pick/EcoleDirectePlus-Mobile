@@ -2,11 +2,11 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useCallback, useEffect, useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import AccountIcon from "../../../assets/svg/AccountIcon.jsx";
-import DiscordLogo from "../../../assets/svg/DiscordLogo.jsx";
-import EDPLogo from "../../../assets/svg/EDPLogo.jsx";
-import GithubLogo from "../../../assets/svg/GithubLogo.jsx";
-import KeyIcon from "../../../assets/svg/KeyIcon.jsx";
+import AccountIcon from "../../../../assets/svg/AccountIcon.jsx";
+import DiscordLogo from "../../../../assets/svg/DiscordLogo.jsx";
+import EDPLogo from "../../../../assets/svg/EDPLogo.jsx";
+import GithubLogo from "../../../../assets/svg/GithubLogo.jsx";
+import KeyIcon from "../../../../assets/svg/KeyIcon.jsx";
 import {
     A2fSelectableModal,
     CheckBox,

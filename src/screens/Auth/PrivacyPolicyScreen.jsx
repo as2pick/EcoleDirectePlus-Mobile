@@ -1,7 +1,7 @@
 import { useTheme } from "@react-navigation/native";
 import { StyleSheet, Text, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import CopyLeft from "../../assets/svg/CopyLeft";
+import CopyLeft from "../../../assets/svg/CopyLeft";
 import {
     CustomTopHeader,
     LinkText,

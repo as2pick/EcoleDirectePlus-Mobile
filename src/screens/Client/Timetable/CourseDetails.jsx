@@ -2,14 +2,14 @@ import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { useCallback } from "react";
 import { Pressable, Text, View } from "react-native";
 
-import BellOffIcon from "../../../assets/svg/micro/BellOffIcon";
-import ClockIcon from "../../../assets/svg/micro/ClockIcon";
-import DoorOpenIcon from "../../../assets/svg/micro/DoorOpenIcon";
-import HourglassIcon from "../../../assets/svg/micro/HourglassIcon";
-import PenSquareIcon from "../../../assets/svg/micro/PenSquareIcon";
-import PeoplesIcon from "../../../assets/svg/micro/PeoplesIcon";
-import PersonIcon from "../../../assets/svg/micro/PersonIcon";
-import TrashIcon from "../../../assets/svg/micro/TrashIcon";
+import BellOffIcon from "../../../../assets/svg/micro/BellOffIcon";
+import ClockIcon from "../../../../assets/svg/micro/ClockIcon";
+import DoorOpenIcon from "../../../../assets/svg/micro/DoorOpenIcon";
+import HourglassIcon from "../../../../assets/svg/micro/HourglassIcon";
+import PenSquareIcon from "../../../../assets/svg/micro/PenSquareIcon";
+import PeoplesIcon from "../../../../assets/svg/micro/PeoplesIcon";
+import PersonIcon from "../../../../assets/svg/micro/PersonIcon";
+import TrashIcon from "../../../../assets/svg/micro/TrashIcon";
 import { CustomTopHeader } from "../../../components";
 import {
     getTimeInterval,
