@@ -8,8 +8,8 @@ const {
 } = routesNames;
 
 const authScreens = [
-    createScreen(login, LoginScreen, { gestureEnabled: false }),
-    createScreen(privacyPolicy, PrivacyPolicyScreen, { gestureEnabled: true }),
+    createScreen(login, LoginScreen),
+    createScreen(privacyPolicy, PrivacyPolicyScreen),
 ];
 
 export default authScreens;

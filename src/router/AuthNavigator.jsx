@@ -8,6 +8,7 @@ import SplashScreen from "../screens/Splash/SplashScreen";
 import { THEMES } from "../themes/themes";
 import LoginStack from "./LoginStack";
 import RootTabs from "./RootTabs";
+import { routesNames } from "./config/routesNames";
 
 const Stack = createNativeStackNavigator();
 
@@ -15,6 +16,9 @@ export default function AuthNavigator() {
     const [isDark, setIsDark] = useState(true);
     const { state } = useSingIn();
     const { isConnected } = useUser();
+    const {
+        navigators: { authentification, root, splash },
+    } = routesNames;
 
     const theme = isDark ? THEMES.etheral : THEMES.opulent; // theme handler
 
@@ -29,11 +33,14 @@ export default function AuthNavigator() {
                     }}
                 >
                     {state.isLoading ? (
-                        <Stack.Screen name="Splash" component={SplashScreen} />
+                        <Stack.Screen name={splash} component={SplashScreen} />
                     ) : isConnected ? (
-                        <Stack.Screen name="Main" component={RootTabs} />
+                        <Stack.Screen name={root} component={RootTabs} />
                     ) : (
-                        <Stack.Screen name="Auth" component={LoginStack} />
+                        <Stack.Screen
+                            name={authentification}
+                            component={LoginStack}
+                        />
                     )}
                 </Stack.Navigator>
             </NavigationContainer>
