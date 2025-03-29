@@ -16,6 +16,7 @@ import {
 
 import { getApiMessage } from "../../../constants/api/codes.js";
 import { useSingIn } from "../../../context/SignInContext.jsx";
+import { routesNames } from "../../../router/config/routesNames.js";
 import { cssRgbToHsl } from "../../../utils/colorGenerator.js";
 
 export default function LoginScreen({ theme }) {
@@ -205,7 +206,7 @@ export default function LoginScreen({ theme }) {
             <View style={styles.infos}>
                 <TouchableOpacity
                     onPress={() => {
-                        navigation.navigate("PrivacyPolicy");
+                        navigation.navigate(routesNames.auth.privacyPolicy);
                     }}
                 >
                     <Text

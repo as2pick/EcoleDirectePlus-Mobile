@@ -1,10 +1,15 @@
 import LoginScreen from "../../../screens/Auth/Login/LoginScreen.jsx";
 import PrivacyPolicyScreen from "../../../screens/Auth/PrivacyPolicyScreen.jsx";
+import { routesNames } from "../../config/routesNames.js";
 import createScreen from "../../helpers/createScreen.jsx";
 
+const {
+    auth: { login, privacyPolicy },
+} = routesNames;
+
 const authScreens = [
-    createScreen("Login", LoginScreen),
-    createScreen("PrivacyPolicy", PrivacyPolicyScreen),
+    createScreen(login, LoginScreen, { gestureEnabled: false }),
+    createScreen(privacyPolicy, PrivacyPolicyScreen, { gestureEnabled: true }),
 ];
 
 export default authScreens;

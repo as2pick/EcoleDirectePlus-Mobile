@@ -8,26 +8,31 @@ import HomeScreen from "../../../screens/Client/Home/HomeScreen";
 import HomeworksScreen from "../../../screens/Client/Homeworks/HomeworksScreen";
 import MessagingScreen from "../../../screens/Client/Messaging/MessagingScreen";
 import TimetableScreen from "../../../screens/Client/Timetable/TimetableScreen";
+import { routesNames } from "../../config/routesNames";
 import createScreen from "../../helpers/createScreen";
 
+const {
+    client: { grades, home, homeworks, messaging, timetable },
+} = routesNames;
+
 const clientScreens = [
-    createScreen("Grades", GradesScreen, {
+    createScreen(grades, GradesScreen, {
         inNavbar: true,
         icon: GradesIcon,
     }),
-    createScreen("Homeworks", HomeworksScreen, {
+    createScreen(homeworks, HomeworksScreen, {
         inNavbar: true,
         icon: HomeworksIcon,
     }),
-    createScreen("Home", HomeScreen, {
+    createScreen(home, HomeScreen, {
         inNavbar: true,
         icon: DashboardIcon,
     }),
-    createScreen("Timetable", TimetableScreen, {
+    createScreen(timetable, TimetableScreen, {
         inNavbar: true,
         icon: TimetableIcon,
     }),
-    createScreen("Messaging", MessagingScreen, {
+    createScreen(messaging, MessagingScreen, {
         inNavbar: true,
         icon: MessagingIcon,
     }),
