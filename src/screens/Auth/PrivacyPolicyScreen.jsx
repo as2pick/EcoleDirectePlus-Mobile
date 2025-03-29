@@ -1,15 +1,20 @@
-import { useNavigation, useTheme } from "@react-navigation/native";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useTheme } from "@react-navigation/native";
+import { StyleSheet, Text, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { SafeAreaView } from "react-native-safe-area-context";
-import BackArrow from "../../assets/svg/BackArrow";
 import CopyLeft from "../../assets/svg/CopyLeft";
-import { LinkText, Separation, Subtitle, Title } from "../../components";
+import {
+    CustomTopHeader,
+    LinkText,
+    Separation,
+    Subtitle,
+    Title,
+} from "../../components";
 
 const COLABORATORS = {
     main: {
         // "Truite Séchée": "https://github.com/truiteseche",
         // "Saumon Brulé": "https://github.com/saumon-brule",
+        Lostosword: "https://github.com/Lostosword",
         "As de Pique": "https://github.com/as2pick",
     },
     other: {
@@ -18,6 +23,7 @@ const COLABORATORS = {
         // Fefedu973: "https://github.com/Fefedu973",
         // "Beta-Way": "https://github.com/Beta-Way",
         // xav35000: "https://github.com/xav35000",
+        Lostosword: "https://github.com/Lostosword",
         "As de Pique": "https://github.com/as2pick",
     },
 };
@@ -49,24 +55,18 @@ const Link = ({ href, isPeople = false, children }) => {
 };
 
 export default function PrivacyPolicyScreen({ theme }) {
-    const navigation = useNavigation();
     return (
         <>
-            <SafeAreaView style={styles.header}>
-                <TouchableOpacity
-                    style={styles.backArrow}
-                    onPress={() => navigation.goBack()}
-                >
-                    <BackArrow fill="white" />
-                </TouchableOpacity>
-                <Title customStyle={styles.headerTitle}>
-                    Privacy Policy and Terms of Use
-                </Title>
-            </SafeAreaView>
+            <CustomTopHeader
+                headerTitle={"Privacy Policy And Terms of Use"}
+                height={38}
+            />
             <ScrollView>
                 <View style={styles.scrollview}>
                     <View>
-                        <Title>Politique de confidentialité</Title>
+                        <Title customStyle={styles.title}>
+                            Politique de confidentialité
+                        </Title>
                         <Subtitle>Résumé</Subtitle>
                         <Paragraph>
                             ℹ️ Ecole Directe Plus n'est en aucun cas affilié à
@@ -90,7 +90,7 @@ export default function PrivacyPolicyScreen({ theme }) {
                             examens* et au rang de l'élève*.
                         </Paragraph>
                         <Paragraph>
-                            ℹ️ Les seules données collectées le sont par Aplim <></>(
+                            ℹ️ Les seules données collectées le sont par Aplim (
                             <Link href={"https://www.ecoledirecte.com"}>
                                 EcoleDirecte
                             </Link>
@@ -204,7 +204,9 @@ export default function PrivacyPolicyScreen({ theme }) {
                         : Luciole © Laurent Bourcellier & Jonathan Perez
                     </Paragraph>
                     <Separation />
-                    <Title>Conditions d'utilisations</Title>
+                    <Title customStyle={styles.title}>
+                        Conditions d'utilisations
+                    </Title>
                     <Subtitle>1. Général</Subtitle>
                     <Paragraph>
                         • Les noms et pronoms "Ecole Directe Plus", "EDP", "service",
@@ -294,7 +296,7 @@ export default function PrivacyPolicyScreen({ theme }) {
                     </Paragraph>
 
                     <Separation />
-                    <Title>Crédits</Title>
+                    <Title customStyle={styles.title}>Crédits</Title>
                     <Paragraph>
                         • Ecole Directe Plus est l'initiative du groupuscule
                         Magic-Fish :
@@ -335,6 +337,7 @@ export default function PrivacyPolicyScreen({ theme }) {
                         {"Dépendances \n"}
                         {"- React\n"}
                         {"- React Native\n"}
+                        {"- React Native ASYNC Storage\n"}
                         {"- React Native Gesture Handler\n"}
                         {"- React Native Keychain\n"}
                         {"- React Native Reanimated\n"}
@@ -344,6 +347,9 @@ export default function PrivacyPolicyScreen({ theme }) {
                         {"- React Navigation\n"}
                         {"- Base64\n"}
                         {"- JS-SHA256\n"}
+                        {"- Set-cookie-parser\n"}
+                        {"- Moment\n"}
+                        {"- Lottie\n"}
                     </Paragraph>
                     <Paragraph>
                         {"Testeurs de pré-lancement :\n"}
@@ -379,7 +385,7 @@ export default function PrivacyPolicyScreen({ theme }) {
                         </Link>
                     </Paragraph>
                     <Separation />
-                    <Title>License (MIT)</Title>
+                    <Title customStyle={styles.title}>License (MIT)</Title>
                     <Paragraph>
                         • Permission is hereby granted, free of charge, to any person
                         obtaining a copy of this software and associated
@@ -401,7 +407,7 @@ export default function PrivacyPolicyScreen({ theme }) {
                         software or the use or other dealings in the Software.
                     </Paragraph>
                     <Paragraph>
-                        Dernière révision le 23 février 2025{"\n"}
+                        Dernière révision le 29 mars 2025{"\n"}
                         Nous contacter :{" "}
                         <Link
                             href={"mailto:contact@ecole-directe.plus"}
@@ -412,12 +418,12 @@ export default function PrivacyPolicyScreen({ theme }) {
                     </Paragraph>
 
                     <Text
-                        style={{
-                            color: theme.colors.txt.txt1,
-                            textAlign: "center",
-                            fontSize: 17,
-                            marginTop: 10,
-                        }}
+                        style={[
+                            {
+                                color: theme.colors.txt.txt1,
+                            },
+                            styles.copyleft,
+                        ]}
                     >
                         Copyleft 2025 <CopyLeft size={17} /> Ecole Directe Plus
                     </Text>
@@ -435,11 +441,6 @@ const styles = StyleSheet.create({
     },
     scrollview: {
         paddingBottom: 32,
-    },
-    subtitle: {
-        fontWeight: 600,
-        fontSize: 18,
-        marginLeft: 20,
     },
     paragraph: {
         marginLeft: 30,
@@ -463,6 +464,11 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         marginHorizontal: 5,
         position: "relative",
+    },
+    copyleft: {
+        textAlign: "center",
+        fontSize: 17,
+        marginTop: 10,
     },
 });
 
