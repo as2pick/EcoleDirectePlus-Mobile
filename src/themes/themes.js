@@ -1,10 +1,9 @@
-import { DefaultTheme, useTheme } from "@react-navigation/native";
-import { GLOBALS_DATAS } from "../constants/device/globals";
+import { DefaultTheme as NavigationDefaultTheme } from "@react-navigation/native";
 
 export const THEMES = {
     opulent: {
         // light
-        ...DefaultTheme,
+        ...NavigationDefaultTheme,
         /*
         colors: {
             ...DefaultTheme.colors,
@@ -37,10 +36,9 @@ export const THEMES = {
     },
     etheral: {
         //dark
-        ...DefaultTheme,
-
+        ...NavigationDefaultTheme,
         colors: {
-            ...DefaultTheme.colors,
+            ...NavigationDefaultTheme.colors,
             background: "rgb(12, 12, 23)", // default key
             bg: {
                 bg1: "rgb(25, 25, 56)",
@@ -65,11 +63,12 @@ export const THEMES = {
 
             border: "rgb(92, 113, 250)",
         },
-        ...GLOBALS_DATAS,
+        fonts: {
+            bold: { fontFamily: "Luciole-Regular", fontWeight: "600" },
+            heavy: { fontFamily: "Luciole-Regular", fontWeight: "700" },
+            medium: { fontFamily: "Luciole-Regular", fontWeight: "normal" },
+            regular: { fontFamily: "Lexend-Regular", fontWeight: "normal" },
+        },
     },
-};
-
-export const getCurrentTheme = () => {
-    return useTheme();
 };
 

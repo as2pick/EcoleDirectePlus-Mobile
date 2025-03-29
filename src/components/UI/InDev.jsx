@@ -6,11 +6,19 @@ import LinkText from "./LinkText";
 
 export default function InDev({}) {
     const { colors } = useTheme();
+
     const mainColor = addOpacityToCssRgb(colors.txt.txt3, 0.5);
     return (
         <View style={[styles.parent]}>
             <View style={[styles.children, { borderColor: mainColor }]}>
-                <Text style={[styles.text, { color: mainColor }]}>
+                <Text
+                    style={[
+                        styles.text,
+                        {
+                            color: mainColor,
+                        },
+                    ]}
+                >
                     Fonctionnalité en cours de développement...
                 </Text>
                 <Text style={[styles.text, { color: mainColor }]}>
