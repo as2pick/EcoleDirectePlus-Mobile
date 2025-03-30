@@ -7,11 +7,11 @@ export const THEMES = {
         /*
         colors: {
             ...DefaultTheme.colors,
-            background: "rgb(235, 225, 255)",
+           background: "rgb(255, 255, 255)",
             bg: {
-                bg1: "rgb(220, 200, 255)",
-                bg2: "rgb(210, 190, 245)",
-                bg3: "rgb(200, 180, 235)",
+                bg1: "rgb(168, 156, 255)",
+                bg2: "rgb(157, 153, 244)",
+                bg3: "rgb(113, 115, 241)",
                 bg4: "rgb(190, 170, 225)",
                 bg5: "rgb(180, 160, 215)",
                 bg6: "rgb(170, 150, 205)",
@@ -23,12 +23,18 @@ export const THEMES = {
             },
             navbar: {
                 icons: "rgb(40, 20, 80)",
-                active_icon_bg: "rgb(210, 190, 245)",
-                icons_bg: "rgb(220, 200, 255)",
-                background: "rgb(235, 225, 255)",
-                border: "rgb(200, 180, 235)",
+                active_icon_bg: "rgb(151, 121, 202)",
+                icons_bg: "rgb(184, 184, 249)",
+                background: "rgb(184, 184, 249)",
+                border: "rgb(0, 0, 0)",
             },
             border: "rgb(180, 160, 215)",
+        },
+        fonts: {
+            bold: { fontFamily: "Luciole-Regular", fontWeight: "600" },
+            heavy: { fontFamily: "Luciole-Regular", fontWeight: "700" },
+            medium: { fontFamily: "Luciole-Regular", fontWeight: "normal" },
+            regular: { fontFamily: "Lexend-Regular", fontWeight: "normal" },
         },
         ...GLOBALS_DATAS,
         // /kill eyes
