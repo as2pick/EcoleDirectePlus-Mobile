@@ -1,6 +1,6 @@
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { useCallback } from "react";
-import { Pressable, Text, View } from "react-native";
+import { Text, View } from "react-native";
 
 import BellOffIcon from "../../../../assets/svg/micro/BellOffIcon";
 import ClockIcon from "../../../../assets/svg/micro/ClockIcon";
@@ -317,7 +317,7 @@ export default function CourseDetails({ route }) {
                     </View>
                     <Separation />
                 </View>
-                <View
+                {/* <View
                     style={{
                         marginTop: 15,
                         flexDirection: "row",
@@ -362,7 +362,7 @@ export default function CourseDetails({ route }) {
                             Devoirs
                         </Text>
                     </Pressable>
-                </View>
+                </View> */}
             </View>
         </View>
     );
