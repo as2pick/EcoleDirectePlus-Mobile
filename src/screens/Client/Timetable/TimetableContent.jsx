@@ -9,6 +9,11 @@ import {
 
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
+import Animated, {
+    useAnimatedStyle,
+    useSharedValue,
+    withSpring,
+} from "react-native-reanimated";
 import RoadFinish from "../../../../assets/svg/RoadFinish";
 import { OverLoader } from "../../../components";
 import VerticalScrollView from "../../../components/Layout/VerticalScrollView";
@@ -44,6 +49,13 @@ export default function TimetableContent({ route }) {
         width: 0,
         height: 0,
     });
+    const [timetableCoreSuccessLoaded, setTimetableCoreSuccessLoaded] =
+        useState(false);
+
+    const dynamicOpacity = useSharedValue(0);
+    const dynamicOpacityStyle = useAnimatedStyle(() => ({
+        opacity: dynamicOpacity.value,
+    }));
 
     useFocusEffect(
         useCallback(() => {
@@ -58,6 +70,16 @@ export default function TimetableContent({ route }) {
     );
 
     const activeDate = sortedTimetableData?.[currentIndex]?.iSODate || "";
+
+    useEffect(() => {
+        if (!timetableCoreSuccessLoaded) return;
+
+        scrollViewRef.current.scrollToIndex(
+            sortedTimetableData.findIndex((day) => day.date === CONFIG.dateNow),
+            false
+        );
+        dynamicOpacity.value = withSpring(1, { duration: 1500 });
+    }, [timetableCoreSuccessLoaded]);
 
     if (loading) {
         return (
@@ -78,19 +100,20 @@ export default function TimetableContent({ route }) {
                 width: "100%",
                 flex: 1,
             }}
+            onLayout={() => setTimetableCoreSuccessLoaded(true)}
         >
-            <View
-                style={{
-                    margin: 24,
-
-                    overflow: "hidden",
-                    flex: 1,
-                    height: screenHeight,
-
-                    borderRadius: 23,
-
-                    backgroundColor: theme.colors.bg.bg2,
-                }}
+            <Animated.View
+                style={[
+                    dynamicOpacityStyle,
+                    {
+                        margin: 24,
+                        overflow: "hidden",
+                        flex: 1,
+                        height: screenHeight,
+                        borderRadius: 23,
+                        backgroundColor: theme.colors.bg.bg2,
+                    },
+                ]}
             >
                 <View
                     style={{
@@ -124,6 +147,23 @@ export default function TimetableContent({ route }) {
                         </Text>
                     </TouchableOpacity>
                 </View>
+                {/* <TouchableOpacity
+                    style={{
+                        position: "absolute",
+                        width: 60,
+                        height: 60,
+                        backgroundColor: "red",
+                        zIndex: 100,
+                    }}
+                    onPress={() => {
+                        console.log(
+                            sortedTimetableData.findIndex(
+                                (day) => day.date === CONFIG.dateNow
+                            )
+                        );
+                        scrollViewRef.current.scrollToIndex(2, false);
+                    }}
+                /> */}
 
                 <VerticalScrollView
                     arrayLength={sortedTimetableData?.length}
@@ -145,7 +185,7 @@ export default function TimetableContent({ route }) {
                             />
                         ))}
                 </VerticalScrollView>
-            </View>
+            </Animated.View>
         </SafeAreaView>
     );
 }
@@ -215,6 +255,7 @@ const CourseBox = ({ course, navigation, theme, timetableViewDims }) => {
                         borderRadius: 16,
                         position: "absolute",
                         paddingHorizontal: 12,
+
                         paddingVertical:
                             height <= CONFIG.minCourseSize
                                 ? timetableViewDims.height /

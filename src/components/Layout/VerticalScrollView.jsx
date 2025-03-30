@@ -27,14 +27,18 @@ const VerticalScrollView = forwardRef(({ children, arrayLength, getIndex }, ref)
         runOnJS(getIndex)(pageIndex.value);
     });
 
-    const scrollToIndex = (index) => {
+    const scrollToIndex = (index, withAnimation = true) => {
         if (index < 0 || index >= arrayLength) return;
 
         pageIndex.value = index;
-        translateY.value = withSpring(-index * height, {
-            stiffness: 100,
-            damping: 15,
-        });
+        if (withAnimation) {
+            translateY.value = withSpring(-index * height, {
+                stiffness: 100,
+                damping: 15,
+            });
+        } else {
+            translateY.value = -index * height;
+        }
 
         setActivePageIndex(index);
     };
