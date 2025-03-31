@@ -1,7 +1,7 @@
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { useCallback } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import moment from "moment";
+import { useCallback, useEffect, useState } from "react";
 import { Text, View } from "react-native";
-
 import BellOffIcon from "../../../../assets/svg/micro/BellOffIcon";
 import ClockIcon from "../../../../assets/svg/micro/ClockIcon";
 import DoorOpenIcon from "../../../../assets/svg/micro/DoorOpenIcon";
@@ -11,17 +11,15 @@ import PeoplesIcon from "../../../../assets/svg/micro/PeoplesIcon";
 import PersonIcon from "../../../../assets/svg/micro/PersonIcon";
 import TrashIcon from "../../../../assets/svg/micro/TrashIcon";
 import { CustomTopHeader } from "../../../components";
-import {
-    getTimeInterval,
-    toHoursMinutes,
-    toMilliseconds,
-} from "../../../utils/time";
+import { toHoursMinutes, toMilliseconds } from "../../../utils/time";
 
 export default function CourseDetails({ route }) {
     const { theme, courseData } = route.params;
     const { colors } = theme;
 
-    const navigation = useNavigation();
+    const [now, setNow] = useState(moment());
+    const [startCourseTiming, setStartCourseTiming] = useState("");
+
     const {
         classGroup,
         endCourse,
@@ -39,6 +37,17 @@ export default function CourseDetails({ route }) {
         height,
         textColor,
     } = courseData;
+
+    const courseTiming =
+        toMilliseconds(endCourse.time) - toMilliseconds(startCourse.time);
+    const [hours, minutes] = toHoursMinutes(courseTiming);
+    const startCourseDateTime = moment(`${startCourse.date} ${startCourse.time}`);
+
+    const [intervalDays, intervalHours, intervalMinutes] = [
+        startCourseDateTime.diff(now, "days"),
+        startCourseDateTime.diff(now, "hours") % 24,
+        startCourseDateTime.diff(now, "minutes") % 60,
+    ];
 
     useFocusEffect(
         useCallback(() => {
@@ -69,40 +78,44 @@ export default function CourseDetails({ route }) {
         []
     );
 
-    const courseTiming =
-        toMilliseconds(endCourse.time) - toMilliseconds(startCourse.time);
-    const [hours, minutes] = toHoursMinutes(courseTiming);
-    const date = new Date().toISOString().slice(0, 10);
-    const time = new Date().toLocaleTimeString("fr-FR").slice(0, 5);
-    const today = `${date}T${time}`; // we do that beacause time is incorrect with raw toISOString
-    const [intervalDays, intervalHours, intervalMinutes] = getTimeInterval(
-        today,
-        `${startCourse.date}T${startCourse.time}`
-    );
-    let startCourseTiming = "";
+    const startCourseTimingCat = {
+        jour: intervalDays,
+        heure: intervalHours,
+        minute: intervalMinutes,
+    };
 
-    if (intervalDays < 0) {
-        startCourseTiming = `Il y a ${Math.abs(intervalDays)} jours`;
-    } else {
-        startCourseTiming = "Dans ";
-        if (intervalDays > 0) {
-            startCourseTiming += `${intervalDays} jours`;
-        } else {
-            if (intervalHours > 0) {
-                startCourseTiming += `${intervalHours} heures`;
-            }
-            if (intervalMinutes > 0) {
-                if (intervalHours > 0) {
-                    startCourseTiming += ` et `;
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setNow(moment());
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, []);
+
+    useEffect(() => {
+        let timingMessage = "";
+
+        if (intervalDays <= 0 && intervalHours <= 0 && intervalMinutes <= 0) {
+            timingMessage += "Il y a ";
+
+            Object.entries(startCourseTimingCat).forEach(([timingName, value]) => {
+                if (value < 0) {
+                    value = Math.abs(value);
+                    timingMessage += `${value} ${timingName}${value > 1 ? "s" : ""} `;
                 }
-                startCourseTiming += `${intervalMinutes} minutes`;
-            } else if (intervalMinutes === 0) {
-                startCourseTiming += `${intervalMinutes} minutes`;
-            } else {
-                startCourseTiming = null;
-            }
+            });
+        } else {
+            timingMessage += "Dans ";
+
+            Object.entries(startCourseTimingCat).forEach(([timingName, value]) => {
+                if (value > 0) {
+                    timingMessage += `${value} ${timingName}${value > 1 ? "s" : ""} `;
+                }
+            });
         }
-    }
+
+        setStartCourseTiming(timingMessage.trim());
+    }, [now.format("HH:mm")]);
 
     let timing = "";
 
