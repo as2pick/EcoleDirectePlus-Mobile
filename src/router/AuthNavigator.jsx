@@ -1,6 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Text } from "react-native";
+import { Text, TextInput } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useSingIn } from "../context/SignInContext";
 import { useUser } from "../context/UserContext";
@@ -25,6 +25,7 @@ export default function AuthNavigator() {
     setDefaultProps(Text, {
         style: [theme.fonts.regular],
     });
+    setDefaultProps(TextInput, { style: [theme.fonts.regular] });
     return (
         <GestureHandlerRootView>
             <NavigationContainer theme={theme}>
