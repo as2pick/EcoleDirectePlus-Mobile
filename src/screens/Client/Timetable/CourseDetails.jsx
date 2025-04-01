@@ -164,7 +164,13 @@ export default function CourseDetails({ route }) {
                             {libelle}
                         </Text>
                     </View>
-                    <View style={{ marginTop: "10%", gap: 8 }}>
+                    <View
+                        style={{
+                            marginTop: "10%",
+                            gap: 8,
+                            alignItems: "center",
+                        }}
+                    >
                         {startCourseTiming && (
                             <View
                                 style={{

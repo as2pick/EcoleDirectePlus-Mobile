@@ -135,6 +135,13 @@ export default function TimetableContent({ route }) {
                             overflow: "hidden",
                             bottom: 0,
                         }}
+                        onLongPress={() =>
+                            scrollViewRef.current.scrollToIndex(
+                                sortedTimetableData.findIndex(
+                                    (day) => day.date === CONFIG.dateNow
+                                )
+                            )
+                        }
                     >
                         <Text
                             style={{
