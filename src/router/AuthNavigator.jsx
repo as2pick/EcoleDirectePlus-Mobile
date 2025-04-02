@@ -22,7 +22,6 @@ export default function AuthNavigator() {
         navigators: { authentification, root, splash, settings },
     } = routesNames;
     const [theme, setTheme] = useState(THEMES.etheral);
-    console.log(theme);
     setDefaultProps(Text, {
         style: [theme.fonts.regular, { color: theme.colors.txt.txt1 }],
     });
