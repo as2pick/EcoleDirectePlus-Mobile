@@ -1,5 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { useState } from "react";
 import { Text, TextInput } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useSingIn } from "../context/SignInContext";
@@ -20,9 +21,8 @@ export default function AuthNavigator() {
     const {
         navigators: { authentification, root, splash, settings },
     } = routesNames;
-
-    const theme = THEMES.etheral; // theme handler
-
+    const [theme, setTheme] = useState(THEMES.etheral);
+    console.log(theme);
     setDefaultProps(Text, {
         style: [theme.fonts.regular, { color: theme.colors.txt.txt1 }],
     });

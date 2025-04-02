@@ -28,7 +28,7 @@ const clientScreens = [
         inNavbar: true,
         icon: DashboardIcon,
     }),
-    createScreen(timetable, TimetableScreen, {
+    createScreen(timetable.group, TimetableScreen, {
         inNavbar: true,
         icon: TimetableIcon,
     }),

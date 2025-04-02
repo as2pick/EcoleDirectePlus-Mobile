@@ -22,6 +22,7 @@ import { GLOBALS_DATAS } from "../../../constants/device/globals";
 import { timetableConfig } from "../../../constants/features/timetableConfig";
 import { useUser } from "../../../context/UserContext";
 import getTimetable from "../../../resolver/timetable";
+import { routesNames } from "../../../router/config/routesNames";
 import { addOpacityToCssRgb } from "../../../utils/colorGenerator";
 
 let {
@@ -32,7 +33,7 @@ height -= CONFIG.upper + 24; // ??? but works fine
 
 const screenHeight = height;
 
-export default function TimetableContent({ route }) {
+export default function TimetableContent() {
     const { userAccesToken, sortedTimetableData, setSortedTimetableData } =
         useUser();
 
@@ -270,17 +271,14 @@ const CourseBox = ({ course, navigation, theme, timetableViewDims }) => {
                                 : CONFIG.minCourseSize,
                         overflow: "hidden",
                     },
-                    // isCancelled && {
-                    //     backgroundColor: timetableConfig.cancelledColor,
-                    //     opacity: 0.4,
-                    // },
-                    // isDispensed && {},
-                    // isEdited && { backgroundColor: timetableConfig.editedColor },
                 ]}
                 onPress={() => {
-                    navigation.navigate("timetable_course_detail", {
-                        courseData: course,
-                    });
+                    navigation.navigate(
+                        routesNames.client.timetable.course_details,
+                        {
+                            courseData: course,
+                        }
+                    );
                 }}
             >
                 {(isCancelled || isDispensed) && (

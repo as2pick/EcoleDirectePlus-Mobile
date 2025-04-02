@@ -1,6 +1,8 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import React from "react";
+import React, { useEffect } from "react";
 import { GLOBALS_DATAS } from "../../../constants/device/globals";
+import { useAppSettings } from "../../../context/AppSettingsContext";
+import { routesNames } from "../../../router/config/routesNames";
 import CourseDetails from "./CourseDetails";
 import TimetableContent from "./TimetableContent";
 
@@ -8,9 +10,19 @@ const Stack = createStackNavigator();
 
 export default function TimetableScreen() {
     const { width } = GLOBALS_DATAS.screen;
+    const {
+        client: {
+            timetable: { course_details, content },
+        },
+    } = routesNames;
+    const { isDarkTheme } = useAppSettings();
+
+    useEffect(() => {
+        console.log(isDarkTheme, "daktheme");
+    }, [isDarkTheme]);
     return (
         <Stack.Navigator
-            initialRouteName="timetable_content"
+            initialRouteName={content}
             screenOptions={{
                 gestureEnabled: true,
                 gestureDirection: "horizontal",
@@ -32,7 +44,7 @@ export default function TimetableScreen() {
             }}
         >
             <Stack.Screen
-                name="timetable_content"
+                name={content}
                 component={TimetableContent}
                 options={{
                     headerShown: false,
@@ -40,7 +52,7 @@ export default function TimetableScreen() {
                 }}
             />
             <Stack.Screen
-                name="timetable_course_detail"
+                name={course_details}
                 component={CourseDetails}
                 options={{
                     headerShown: false,

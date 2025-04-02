@@ -8,12 +8,15 @@ export const routesNames = {
         grades: "client_grades",
         homeworks: "client_homeworks",
         home: "client_home",
-        timetable: "client_timetable",
+        timetable: {
+            group: "client_timetable",
+            content: "client_timetable_content",
+            course_details: "client_timetable_course_details",
+        },
         messaging: "client_messaging",
     },
     navigators: {
         settings: "navigators_variable_settings",
-
         splash: "navigators_splash",
         root: "navigators_root",
         authentification: "navigators_authentification",
