@@ -4,6 +4,7 @@ import { Text, TextInput } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useSingIn } from "../context/SignInContext";
 import { useUser } from "../context/UserContext";
+import SettingsScreen from "../screens/Settings/SettingsScreen";
 import SplashScreen from "../screens/Splash/SplashScreen";
 import { THEMES } from "../themes/themes";
 import setDefaultProps from "../utils/setDefaultProps";
@@ -17,15 +18,17 @@ export default function AuthNavigator() {
     const { state } = useSingIn();
     const { isConnected } = useUser();
     const {
-        navigators: { authentification, root, splash },
+        navigators: { authentification, root, splash, settings },
     } = routesNames;
 
     const theme = THEMES.etheral; // theme handler
 
     setDefaultProps(Text, {
-        style: [theme.fonts.regular],
+        style: [theme.fonts.regular, { color: theme.colors.txt.txt1 }],
     });
-    setDefaultProps(TextInput, { style: [theme.fonts.regular] });
+    setDefaultProps(TextInput, {
+        style: [theme.fonts.regular, { color: theme.colors.txt.txt1 }],
+    });
     return (
         <GestureHandlerRootView>
             <NavigationContainer theme={theme}>
@@ -46,6 +49,7 @@ export default function AuthNavigator() {
                             component={LoginStack}
                         />
                     )}
+                    <Stack.Screen name={settings} component={SettingsScreen} />
                 </Stack.Navigator>
             </NavigationContainer>
         </GestureHandlerRootView>

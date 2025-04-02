@@ -6,7 +6,7 @@ import TimetableContent from "./TimetableContent";
 
 const Stack = createStackNavigator();
 
-export default function TimetableScreen({ theme }) {
+export default function TimetableScreen() {
     const { width } = GLOBALS_DATAS.screen;
     return (
         <Stack.Navigator
@@ -34,7 +34,6 @@ export default function TimetableScreen({ theme }) {
             <Stack.Screen
                 name="timetable_content"
                 component={TimetableContent}
-                initialParams={{ theme }}
                 options={{
                     headerShown: false,
                     gestureEnabled: false,
@@ -43,7 +42,6 @@ export default function TimetableScreen({ theme }) {
             <Stack.Screen
                 name="timetable_course_detail"
                 component={CourseDetails}
-                initialParams={{ theme }}
                 options={{
                     headerShown: false,
                 }}

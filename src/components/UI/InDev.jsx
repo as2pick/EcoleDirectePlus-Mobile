@@ -23,7 +23,10 @@ export default function InDev({}) {
                 </Text>
                 <Text style={[styles.text, { color: mainColor }]}>
                     Rejoignez le{" "}
-                    <LinkText href={CONFIG.discordInviteLink} styles={styles.link}>
+                    <LinkText
+                        href={CONFIG.discordInviteLink}
+                        styles={[styles.link, { color: mainColor }]}
+                    >
                         serveur Discord d'EDP
                     </LinkText>{" "}
                     pour en suivre l'avancée !

@@ -1,4 +1,4 @@
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useTheme } from "@react-navigation/native";
 import React, { useCallback, useEffect, useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -17,11 +17,10 @@ import {
 import { getApiMessage } from "../../../constants/api/codes.js";
 import { useSingIn } from "../../../context/SignInContext.jsx";
 import { routesNames } from "../../../router/config/routesNames.js";
-import { cssRgbToHsl } from "../../../utils/colorGenerator.js";
 
-export default function LoginScreen({ theme }) {
+export default function LoginScreen() {
     const navigation = useNavigation();
-
+    const theme = useTheme();
     const {
         signIn,
         mcqDatas,
@@ -75,9 +74,6 @@ export default function LoginScreen({ theme }) {
         toggleModal();
     }, [mcqDatas]);
 
-    const [h, s, l] = cssRgbToHsl(theme.colors.border);
-    const borderColor = `hsl(${h}, ${s - 60}%, ${l - 34}%)`;
-
     return (
         <SafeAreaView style={[styles.container]}>
             <SafeAreaView style={styles.logos}>
@@ -123,7 +119,6 @@ export default function LoginScreen({ theme }) {
                                     {
                                         borderColor: theme.colors.border,
                                         backgroundColor: theme.colors.background,
-                                        color: theme.colors.txt.txt1,
                                     },
                                 ]}
                             />
@@ -145,7 +140,6 @@ export default function LoginScreen({ theme }) {
                                     {
                                         borderColor: theme.colors.border,
                                         backgroundColor: theme.colors.background,
-                                        color: theme.colors.txt.txt1,
                                     },
                                 ]}
                             />
@@ -178,7 +172,6 @@ export default function LoginScreen({ theme }) {
                     <Text
                         style={[
                             {
-                                color: theme.colors.txt.txt1,
                                 borderColor: theme.colors.border,
                                 transform: [{ scale: 1.2 }],
                             },

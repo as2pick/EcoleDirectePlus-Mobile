@@ -7,7 +7,7 @@ import {
     View,
 } from "react-native";
 
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation, useTheme } from "@react-navigation/native";
 
 import Animated, {
     useAnimatedStyle,
@@ -33,12 +33,11 @@ height -= CONFIG.upper + 24; // ??? but works fine
 const screenHeight = height;
 
 export default function TimetableContent({ route }) {
-    const { theme } = route.params;
-
     const { userAccesToken, sortedTimetableData, setSortedTimetableData } =
         useUser();
 
     const navigation = useNavigation();
+    const theme = useTheme();
 
     const scrollViewRef = useRef(null);
 
@@ -145,7 +144,6 @@ export default function TimetableContent({ route }) {
                     >
                         <Text
                             style={{
-                                color: theme.colors.txt.txt1,
                                 fontWeight: 600,
                                 fontSize: 18,
                             }}
@@ -319,7 +317,6 @@ const CourseBox = ({ course, navigation, theme, timetableViewDims }) => {
                                 fontSize: 18,
                                 borderColor: theme.colors.txt.txt1,
                                 borderWidth: 1.2,
-                                color: theme.colors.txt.txt1,
                                 elevation: 14,
                             }}
                         >
@@ -378,7 +375,6 @@ const CourseBox = ({ course, navigation, theme, timetableViewDims }) => {
                         <Text
                             style={{
                                 fontSize: 13,
-                                color: theme.colors.txt.txt1,
                             }}
                         >
                             {teacher}
@@ -392,7 +388,6 @@ const CourseBox = ({ course, navigation, theme, timetableViewDims }) => {
                         >
                             <Text
                                 style={{
-                                    color: theme.colors.txt.txt1,
                                     fontSize: 14,
                                     fontWeight: 300,
                                 }}
@@ -404,7 +399,6 @@ const CourseBox = ({ course, navigation, theme, timetableViewDims }) => {
                             {/* </View> */}
                             <Text
                                 style={{
-                                    color: theme.colors.txt.txt1,
                                     fontSize: 14,
                                     fontWeight: 300,
                                 }}

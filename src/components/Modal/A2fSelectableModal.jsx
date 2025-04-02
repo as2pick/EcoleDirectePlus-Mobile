@@ -54,10 +54,7 @@ export default function A2fSelectableModal({
                 style={[
                     styles.renderItemText,
                     { color: colors.txt.txt3 },
-                    selectedItem === item && [
-                        styles.renderItemTextSelected,
-                        { color: colors.txt.txt1 },
-                    ],
+                    selectedItem === item && [styles.renderItemTextSelected],
                 ]}
             >
                 {item}
@@ -89,7 +86,6 @@ export default function A2fSelectableModal({
                                     colors.bg.bg1,
                                     0.5
                                 ),
-                                color: colors.txt.txt1,
                             },
                         ]}
                     >
@@ -106,16 +102,7 @@ export default function A2fSelectableModal({
                         Ce formulaire est une mesure de sécurité mise en place par
                         EcoleDirecte afin de vérifier votre identité.
                     </Text>
-                    <Text
-                        style={[
-                            styles.question,
-                            {
-                                color: colors.txt.txt1,
-                            },
-                        ]}
-                    >
-                        {question}
-                    </Text>
+                    <Text style={[styles.question]}>{question}</Text>
                     <View style={{ alignItems: "center" }}>
                         <FlatList
                             data={items}
@@ -164,7 +151,6 @@ export default function A2fSelectableModal({
                                 style={[
                                     styles.buttonSubmit,
                                     {
-                                        color: colors.txt.txt1,
                                         backgroundColor: colors.border,
                                     },
                                 ]}

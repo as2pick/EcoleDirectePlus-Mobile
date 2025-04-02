@@ -1,4 +1,4 @@
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useTheme } from "@react-navigation/native";
 import moment from "moment";
 import { useCallback, useEffect, useState } from "react";
 import { Text, View } from "react-native";
@@ -14,8 +14,8 @@ import { CustomTopHeader } from "../../../components";
 import { toHoursMinutes, toMilliseconds } from "../../../utils/time";
 
 export default function CourseDetails({ route }) {
-    const { theme, courseData } = route.params;
-    const { colors } = theme;
+    const { courseData } = route.params;
+    const { colors } = useTheme();
 
     const [now, setNow] = useState(moment());
     const [startCourseTiming, setStartCourseTiming] = useState("");
@@ -181,7 +181,6 @@ export default function CourseDetails({ route }) {
                                 <ClockIcon />
                                 <Text
                                     style={{
-                                        color: colors.txt.txt1,
                                         fontSize: 17.5,
                                         fontWeight: 600,
                                         marginLeft: 15,
@@ -199,7 +198,6 @@ export default function CourseDetails({ route }) {
                                 <TrashIcon />
                                 <Text
                                     style={{
-                                        color: colors.txt.txt1,
                                         fontSize: 17.5,
                                         fontWeight: 600,
                                         marginLeft: 15,
@@ -217,7 +215,6 @@ export default function CourseDetails({ route }) {
                                 <PenSquareIcon />
                                 <Text
                                     style={{
-                                        color: colors.txt.txt1,
                                         fontSize: 17.5,
                                         fontWeight: 600,
                                         marginLeft: 15,
@@ -235,7 +232,6 @@ export default function CourseDetails({ route }) {
                                 <BellOffIcon />
                                 <Text
                                     style={{
-                                        color: colors.txt.txt1,
                                         fontSize: 17.5,
                                         fontWeight: 600,
                                         marginLeft: 15,
@@ -260,7 +256,6 @@ export default function CourseDetails({ route }) {
                                 <HourglassIcon />
                                 <Text
                                     style={{
-                                        color: colors.txt.txt1,
                                         fontSize: 17.5,
                                         fontWeight: 600,
                                         marginLeft: 30,
@@ -289,7 +284,6 @@ export default function CourseDetails({ route }) {
                                 <PersonIcon />
                                 <Text
                                     style={{
-                                        color: colors.txt.txt1,
                                         fontSize: 17.5,
                                         fontWeight: 600,
                                         marginLeft: 30,
@@ -307,7 +301,6 @@ export default function CourseDetails({ route }) {
                                 <DoorOpenIcon />
                                 <Text
                                     style={{
-                                        color: colors.txt.txt1,
                                         fontSize: 17.5,
                                         fontWeight: 600,
                                         marginLeft: 30,
@@ -325,7 +318,6 @@ export default function CourseDetails({ route }) {
                                 <PeoplesIcon />
                                 <Text
                                     style={{
-                                        color: colors.txt.txt1,
                                         fontSize: 17.5,
                                         fontWeight: 600,
                                         marginLeft: 30,
@@ -354,7 +346,6 @@ export default function CourseDetails({ route }) {
                     >
                         <Text
                             style={{
-                                color: colors.txt.txt1,
                                 fontSize: 18,
                                 textAlign: "center",
                                 fontWeight: 450,
@@ -373,7 +364,6 @@ export default function CourseDetails({ route }) {
                     >
                         <Text
                             style={{
-                                color: colors.txt.txt1,
                                 fontSize: 18,
                                 fontWeight: 450,
                             }}

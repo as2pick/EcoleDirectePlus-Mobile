@@ -2,6 +2,7 @@ export const routesNames = {
     auth: {
         login: "auth_login",
         privacyPolicy: "auth_privacy_pol",
+        settings: "auth_varaible_settings",
     },
     client: {
         grades: "client_grades",
@@ -10,8 +11,9 @@ export const routesNames = {
         timetable: "client_timetable",
         messaging: "client_messaging",
     },
-    settings: {},
     navigators: {
+        settings: "navigators_variable_settings",
+
         splash: "navigators_splash",
         root: "navigators_root",
         authentification: "navigators_authentification",

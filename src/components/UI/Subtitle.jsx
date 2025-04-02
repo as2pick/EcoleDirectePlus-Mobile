@@ -6,11 +6,7 @@ import { UiStyles } from "./UiStyles";
 export default function Subtitle({ children, customStyle = {} }) {
     const { colors } = useTheme();
 
-    const combinedStyles = StyleSheet.flatten([
-        UiStyles.subtitle,
-        customStyle,
-        { color: colors.txt.txt1 },
-    ]);
+    const combinedStyles = StyleSheet.flatten([UiStyles.subtitle, customStyle]);
 
     return (
         <Text style={combinedStyles} accessible={true} accessibilityRole="text">

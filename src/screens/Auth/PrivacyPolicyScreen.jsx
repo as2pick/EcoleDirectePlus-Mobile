@@ -54,7 +54,7 @@ const Link = ({ href, isPeople = false, children }) => {
     );
 };
 
-export default function PrivacyPolicyScreen({ theme }) {
+export default function PrivacyPolicyScreen() {
     return (
         <>
             <CustomTopHeader
@@ -417,14 +417,7 @@ export default function PrivacyPolicyScreen({ theme }) {
                         </Link>
                     </Paragraph>
 
-                    <Text
-                        style={[
-                            {
-                                color: theme.colors.txt.txt1,
-                            },
-                            styles.copyleft,
-                        ]}
-                    >
+                    <Text style={[styles.copyleft]}>
                         Copyleft 2025 <CopyLeft size={17} /> Ecole Directe Plus
                     </Text>
                 </View>
