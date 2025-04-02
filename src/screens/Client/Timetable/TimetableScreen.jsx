@@ -1,7 +1,6 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import React, { useEffect } from "react";
+import React from "react";
 import { GLOBALS_DATAS } from "../../../constants/device/globals";
-import { useAppSettings } from "../../../context/AppSettingsContext";
 import { routesNames } from "../../../router/config/routesNames";
 import CourseDetails from "./CourseDetails";
 import TimetableContent from "./TimetableContent";
@@ -15,11 +14,7 @@ export default function TimetableScreen() {
             timetable: { course_details, content },
         },
     } = routesNames;
-    const { isDarkTheme } = useAppSettings();
 
-    useEffect(() => {
-        console.log(isDarkTheme, "daktheme");
-    }, [isDarkTheme]);
     return (
         <Stack.Navigator
             initialRouteName={content}
