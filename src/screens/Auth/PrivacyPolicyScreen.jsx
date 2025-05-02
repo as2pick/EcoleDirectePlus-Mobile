@@ -9,6 +9,7 @@ import {
     Subtitle,
     Title,
 } from "../../components";
+import { CONFIG } from "../../constants/config";
 
 const COLABORATORS = {
     main: {
@@ -48,7 +49,7 @@ const Link = ({ href, isPeople = false, children }) => {
               color: colors.txt.txt2,
           };
     return (
-        <LinkText url={href} styles={styles}>
+        <LinkText href={String(href)} styles={styles}>
             {children}
         </LinkText>
     );
@@ -335,6 +336,8 @@ export default function PrivacyPolicyScreen() {
                     </Paragraph>
                     <Paragraph>
                         {"Dépendances \n"}
+                        {"- EXPO\n"}
+                        {"- Expo Status Bar\n"}
                         {"- React\n"}
                         {"- React Native\n"}
                         {"- React Native ASYNC Storage\n"}
@@ -367,7 +370,7 @@ export default function PrivacyPolicyScreen() {
                     </Paragraph>
                     <Paragraph>
                         • Curieux et motivé ? Rejoignez nous et participez au
-                        développement d'Ecole Directe Plus à travers le{" "}
+                        développement d'Ecole Directe Plus Mobile à travers le{" "}
                         <Link
                             href={
                                 "https://github.com/as2pick/EcoleDirectePlus-Mobile"
@@ -380,9 +383,7 @@ export default function PrivacyPolicyScreen() {
                     <Paragraph>
                         • Rencontrez la communauté d'Ecole Directe Plus en rejoignant
                         le{" "}
-                        <Link href={"https://discord.gg/AKAqXfTgvE"}>
-                            serveur Discord.
-                        </Link>
+                        <Link href={CONFIG.discordInviteLink}>serveur Discord.</Link>
                     </Paragraph>
                     <Separation />
                     <Title customStyle={styles.title}>License (MIT)</Title>

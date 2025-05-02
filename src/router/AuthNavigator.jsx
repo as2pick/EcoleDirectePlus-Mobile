@@ -1,14 +1,12 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useState } from "react";
-import { Text, TextInput } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useSingIn } from "../context/SignInContext";
 import { useUser } from "../context/UserContext";
 import SettingsScreen from "../screens/Settings/SettingsScreen";
 import SplashScreen from "../screens/Splash/SplashScreen";
 import { THEMES } from "../themes/themes";
-import setDefaultProps from "../utils/setDefaultProps";
 import LoginStack from "./LoginStack";
 import RootTabs from "./RootTabs";
 import { routesNames } from "./config/routesNames";
@@ -22,12 +20,12 @@ export default function AuthNavigator() {
         navigators: { authentification, root, splash, settings },
     } = routesNames;
     const [theme, setTheme] = useState(THEMES.etheral);
-    setDefaultProps(Text, {
-        style: [theme.fonts.regular, { color: theme.colors.txt.txt1 }],
-    });
-    setDefaultProps(TextInput, {
-        style: [theme.fonts.regular, { color: theme.colors.txt.txt1 }],
-    });
+    // setDefaultProps(Text, {
+    //     style: [theme.fonts.regular, { color: theme.colors.txt.txt1 }],
+    // });
+    // setDefaultProps(TextInput, {
+    //     style: [theme.fonts.regular, { color: theme.colors.txt.txt1 }],
+    // });
     return (
         <GestureHandlerRootView>
             <NavigationContainer theme={theme}>

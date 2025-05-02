@@ -81,7 +81,7 @@ export const SignInProvider = ({ children }) => {
     const bootstrapAsync = async () => {
         try {
             const credentials = await authService.restoreCredentials();
-            if (credentials) {
+            if (credentials.password && credentials.username) {
                 const gtkCookie = await authService.generateGTK();
 
                 const getConnectionDatas = JSON.parse(credentials.password);

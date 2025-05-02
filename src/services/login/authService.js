@@ -1,6 +1,6 @@
 import fetchApi from "../fetchApi";
 
-import * as Keychain from "react-native-keychain";
+import * as SecureStore from "expo-secure-store";
 import { getCookiesFromResponse } from "../responseUtils";
 import { getResponseChoices, sendResponseChoice } from "./doubleAuth";
 
@@ -59,15 +59,22 @@ const authService = {
         ).then((response) => (response.code === 200 ? true : false));
     },
     saveCredentials: async (token, userId, loginDatas) => {
-        Keychain.setGenericPassword(
-            JSON.stringify({ userLoginToken: token, userId: userId }),
-            JSON.stringify(loginDatas)
+        await SecureStore.setItemAsync(
+            "username",
+            JSON.stringify({ userLoginToken: token, userId: userId })
         );
+        await SecureStore.setItemAsync("password", JSON.stringify(loginDatas));
     },
-    restoreCredentials: async () => Keychain.getGenericPassword(),
-    deleteCredentials: async () => Keychain.resetGenericPassword(),
+    restoreCredentials: async () => ({
+        password: await SecureStore.getItemAsync("password"),
+        username: await SecureStore.getItemAsync("username"),
+    }),
+    deleteCredentials: async () => {
+        await SecureStore.deleteItemAsync("password");
+        await SecureStore.deleteItemAsync("username");
+    },
     getUserId: async () =>
-        await JSON.parse(await Keychain.getGenericPassword()).username.userId,
+        await JSON.parse(await SecureStore.getItemAsync("userame")).userId,
 };
 
 export default authService;

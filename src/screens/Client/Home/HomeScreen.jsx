@@ -1,11 +1,11 @@
 import { Button } from "@react-navigation/elements";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import * as Keychain from "react-native-keychain";
 import { SafeAreaView } from "react-native-safe-area-context";
 import InDev from "../../../components/UI/InDev";
 import { useUser } from "../../../context/UserContext";
 import { routesNames } from "../../../router/config/routesNames";
+import authService from "../../../services/login/authService";
 
 export default function HomeScreen() {
     const { setIsConnected } = useUser();
@@ -15,7 +15,7 @@ export default function HomeScreen() {
             {/* <EDPLogo /> */}
             <Button
                 onPress={async () => {
-                    await Keychain.resetGenericPassword();
+                    await authService.deleteCredentials();
                     await setIsConnected(false);
                 }}
             >
