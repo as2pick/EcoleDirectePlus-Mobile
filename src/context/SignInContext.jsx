@@ -9,6 +9,7 @@ import React, {
 import { getApiMessage } from "../constants/api/codes";
 
 import { API } from "../constants/api/api";
+import dataManager from "../helpers/dataManager";
 import authService from "../services/login/authService";
 import { useUser } from "./UserContext";
 
@@ -26,6 +27,7 @@ export const SignInProvider = ({ children }) => {
         setGlobalUserData,
         globalUserData /* --> useless, just for display */,
         setUserAccesToken,
+        userAccesToken,
         setIsConnected,
     } = useUser();
 
@@ -35,15 +37,12 @@ export const SignInProvider = ({ children }) => {
                 return {
                     ...state,
                     userToken: action.token,
-                    isLoading: false,
                 };
-
             case "SIGN_IN":
                 return {
                     ...state,
                     isSignOut: false,
                     userToken: action.token,
-                    isLoading: false,
                 };
             case "SIGN_OUT":
                 return {
@@ -52,6 +51,13 @@ export const SignInProvider = ({ children }) => {
                     userToken: null,
                     isLoading: false,
                 };
+            case "SET_LOADING":
+                return {
+                    ...state,
+                    isLoading: action.value,
+                };
+            default:
+                return state;
         }
     };
 
@@ -76,6 +82,8 @@ export const SignInProvider = ({ children }) => {
         setSuccedLogin(true);
         API.USER_ID = data.accounts[0].id;
         setIsConnected(true);
+        //
+        //
     };
 
     const bootstrapAsync = async () => {
@@ -102,7 +110,7 @@ export const SignInProvider = ({ children }) => {
                         console.error("Error in login of restoring token : ", error)
                     );
                 // here token is restored sucessfully
-                console.log("Token renewed sucessfully");
+                // console.log("Token renewed sucessfully");
             } else {
                 // need to login
                 console.log("No existing token or invalid ID, please login");
@@ -230,12 +238,12 @@ export const SignInProvider = ({ children }) => {
     }, [a2fInfos.fa]);
 
     useEffect(() => {
-        if (state.isLoading || state.isSignOut || !state.userToken) return;
-        // here we are connected
-        console.log(
-            `Sucessfully connected as ${globalUserData.prenom} ${globalUserData.nom}`
-        );
-    }, [state]);
+        if (state.isLoading && state.userToken) {
+            dataManager(state.userToken).finally(() => {
+                dispatch({ type: "SET_LOADING", value: false });
+            });
+        }
+    }, [state.isLoading, state.userToken]); // this useEffect is to load all API datas in the splash screen to save performance
 
     const authContext = useMemo(
         () => ({

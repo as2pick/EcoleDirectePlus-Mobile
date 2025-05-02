@@ -95,12 +95,11 @@ export default function LoginScreen() {
                 triggerViewArr={[showLoader, setShowLoader]}
             />
 
-            <View style={styles.form} >
+            <View style={styles.form}>
                 <View style={styles.logo.box}>
                     <EDPLogo size={88} />
                     <Text
                         style={[styles.logo.text, { color: theme.colors.txt.txt3 }]}
-                        
                     >
                         Connexion
                     </Text>

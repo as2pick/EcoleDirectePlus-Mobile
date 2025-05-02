@@ -21,7 +21,7 @@ import { CONFIG } from "../../../constants/config";
 import { GLOBALS_DATAS } from "../../../constants/device/globals";
 import { timetableConfig } from "../../../constants/features/timetableConfig";
 import { useUser } from "../../../context/UserContext";
-import getTimetable from "../../../resolver/timetable";
+import storageService from "../../../helpers/storageService";
 import { routesNames } from "../../../router/config/routesNames";
 import { addOpacityToCssRgb } from "../../../utils/colorGenerator";
 
@@ -61,10 +61,13 @@ export default function TimetableContent() {
         useCallback(() => {
             if (!sortedTimetableData || sortedTimetableData.length === 0) {
                 setLoading(true);
-                getTimetable(userAccesToken).then((userTimetable) => {
-                    setSortedTimetableData(userTimetable);
-                    setLoading(false);
-                });
+                storageService
+                    .getter({ originKey: "timetable" })
+                    .then((userTimetable) => {
+                        console.log(userTimetable, "urs");
+                        setSortedTimetableData(userTimetable);
+                        setLoading(false);
+                    });
             }
         }, [userAccesToken, sortedTimetableData])
     );

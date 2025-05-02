@@ -158,7 +158,7 @@ const sortedTimetable = async (timetable) => {
     return FinalSortedTimetable;
 };
 
-export default async function getTimetable(token, offset = 0) {
+export default async function timetableResolver({ token, offset = 0 }) {
     const baseMonday = getPreviousMonday(CONFIG.dateNow);
     const requestedMonday = addDaysToDateString(baseMonday, offset * 7);
 
