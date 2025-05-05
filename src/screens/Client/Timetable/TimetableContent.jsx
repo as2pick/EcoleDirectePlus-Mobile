@@ -20,6 +20,7 @@ import VerticalScrollView from "../../../components/Layout/VerticalScrollView";
 import { CONFIG } from "../../../constants/config";
 import { GLOBALS_DATAS } from "../../../constants/device/globals";
 import { timetableConfig } from "../../../constants/features/timetableConfig";
+
 import { useUser } from "../../../context/UserContext";
 import storageService from "../../../helpers/storageService";
 import { routesNames } from "../../../router/config/routesNames";

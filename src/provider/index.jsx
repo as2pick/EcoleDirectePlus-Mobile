@@ -1,4 +1,3 @@
-import { Platform, StatusBar, View } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { AppSettingsProvider } from "../context/AppSettingsContext";
 import { GlobalAppProvider } from "../context/GlobalAppContext";
@@ -12,15 +11,15 @@ export default function RootProviders({ children }) {
                 <AppSettingsProvider>
                     <UserProvider>
                         <SignInProvider>
-                            <View style={{ flex: 1 }}>
-                                {Platform.OS === "android" && (
+                            {/* <View style={{ flex: 1 }}> */}
+                            {/* {Platform.OS === "android" && (
                                     <StatusBar
                                         backgroundColor="transparent"
                                         translucent={true}
                                     />
-                                )}
-                                {children}
-                            </View>
+                                )} */}
+                            {children}
+                            {/* </View> */}
                         </SignInProvider>
                     </UserProvider>
                 </AppSettingsProvider>

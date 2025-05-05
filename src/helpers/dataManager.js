@@ -3,6 +3,7 @@ import { originName } from "../resolver/resolver";
 import apiService from "./apiService";
 
 export default async function dataManager(userToken) {
+    await AsyncStorage.clear();
     const rawStorageKeys = await AsyncStorage.getAllKeys();
     const rawStorage = await AsyncStorage.multiGet(rawStorageKeys);
 
@@ -20,7 +21,8 @@ export default async function dataManager(userToken) {
             apiService({ userToken: userToken, origin: element })
         );
     }
-
     // we need timetable, homeworks, grades, messaging
+
+    // compare storage and api
 }
 
