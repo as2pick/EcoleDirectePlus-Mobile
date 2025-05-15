@@ -1,8 +1,11 @@
-import fetchApi from "../fetchApi";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Constants from "expo-constants";
 import * as SecureStore from "expo-secure-store";
+import { payloadHelper } from "../../helpers/cryptoHelper";
+import fetchApi from "../fetchApi";
 import { getCookiesFromResponse } from "../responseUtils";
 import { getResponseChoices, sendResponseChoice } from "./doubleAuth";
+const { localSecretKeyStoreName } = Constants.expoConfig.extra;
 
 const authService = {
     generateGTK: async () => {
@@ -47,34 +50,74 @@ const authService = {
         return await sendResponseChoice(token, choice);
     },
 
-    checkTokenValidity: async (token, userId) => {
-        return await fetchApi(
-            `https://api.ecoledirecte.com/v3/E/${userId}/visios.awp?verbe=get&{API_VERSION}`, // check token of current account !
-            {
-                headers: {
-                    "X-Token": token,
-                },
-                method: "POST",
-            }
-        ).then((response) => (response.code === 200 ? true : false));
-    },
     saveCredentials: async (token, userId, loginDatas) => {
         await SecureStore.setItemAsync(
             "username",
             JSON.stringify({ userLoginToken: token, userId: userId })
         );
-        await SecureStore.setItemAsync("password", JSON.stringify(loginDatas));
+
+        await SecureStore.setItemAsync("password", JSON.stringify(loginDatas)); // stringify loginDatas
+        const cipherText = await payloadHelper.encrypt({
+            connectionToken: token,
+            userId: userId,
+        });
+
+        await SecureStore.setItemAsync(
+            `${localSecretKeyStoreName}Payload`,
+            cipherText
+        );
     },
     restoreCredentials: async () => ({
         password: await SecureStore.getItemAsync("password"),
         username: await SecureStore.getItemAsync("username"),
+        cipherText: await SecureStore.getItemAsync(
+            `${localSecretKeyStoreName}Payload`
+        ),
     }),
     deleteCredentials: async () => {
-        await SecureStore.deleteItemAsync("password");
-        await SecureStore.deleteItemAsync("username");
+        const keyNames = [
+            localSecretKeyStoreName,
+            `${localSecretKeyStoreName}Payload`,
+            "password",
+            "username",
+            "userData",
+        ];
+        keyNames.map(async (key) => {
+            await SecureStore.deleteItemAsync(key);
+            console.log("Deleted key:", key);
+        });
+        await AsyncStorage.clear();
     },
     getUserId: async () =>
         await JSON.parse(await SecureStore.getItemAsync("userame")).userId,
+    storeUserData: async ({
+        id,
+        // identifiant,
+        prenom,
+        nom,
+        email,
+        nomEtablissement,
+        profile: {
+            sexe,
+            telPortable,
+            classe: { code, libelle },
+        },
+    }) => {
+        const userData = {
+            id,
+            name: prenom,
+            surname: nom,
+            sex: sexe,
+            phone: telPortable,
+            email,
+            schoolName: nomEtablissement,
+            class: {
+                libelle,
+                code,
+            },
+        };
+        await AsyncStorage.setItem("userData", JSON.stringify(userData));
+    },
 };
 
 export default authService;

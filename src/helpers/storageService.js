@@ -1,8 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { isJsonObject } from "../utils/json";
 
-const storageService = {
-    // Fonction pour stocker les données
+export const storageServiceStates = {
     setter: async ({ originKey, dataToStore }) => {
         if (isJsonObject(dataToStore)) {
             dataToStore = JSON.stringify(dataToStore);
@@ -23,6 +22,4 @@ const storageService = {
         return null;
     },
 };
-
-export default storageService;
 

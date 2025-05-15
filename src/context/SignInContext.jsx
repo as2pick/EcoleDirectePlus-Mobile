@@ -1,4 +1,4 @@
-import React, {
+import {
     createContext,
     useContext,
     useEffect,
@@ -8,10 +8,11 @@ import React, {
 } from "react";
 import { getApiMessage } from "../constants/api/codes";
 
-import { API } from "../constants/api/api";
 import dataManager from "../helpers/dataManager";
 import authService from "../services/login/authService";
 import { useUser } from "./UserContext";
+import { tryLoginWithStoredCreds, tryRestoreToken } from "./tools/bootstrapAsync";
+import storeDatas from "./tools/storeLoginDatas";
 
 const signInContext = createContext();
 
@@ -64,7 +65,6 @@ export const SignInProvider = ({ children }) => {
     const [mcqDatas, setMcqDatas] = useState("");
     const [a2fInfos, setA2fInfos] = useState(defaultA2fInfos);
     const [choice, setChoice] = useState("");
-    const [successLogin, setSuccedLogin] = useState(false);
     const [apiError, setApiError] = useState(null);
     const [keepConnected, setKeepConnected] = useState(true);
     const [gtk, setGtk] = useState("");
@@ -75,47 +75,65 @@ export const SignInProvider = ({ children }) => {
         isSignOut: false,
         userToken: null,
     });
-
-    const setUserData = (data, token) => {
-        setGlobalUserData(data.accounts[0]);
-        setUserAccesToken(token);
-        setSuccedLogin(true);
-        API.USER_ID = data.accounts[0].id;
-        setIsConnected(true);
-        //
-        //
+    const userSetters = {
+        setGlobalUserData,
+        setUserAccesToken,
+        setIsConnected,
     };
+    // const setUserData = (data, token) => {
+    //     if (!data) {
+    //         AsyncStorage.getItem("userData")
+    //             .then((usrData) => {
+    //                 if (usrData) {
+    //                     data = JSON.parse(usrData);
+    //                     console.log(data);
+    //                 }
+    //                 storeDatas(data, token);
+    //             })
+    //             .catch((err) => {
+    //                 console.error(
+    //                     "Erreur lors de la récupération des données :",
+    //                     err
+    //                 );
+    //             });
+    //     } else {
+    //         storeDatas(data, token);
+    //     }
+    // };
 
     const bootstrapAsync = async () => {
         try {
             const credentials = await authService.restoreCredentials();
-            if (credentials.password && credentials.username) {
-                const gtkCookie = await authService.generateGTK();
 
-                const getConnectionDatas = JSON.parse(credentials.password);
+            const hasCipher = Boolean(credentials?.cipherText);
+            const hasLoginCreds = Boolean(
+                credentials?.password && credentials?.username
+            );
 
-                authService
-                    .login({
-                        authConnectionDatas: getConnectionDatas,
-                        headers: {
-                            Cookie: gtkCookie,
-                            "X-GTK": gtkCookie.split("=")[1],
-                        },
-                    })
-                    .then(({ data, token }) => {
-                        dispatch({ type: "RESTORE_TOKEN", token });
-                        setUserData(data, token);
-                    })
-                    .catch((error) =>
-                        console.error("Error in login of restoring token : ", error)
-                    );
-                // here token is restored sucessfully
-                // console.log("Token renewed sucessfully");
-            } else {
-                // need to login
-                console.log("No existing token or invalid ID, please login");
-                dispatch({ type: "SIGN_OUT" });
+            if (hasCipher) {
+                const success = await tryLoginWithStoredCreds({
+                    dispatch,
+                    cipherText: credentials.cipherText,
+                    userSetters,
+                });
+
+                if (success) return;
             }
+
+            if (hasLoginCreds) {
+                const restored = await tryRestoreToken({
+                    dispatch,
+                    credentialsPassword: credentials.password,
+                    userSetters,
+                });
+
+                if (restored) return;
+
+                console.log("Error when generating user token");
+            }
+
+            console.log("No valid credentials found, please login");
+            dispatch({ type: "SIGN_OUT" });
         } catch (error) {
             console.error("ERROR IN BOOTSTRAP ASYNC", error);
             dispatch({ type: "SIGN_OUT" });
@@ -125,8 +143,10 @@ export const SignInProvider = ({ children }) => {
     const handleLogin = async ({ username, password, keepConnected }) => {
         // console.log(username, password, keepConnected);
 
-        setKeepConnected(keepConnected);
+        // dispatch({ type: "SET_LOADING", value: true });
 
+        setKeepConnected(keepConnected);
+        console.log(keepConnected);
         const gtkCookie = await authService.generateGTK();
         const apiLoginData = await authService.login({
             username: username,
@@ -147,16 +167,16 @@ export const SignInProvider = ({ children }) => {
         switch (apiLoginData.code) {
             case 200:
                 const { data } = apiLoginData;
-                const account = data.accounts[0];
+                const accountData = data.accounts[0];
                 if (keepConnected) {
-                    await authService.saveCredentials(token, account.id, {
+                    await authService.saveCredentials(token, accountData.id, {
                         identifiant: encodeURIComponent(username),
                         motdepasse: encodeURIComponent(password),
                     });
                 }
 
                 dispatch({ type: "SIGN_IN", token: token });
-                setUserData(data, token);
+                storeDatas({ data: accountData, token, ...userSetters });
                 break;
             case 250:
                 authService.startA2fProcess(token).then(({ choices, question }) =>
@@ -189,7 +209,9 @@ export const SignInProvider = ({ children }) => {
     };
     useEffect(() => {
         // Ftch the token from storage then navigate to our appropriate place
+
         bootstrapAsync();
+        // console.log("bootstrapasync");
     }, []);
 
     const handleA2fSubmit = async (choice) => {
@@ -233,12 +255,17 @@ export const SignInProvider = ({ children }) => {
                         a2fInfos
                     );
                 }
-                setUserData(accountData.data, accountData.token);
+                storeDatas({
+                    data: accountData.data.accounts[0],
+                    token: accountData.token,
+                    ...userSetters,
+                });
             });
     }, [a2fInfos.fa]);
 
     useEffect(() => {
         if (state.isLoading && state.userToken) {
+            // dispatch({ type: "SET_LOADING", value: false });
             dataManager(state.userToken).finally(() => {
                 dispatch({ type: "SET_LOADING", value: false });
             });
@@ -252,15 +279,13 @@ export const SignInProvider = ({ children }) => {
             state,
             mcqDatas,
             choice,
-            successLogin,
             apiError,
             setMcqDatas,
             setChoice,
-            setSuccedLogin,
             setApiError,
         }),
 
-        [mcqDatas, choice, state, successLogin, apiError]
+        [mcqDatas, choice, state, apiError]
     );
 
     return (

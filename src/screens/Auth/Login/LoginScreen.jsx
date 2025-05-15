@@ -1,5 +1,5 @@
 import { useNavigation, useTheme } from "@react-navigation/native";
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AccountIcon from "../../../../assets/svg/AccountIcon.jsx";
@@ -134,7 +134,7 @@ export default function LoginScreen() {
                                     setPassword(data);
                                 }}
                                 value={password}
-                                secureTextEntry
+                                // secureTextEntry
                                 style={[
                                     styles.input.case,
                                     {

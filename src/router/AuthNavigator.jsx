@@ -4,7 +4,6 @@ import { useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useSingIn } from "../context/SignInContext";
 import { useUser } from "../context/UserContext";
-import SettingsScreen from "../screens/Settings/SettingsScreen";
 import SplashScreen from "../screens/Splash/SplashScreen";
 import { THEMES } from "../themes/themes";
 import LoginStack from "./LoginStack";
@@ -15,11 +14,12 @@ const Stack = createNativeStackNavigator();
 
 export default function AuthNavigator() {
     const { state } = useSingIn();
-    const { isConnected } = useUser();
+    const { isConnected, userAccesToken } = useUser();
     const {
         navigators: { authentification, root, splash, settings },
     } = routesNames;
     const [theme, setTheme] = useState(THEMES.etheral);
+
     // setDefaultProps(Text, {
     //     style: [theme.fonts.regular, { color: theme.colors.txt.txt1 }],
     // });
@@ -27,27 +27,15 @@ export default function AuthNavigator() {
     //     style: [theme.fonts.regular, { color: theme.colors.txt.txt1 }],
     // });
     return (
-        <GestureHandlerRootView>
+        <GestureHandlerRootView style={{ flex: 1 }}>
             <NavigationContainer theme={theme}>
-                <Stack.Navigator
-                    screenOptions={{
-                        navigationBarColor: "rgba(0, 0, 0, 0)", // hide bad black safe zones
-                        navigationBarTranslucent: true,
-                        headerShown: false,
-                    }}
-                >
-                    {state.isLoading ? (
-                        <Stack.Screen name={splash} component={SplashScreen} />
-                    ) : isConnected ? (
-                        <Stack.Screen name={root} component={RootTabs} />
-                    ) : (
-                        <Stack.Screen
-                            name={authentification}
-                            component={LoginStack}
-                        />
-                    )}
-                    <Stack.Screen name={settings} component={SettingsScreen} />
-                </Stack.Navigator>
+                {state.isLoading ? (
+                    <SplashScreen />
+                ) : isConnected ? (
+                    <RootTabs />
+                ) : (
+                    <LoginStack />
+                )}
             </NavigationContainer>
         </GestureHandlerRootView>
     );
