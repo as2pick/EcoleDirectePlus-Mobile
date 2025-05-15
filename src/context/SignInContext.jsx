@@ -37,13 +37,13 @@ export const SignInProvider = ({ children }) => {
             case "RESTORE_TOKEN":
                 return {
                     ...state,
-                    userToken: action.token,
+                    userToken: action.userToken,
                 };
             case "SIGN_IN":
                 return {
                     ...state,
                     isSignOut: false,
-                    userToken: action.token,
+                    userToken: action.userToken,
                 };
             case "SIGN_OUT":
                 return {
@@ -80,26 +80,6 @@ export const SignInProvider = ({ children }) => {
         setUserAccesToken,
         setIsConnected,
     };
-    // const setUserData = (data, token) => {
-    //     if (!data) {
-    //         AsyncStorage.getItem("userData")
-    //             .then((usrData) => {
-    //                 if (usrData) {
-    //                     data = JSON.parse(usrData);
-    //                     console.log(data);
-    //                 }
-    //                 storeDatas(data, token);
-    //             })
-    //             .catch((err) => {
-    //                 console.error(
-    //                     "Erreur lors de la récupération des données :",
-    //                     err
-    //                 );
-    //             });
-    //     } else {
-    //         storeDatas(data, token);
-    //     }
-    // };
 
     const bootstrapAsync = async () => {
         try {
@@ -146,7 +126,6 @@ export const SignInProvider = ({ children }) => {
         // dispatch({ type: "SET_LOADING", value: true });
 
         setKeepConnected(keepConnected);
-        console.log(keepConnected);
         const gtkCookie = await authService.generateGTK();
         const apiLoginData = await authService.login({
             username: username,
@@ -175,7 +154,7 @@ export const SignInProvider = ({ children }) => {
                     });
                 }
 
-                dispatch({ type: "SIGN_IN", token: token });
+                dispatch({ type: "SIGN_IN", userToken: token });
                 storeDatas({ data: accountData, token, ...userSetters });
                 break;
             case 250:
@@ -209,9 +188,7 @@ export const SignInProvider = ({ children }) => {
     };
     useEffect(() => {
         // Ftch the token from storage then navigate to our appropriate place
-
         bootstrapAsync();
-        // console.log("bootstrapasync");
     }, []);
 
     const handleA2fSubmit = async (choice) => {
@@ -246,7 +223,7 @@ export const SignInProvider = ({ children }) => {
             .then((accountData) => {
                 dispatch({
                     type: "SIGN_IN",
-                    token: accountData.token,
+                    userToken: accountData.token,
                 });
                 if (keepConnected) {
                     authService.saveCredentials(

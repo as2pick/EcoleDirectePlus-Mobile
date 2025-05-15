@@ -4,8 +4,6 @@ import apiService from "./apiService";
 import { storageServiceStates } from "./storageService";
 
 export default async function dataManager(userToken) {
-    // await AsyncStorage.clear();
-    // console.log("Storage Empty");
     const rawStorageKeys = await AsyncStorage.getAllKeys();
     const rawStorage = await AsyncStorage.multiGet(rawStorageKeys);
 
