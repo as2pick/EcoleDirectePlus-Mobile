@@ -1,12 +1,13 @@
 {
     "expo": {
-        "name": "EcoleDirectePlus-Mobile-EPO",
-        "slug": "EcoleDirectePlus-Mobile-EPO",
+        "name": "EcoleDirectePlus-Mobile",
+        "slug": "EcoleDirectePlus-Mobile",
         "version": "1.0.0",
         "orientation": "portrait",
         "icon": "./assets/icon.png",
-        "userInterfaceStyle": "light",
+        "userInterfaceStyle": "automatic",
         "newArchEnabled": true,
+        "platforms": ["android", "ios"],
         "splash": {
             "image": "./assets/splash-icon.png",
             "resizeMode": "contain",
@@ -26,16 +27,15 @@
                 "backgroundColor": "#ffffff"
             }
         },
-        "web": {
-            "favicon": "./assets/favicon.png"
-        },
+
         "plugins": ["expo-secure-store"],
         "extra": {
             "eas": {
                 "projectId": "af1bb224-a5bf-4931-971e-8ef02143898f"
             }
         },
-        "owner": "as2pick"
+        "owner": "as2pick",
+        "githubUrl": "https://github.com/as2pick/EcoleDirectePlus-Mobile"
     }
 }
 
