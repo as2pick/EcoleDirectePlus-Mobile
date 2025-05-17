@@ -11,6 +11,7 @@ import { getApiMessage } from "../constants/api/codes";
 import dataManager from "../helpers/dataManager";
 import authService from "../services/login/authService";
 import { useUser } from "./UserContext";
+import { completeA2fLogin, handleA2fSubmit } from "./tools/a2fHandler";
 import { tryLoginWithStoredCreds, tryRestoreToken } from "./tools/bootstrapAsync";
 import storeDatas from "./tools/storeLoginDatas";
 
@@ -44,6 +45,7 @@ export const SignInProvider = ({ children }) => {
                     ...state,
                     isSignOut: false,
                     userToken: action.userToken,
+                    isLoading: true, // important to allow app to fetch user data when loading screen appear
                 };
             case "SIGN_OUT":
                 return {
@@ -84,11 +86,8 @@ export const SignInProvider = ({ children }) => {
     const bootstrapAsync = async () => {
         try {
             const credentials = await authService.restoreCredentials();
-
             const hasCipher = Boolean(credentials?.cipherText);
-            const hasLoginCreds = Boolean(
-                credentials?.password && credentials?.username
-            );
+            const hasLoginCreds = Boolean(credentials?.password);
 
             if (hasCipher) {
                 const success = await tryLoginWithStoredCreds({
@@ -115,15 +114,13 @@ export const SignInProvider = ({ children }) => {
             console.log("No valid credentials found, please login");
             dispatch({ type: "SIGN_OUT" });
         } catch (error) {
-            console.error("ERROR IN BOOTSTRAP ASYNC", error);
+            console.error("ERROR IN BOOTSTRAPASYNC", error);
             dispatch({ type: "SIGN_OUT" });
         }
     };
 
     const handleLogin = async ({ username, password, keepConnected }) => {
         // console.log(username, password, keepConnected);
-
-        // dispatch({ type: "SET_LOADING", value: true });
 
         setKeepConnected(keepConnected);
         const gtkCookie = await authService.generateGTK();
@@ -187,62 +184,30 @@ export const SignInProvider = ({ children }) => {
         setGlobalUserData(null);
     };
     useEffect(() => {
-        // Ftch the token from storage then navigate to our appropriate place
         bootstrapAsync();
     }, []);
 
-    const handleA2fSubmit = async (choice) => {
-        authService.submitFormA2f(a2fToken, choice).then((fa) =>
-            setA2fInfos((prevState) => ({
-                ...prevState,
-                fa: [{ ...fa.data }],
-            }))
-        );
-
-        setChoice("");
-        authService.generateGTK().then((gtkCookie) => setGtk(gtkCookie));
-    };
-
     useEffect(() => {
         if (!choice) return;
-        handleA2fSubmit(choice);
+        handleA2fSubmit({ a2fToken, choice, setA2fInfos, setChoice, setGtk });
     }, [choice]);
 
     useEffect(() => {
         if (!a2fInfos.fa || a2fInfos.fa.length === 0) return;
 
-        authService
-            .login({
-                authConnectionDatas: a2fInfos,
-                headers: {
-                    Cookie: gtk, // we call login so generate new GTK (generated before in handleA2fSubmit)
-                    "X-GTK": gtk.split("=")[1], // we call login so generate new GTK (generated before in handleA2fSubmit)
-                    "X-Token": a2fToken,
-                },
-            })
-            .then((accountData) => {
-                dispatch({
-                    type: "SIGN_IN",
-                    userToken: accountData.token,
-                });
-                if (keepConnected) {
-                    authService.saveCredentials(
-                        accountData.token,
-                        accountData.data.accounts[0].id,
-                        a2fInfos
-                    );
-                }
-                storeDatas({
-                    data: accountData.data.accounts[0],
-                    token: accountData.token,
-                    ...userSetters,
-                });
-            });
+        completeA2fLogin({
+            a2fInfos,
+            a2fToken,
+            dispatch,
+            gtk,
+            keepConnected,
+            userSetters,
+        });
     }, [a2fInfos.fa]);
 
     useEffect(() => {
+        // console.log(state.userToken);
         if (state.isLoading && state.userToken) {
-            // dispatch({ type: "SET_LOADING", value: false });
             dataManager(state.userToken).finally(() => {
                 dispatch({ type: "SET_LOADING", value: false });
             });

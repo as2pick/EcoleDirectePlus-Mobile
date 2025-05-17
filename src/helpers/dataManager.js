@@ -1,22 +1,29 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { originName } from "../resolver/resolver";
+import { arraysEqual } from "../utils/json";
 import apiService from "./apiService";
-import { storageServiceStates } from "./storageService";
 
 export default async function dataManager(userToken) {
-    const rawStorageKeys = await AsyncStorage.getAllKeys();
+    let rawStorageKeys = await AsyncStorage.getAllKeys();
+    if (rawStorageKeys.includes("userData")) {
+        rawStorageKeys = rawStorageKeys.filter(
+            (userData) => userData !== "userData"
+        ); // remove user data from origins in storage
+    }
     const rawStorage = await AsyncStorage.multiGet(rawStorageKeys);
 
     // await AsyncStorage.clear();
     if (!rawStorage.length) {
+        console.log("Fetch All Origins");
         apiService({
             origin: "all",
             userToken: userToken /* origin="all" beacause storage is empty */,
         }); // fetch api;
     }
 
-    if (rawStorageKeys !== originName) {
+    if (arraysEqual(rawStorageKeys, originName)) {
         const missing = originName.filter((item) => !rawStorageKeys.includes(item));
+        console.log(`Fetch ${missing} datas`);
 
         missing.map((element) =>
             apiService({ userToken: userToken, origin: element })
@@ -24,17 +31,6 @@ export default async function dataManager(userToken) {
     }
 
     // here all data is in storage
-
-    storageServiceStates.getter({ originKey: "timetable" }).then((c) => {
-        console.log(c);
-    });
-
-    // rawStorageKeys.forEach((key) => {
-    //     storageServiceStates
-    //         .getter({ originKey: key })
-    //         .finally((c) => console.log(c));
-    // });
-    // we need timetable, homeworks, grades, messaging
 
     // compare storage and api
 }

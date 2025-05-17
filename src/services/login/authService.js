@@ -51,11 +51,6 @@ const authService = {
     },
 
     saveCredentials: async (token, userId, loginDatas) => {
-        await SecureStore.setItemAsync(
-            "username",
-            JSON.stringify({ userLoginToken: token, userId: userId })
-        );
-
         await SecureStore.setItemAsync("password", JSON.stringify(loginDatas)); // stringify loginDatas
         const cipherText = await payloadHelper.encrypt({
             connectionToken: token,
@@ -69,7 +64,6 @@ const authService = {
     },
     restoreCredentials: async () => ({
         password: await SecureStore.getItemAsync("password"),
-        username: await SecureStore.getItemAsync("username"),
         cipherText: await SecureStore.getItemAsync(
             `${localSecretKeyStoreName}Payload`
         ),
@@ -79,7 +73,6 @@ const authService = {
             localSecretKeyStoreName,
             `${localSecretKeyStoreName}Payload`,
             "password",
-            "username",
             "userData",
         ];
         keyNames.map(async (key) => {

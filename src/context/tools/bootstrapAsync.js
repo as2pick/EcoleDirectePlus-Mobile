@@ -10,7 +10,7 @@ import storeDatas from "./storeLoginDatas";
  * @param {Object} credentialsCipherText
  * @returns {Promise<string|null>}
  */
-// authTools.js
+
 export async function tryLoginWithStoredCreds({
     dispatch,
     cipherText,
@@ -69,7 +69,7 @@ export async function tryRestoreToken({
             ...userSetters,
         });
 
-        await authService.saveCredentials(token, accountData);
+        await authService.saveCredentials(token, accountData.id, authData);
         return true;
     } catch (error) {
         console.error("Error in tryRestoreToken:", error);
