@@ -183,6 +183,7 @@ export const SignInProvider = ({ children }) => {
         dispatch({ type: "SIGN_OUT" });
         setGlobalUserData(null);
     };
+
     useEffect(() => {
         bootstrapAsync();
     }, []);

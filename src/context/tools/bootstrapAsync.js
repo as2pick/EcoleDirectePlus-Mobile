@@ -33,7 +33,6 @@ export async function tryLoginWithStoredCreds({
                 ...userSetters,
             });
 
-            dispatch({ type: "SET_LOADING", value: false });
             return true;
         }
         return false;

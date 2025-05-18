@@ -2,6 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Constants from "expo-constants";
 import * as SecureStore from "expo-secure-store";
 import { payloadHelper } from "../../helpers/cryptoHelper";
+import { originName } from "../../resolver/resolver";
 import fetchApi from "../fetchApi";
 import { getCookiesFromResponse } from "../responseUtils";
 import { getResponseChoices, sendResponseChoice } from "./doubleAuth";
@@ -110,6 +111,17 @@ const authService = {
             },
         };
         await AsyncStorage.setItem("userData", JSON.stringify(userData));
+    },
+
+    deleteStoredApiDatas: async () => {
+        try {
+            originName.map((origin) => {
+                AsyncStorage.removeItem(origin);
+                console.log(`Deleted key in AsyncStorage ${origin}`);
+            });
+        } catch (e) {
+            console.log("Error in deleteStoredApiDatas", e);
+        }
     },
 };
 

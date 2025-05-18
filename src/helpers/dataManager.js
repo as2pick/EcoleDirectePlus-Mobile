@@ -15,18 +15,20 @@ export default async function dataManager(userToken) {
     // await AsyncStorage.clear();
     if (!rawStorage.length) {
         console.log("Fetch All Origins");
-        apiService({
+        await apiService({
             origin: "all",
-            userToken: userToken /* origin="all" beacause storage is empty */,
-        }); // fetch api;
+            userToken: userToken /* origin="all" because storage is empty */,
+        });
     }
 
     if (arraysEqual(rawStorageKeys, originName)) {
         const missing = originName.filter((item) => !rawStorageKeys.includes(item));
         console.log(`Fetch ${missing} datas`);
 
-        missing.map((element) =>
-            apiService({ userToken: userToken, origin: element })
+        await Promise.all(
+            missing.map((element) =>
+                apiService({ userToken: userToken, origin: element })
+            )
         );
     }
 
