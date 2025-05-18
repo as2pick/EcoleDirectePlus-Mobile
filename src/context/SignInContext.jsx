@@ -21,7 +21,6 @@ const defaultA2fInfos = {
     identifiant: null,
     motdepasse: null,
     fa: null,
-    userId: null,
 };
 
 export const SignInProvider = ({ children }) => {
@@ -194,17 +193,16 @@ export const SignInProvider = ({ children }) => {
     }, [choice]);
 
     useEffect(() => {
-        if (!a2fInfos.fa || a2fInfos.fa.length === 0) return;
-
+        if (!a2fInfos.fa || a2fInfos.fa.length === 0 || !gtk) return;
         completeA2fLogin({
             a2fInfos,
             a2fToken,
             dispatch,
-            gtk,
+            gtk: gtk,
             keepConnected,
             userSetters,
         });
-    }, [a2fInfos.fa]);
+    }, [a2fInfos.fa, gtk]);
 
     useEffect(() => {
         // console.log(state.userToken);
