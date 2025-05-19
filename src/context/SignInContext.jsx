@@ -205,7 +205,6 @@ export const SignInProvider = ({ children }) => {
     }, [a2fInfos.fa, gtk]);
 
     useEffect(() => {
-        // console.log(state.userToken);
         if (state.isLoading && state.userToken) {
             dataManager(state.userToken).finally(() => {
                 dispatch({ type: "SET_LOADING", value: false });

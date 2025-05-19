@@ -38,16 +38,14 @@ export const completeA2fLogin = async ({
     const account = accountData.data.accounts[0];
     const token = accountData.token;
 
-    dispatch({ type: "SIGN_IN", userToken: token });
-
     if (keepConnected) {
         await authService.saveCredentials(token, account.id, a2fInfos);
     }
-
     storeDatas({
         data: account,
         token,
         ...userSetters,
     });
+    dispatch({ type: "SIGN_IN", userToken: token });
 };
 

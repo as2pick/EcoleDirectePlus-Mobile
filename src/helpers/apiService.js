@@ -5,16 +5,14 @@ export default async function apiService({ origin, userToken, extra = null }) {
     if (origin !== "all" && !originName.includes(origin)) return;
 
     if (origin === "all") {
-        console.log(`Start to fetch all routes: ${originName}`);
+        // console.log(`Start to fetch all routes: ${originName}`);
         const promises = originName.map(async (origin) => {
             const resolverFunction = resolvers[origin];
             const data = await resolverFunction({ token: userToken, ...extra });
-            return storageServiceStates
-                .setter({
-                    originKey: origin,
-                    dataToStore: data,
-                })
-                .finally(() => console.log("stored"));
+            return storageServiceStates.setter({
+                originKey: origin,
+                dataToStore: data,
+            });
         });
 
         await Promise.all(promises);
@@ -26,7 +24,7 @@ export default async function apiService({ origin, userToken, extra = null }) {
             originKey: origin,
             dataToStore: result,
         });
-        console.log("Route fetched and stored.");
+        console.log(`Route ${origin} fetched and stored.`);
     }
 }
 

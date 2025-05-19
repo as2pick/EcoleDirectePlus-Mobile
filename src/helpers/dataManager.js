@@ -12,9 +12,8 @@ export default async function dataManager(userToken) {
     }
     const rawStorage = await AsyncStorage.multiGet(rawStorageKeys);
 
-    // await AsyncStorage.clear();
     if (!rawStorage.length) {
-        console.log("Fetch All Origins");
+        // console.log("Fetch All Origins");
         await apiService({
             origin: "all",
             userToken: userToken /* origin="all" because storage is empty */,
