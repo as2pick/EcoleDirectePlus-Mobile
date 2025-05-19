@@ -45,7 +45,7 @@ export const THEMES = {
         ...NavigationDefaultTheme,
         colors: {
             ...NavigationDefaultTheme.colors,
-            background: "rgb(12, 12, 23)", // default key
+            background: "rgb(18, 18, 38)", // default key
             bg: {
                 bg1: "rgb(25, 25, 56)",
                 bg2: "rgb(19, 19, 34)",

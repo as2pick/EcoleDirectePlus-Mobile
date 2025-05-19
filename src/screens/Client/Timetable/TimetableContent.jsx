@@ -114,7 +114,6 @@ export default function TimetableContent() {
                         flex: 1,
                         height: screenHeight,
                         borderRadius: 23,
-                        backgroundColor: theme.colors.bg.bg2,
                     },
                 ]}
             >
@@ -258,7 +257,7 @@ const CourseBox = ({ course, navigation, theme, timetableViewDims }) => {
                     {
                         height: `${height - 0.15}%`,
                         top: `${placing}%`,
-                        width: "90%",
+                        width: "100%",
                         borderColor: color,
                         borderWidth: 1.8,
                         borderRadius: 16,
@@ -427,7 +426,7 @@ const DayShedule = ({
             key={index}
             style={{
                 width: "100%",
-                height: screenHeight - 100, // idk why but... works on other devices ?
+                height: screenHeight - 95, // idk why but... works on other devices ?
                 top: 20,
 
                 alignItems: "center",
@@ -446,7 +445,7 @@ const DayShedule = ({
                     navigation={navigation}
                     theme={theme}
                     timetableViewDims={timetableViewDims.getter}
-                ></CourseBox>
+                />
             ))}
         </View>
     );

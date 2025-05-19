@@ -1,5 +1,4 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import React from "react";
 import { GLOBALS_DATAS } from "../../../constants/device/globals";
 import { routesNames } from "../../../router/config/routesNames";
 import CourseDetails from "./CourseDetails";
@@ -22,6 +21,7 @@ export default function TimetableScreen() {
                 gestureEnabled: true,
                 gestureDirection: "horizontal",
                 gestureResponseDistance: width / 1.2, // beacause maybe
+                headerShown: false,
 
                 cardStyleInterpolator: ({ current, layouts }) => ({
                     cardStyle: {
@@ -42,17 +42,10 @@ export default function TimetableScreen() {
                 name={content}
                 component={TimetableContent}
                 options={{
-                    headerShown: false,
                     gestureEnabled: false,
                 }}
             />
-            <Stack.Screen
-                name={course_details}
-                component={CourseDetails}
-                options={{
-                    headerShown: false,
-                }}
-            />
+            <Stack.Screen name={course_details} component={CourseDetails} />
         </Stack.Navigator>
     );
 }
