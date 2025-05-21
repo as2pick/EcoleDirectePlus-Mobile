@@ -1,6 +1,6 @@
 // components/CustomNavbar.js
 import { useTheme } from "@react-navigation/native";
-import React, { useState } from "react";
+import { useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { CONFIG } from "../../constants/config";
 

@@ -16,7 +16,7 @@ const {
 } = routesNames;
 
 const clientScreens = [
-    createScreen(grades, GradesScreen, {
+    createScreen(grades.group, GradesScreen, {
         inNavbar: true,
         icon: GradesIcon,
     }),

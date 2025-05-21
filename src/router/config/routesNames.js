@@ -5,7 +5,11 @@ export const routesNames = {
         settings: "auth_varaible_settings",
     },
     client: {
-        grades: "client_grades",
+        grades: {
+            group: "client_grades",
+            content: "client_grades_content",
+            details: "client_grades_details",
+        },
         homeworks: "client_homeworks",
         home: "client_home",
         timetable: {
@@ -13,6 +17,7 @@ export const routesNames = {
             content: "client_timetable_content",
             course_details: "client_timetable_course_details",
         },
+
         messaging: "client_messaging",
     },
     navigators: {

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useMemo, useState } from "react";
+import { createContext, useContext, useMemo, useState } from "react";
 
 const userContext = createContext();
 
@@ -9,7 +9,8 @@ export const UserProvider = ({ children }) => {
     const [isConnected, setIsConnected] = useState(false);
     // timetable
     const [sortedTimetableData, setSortedTimetableData] = useState(null);
-
+    // grades
+    const [sortedGradesData, setSortedGradesData] = useState(null);
     const contextValueUser = useMemo(
         () => ({
             globalUserData,
@@ -20,13 +21,23 @@ export const UserProvider = ({ children }) => {
             sortedTimetableData,
             setSortedTimetableData,
 
+            // grades
+            sortedGradesData,
+            setSortedGradesData,
+
             //
 
             setGlobalUserData,
             setUserAccesToken,
             setIsConnected,
         }),
-        [globalUserData, userAccesToken, sortedTimetableData, isConnected]
+        [
+            globalUserData,
+            userAccesToken,
+            sortedTimetableData,
+            isConnected,
+            sortedGradesData,
+        ]
     );
     return (
         <userContext.Provider value={contextValueUser}>

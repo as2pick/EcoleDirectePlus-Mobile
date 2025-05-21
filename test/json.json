@@ -1,0 +1,3214 @@
+[
+    {
+        "name": "1er Trimestre",
+        "id": "A001",
+        "disciplines": [
+            {
+                "discipline": "FRANCAIS",
+                "average": "15,27",
+                "classAverage": "11,92",
+                "minAverage": "8",
+                "maxAverage": "15,4",
+                "coef": 3,
+                "grades": [
+                    {
+                        "assignment": "Evaluation n°1",
+                        "disciplineName": "FRANCAIS",
+                        "dateEntered": "2024-09-04",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "1",
+                            "date": "2024-09-18",
+                            "studentGrade": "18,5",
+                            "classAverage": "13.00",
+                            "classMax": "18.50",
+                            "classMin": "8.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Se chercher, se construire ",
+                                "skillName": "Acquérir des éléments de culture littéraire et artistique 3e",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Établir des liens entre des créations littéraires et artistiques issues de cultures et d’époques diverses",
+                                "skillName": "Acquérir des éléments de culture littéraire et artistique 3e",
+                                "value": "4"
+                            },
+                            {
+                                "description": "Mobiliser des références culturelles pour interpréter les textes et les créations artistiques et littéraires et pour enrichir son expression personnelle",
+                                "skillName": "Acquérir des éléments de culture littéraire et artistique 3e",
+                                "value": "4"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°2",
+                        "disciplineName": "FRANCAIS",
+                        "dateEntered": "2024-09-04",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "2",
+                            "date": "2024-10-15",
+                            "studentGrade": "13,5",
+                            "classAverage": "11.79",
+                            "classMax": "15.00",
+                            "classMin": "8.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Établir des liens entre des créations littéraires et artistiques issues de cultures et d’époques diverses",
+                                "skillName": "Acquérir des éléments de culture littéraire et artistique 3e",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Mobiliser des références culturelles pour interpréter les textes et les créations artistiques et littéraires et pour enrichir son expression personnelle",
+                                "skillName": "Acquérir des éléments de culture littéraire et artistique 3e",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Mobiliser des références culturelles pour interpréter les textes et les créations artistiques et littéraires et pour enrichir son expression personnelle",
+                                "skillName": "Acquérir des éléments de culture littéraire et artistique 5e",
+                                "value": "2"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°3",
+                        "disciplineName": "FRANCAIS",
+                        "dateEntered": "2024-09-04",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "10",
+                            "coef": "0.5",
+                            "date": "2024-10-29",
+                            "studentGrade": "9",
+                            "classAverage": "6.89",
+                            "classMax": "10.00",
+                            "classMin": "4.00"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Lire des textes non littéraires, des images et des documents composites (y compris numériques)",
+                                "skillName": "Lire",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Établir des liens entre des créations littéraires et artistiques issues de cultures et d’époques diverses",
+                                "skillName": "Acquérir des éléments de culture littéraire et artistique 3e",
+                                "value": "4"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "discipline": "ANGLAIS",
+                "average": "13,2",
+                "classAverage": "12,54",
+                "minAverage": "10,6",
+                "maxAverage": "16",
+                "coef": 2,
+                "grades": [
+                    {
+                        "assignment": "Evaluation n°1",
+                        "disciplineName": "ANGLAIS",
+                        "dateEntered": "2024-09-04",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "1",
+                            "date": "2024-09-04",
+                            "studentGrade": "15",
+                            "classAverage": "13.34",
+                            "classMax": "18.50",
+                            "classMin": "8.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Comprendre des messages oraux et des documents sonores de nature et de complexité variables",
+                                "skillName": "Écouter et comprendre ",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Repérer des indices pertinents, extralinguistiques ou linguistiques, pour identifier la situation d’énonciation et déduire le sens d’un message",
+                                "skillName": "Écouter et comprendre ",
+                                "value": "2"
+                            },
+                            {
+                                "description": "Savoir lire des documents vidéo et savoir mettre en relation images et documents sonores",
+                                "skillName": "Écouter et comprendre ",
+                                "value": "4"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°2",
+                        "disciplineName": "ANGLAIS",
+                        "dateEntered": "2024-09-04",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "1",
+                            "date": "2024-09-20",
+                            "studentGrade": "11,5",
+                            "classAverage": "11.84",
+                            "classMax": "15.00",
+                            "classMin": "6.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Développer des stratégies pour surmonter un manque lexical lors d’une prise de parole, s’autocorriger et reformuler pour se faire comprendre",
+                                "skillName": "Parler en continu ",
+                                "value": "1"
+                            },
+                            {
+                                "description": "Mettre en voix son discours par la prononciation, l’intonation et  la gestuelle adéquates",
+                                "skillName": "Parler en continu ",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Mobiliser à bon escient ses connaissances lexicales, culturelles, grammaticales pour produire un texte oral sur des sujets variés",
+                                "skillName": "Parler en continu ",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Comprendre des documents écrits de nature et de difficultés variées issus de sources diverses",
+                                "skillName": "Lire",
+                                "value": "2"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°3",
+                        "disciplineName": "ANGLAIS",
+                        "dateEntered": "2024-09-04",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "10",
+                            "coef": "0.5",
+                            "date": "2024-10-15",
+                            "studentGrade": "6,5",
+                            "classAverage": "6.16",
+                            "classMax": "9.00",
+                            "classMin": "2.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Comprendre des documents écrits de nature et de difficultés variées issus de sources diverses",
+                                "skillName": "Lire",
+                                "value": "2"
+                            },
+                            {
+                                "description": "S’approprier le document en utilisant des repérages de nature différente : indices extralinguistiques, linguistiques, reconstitution du sens, mise en relation d’éléments significatifs",
+                                "skillName": "Lire",
+                                "value": "3"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "discipline": "ESPAGNOL LV2",
+                "average": "10,17",
+                "classAverage": "12,38",
+                "minAverage": "7,5",
+                "maxAverage": "18,17",
+                "coef": 1,
+                "grades": [
+                    {
+                        "assignment": "Evaluation n°1",
+                        "disciplineName": "ESPAGNOL LV2",
+                        "dateEntered": "2024-09-04",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "1",
+                            "date": "2024-08-19",
+                            "studentGrade": "11,5",
+                            "classAverage": "12.08",
+                            "classMax": "18.50",
+                            "classMin": "5.00"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Savoir lire des documents vidéo et savoir mettre en relation images et documents sonores",
+                                "skillName": "Écouter et comprendre ",
+                                "value": "2"
+                            },
+                            {
+                                "description": "Repérer des indices pertinents, extralinguistiques ou linguistiques, pour identifier la situation d’énonciation et déduire le sens d’un message",
+                                "skillName": "Écouter et comprendre ",
+                                "value": "4"
+                            },
+                            {
+                                "description": "Se familiariser aux réalités sonores de la langue, et s’entraîner à la mémorisation",
+                                "skillName": "Écouter et comprendre ",
+                                "value": "1"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°2",
+                        "disciplineName": "ESPAGNOL LV2",
+                        "dateEntered": "2024-09-04",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "0.5",
+                            "date": "2024-09-04",
+                            "studentGrade": "7,5",
+                            "classAverage": "13.00",
+                            "classMax": "17.50",
+                            "classMin": "5.00"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Se familiariser aux réalités sonores de la langue, et s’entraîner à la mémorisation",
+                                "skillName": "Écouter et comprendre ",
+                                "value": "2"
+                            },
+                            {
+                                "description": "Comprendre des messages oraux et des documents sonores de nature et de complexité variables",
+                                "skillName": "Écouter et comprendre ",
+                                "value": "1"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "discipline": "HIST.GEO.EN.MOR.CIV.",
+                "average": "15",
+                "classAverage": "12,74",
+                "minAverage": "9",
+                "maxAverage": "16",
+                "coef": 1,
+                "grades": [
+                    {
+                        "assignment": "Evaluation n°2",
+                        "disciplineName": "HIST.GEO.EN.MOR.CIV.",
+                        "dateEntered": "2024-09-04",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "10",
+                            "coef": "0.5",
+                            "date": "2024-09-04",
+                            "studentGrade": "9",
+                            "classAverage": "6.66",
+                            "classMax": "10.00",
+                            "classMin": "2.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Comprendre le sens général d’un document",
+                                "skillName": "Analyser et comprendre un document ",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Confronter un document à ce qu’on peut connaître par ailleurs du sujet étudié",
+                                "skillName": "Analyser et comprendre un document ",
+                                "value": "4"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°1",
+                        "disciplineName": "HIST.GEO.EN.MOR.CIV.",
+                        "dateEntered": "2024-09-04",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "1",
+                            "date": "2024-09-20",
+                            "studentGrade": "13,5",
+                            "classAverage": "12.45",
+                            "classMax": "16.50",
+                            "classMin": "6.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Comprendre le sens général d’un document",
+                                "skillName": "Analyser et comprendre un document ",
+                                "value": "2"
+                            },
+                            {
+                                "description": "Identifier le document et son point de vue particulier",
+                                "skillName": "Analyser et comprendre un document ",
+                                "value": "4"
+                            },
+                            {
+                                "description": "Extraire des informations pertinentes pour répondre à une question portant sur un document ou plusieurs documents, les classer, les hiérarchiser",
+                                "skillName": "Analyser et comprendre un document ",
+                                "value": "2"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "discipline": "MATHEMATIQUES",
+                "average": "12,7",
+                "classAverage": "11,86",
+                "minAverage": "8,13",
+                "maxAverage": "14,97",
+                "coef": 3,
+                "grades": [
+                    {
+                        "assignment": "Evaluation n°1",
+                        "disciplineName": "MATHEMATIQUES",
+                        "dateEntered": "2024-09-04",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "2.5",
+                            "date": "2024-09-10",
+                            "studentGrade": "7,5",
+                            "classAverage": "12.50",
+                            "classMax": "17.50",
+                            "classMin": "7.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Calculer avec des nombres rationnels, de manière exacte ou approchée, en combinant de façon appropriée le calcul mental, le calcul posé et le calcul instrumenté (calculatrice ou logiciel)",
+                                "skillName": "Calculer",
+                                "value": "1"
+                            },
+                            {
+                                "description": "Contrôler la vraisemblance de ses résultats, notamment en estimant des ordres de grandeur ou en utilisant des encadrements",
+                                "skillName": "Calculer",
+                                "value": "2"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°2",
+                        "disciplineName": "MATHEMATIQUES",
+                        "dateEntered": "2024-09-04",
+                        "isOptional": true,
+                        "gradeDetails": {
+                            "denominator": "10",
+                            "coef": "0.5",
+                            "date": "2024-09-26",
+                            "studentGrade": "2",
+                            "classAverage": "6.29",
+                            "classMax": "9.00",
+                            "classMin": "2.00"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Calculer avec des nombres rationnels, de manière exacte ou approchée, en combinant de façon appropriée le calcul mental, le calcul posé et le calcul instrumenté (calculatrice ou logiciel)",
+                                "skillName": "Calculer",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Extraire d'un document les informations utiles, les reformuler, les organiser, les confronter à ses connaissances",
+                                "skillName": "Chercher",
+                                "value": "3"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°4",
+                        "disciplineName": "MATHEMATIQUES",
+                        "dateEntered": "2024-09-04",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "0",
+                            "coef": "0.5",
+                            "date": "2024-10-15",
+                            "studentGrade": "",
+                            "classAverage": "",
+                            "classMax": "",
+                            "classMin": ""
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Faire le lien entre le langage naturel et le langage algébrique. Distinguer des spécificités du langage mathématique par rapport à la langue française",
+                                "skillName": "Communiquer",
+                                "value": "-3"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°3",
+                        "disciplineName": "MATHEMATIQUES",
+                        "dateEntered": "2024-09-04",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "0",
+                            "coef": "0.25",
+                            "date": "2024-10-17",
+                            "studentGrade": "",
+                            "classAverage": "",
+                            "classMax": "",
+                            "classMin": ""
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Expliquer à l’oral ou à l’écrit (sa démarche, son raisonnement, un calcul, un protocole de construction géométrique, un  algorithme), comprendre les explications d’un autre et  argumenter dans l’échange",
+                                "skillName": "Communiquer",
+                                "value": "-1"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°1",
+                        "disciplineName": "MATHEMATIQUES",
+                        "dateEntered": "2024-09-04",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "1",
+                            "date": "2024-10-23",
+                            "studentGrade": "18,5",
+                            "classAverage": "12.97",
+                            "classMax": "18.50",
+                            "classMin": "5.00"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Calculer avec des nombres rationnels, de manière exacte ou approchée, en combinant de façon appropriée le calcul mental, le calcul posé et le calcul instrumenté (calculatrice ou logiciel)",
+                                "skillName": "Calculer",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Contrôler la vraisemblance de ses résultats, notamment en estimant des ordres de grandeur ou en utilisant des encadrements",
+                                "skillName": "Calculer",
+                                "value": "4"
+                            },
+                            {
+                                "description": "Calculer en utilisant le langage algébrique (lettres, symboles, etc.)",
+                                "skillName": "Calculer",
+                                "value": "4"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "discipline": "PHYSIQUE-CHIMIE",
+                "average": "11,17",
+                "classAverage": "12,83",
+                "minAverage": "7,83",
+                "maxAverage": "18,33",
+                "coef": 2,
+                "grades": [
+                    {
+                        "assignment": "Evaluation n°2",
+                        "disciplineName": "PHYSIQUE-CHIMIE",
+                        "dateEntered": "2024-09-04",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "2",
+                            "date": "2024-09-16",
+                            "studentGrade": "12,5",
+                            "classAverage": "12.63",
+                            "classMax": "17.50",
+                            "classMin": "7.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Réinvestir ses connaissances, notamment celles sur les ressources et l’énergie, pour agir de façon responsable et respectueuse de l’environnement",
+                                "skillName": "Adopter un comportement éthique et responsable ",
+                                "value": "2"
+                            },
+                            {
+                                "description": "Concevoir et réaliser un dispositif de mesure ou d’observation",
+                                "skillName": "Concevoir, créer, réaliser ",
+                                "value": "3"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°1",
+                        "disciplineName": "PHYSIQUE-CHIMIE",
+                        "dateEntered": "2024-09-04",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "1",
+                            "date": "2024-09-24",
+                            "studentGrade": "8,5",
+                            "classAverage": "13.21",
+                            "classMax": "20.00",
+                            "classMin": "8.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "S’impliquer dans un projet ayant une dimension citoyenne",
+                                "skillName": "Adopter un comportement éthique et responsable ",
+                                "value": "2"
+                            },
+                            {
+                                "description": "Expliquer les fondements des règles de sécurité en chimie, électricité, optique et acoustique",
+                                "skillName": "Adopter un comportement éthique et responsable ",
+                                "value": "1"
+                            },
+                            {
+                                "description": "Réinvestir ses connaissances, notamment celles sur les ressources et l’énergie, pour agir de façon responsable et respectueuse de l’environnement",
+                                "skillName": "Adopter un comportement éthique et responsable ",
+                                "value": "2"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "discipline": "S.V.T.",
+                "average": "18",
+                "classAverage": "12,35",
+                "minAverage": "7,5",
+                "maxAverage": "18",
+                "coef": 2,
+                "grades": [
+                    {
+                        "assignment": "Evaluation n°2",
+                        "disciplineName": "S.V.T.",
+                        "dateEntered": "2024-09-04",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "0.5",
+                            "date": "2024-09-04",
+                            "studentGrade": "19",
+                            "classAverage": "12.58",
+                            "classMax": "19.00",
+                            "classMin": "7.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Identifier les impacts (bénéfices et nuisances) des activités humaines sur l’environnement à différentes échelles",
+                                "skillName": "Adopter un comportement éthique et responsable ",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Fonder ses choix de comportement responsable vis-à-vis de sa santé ou de l’environnement sur des arguments scientifiques",
+                                "skillName": "Adopter un comportement éthique et responsable ",
+                                "value": "4"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°1",
+                        "disciplineName": "S.V.T.",
+                        "dateEntered": "2024-09-04",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "1",
+                            "date": "2024-09-04",
+                            "studentGrade": "17,5",
+                            "classAverage": "12.24",
+                            "classMax": "20.00",
+                            "classMin": "7.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Identifier les impacts (bénéfices et nuisances) des activités humaines sur l’environnement à différentes échelles",
+                                "skillName": "Adopter un comportement éthique et responsable ",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Comprendre les responsabilités individuelle et collective en matière de préservation des ressources de la planète (biodiversité, ressources minérales et ressources énergétiques) et de santé",
+                                "skillName": "Adopter un comportement éthique et responsable ",
+                                "value": "4"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "discipline": "TECHNOLOGIE",
+                "average": "13,33",
+                "classAverage": "12,97",
+                "minAverage": "7,17",
+                "maxAverage": "19,5",
+                "coef": 1,
+                "grades": [
+                    {
+                        "assignment": "Evaluation n°1",
+                        "disciplineName": "TECHNOLOGIE",
+                        "dateEntered": "2024-09-04",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "1",
+                            "date": "2024-09-19",
+                            "studentGrade": "10",
+                            "classAverage": "12.61",
+                            "classMax": "18.50",
+                            "classMin": "8.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Développer les bonnes pratiques de l’usage des objets communicants",
+                                "skillName": "Adopter un comportement éthique et responsable ",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Analyser l’impact environnemental d’un objet et de ses constituants",
+                                "skillName": "Adopter un comportement éthique et responsable ",
+                                "value": "1"
+                            },
+                            {
+                                "description": "Analyser le cycle de vie d’un objet",
+                                "skillName": "Adopter un comportement éthique et responsable ",
+                                "value": "2"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°2",
+                        "disciplineName": "TECHNOLOGIE",
+                        "dateEntered": "2024-09-04",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "2",
+                            "date": "2024-09-26",
+                            "studentGrade": "15",
+                            "classAverage": "13.16",
+                            "classMax": "20.00",
+                            "classMin": "5.00"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Analyser le cycle de vie d’un objet",
+                                "skillName": "Adopter un comportement éthique et responsable ",
+                                "value": "3"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "discipline": "ARTS PLASTIQUES",
+                "average": "18,13",
+                "classAverage": "14,31",
+                "minAverage": "9,38",
+                "maxAverage": "18,13",
+                "coef": 1,
+                "grades": [
+                    {
+                        "assignment": "Evaluation n°1",
+                        "disciplineName": "ARTS PLASTIQUES",
+                        "dateEntered": "2024-09-04",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "1",
+                            "date": "2024-09-18",
+                            "studentGrade": "20",
+                            "classAverage": "15.00",
+                            "classMax": "20.00",
+                            "classMin": "10.00"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Exploiter des informations et de la documentation, notamment  iconique, pour servir un projet de création",
+                                "skillName": "Expérimenter, produire, créer",
+                                "value": "4"
+                            },
+                            {
+                                "description": "Choisir, mobiliser et adapter des langages et des moyens plastiques variés en fonction de leurs effets dans une intention artistique en restant attentif à l’inattendu",
+                                "skillName": "Expérimenter, produire, créer",
+                                "value": "4"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°2",
+                        "disciplineName": "ARTS PLASTIQUES",
+                        "dateEntered": "2024-09-04",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "3",
+                            "date": "2024-09-24",
+                            "studentGrade": "17,5",
+                            "classAverage": "14.08",
+                            "classMax": "17.50",
+                            "classMin": "7.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Choisir, mobiliser et adapter des langages et des moyens plastiques variés en fonction de leurs effets dans une intention artistique en restant attentif à l’inattendu",
+                                "skillName": "Expérimenter, produire, créer",
+                                "value": "4"
+                            },
+                            {
+                                "description": "S’approprier des questions artistiques en prenant appui sur une pratique artistique et réflexive",
+                                "skillName": "Expérimenter, produire, créer",
+                                "value": "3"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "discipline": "EDUCATION MUSICALE",
+                "average": "16,5",
+                "classAverage": "12,97",
+                "minAverage": "8,5",
+                "maxAverage": "16,5",
+                "coef": 1,
+                "grades": [
+                    {
+                        "assignment": "Evaluation n°1",
+                        "disciplineName": "EDUCATION MUSICALE",
+                        "dateEntered": "2024-09-04",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "1",
+                            "date": "2024-09-12",
+                            "studentGrade": "12,5",
+                            "classAverage": "13.03",
+                            "classMax": "20.00",
+                            "classMin": "5.00"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Réutiliser certaines caractéristiques (style, technique, etc.) d’une œuvre connue pour nourrir son travail",
+                                "skillName": "Explorer, imaginer, créer et produire ",
+                                "value": "2"
+                            },
+                            {
+                                "description": "Réinvestir ses expériences personnelles de la création musicale pour écouter, comprendre et commenter celles des autres",
+                                "skillName": "Explorer, imaginer, créer et produire ",
+                                "value": "3"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°2",
+                        "disciplineName": "EDUCATION MUSICALE",
+                        "dateEntered": "2024-09-04",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "2",
+                            "date": "2024-09-24",
+                            "studentGrade": "18,5",
+                            "classAverage": "12.95",
+                            "classMax": "18.50",
+                            "classMin": "6.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Identifier par comparaison les différences et ressemblances dans l’interprétation d’une œuvre donnée",
+                                "skillName": "Ecouter, comparer, construire une culture musicale commune",
+                                "value": "4"
+                            },
+                            {
+                                "description": "Analyser des œuvres musicales en utilisant un vocabulaire précis",
+                                "skillName": "Ecouter, comparer, construire une culture musicale commune",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Situer et comparer des musiques de styles proches ou éloignés dans l’espace et/ou dans le temps pour construire des repères techniques et culturels",
+                                "skillName": "Ecouter, comparer, construire une culture musicale commune",
+                                "value": "4"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "discipline": "E.P.S.",
+                "average": "18,5",
+                "classAverage": "14,57",
+                "minAverage": "11,25",
+                "maxAverage": "18,5",
+                "coef": 1,
+                "grades": [
+                    {
+                        "assignment": "Evaluation n°1",
+                        "disciplineName": "E.P.S.",
+                        "dateEntered": "2024-09-04",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "0",
+                            "coef": "1",
+                            "date": "2024-09-12",
+                            "studentGrade": "",
+                            "classAverage": "",
+                            "classMax": "",
+                            "classMin": ""
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Connaître et utiliser des indicateurs objectifs pour caractériser l’effort  physique",
+                                "skillName": "Apprendre à entretenir sa santé par une activité physique régulière, raisonnée et raisonnable",
+                                "value": "-2"
+                            },
+                            {
+                                "description": "Connaître les effets d’une pratique physique régulière sur son état de bien-être et de santé",
+                                "skillName": "Apprendre à entretenir sa santé par une activité physique régulière, raisonnée et raisonnable",
+                                "value": "-2"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°2",
+                        "disciplineName": "E.P.S.",
+                        "dateEntered": "2024-09-04",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "1",
+                            "date": "2024-09-23",
+                            "studentGrade": "18,5",
+                            "classAverage": "13.68",
+                            "classMax": "18.50",
+                            "classMin": "5.00"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Connaître les effets d’une pratique physique régulière sur son état de bien-être et de santé",
+                                "skillName": "Apprendre à entretenir sa santé par une activité physique régulière, raisonnée et raisonnable",
+                                "value": "4"
+                            },
+                            {
+                                "description": "Adapter l’intensité de son engagement physique à ses possibilités pour ne pas se mettre en danger",
+                                "skillName": "Apprendre à entretenir sa santé par une activité physique régulière, raisonnée et raisonnable",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Évaluer la quantité et qualité de son activité physique quotidienne dans et hors l’école",
+                                "skillName": "Apprendre à entretenir sa santé par une activité physique régulière, raisonnée et raisonnable",
+                                "value": "4"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "generalAverage": "14,46",
+        "maxAverage": "14,5",
+        "minAverage": "11,04",
+        "classAverage": "12,61"
+    },
+    {
+        "name": "Brevet Blanc N°1",
+        "id": "A001X001",
+        "disciplines": [
+            {
+                "discipline": "Français",
+                "average": "15",
+                "classAverage": "11,33",
+                "minAverage": "4",
+                "maxAverage": "18",
+                "coef": 1,
+                "grades": [
+                    {
+                        "assignment": "DNB",
+                        "disciplineName": "Français",
+                        "dateEntered": "2024-11-26",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "4",
+                            "date": "2024-11-26",
+                            "studentGrade": "15",
+                            "classAverage": "11.33",
+                            "classMax": "18.00",
+                            "classMin": "4.00"
+                        },
+                        "academicSkills": []
+                    }
+                ]
+            },
+            {
+                "discipline": "Mathématiques",
+                "average": "14,5",
+                "classAverage": "10,75",
+                "minAverage": "7",
+                "maxAverage": "15",
+                "coef": 1,
+                "grades": [
+                    {
+                        "assignment": "DNB",
+                        "disciplineName": "Mathématiques",
+                        "dateEntered": "2024-11-26",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "4",
+                            "date": "2024-11-26",
+                            "studentGrade": "14,5",
+                            "classAverage": "10.75",
+                            "classMax": "15.00",
+                            "classMin": "7.00"
+                        },
+                        "academicSkills": []
+                    }
+                ]
+            },
+            {
+                "discipline": "Histoire Géo",
+                "average": "17,5",
+                "classAverage": "10,66",
+                "minAverage": "4,5",
+                "maxAverage": "20",
+                "coef": 1,
+                "grades": [
+                    {
+                        "assignment": "DNB",
+                        "disciplineName": "Histoire Géo",
+                        "dateEntered": "2024-11-26",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "40",
+                            "coef": "1",
+                            "date": "2024-11-26",
+                            "studentGrade": "35",
+                            "classAverage": "21.32",
+                            "classMax": "40.00",
+                            "classMin": "9.00"
+                        },
+                        "academicSkills": []
+                    }
+                ]
+            },
+            {
+                "discipline": "Sciences (SVT, Technologie, Physique et Chimie)",
+                "average": "14",
+                "classAverage": "11,32",
+                "minAverage": "1",
+                "maxAverage": "16",
+                "coef": 1,
+                "grades": [
+                    {
+                        "assignment": "DNB",
+                        "disciplineName": "Sciences (SVT, Technologie, Physique et Chimie)",
+                        "dateEntered": "2024-11-26",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "3",
+                            "date": "2024-11-26",
+                            "studentGrade": "14",
+                            "classAverage": "11.32",
+                            "classMax": "16.00",
+                            "classMin": "1.00"
+                        },
+                        "academicSkills": []
+                    }
+                ]
+            },
+            {
+                "discipline": "EPREUVE ORAL DE SOUTENANCE",
+                "average": "14",
+                "classAverage": "11,68",
+                "minAverage": "8",
+                "maxAverage": "15",
+                "coef": 1,
+                "grades": [
+                    {
+                        "assignment": "DNB",
+                        "disciplineName": "EPREUVE ORAL DE SOUTENANCE",
+                        "dateEntered": "2024-11-26",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "1",
+                            "date": "2024-11-26",
+                            "studentGrade": "14",
+                            "classAverage": "11.68",
+                            "classMax": "15.00",
+                            "classMin": "8.00"
+                        },
+                        "academicSkills": []
+                    }
+                ]
+            }
+        ],
+        "generalAverage": "15",
+        "maxAverage": "15",
+        "minAverage": "9,1",
+        "classAverage": "11,16"
+    },
+    {
+        "name": "2ème Trimestre",
+        "id": "A002",
+        "disciplines": [
+            {
+                "discipline": "FRANCAIS",
+                "average": "",
+                "classAverage": "",
+                "minAverage": "",
+                "maxAverage": "",
+                "coef": 3,
+                "grades": [
+                    {
+                        "assignment": "Evaluation n°2",
+                        "disciplineName": "FRANCAIS",
+                        "dateEntered": "2024-12-02",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "1.5",
+                            "date": "2025-03-14",
+                            "studentGrade": "13,5",
+                            "classAverage": "11.79",
+                            "classMax": "15.00",
+                            "classMin": "8.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Établir des liens entre des créations littéraires et artistiques issues de cultures et d’époques diverses",
+                                "skillName": "Acquérir des éléments de culture littéraire et artistique 3e",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Mobiliser des références culturelles pour interpréter les textes et les créations artistiques et littéraires et pour enrichir son expression personnelle",
+                                "skillName": "Acquérir des éléments de culture littéraire et artistique 3e",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Mobiliser des références culturelles pour interpréter les textes et les créations artistiques et littéraires et pour enrichir son expression personnelle",
+                                "skillName": "Acquérir des éléments de culture littéraire et artistique 5e",
+                                "value": "2"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°3",
+                        "disciplineName": "FRANCAIS",
+                        "dateEntered": "2024-08-19",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "10",
+                            "coef": "0.5",
+                            "date": "2025-03-14",
+                            "studentGrade": "9",
+                            "classAverage": "6.89",
+                            "classMax": "10.00",
+                            "classMin": "4.00"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Lire des textes non littéraires, des images et des documents composites (y compris numériques)",
+                                "skillName": "Lire",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Établir des liens entre des créations littéraires et artistiques issues de cultures et d’époques diverses",
+                                "skillName": "Acquérir des éléments de culture littéraire et artistique 3e",
+                                "value": "4"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°1",
+                        "disciplineName": "FRANCAIS",
+                        "dateEntered": "2024-12-02",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "2",
+                            "date": "2025-03-14",
+                            "studentGrade": "18,5",
+                            "classAverage": "13.00",
+                            "classMax": "18.50",
+                            "classMin": "8.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Se chercher, se construire ",
+                                "skillName": "Acquérir des éléments de culture littéraire et artistique 3e",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Établir des liens entre des créations littéraires et artistiques issues de cultures et d’époques diverses",
+                                "skillName": "Acquérir des éléments de culture littéraire et artistique 3e",
+                                "value": "4"
+                            },
+                            {
+                                "description": "Mobiliser des références culturelles pour interpréter les textes et les créations artistiques et littéraires et pour enrichir son expression personnelle",
+                                "skillName": "Acquérir des éléments de culture littéraire et artistique 3e",
+                                "value": "4"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "discipline": "ANGLAIS",
+                "average": "",
+                "classAverage": "",
+                "minAverage": "",
+                "maxAverage": "",
+                "coef": 2,
+                "grades": [
+                    {
+                        "assignment": "Evaluation n°1",
+                        "disciplineName": "ANGLAIS",
+                        "dateEntered": "2024-12-02",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "2",
+                            "date": "2025-03-14",
+                            "studentGrade": "15",
+                            "classAverage": "13.34",
+                            "classMax": "18.50",
+                            "classMin": "8.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Comprendre des messages oraux et des documents sonores de nature et de complexité variables",
+                                "skillName": "Écouter et comprendre ",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Repérer des indices pertinents, extralinguistiques ou linguistiques, pour identifier la situation d’énonciation et déduire le sens d’un message",
+                                "skillName": "Écouter et comprendre ",
+                                "value": "2"
+                            },
+                            {
+                                "description": "Savoir lire des documents vidéo et savoir mettre en relation images et documents sonores",
+                                "skillName": "Écouter et comprendre ",
+                                "value": "4"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°3",
+                        "disciplineName": "ANGLAIS",
+                        "dateEntered": "2024-08-19",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "10",
+                            "coef": "0.5",
+                            "date": "2025-03-14",
+                            "studentGrade": "6,5",
+                            "classAverage": "6.16",
+                            "classMax": "9.00",
+                            "classMin": "2.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Comprendre des documents écrits de nature et de difficultés variées issus de sources diverses",
+                                "skillName": "Lire",
+                                "value": "2"
+                            },
+                            {
+                                "description": "S’approprier le document en utilisant des repérages de nature différente : indices extralinguistiques, linguistiques, reconstitution du sens, mise en relation d’éléments significatifs",
+                                "skillName": "Lire",
+                                "value": "3"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°2",
+                        "disciplineName": "ANGLAIS",
+                        "dateEntered": "2024-08-19",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "1",
+                            "date": "2025-03-14",
+                            "studentGrade": "11,5",
+                            "classAverage": "11.84",
+                            "classMax": "15.00",
+                            "classMin": "6.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Développer des stratégies pour surmonter un manque lexical lors d’une prise de parole, s’autocorriger et reformuler pour se faire comprendre",
+                                "skillName": "Parler en continu ",
+                                "value": "1"
+                            },
+                            {
+                                "description": "Mettre en voix son discours par la prononciation, l’intonation et  la gestuelle adéquates",
+                                "skillName": "Parler en continu ",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Mobiliser à bon escient ses connaissances lexicales, culturelles, grammaticales pour produire un texte oral sur des sujets variés",
+                                "skillName": "Parler en continu ",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Comprendre des documents écrits de nature et de difficultés variées issus de sources diverses",
+                                "skillName": "Lire",
+                                "value": "2"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "discipline": "ESPAGNOL LV2",
+                "average": "",
+                "classAverage": "",
+                "minAverage": "",
+                "maxAverage": "",
+                "coef": 1,
+                "grades": [
+                    {
+                        "assignment": "Evaluation n°2",
+                        "disciplineName": "ESPAGNOL LV2",
+                        "dateEntered": "2024-08-19",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "0.5",
+                            "date": "2025-03-14",
+                            "studentGrade": "7,5",
+                            "classAverage": "13.00",
+                            "classMax": "17.50",
+                            "classMin": "5.00"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Se familiariser aux réalités sonores de la langue, et s’entraîner à la mémorisation",
+                                "skillName": "Écouter et comprendre ",
+                                "value": "2"
+                            },
+                            {
+                                "description": "Comprendre des messages oraux et des documents sonores de nature et de complexité variables",
+                                "skillName": "Écouter et comprendre ",
+                                "value": "1"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°1",
+                        "disciplineName": "ESPAGNOL LV2",
+                        "dateEntered": "2024-12-02",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "3",
+                            "date": "2025-03-14",
+                            "studentGrade": "11,5",
+                            "classAverage": "12.08",
+                            "classMax": "18.50",
+                            "classMin": "5.00"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Savoir lire des documents vidéo et savoir mettre en relation images et documents sonores",
+                                "skillName": "Écouter et comprendre ",
+                                "value": "2"
+                            },
+                            {
+                                "description": "Repérer des indices pertinents, extralinguistiques ou linguistiques, pour identifier la situation d’énonciation et déduire le sens d’un message",
+                                "skillName": "Écouter et comprendre ",
+                                "value": "4"
+                            },
+                            {
+                                "description": "Se familiariser aux réalités sonores de la langue, et s’entraîner à la mémorisation",
+                                "skillName": "Écouter et comprendre ",
+                                "value": "1"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "discipline": "HIST.GEO.EN.MOR.CIV.",
+                "average": "",
+                "classAverage": "",
+                "minAverage": "",
+                "maxAverage": "",
+                "coef": 1,
+                "grades": [
+                    {
+                        "assignment": "Evaluation n°2",
+                        "disciplineName": "HIST.GEO.EN.MOR.CIV.",
+                        "dateEntered": "2024-08-19",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "10",
+                            "coef": "0.5",
+                            "date": "2025-03-14",
+                            "studentGrade": "9",
+                            "classAverage": "6.66",
+                            "classMax": "10.00",
+                            "classMin": "2.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Comprendre le sens général d’un document",
+                                "skillName": "Analyser et comprendre un document ",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Confronter un document à ce qu’on peut connaître par ailleurs du sujet étudié",
+                                "skillName": "Analyser et comprendre un document ",
+                                "value": "4"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°1",
+                        "disciplineName": "HIST.GEO.EN.MOR.CIV.",
+                        "dateEntered": "2024-12-02",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "2",
+                            "date": "2025-03-14",
+                            "studentGrade": "13,5",
+                            "classAverage": "12.45",
+                            "classMax": "16.50",
+                            "classMin": "6.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Comprendre le sens général d’un document",
+                                "skillName": "Analyser et comprendre un document ",
+                                "value": "2"
+                            },
+                            {
+                                "description": "Identifier le document et son point de vue particulier",
+                                "skillName": "Analyser et comprendre un document ",
+                                "value": "4"
+                            },
+                            {
+                                "description": "Extraire des informations pertinentes pour répondre à une question portant sur un document ou plusieurs documents, les classer, les hiérarchiser",
+                                "skillName": "Analyser et comprendre un document ",
+                                "value": "2"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "discipline": "MATHEMATIQUES",
+                "average": "",
+                "classAverage": "",
+                "minAverage": "",
+                "maxAverage": "",
+                "coef": 3,
+                "grades": [
+                    {
+                        "assignment": "Evaluation n°4",
+                        "disciplineName": "MATHEMATIQUES",
+                        "dateEntered": "2024-08-20",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "0",
+                            "coef": "0.5",
+                            "date": "2025-03-14",
+                            "studentGrade": "",
+                            "classAverage": "",
+                            "classMax": "",
+                            "classMin": ""
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Faire le lien entre le langage naturel et le langage algébrique. Distinguer des spécificités du langage mathématique par rapport à la langue française",
+                                "skillName": "Communiquer",
+                                "value": "-3"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°1",
+                        "disciplineName": "MATHEMATIQUES",
+                        "dateEntered": "2024-12-02",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "0.5",
+                            "date": "2025-03-14",
+                            "studentGrade": "7,5",
+                            "classAverage": "12.50",
+                            "classMax": "17.50",
+                            "classMin": "7.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Calculer avec des nombres rationnels, de manière exacte ou approchée, en combinant de façon appropriée le calcul mental, le calcul posé et le calcul instrumenté (calculatrice ou logiciel)",
+                                "skillName": "Calculer",
+                                "value": "1"
+                            },
+                            {
+                                "description": "Contrôler la vraisemblance de ses résultats, notamment en estimant des ordres de grandeur ou en utilisant des encadrements",
+                                "skillName": "Calculer",
+                                "value": "2"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°3",
+                        "disciplineName": "MATHEMATIQUES",
+                        "dateEntered": "2024-08-20",
+                        "isOptional": true,
+                        "gradeDetails": {
+                            "denominator": "5",
+                            "coef": "0.25",
+                            "date": "2025-03-14",
+                            "studentGrade": "2,5",
+                            "classAverage": "3.29",
+                            "classMax": "5.00",
+                            "classMin": "1.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Expliquer à l’oral ou à l’écrit (sa démarche, son raisonnement, un calcul, un protocole de construction géométrique, un  algorithme), comprendre les explications d’un autre et  argumenter dans l’échange",
+                                "skillName": "Communiquer",
+                                "value": "-1"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°2",
+                        "disciplineName": "MATHEMATIQUES",
+                        "dateEntered": "2024-08-20",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "10",
+                            "coef": "0.5",
+                            "date": "2025-03-14",
+                            "studentGrade": "8",
+                            "classAverage": "6.61",
+                            "classMax": "9.00",
+                            "classMin": "4.00"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Calculer avec des nombres rationnels, de manière exacte ou approchée, en combinant de façon appropriée le calcul mental, le calcul posé et le calcul instrumenté (calculatrice ou logiciel)",
+                                "skillName": "Calculer",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Extraire d'un document les informations utiles, les reformuler, les organiser, les confronter à ses connaissances",
+                                "skillName": "Chercher",
+                                "value": "3"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°1",
+                        "disciplineName": "MATHEMATIQUES",
+                        "dateEntered": "2024-08-20",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "1",
+                            "date": "2025-03-14",
+                            "studentGrade": "18,5",
+                            "classAverage": "12.97",
+                            "classMax": "18.50",
+                            "classMin": "5.00"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Calculer avec des nombres rationnels, de manière exacte ou approchée, en combinant de façon appropriée le calcul mental, le calcul posé et le calcul instrumenté (calculatrice ou logiciel)",
+                                "skillName": "Calculer",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Contrôler la vraisemblance de ses résultats, notamment en estimant des ordres de grandeur ou en utilisant des encadrements",
+                                "skillName": "Calculer",
+                                "value": "4"
+                            },
+                            {
+                                "description": "Calculer en utilisant le langage algébrique (lettres, symboles, etc.)",
+                                "skillName": "Calculer",
+                                "value": "4"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "discipline": "PHYSIQUE-CHIMIE",
+                "average": "",
+                "classAverage": "",
+                "minAverage": "",
+                "maxAverage": "",
+                "coef": 2,
+                "grades": [
+                    {
+                        "assignment": "Evaluation n°2",
+                        "disciplineName": "PHYSIQUE-CHIMIE",
+                        "dateEntered": "2024-08-19",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "2",
+                            "date": "2025-03-14",
+                            "studentGrade": "12,5",
+                            "classAverage": "12.63",
+                            "classMax": "17.50",
+                            "classMin": "7.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Réinvestir ses connaissances, notamment celles sur les ressources et l’énergie, pour agir de façon responsable et respectueuse de l’environnement",
+                                "skillName": "Adopter un comportement éthique et responsable ",
+                                "value": "2"
+                            },
+                            {
+                                "description": "Concevoir et réaliser un dispositif de mesure ou d’observation",
+                                "skillName": "Concevoir, créer, réaliser ",
+                                "value": "3"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°1",
+                        "disciplineName": "PHYSIQUE-CHIMIE",
+                        "dateEntered": "2024-08-19",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "1",
+                            "date": "2025-03-14",
+                            "studentGrade": "8,5",
+                            "classAverage": "13.21",
+                            "classMax": "20.00",
+                            "classMin": "8.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "S’impliquer dans un projet ayant une dimension citoyenne",
+                                "skillName": "Adopter un comportement éthique et responsable ",
+                                "value": "2"
+                            },
+                            {
+                                "description": "Expliquer les fondements des règles de sécurité en chimie, électricité, optique et acoustique",
+                                "skillName": "Adopter un comportement éthique et responsable ",
+                                "value": "1"
+                            },
+                            {
+                                "description": "Réinvestir ses connaissances, notamment celles sur les ressources et l’énergie, pour agir de façon responsable et respectueuse de l’environnement",
+                                "skillName": "Adopter un comportement éthique et responsable ",
+                                "value": "2"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "discipline": "S.V.T.",
+                "average": "",
+                "classAverage": "",
+                "minAverage": "",
+                "maxAverage": "",
+                "coef": 2,
+                "grades": [
+                    {
+                        "assignment": "Evaluation n°2",
+                        "disciplineName": "S.V.T.",
+                        "dateEntered": "2024-08-19",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "0.5",
+                            "date": "2025-03-14",
+                            "studentGrade": "19",
+                            "classAverage": "12.58",
+                            "classMax": "19.00",
+                            "classMin": "7.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Identifier les impacts (bénéfices et nuisances) des activités humaines sur l’environnement à différentes échelles",
+                                "skillName": "Adopter un comportement éthique et responsable ",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Fonder ses choix de comportement responsable vis-à-vis de sa santé ou de l’environnement sur des arguments scientifiques",
+                                "skillName": "Adopter un comportement éthique et responsable ",
+                                "value": "4"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°1",
+                        "disciplineName": "S.V.T.",
+                        "dateEntered": "2024-08-19",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "1",
+                            "date": "2025-03-14",
+                            "studentGrade": "17,5",
+                            "classAverage": "12.24",
+                            "classMax": "20.00",
+                            "classMin": "7.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Identifier les impacts (bénéfices et nuisances) des activités humaines sur l’environnement à différentes échelles",
+                                "skillName": "Adopter un comportement éthique et responsable ",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Comprendre les responsabilités individuelle et collective en matière de préservation des ressources de la planète (biodiversité, ressources minérales et ressources énergétiques) et de santé",
+                                "skillName": "Adopter un comportement éthique et responsable ",
+                                "value": "4"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "discipline": "TECHNOLOGIE",
+                "average": "",
+                "classAverage": "",
+                "minAverage": "",
+                "maxAverage": "",
+                "coef": 1,
+                "grades": [
+                    {
+                        "assignment": "Evaluation n°1",
+                        "disciplineName": "TECHNOLOGIE",
+                        "dateEntered": "2024-08-19",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "1",
+                            "date": "2025-03-14",
+                            "studentGrade": "10",
+                            "classAverage": "12.61",
+                            "classMax": "18.50",
+                            "classMin": "8.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Développer les bonnes pratiques de l’usage des objets communicants",
+                                "skillName": "Adopter un comportement éthique et responsable ",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Analyser l’impact environnemental d’un objet et de ses constituants",
+                                "skillName": "Adopter un comportement éthique et responsable ",
+                                "value": "1"
+                            },
+                            {
+                                "description": "Analyser le cycle de vie d’un objet",
+                                "skillName": "Adopter un comportement éthique et responsable ",
+                                "value": "2"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°2",
+                        "disciplineName": "TECHNOLOGIE",
+                        "dateEntered": "2024-08-19",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "2",
+                            "date": "2025-03-14",
+                            "studentGrade": "15",
+                            "classAverage": "13.16",
+                            "classMax": "20.00",
+                            "classMin": "5.00"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Analyser le cycle de vie d’un objet",
+                                "skillName": "Adopter un comportement éthique et responsable ",
+                                "value": "3"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "discipline": "ARTS PLASTIQUES",
+                "average": "",
+                "classAverage": "",
+                "minAverage": "",
+                "maxAverage": "",
+                "coef": 1,
+                "grades": [
+                    {
+                        "assignment": "Evaluation n°1",
+                        "disciplineName": "ARTS PLASTIQUES",
+                        "dateEntered": "2024-08-19",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "1",
+                            "date": "2025-03-14",
+                            "studentGrade": "20",
+                            "classAverage": "15.00",
+                            "classMax": "20.00",
+                            "classMin": "10.00"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Exploiter des informations et de la documentation, notamment  iconique, pour servir un projet de création",
+                                "skillName": "Expérimenter, produire, créer",
+                                "value": "4"
+                            },
+                            {
+                                "description": "Choisir, mobiliser et adapter des langages et des moyens plastiques variés en fonction de leurs effets dans une intention artistique en restant attentif à l’inattendu",
+                                "skillName": "Expérimenter, produire, créer",
+                                "value": "4"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°2",
+                        "disciplineName": "ARTS PLASTIQUES",
+                        "dateEntered": "2024-08-19",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "3",
+                            "date": "2025-03-14",
+                            "studentGrade": "17,5",
+                            "classAverage": "14.08",
+                            "classMax": "17.50",
+                            "classMin": "7.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Choisir, mobiliser et adapter des langages et des moyens plastiques variés en fonction de leurs effets dans une intention artistique en restant attentif à l’inattendu",
+                                "skillName": "Expérimenter, produire, créer",
+                                "value": "4"
+                            },
+                            {
+                                "description": "S’approprier des questions artistiques en prenant appui sur une pratique artistique et réflexive",
+                                "skillName": "Expérimenter, produire, créer",
+                                "value": "3"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "discipline": "EDUCATION MUSICALE",
+                "average": "",
+                "classAverage": "",
+                "minAverage": "",
+                "maxAverage": "",
+                "coef": 1,
+                "grades": [
+                    {
+                        "assignment": "Evaluation n°1",
+                        "disciplineName": "EDUCATION MUSICALE",
+                        "dateEntered": "2024-12-02",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "0.5",
+                            "date": "2025-03-14",
+                            "studentGrade": "12,5",
+                            "classAverage": "13.03",
+                            "classMax": "20.00",
+                            "classMin": "5.00"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Réutiliser certaines caractéristiques (style, technique, etc.) d’une œuvre connue pour nourrir son travail",
+                                "skillName": "Explorer, imaginer, créer et produire ",
+                                "value": "2"
+                            },
+                            {
+                                "description": "Réinvestir ses expériences personnelles de la création musicale pour écouter, comprendre et commenter celles des autres",
+                                "skillName": "Explorer, imaginer, créer et produire ",
+                                "value": "3"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°2",
+                        "disciplineName": "EDUCATION MUSICALE",
+                        "dateEntered": "2024-08-19",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "2",
+                            "date": "2025-03-14",
+                            "studentGrade": "18,5",
+                            "classAverage": "12.95",
+                            "classMax": "18.50",
+                            "classMin": "6.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Identifier par comparaison les différences et ressemblances dans l’interprétation d’une œuvre donnée",
+                                "skillName": "Ecouter, comparer, construire une culture musicale commune",
+                                "value": "4"
+                            },
+                            {
+                                "description": "Analyser des œuvres musicales en utilisant un vocabulaire précis",
+                                "skillName": "Ecouter, comparer, construire une culture musicale commune",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Situer et comparer des musiques de styles proches ou éloignés dans l’espace et/ou dans le temps pour construire des repères techniques et culturels",
+                                "skillName": "Ecouter, comparer, construire une culture musicale commune",
+                                "value": "4"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "discipline": "E.P.S.",
+                "average": "",
+                "classAverage": "",
+                "minAverage": "",
+                "maxAverage": "",
+                "coef": 1,
+                "grades": [
+                    {
+                        "assignment": "Evaluation n°2",
+                        "disciplineName": "E.P.S.",
+                        "dateEntered": "2024-08-19",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "1",
+                            "date": "2025-03-14",
+                            "studentGrade": "18,5",
+                            "classAverage": "13.68",
+                            "classMax": "18.50",
+                            "classMin": "5.00"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Connaître les effets d’une pratique physique régulière sur son état de bien-être et de santé",
+                                "skillName": "Apprendre à entretenir sa santé par une activité physique régulière, raisonnée et raisonnable",
+                                "value": "4"
+                            },
+                            {
+                                "description": "Adapter l’intensité de son engagement physique à ses possibilités pour ne pas se mettre en danger",
+                                "skillName": "Apprendre à entretenir sa santé par une activité physique régulière, raisonnée et raisonnable",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Évaluer la quantité et qualité de son activité physique quotidienne dans et hors l’école",
+                                "skillName": "Apprendre à entretenir sa santé par une activité physique régulière, raisonnée et raisonnable",
+                                "value": "4"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°1",
+                        "disciplineName": "E.P.S.",
+                        "dateEntered": "2024-08-19",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "0",
+                            "coef": "1",
+                            "date": "2025-03-14",
+                            "studentGrade": "",
+                            "classAverage": "",
+                            "classMax": "",
+                            "classMin": ""
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Connaître et utiliser des indicateurs objectifs pour caractériser l’effort  physique",
+                                "skillName": "Apprendre à entretenir sa santé par une activité physique régulière, raisonnée et raisonnable",
+                                "value": "-2"
+                            },
+                            {
+                                "description": "Connaître les effets d’une pratique physique régulière sur son état de bien-être et de santé",
+                                "skillName": "Apprendre à entretenir sa santé par une activité physique régulière, raisonnée et raisonnable",
+                                "value": "-2"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "generalAverage": "",
+        "maxAverage": "",
+        "minAverage": "",
+        "classAverage": ""
+    },
+    {
+        "name": "Brevet Blanc N°2",
+        "id": "A002X001",
+        "disciplines": [
+            {
+                "discipline": "Français",
+                "average": "",
+                "classAverage": "",
+                "minAverage": "",
+                "maxAverage": "",
+                "coef": 1,
+                "grades": [
+                    {
+                        "assignment": "DNB",
+                        "disciplineName": "Français",
+                        "dateEntered": "2024-08-19",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "4",
+                            "date": "2025-01-25",
+                            "studentGrade": "13",
+                            "classAverage": "11.22",
+                            "classMax": "18.00",
+                            "classMin": "4.00"
+                        },
+                        "academicSkills": []
+                    }
+                ]
+            },
+            {
+                "discipline": "Mathématiques",
+                "average": "",
+                "classAverage": "",
+                "minAverage": "",
+                "maxAverage": "",
+                "coef": 1,
+                "grades": [
+                    {
+                        "assignment": "DNB",
+                        "disciplineName": "Mathématiques",
+                        "dateEntered": "2024-08-20",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "4",
+                            "date": "2025-01-25",
+                            "studentGrade": "14,5",
+                            "classAverage": "10.75",
+                            "classMax": "15.00",
+                            "classMin": "7.00"
+                        },
+                        "academicSkills": []
+                    }
+                ]
+            },
+            {
+                "discipline": "Histoire Géo",
+                "average": "",
+                "classAverage": "",
+                "minAverage": "",
+                "maxAverage": "",
+                "coef": 1,
+                "grades": [
+                    {
+                        "assignment": "DNB",
+                        "disciplineName": "Histoire Géo",
+                        "dateEntered": "2024-08-19",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "40",
+                            "coef": "1",
+                            "date": "2025-01-25",
+                            "studentGrade": "30",
+                            "classAverage": "21.05",
+                            "classMax": "40.00",
+                            "classMin": "9.00"
+                        },
+                        "academicSkills": []
+                    }
+                ]
+            },
+            {
+                "discipline": "Sciences (SVT, Technologie, Physique et Chimie)",
+                "average": "",
+                "classAverage": "",
+                "minAverage": "",
+                "maxAverage": "",
+                "coef": 1,
+                "grades": [
+                    {
+                        "assignment": "DNB",
+                        "disciplineName": "Sciences (SVT, Technologie, Physique et Chimie)",
+                        "dateEntered": "2024-08-19",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "3",
+                            "date": "2025-01-25",
+                            "studentGrade": "12",
+                            "classAverage": "11.21",
+                            "classMax": "16.00",
+                            "classMin": "1.00"
+                        },
+                        "academicSkills": []
+                    }
+                ]
+            },
+            {
+                "discipline": "EPREUVE ORAL DE SOUTENANCE",
+                "average": "",
+                "classAverage": "",
+                "minAverage": "",
+                "maxAverage": "",
+                "coef": 1,
+                "grades": [
+                    {
+                        "assignment": "DNB",
+                        "disciplineName": "EPREUVE ORAL DE SOUTENANCE",
+                        "dateEntered": "2024-08-22",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "1",
+                            "date": "2025-01-25",
+                            "studentGrade": "14",
+                            "classAverage": "11.68",
+                            "classMax": "15.00",
+                            "classMin": "8.00"
+                        },
+                        "academicSkills": []
+                    }
+                ]
+            }
+        ],
+        "generalAverage": "",
+        "maxAverage": "",
+        "minAverage": "",
+        "classAverage": ""
+    },
+    {
+        "name": "3ème Trimestre",
+        "id": "A003",
+        "disciplines": [
+            {
+                "discipline": "FRANCAIS",
+                "average": "17,18",
+                "classAverage": "12,19",
+                "minAverage": "8,82",
+                "maxAverage": "17,18",
+                "coef": 3,
+                "grades": [
+                    {
+                        "assignment": "Evaluation n°2",
+                        "disciplineName": "FRANCAIS",
+                        "dateEntered": "2025-03-15",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "1",
+                            "date": "2025-07-03",
+                            "studentGrade": "13,5",
+                            "classAverage": "11.79",
+                            "classMax": "15.00",
+                            "classMin": "8.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Établir des liens entre des créations littéraires et artistiques issues de cultures et d’époques diverses",
+                                "skillName": "Acquérir des éléments de culture littéraire et artistique 3e",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Mobiliser des références culturelles pour interpréter les textes et les créations artistiques et littéraires et pour enrichir son expression personnelle",
+                                "skillName": "Acquérir des éléments de culture littéraire et artistique 3e",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Mobiliser des références culturelles pour interpréter les textes et les créations artistiques et littéraires et pour enrichir son expression personnelle",
+                                "skillName": "Acquérir des éléments de culture littéraire et artistique 5e",
+                                "value": "2"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°3",
+                        "disciplineName": "FRANCAIS",
+                        "dateEntered": "2024-08-19",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "10",
+                            "coef": "0.5",
+                            "date": "2025-07-03",
+                            "studentGrade": "9",
+                            "classAverage": "6.89",
+                            "classMax": "10.00",
+                            "classMin": "4.00"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Lire des textes non littéraires, des images et des documents composites (y compris numériques)",
+                                "skillName": "Lire",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Établir des liens entre des créations littéraires et artistiques issues de cultures et d’époques diverses",
+                                "skillName": "Acquérir des éléments de culture littéraire et artistique 3e",
+                                "value": "4"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°1",
+                        "disciplineName": "FRANCAIS",
+                        "dateEntered": "2025-03-15",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "3",
+                            "date": "2025-07-03",
+                            "studentGrade": "18,5",
+                            "classAverage": "13.00",
+                            "classMax": "18.50",
+                            "classMin": "8.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Se chercher, se construire ",
+                                "skillName": "Acquérir des éléments de culture littéraire et artistique 3e",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Établir des liens entre des créations littéraires et artistiques issues de cultures et d’époques diverses",
+                                "skillName": "Acquérir des éléments de culture littéraire et artistique 3e",
+                                "value": "4"
+                            },
+                            {
+                                "description": "Mobiliser des références culturelles pour interpréter les textes et les créations artistiques et littéraires et pour enrichir son expression personnelle",
+                                "skillName": "Acquérir des éléments de culture littéraire et artistique 3e",
+                                "value": "4"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "discipline": "ANGLAIS",
+                "average": "12,44",
+                "classAverage": "12,23",
+                "minAverage": "8,78",
+                "maxAverage": "15,11",
+                "coef": 2,
+                "grades": [
+                    {
+                        "assignment": "Evaluation n°3",
+                        "disciplineName": "ANGLAIS",
+                        "dateEntered": "2024-08-19",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "10",
+                            "coef": "0.5",
+                            "date": "2025-07-03",
+                            "studentGrade": "6,5",
+                            "classAverage": "6.16",
+                            "classMax": "9.00",
+                            "classMin": "2.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Comprendre des documents écrits de nature et de difficultés variées issus de sources diverses",
+                                "skillName": "Lire",
+                                "value": "2"
+                            },
+                            {
+                                "description": "S’approprier le document en utilisant des repérages de nature différente : indices extralinguistiques, linguistiques, reconstitution du sens, mise en relation d’éléments significatifs",
+                                "skillName": "Lire",
+                                "value": "3"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°2",
+                        "disciplineName": "ANGLAIS",
+                        "dateEntered": "2025-03-15",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "3",
+                            "date": "2025-07-03",
+                            "studentGrade": "11,5",
+                            "classAverage": "11.84",
+                            "classMax": "15.00",
+                            "classMin": "6.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Développer des stratégies pour surmonter un manque lexical lors d’une prise de parole, s’autocorriger et reformuler pour se faire comprendre",
+                                "skillName": "Parler en continu ",
+                                "value": "1"
+                            },
+                            {
+                                "description": "Mettre en voix son discours par la prononciation, l’intonation et  la gestuelle adéquates",
+                                "skillName": "Parler en continu ",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Mobiliser à bon escient ses connaissances lexicales, culturelles, grammaticales pour produire un texte oral sur des sujets variés",
+                                "skillName": "Parler en continu ",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Comprendre des documents écrits de nature et de difficultés variées issus de sources diverses",
+                                "skillName": "Lire",
+                                "value": "2"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°1",
+                        "disciplineName": "ANGLAIS",
+                        "dateEntered": "2024-08-19",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "1",
+                            "date": "2025-07-03",
+                            "studentGrade": "15",
+                            "classAverage": "13.34",
+                            "classMax": "18.50",
+                            "classMin": "8.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Comprendre des messages oraux et des documents sonores de nature et de complexité variables",
+                                "skillName": "Écouter et comprendre ",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Repérer des indices pertinents, extralinguistiques ou linguistiques, pour identifier la situation d’énonciation et déduire le sens d’un message",
+                                "skillName": "Écouter et comprendre ",
+                                "value": "2"
+                            },
+                            {
+                                "description": "Savoir lire des documents vidéo et savoir mettre en relation images et documents sonores",
+                                "skillName": "Écouter et comprendre ",
+                                "value": "4"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "discipline": "ESPAGNOL LV2",
+                "average": "10,7",
+                "classAverage": "12,26",
+                "minAverage": "6,5",
+                "maxAverage": "18,3",
+                "coef": 1,
+                "grades": [
+                    {
+                        "assignment": "Evaluation n°2",
+                        "disciplineName": "ESPAGNOL LV2",
+                        "dateEntered": "2024-08-19",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "0.5",
+                            "date": "2025-07-03",
+                            "studentGrade": "7,5",
+                            "classAverage": "13.00",
+                            "classMax": "17.50",
+                            "classMin": "5.00"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Se familiariser aux réalités sonores de la langue, et s’entraîner à la mémorisation",
+                                "skillName": "Écouter et comprendre ",
+                                "value": "2"
+                            },
+                            {
+                                "description": "Comprendre des messages oraux et des documents sonores de nature et de complexité variables",
+                                "skillName": "Écouter et comprendre ",
+                                "value": "1"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°1",
+                        "disciplineName": "ESPAGNOL LV2",
+                        "dateEntered": "2025-03-15",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "2",
+                            "date": "2025-07-03",
+                            "studentGrade": "11,5",
+                            "classAverage": "12.08",
+                            "classMax": "18.50",
+                            "classMin": "5.00"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Savoir lire des documents vidéo et savoir mettre en relation images et documents sonores",
+                                "skillName": "Écouter et comprendre ",
+                                "value": "2"
+                            },
+                            {
+                                "description": "Repérer des indices pertinents, extralinguistiques ou linguistiques, pour identifier la situation d’énonciation et déduire le sens d’un message",
+                                "skillName": "Écouter et comprendre ",
+                                "value": "4"
+                            },
+                            {
+                                "description": "Se familiariser aux réalités sonores de la langue, et s’entraîner à la mémorisation",
+                                "skillName": "Écouter et comprendre ",
+                                "value": "1"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "discipline": "HIST.GEO.EN.MOR.CIV.",
+                "average": "14,4",
+                "classAverage": "12,62",
+                "minAverage": "8,8",
+                "maxAverage": "16,2",
+                "coef": 1,
+                "grades": [
+                    {
+                        "assignment": "Evaluation n°2",
+                        "disciplineName": "HIST.GEO.EN.MOR.CIV.",
+                        "dateEntered": "2025-03-15",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "10",
+                            "coef": "0.25",
+                            "date": "2025-07-03",
+                            "studentGrade": "9",
+                            "classAverage": "6.66",
+                            "classMax": "10.00",
+                            "classMin": "2.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Comprendre le sens général d’un document",
+                                "skillName": "Analyser et comprendre un document ",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Confronter un document à ce qu’on peut connaître par ailleurs du sujet étudié",
+                                "skillName": "Analyser et comprendre un document ",
+                                "value": "4"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°1",
+                        "disciplineName": "HIST.GEO.EN.MOR.CIV.",
+                        "dateEntered": "2024-08-19",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "1",
+                            "date": "2025-07-03",
+                            "studentGrade": "13,5",
+                            "classAverage": "12.45",
+                            "classMax": "16.50",
+                            "classMin": "6.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Comprendre le sens général d’un document",
+                                "skillName": "Analyser et comprendre un document ",
+                                "value": "2"
+                            },
+                            {
+                                "description": "Identifier le document et son point de vue particulier",
+                                "skillName": "Analyser et comprendre un document ",
+                                "value": "4"
+                            },
+                            {
+                                "description": "Extraire des informations pertinentes pour répondre à une question portant sur un document ou plusieurs documents, les classer, les hiérarchiser",
+                                "skillName": "Analyser et comprendre un document ",
+                                "value": "2"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "discipline": "MATHEMATIQUES",
+                "average": "13,08",
+                "classAverage": "11,87",
+                "minAverage": "8,13",
+                "maxAverage": "14,97",
+                "coef": 3,
+                "grades": [
+                    {
+                        "assignment": "Evaluation n°1",
+                        "disciplineName": "MATHEMATIQUES",
+                        "dateEntered": "2024-08-20",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "2",
+                            "date": "2025-07-03",
+                            "studentGrade": "7,5",
+                            "classAverage": "12.50",
+                            "classMax": "17.50",
+                            "classMin": "7.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Calculer avec des nombres rationnels, de manière exacte ou approchée, en combinant de façon appropriée le calcul mental, le calcul posé et le calcul instrumenté (calculatrice ou logiciel)",
+                                "skillName": "Calculer",
+                                "value": "1"
+                            },
+                            {
+                                "description": "Contrôler la vraisemblance de ses résultats, notamment en estimant des ordres de grandeur ou en utilisant des encadrements",
+                                "skillName": "Calculer",
+                                "value": "2"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°2",
+                        "disciplineName": "MATHEMATIQUES",
+                        "dateEntered": "2024-08-20",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "10",
+                            "coef": "0.5",
+                            "date": "2025-07-03",
+                            "studentGrade": "8",
+                            "classAverage": "6.61",
+                            "classMax": "9.00",
+                            "classMin": "4.00"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Calculer avec des nombres rationnels, de manière exacte ou approchée, en combinant de façon appropriée le calcul mental, le calcul posé et le calcul instrumenté (calculatrice ou logiciel)",
+                                "skillName": "Calculer",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Extraire d'un document les informations utiles, les reformuler, les organiser, les confronter à ses connaissances",
+                                "skillName": "Chercher",
+                                "value": "3"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°4",
+                        "disciplineName": "MATHEMATIQUES",
+                        "dateEntered": "2024-08-20",
+                        "isOptional": true,
+                        "gradeDetails": {
+                            "denominator": "10",
+                            "coef": "0.5",
+                            "date": "2025-07-03",
+                            "studentGrade": "1,5",
+                            "classAverage": "6.60",
+                            "classMax": "10.00",
+                            "classMin": "1.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Faire le lien entre le langage naturel et le langage algébrique. Distinguer des spécificités du langage mathématique par rapport à la langue française",
+                                "skillName": "Communiquer",
+                                "value": "-3"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°3",
+                        "disciplineName": "MATHEMATIQUES",
+                        "dateEntered": "2024-08-20",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "0",
+                            "coef": "0.25",
+                            "date": "2025-07-03",
+                            "studentGrade": "",
+                            "classAverage": "",
+                            "classMax": "",
+                            "classMin": ""
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Expliquer à l’oral ou à l’écrit (sa démarche, son raisonnement, un calcul, un protocole de construction géométrique, un  algorithme), comprendre les explications d’un autre et  argumenter dans l’échange",
+                                "skillName": "Communiquer",
+                                "value": "-1"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°1",
+                        "disciplineName": "MATHEMATIQUES",
+                        "dateEntered": "2024-08-20",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "1",
+                            "date": "2025-07-03",
+                            "studentGrade": "18,5",
+                            "classAverage": "12.97",
+                            "classMax": "18.50",
+                            "classMin": "5.00"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Calculer avec des nombres rationnels, de manière exacte ou approchée, en combinant de façon appropriée le calcul mental, le calcul posé et le calcul instrumenté (calculatrice ou logiciel)",
+                                "skillName": "Calculer",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Contrôler la vraisemblance de ses résultats, notamment en estimant des ordres de grandeur ou en utilisant des encadrements",
+                                "skillName": "Calculer",
+                                "value": "4"
+                            },
+                            {
+                                "description": "Calculer en utilisant le langage algébrique (lettres, symboles, etc.)",
+                                "skillName": "Calculer",
+                                "value": "4"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "discipline": "PHYSIQUE-CHIMIE",
+                "average": "11,17",
+                "classAverage": "12,83",
+                "minAverage": "7,83",
+                "maxAverage": "18,33",
+                "coef": 2,
+                "grades": [
+                    {
+                        "assignment": "Evaluation n°2",
+                        "disciplineName": "PHYSIQUE-CHIMIE",
+                        "dateEntered": "2024-08-19",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "2",
+                            "date": "2025-07-03",
+                            "studentGrade": "12,5",
+                            "classAverage": "12.63",
+                            "classMax": "17.50",
+                            "classMin": "7.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Réinvestir ses connaissances, notamment celles sur les ressources et l’énergie, pour agir de façon responsable et respectueuse de l’environnement",
+                                "skillName": "Adopter un comportement éthique et responsable ",
+                                "value": "2"
+                            },
+                            {
+                                "description": "Concevoir et réaliser un dispositif de mesure ou d’observation",
+                                "skillName": "Concevoir, créer, réaliser ",
+                                "value": "3"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°1",
+                        "disciplineName": "PHYSIQUE-CHIMIE",
+                        "dateEntered": "2024-08-19",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "1",
+                            "date": "2025-07-03",
+                            "studentGrade": "8,5",
+                            "classAverage": "13.21",
+                            "classMax": "20.00",
+                            "classMin": "8.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "S’impliquer dans un projet ayant une dimension citoyenne",
+                                "skillName": "Adopter un comportement éthique et responsable ",
+                                "value": "2"
+                            },
+                            {
+                                "description": "Expliquer les fondements des règles de sécurité en chimie, électricité, optique et acoustique",
+                                "skillName": "Adopter un comportement éthique et responsable ",
+                                "value": "1"
+                            },
+                            {
+                                "description": "Réinvestir ses connaissances, notamment celles sur les ressources et l’énergie, pour agir de façon responsable et respectueuse de l’environnement",
+                                "skillName": "Adopter un comportement éthique et responsable ",
+                                "value": "2"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "discipline": "S.V.T.",
+                "average": "18",
+                "classAverage": "12,35",
+                "minAverage": "7,5",
+                "maxAverage": "18",
+                "coef": 2,
+                "grades": [
+                    {
+                        "assignment": "Evaluation n°2",
+                        "disciplineName": "S.V.T.",
+                        "dateEntered": "2024-08-19",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "0.5",
+                            "date": "2025-07-03",
+                            "studentGrade": "19",
+                            "classAverage": "12.58",
+                            "classMax": "19.00",
+                            "classMin": "7.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Identifier les impacts (bénéfices et nuisances) des activités humaines sur l’environnement à différentes échelles",
+                                "skillName": "Adopter un comportement éthique et responsable ",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Fonder ses choix de comportement responsable vis-à-vis de sa santé ou de l’environnement sur des arguments scientifiques",
+                                "skillName": "Adopter un comportement éthique et responsable ",
+                                "value": "4"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°1",
+                        "disciplineName": "S.V.T.",
+                        "dateEntered": "2024-08-19",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "1",
+                            "date": "2025-07-03",
+                            "studentGrade": "17,5",
+                            "classAverage": "12.24",
+                            "classMax": "20.00",
+                            "classMin": "7.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Identifier les impacts (bénéfices et nuisances) des activités humaines sur l’environnement à différentes échelles",
+                                "skillName": "Adopter un comportement éthique et responsable ",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Comprendre les responsabilités individuelle et collective en matière de préservation des ressources de la planète (biodiversité, ressources minérales et ressources énergétiques) et de santé",
+                                "skillName": "Adopter un comportement éthique et responsable ",
+                                "value": "4"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "discipline": "TECHNOLOGIE",
+                "average": "13,33",
+                "classAverage": "12,97",
+                "minAverage": "7,17",
+                "maxAverage": "19,5",
+                "coef": 1,
+                "grades": [
+                    {
+                        "assignment": "Evaluation n°2",
+                        "disciplineName": "TECHNOLOGIE",
+                        "dateEntered": "2024-08-19",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "2",
+                            "date": "2025-07-03",
+                            "studentGrade": "15",
+                            "classAverage": "13.16",
+                            "classMax": "20.00",
+                            "classMin": "5.00"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Analyser le cycle de vie d’un objet",
+                                "skillName": "Adopter un comportement éthique et responsable ",
+                                "value": "3"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°1",
+                        "disciplineName": "TECHNOLOGIE",
+                        "dateEntered": "2024-08-19",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "1",
+                            "date": "2025-07-03",
+                            "studentGrade": "10",
+                            "classAverage": "12.61",
+                            "classMax": "18.50",
+                            "classMin": "8.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Développer les bonnes pratiques de l’usage des objets communicants",
+                                "skillName": "Adopter un comportement éthique et responsable ",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Analyser l’impact environnemental d’un objet et de ses constituants",
+                                "skillName": "Adopter un comportement éthique et responsable ",
+                                "value": "1"
+                            },
+                            {
+                                "description": "Analyser le cycle de vie d’un objet",
+                                "skillName": "Adopter un comportement éthique et responsable ",
+                                "value": "2"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "discipline": "ARTS PLASTIQUES",
+                "average": "18,13",
+                "classAverage": "14,31",
+                "minAverage": "9,38",
+                "maxAverage": "18,13",
+                "coef": 1,
+                "grades": [
+                    {
+                        "assignment": "Evaluation n°1",
+                        "disciplineName": "ARTS PLASTIQUES",
+                        "dateEntered": "2024-08-19",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "1",
+                            "date": "2025-07-03",
+                            "studentGrade": "20",
+                            "classAverage": "15.00",
+                            "classMax": "20.00",
+                            "classMin": "10.00"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Exploiter des informations et de la documentation, notamment  iconique, pour servir un projet de création",
+                                "skillName": "Expérimenter, produire, créer",
+                                "value": "4"
+                            },
+                            {
+                                "description": "Choisir, mobiliser et adapter des langages et des moyens plastiques variés en fonction de leurs effets dans une intention artistique en restant attentif à l’inattendu",
+                                "skillName": "Expérimenter, produire, créer",
+                                "value": "4"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°2",
+                        "disciplineName": "ARTS PLASTIQUES",
+                        "dateEntered": "2024-08-19",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "3",
+                            "date": "2025-07-03",
+                            "studentGrade": "17,5",
+                            "classAverage": "14.08",
+                            "classMax": "17.50",
+                            "classMin": "7.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Choisir, mobiliser et adapter des langages et des moyens plastiques variés en fonction de leurs effets dans une intention artistique en restant attentif à l’inattendu",
+                                "skillName": "Expérimenter, produire, créer",
+                                "value": "4"
+                            },
+                            {
+                                "description": "S’approprier des questions artistiques en prenant appui sur une pratique artistique et réflexive",
+                                "skillName": "Expérimenter, produire, créer",
+                                "value": "3"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "discipline": "EDUCATION MUSICALE",
+                "average": "15,5",
+                "classAverage": "12,99",
+                "minAverage": "9,25",
+                "maxAverage": "16,25",
+                "coef": 1,
+                "grades": [
+                    {
+                        "assignment": "Evaluation n°2",
+                        "disciplineName": "EDUCATION MUSICALE",
+                        "dateEntered": "2024-08-19",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "2",
+                            "date": "2025-07-03",
+                            "studentGrade": "18,5",
+                            "classAverage": "12.95",
+                            "classMax": "18.50",
+                            "classMin": "6.50"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Identifier par comparaison les différences et ressemblances dans l’interprétation d’une œuvre donnée",
+                                "skillName": "Ecouter, comparer, construire une culture musicale commune",
+                                "value": "4"
+                            },
+                            {
+                                "description": "Analyser des œuvres musicales en utilisant un vocabulaire précis",
+                                "skillName": "Ecouter, comparer, construire une culture musicale commune",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Situer et comparer des musiques de styles proches ou éloignés dans l’espace et/ou dans le temps pour construire des repères techniques et culturels",
+                                "skillName": "Ecouter, comparer, construire une culture musicale commune",
+                                "value": "4"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°1",
+                        "disciplineName": "EDUCATION MUSICALE",
+                        "dateEntered": "2025-03-15",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "2",
+                            "date": "2025-07-03",
+                            "studentGrade": "12,5",
+                            "classAverage": "13.03",
+                            "classMax": "20.00",
+                            "classMin": "5.00"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Réutiliser certaines caractéristiques (style, technique, etc.) d’une œuvre connue pour nourrir son travail",
+                                "skillName": "Explorer, imaginer, créer et produire ",
+                                "value": "2"
+                            },
+                            {
+                                "description": "Réinvestir ses expériences personnelles de la création musicale pour écouter, comprendre et commenter celles des autres",
+                                "skillName": "Explorer, imaginer, créer et produire ",
+                                "value": "3"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "discipline": "E.P.S.",
+                "average": "18,5",
+                "classAverage": "14,57",
+                "minAverage": "11,25",
+                "maxAverage": "18,5",
+                "coef": 1,
+                "grades": [
+                    {
+                        "assignment": "Evaluation n°2",
+                        "disciplineName": "E.P.S.",
+                        "dateEntered": "2024-08-19",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "1",
+                            "date": "2025-07-03",
+                            "studentGrade": "18,5",
+                            "classAverage": "13.68",
+                            "classMax": "18.50",
+                            "classMin": "5.00"
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Connaître les effets d’une pratique physique régulière sur son état de bien-être et de santé",
+                                "skillName": "Apprendre à entretenir sa santé par une activité physique régulière, raisonnée et raisonnable",
+                                "value": "4"
+                            },
+                            {
+                                "description": "Adapter l’intensité de son engagement physique à ses possibilités pour ne pas se mettre en danger",
+                                "skillName": "Apprendre à entretenir sa santé par une activité physique régulière, raisonnée et raisonnable",
+                                "value": "3"
+                            },
+                            {
+                                "description": "Évaluer la quantité et qualité de son activité physique quotidienne dans et hors l’école",
+                                "skillName": "Apprendre à entretenir sa santé par une activité physique régulière, raisonnée et raisonnable",
+                                "value": "4"
+                            }
+                        ]
+                    },
+                    {
+                        "assignment": "Evaluation n°1",
+                        "disciplineName": "E.P.S.",
+                        "dateEntered": "2024-08-19",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "0",
+                            "coef": "1",
+                            "date": "2025-07-03",
+                            "studentGrade": "",
+                            "classAverage": "",
+                            "classMax": "",
+                            "classMin": ""
+                        },
+                        "academicSkills": [
+                            {
+                                "description": "Connaître et utiliser des indicateurs objectifs pour caractériser l’effort  physique",
+                                "skillName": "Apprendre à entretenir sa santé par une activité physique régulière, raisonnée et raisonnable",
+                                "value": "-2"
+                            },
+                            {
+                                "description": "Connaître les effets d’une pratique physique régulière sur son état de bien-être et de santé",
+                                "skillName": "Apprendre à entretenir sa santé par une activité physique régulière, raisonnée et raisonnable",
+                                "value": "-2"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "generalAverage": "14,7",
+        "maxAverage": "14,7",
+        "minAverage": "10,99",
+        "classAverage": "12,62"
+    },
+    {
+        "name": "Brevet Blanc N°3",
+        "id": "A003X001",
+        "disciplines": [
+            {
+                "discipline": "Français",
+                "average": "17",
+                "classAverage": "11,44",
+                "minAverage": "4",
+                "maxAverage": "18",
+                "coef": 1,
+                "grades": [
+                    {
+                        "assignment": "DNB",
+                        "disciplineName": "Français",
+                        "dateEntered": "2024-08-19",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "4",
+                            "date": "2025-04-05",
+                            "studentGrade": "17",
+                            "classAverage": "11.44",
+                            "classMax": "18.00",
+                            "classMin": "4.00"
+                        },
+                        "academicSkills": []
+                    }
+                ]
+            },
+            {
+                "discipline": "Mathématiques",
+                "average": "14,5",
+                "classAverage": "10,75",
+                "minAverage": "7",
+                "maxAverage": "15",
+                "coef": 1,
+                "grades": [
+                    {
+                        "assignment": "DNB",
+                        "disciplineName": "Mathématiques",
+                        "dateEntered": "2024-08-20",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "3",
+                            "date": "2025-04-05",
+                            "studentGrade": "14,5",
+                            "classAverage": "10.75",
+                            "classMax": "15.00",
+                            "classMin": "7.00"
+                        },
+                        "academicSkills": []
+                    }
+                ]
+            },
+            {
+                "discipline": "Histoire Géo",
+                "average": "14",
+                "classAverage": "10,47",
+                "minAverage": "4,5",
+                "maxAverage": "20",
+                "coef": 1,
+                "grades": [
+                    {
+                        "assignment": "DNB",
+                        "disciplineName": "Histoire Géo",
+                        "dateEntered": "2024-08-19",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "40",
+                            "coef": "1",
+                            "date": "2025-04-05",
+                            "studentGrade": "28",
+                            "classAverage": "20.95",
+                            "classMax": "40.00",
+                            "classMin": "9.00"
+                        },
+                        "academicSkills": []
+                    }
+                ]
+            },
+            {
+                "discipline": "Sciences (SVT, Technologie, Physique et Chimie)",
+                "average": "18",
+                "classAverage": "11,53",
+                "minAverage": "1",
+                "maxAverage": "18",
+                "coef": 1,
+                "grades": [
+                    {
+                        "assignment": "DNB",
+                        "disciplineName": "Sciences (SVT, Technologie, Physique et Chimie)",
+                        "dateEntered": "2024-08-19",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "3",
+                            "date": "2025-04-05",
+                            "studentGrade": "18",
+                            "classAverage": "11.53",
+                            "classMax": "18.00",
+                            "classMin": "1.00"
+                        },
+                        "academicSkills": []
+                    }
+                ]
+            },
+            {
+                "discipline": "EPREUVE ORAL DE SOUTENANCE",
+                "average": "14",
+                "classAverage": "11,68",
+                "minAverage": "8",
+                "maxAverage": "15",
+                "coef": 1,
+                "grades": [
+                    {
+                        "assignment": "DNB",
+                        "disciplineName": "EPREUVE ORAL DE SOUTENANCE",
+                        "dateEntered": "2024-08-22",
+                        "isOptional": false,
+                        "gradeDetails": {
+                            "denominator": "20",
+                            "coef": "1",
+                            "date": "2025-04-05",
+                            "studentGrade": "14",
+                            "classAverage": "11.68",
+                            "classMax": "15.00",
+                            "classMin": "8.00"
+                        },
+                        "academicSkills": []
+                    }
+                ]
+            }
+        ],
+        "generalAverage": "15,5",
+        "maxAverage": "15,5",
+        "minAverage": "9,1",
+        "classAverage": "11,19"
+    },
+    {
+        "name": "Année",
+        "id": "A999Z",
+        "disciplines": [
+            {
+                "discipline": "FRANCAIS",
+                "average": "15,98",
+                "classAverage": "12,08",
+                "minAverage": "8,68",
+                "maxAverage": "15,98",
+                "coef": 3,
+                "grades": []
+            },
+            {
+                "discipline": "ANGLAIS",
+                "average": "13,08",
+                "classAverage": "12,5",
+                "minAverage": "10,32",
+                "maxAverage": "15,91",
+                "coef": 2,
+                "grades": []
+            },
+            {
+                "discipline": "ESPAGNOL LV2",
+                "average": "10,82",
+                "classAverage": "12,24",
+                "minAverage": "6,29",
+                "maxAverage": "18,33",
+                "coef": 1,
+                "grades": []
+            },
+            {
+                "discipline": "HIST.GEO.EN.MOR.CIV.",
+                "average": "14,4",
+                "classAverage": "12,62",
+                "minAverage": "8,8",
+                "maxAverage": "16,2",
+                "coef": 1,
+                "grades": []
+            },
+            {
+                "discipline": "MATHEMATIQUES",
+                "average": "13,9",
+                "classAverage": "11,96",
+                "minAverage": "7,99",
+                "maxAverage": "14,91",
+                "coef": 3,
+                "grades": []
+            },
+            {
+                "discipline": "PHYSIQUE-CHIMIE",
+                "average": "11,17",
+                "classAverage": "12,83",
+                "minAverage": "7,83",
+                "maxAverage": "18,33",
+                "coef": 2,
+                "grades": []
+            },
+            {
+                "discipline": "S.V.T.",
+                "average": "18",
+                "classAverage": "12,35",
+                "minAverage": "7,5",
+                "maxAverage": "18",
+                "coef": 2,
+                "grades": []
+            },
+            {
+                "discipline": "TECHNOLOGIE",
+                "average": "13,33",
+                "classAverage": "12,97",
+                "minAverage": "7,17",
+                "maxAverage": "19,5",
+                "coef": 1,
+                "grades": []
+            },
+            {
+                "discipline": "ARTS PLASTIQUES",
+                "average": "18,13",
+                "classAverage": "14,31",
+                "minAverage": "9,38",
+                "maxAverage": "18,13",
+                "coef": 1,
+                "grades": []
+            },
+            {
+                "discipline": "EDUCATION MUSICALE",
+                "average": "16,4",
+                "classAverage": "12,98",
+                "minAverage": "8,6",
+                "maxAverage": "16,4",
+                "coef": 1,
+                "grades": []
+            },
+            {
+                "discipline": "E.P.S.",
+                "average": "18,5",
+                "classAverage": "14,57",
+                "minAverage": "11,25",
+                "maxAverage": "18,5",
+                "coef": 1,
+                "grades": []
+            }
+        ],
+        "generalAverage": "14,76",
+        "maxAverage": "14,76",
+        "minAverage": "10,95",
+        "classAverage": "12,64"
+    }
+]
+

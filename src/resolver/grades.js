@@ -12,7 +12,6 @@ export default async function gradesResolver({ token }) {
                 },
             }
         );
-
         const grades = gradesResponse.data;
 
         const periodDetails = grades.periodes.reduce(
@@ -30,19 +29,20 @@ export default async function gradesResolver({ token }) {
                     discipline.grades = disciplineGrades;
                 });
 
-                acc[periode] = {
+                acc.push({
+                    name: periode,
                     id: idPeriode,
                     disciplines,
                     generalAverage: ensembleMatieres.moyenneGenerale,
                     maxAverage: ensembleMatieres.moyenneMax,
                     minAverage: ensembleMatieres.moyenneMin,
                     classAverage: ensembleMatieres.moyenneClasse,
-                };
+                });
                 return acc;
             },
-            {}
+            []
         );
-        console.log(periodDetails);
+
         return periodDetails;
     } catch (error) {
         console.error("Error fetching grades:", error);
