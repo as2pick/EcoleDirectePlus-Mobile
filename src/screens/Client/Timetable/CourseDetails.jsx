@@ -326,7 +326,7 @@ export default function CourseDetails({ route }) {
                             </View>
                         )}
                     </View>
-                    <Separation />
+                    {(teacher || room || group) && <Separation />}
                 </View>
                 {/* <View
                     style={{
