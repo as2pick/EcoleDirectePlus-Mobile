@@ -192,7 +192,6 @@ const fillHolidays = (startDateStr, endDateStr) => {
         holidaysCourseTemplate["startCourse"].date = dateString;
         holidaysCourseTemplate["endCourse"].date = dateString;
 
-        console.log(holidaysCourseTemplate);
         const holidaysDay = {
             courses: [holidaysCourseTemplate],
             date: dateString,
