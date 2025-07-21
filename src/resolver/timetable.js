@@ -149,13 +149,71 @@ const otherEdits = (timetableData = []) => {
     return timetableData;
 };
 
+const fillHolidays = (startDateStr, endDateStr) => {
+    const finalHolidaysTimetable = [];
+
+    const holidaysCourseTemplate = {
+        classGroup: undefined,
+        // color: "hsl(229, 50%, 77%)",
+        endCourse: { /*date: "2025-12-22", added dynamicly*/ time: "23:59" },
+        group: undefined,
+        height: 100,
+        isCancelled: false,
+        isDispensed: false,
+        isEdited: false,
+        libelle: "CONGÉS",
+        placing: "0.00",
+        room: undefined,
+        startCourse: { /*date: "2025-12-22",*/ time: "00:00" },
+        teacher: undefined,
+        // textColor: "hsl(0, 0%, 0%)",
+        webId: 12345,
+    }; // pushed in array
+    const [h, s, l] = textToHSL({ text: holidaysCourseTemplate.libelle });
+
+    holidaysCourseTemplate["color"] = `hsl(${h}, ${s}%, ${l}%)`;
+
+    holidaysCourseTemplate["textColor"] = isDarkColor(
+        holidaysCourseTemplate.color /* added with previous line */
+    )
+        ? "hsl(0, 100%, 100%)"
+        : "hsl(0, 0%, 0%)";
+
+    let dateList = [];
+    let startDate = new Date(startDateStr);
+    let endDate = new Date(endDateStr);
+    while (startDate <= endDate) {
+        const year = startDate.getFullYear();
+        const month = String(startDate.getMonth() + 1).padStart(2, "0");
+        const day = String(startDate.getDate()).padStart(2, "0");
+        const dateString = `${year}-${month}-${day}`;
+        dateList.push(dateString);
+        const iSOFrenchDate = formatFrenchDate(dateString);
+        holidaysCourseTemplate["startCourse"].date = dateString;
+        holidaysCourseTemplate["endCourse"].date = dateString;
+
+        console.log(holidaysCourseTemplate);
+        const holidaysDay = {
+            courses: [holidaysCourseTemplate],
+            date: dateString,
+            iSODate: iSOFrenchDate,
+            isJustNoon: false,
+        };
+
+        finalHolidaysTimetable.push(holidaysDay);
+
+        startDate.setDate(startDate.getDate() + 1);
+    }
+    return finalHolidaysTimetable;
+};
+
 const sortedTimetable = async (timetable) => {
     const newTimetable = convertData(await timetable);
     const sizedTimetable = sizeTimetable(newTimetable);
 
-    const FinalSortedTimetable = otherEdits(sizedTimetable);
+    const finalSortedTimetable = otherEdits(sizedTimetable);
 
-    return FinalSortedTimetable;
+    return finalSortedTimetable;
 };
 
 export default async function timetableResolver({ token, offset = 0 }) {
@@ -176,6 +234,9 @@ export default async function timetableResolver({ token, offset = 0 }) {
             method: "POST",
         }
     );
-    return sortedTimetable(timetableResponse.data);
+
+    return !timetableResponse
+        ? fillHolidays(requestedMonday, addDaysToDateString(requestedMonday, 6))
+        : await sortedTimetable(timetableResponse.data);
 }
 

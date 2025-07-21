@@ -44,6 +44,14 @@ export default async function fetchApi(
         }
 
         const data = await convertApiResponse(apiResponse);
+
+        if (
+            JSON.stringify(data.data) === "{}" ||
+            JSON.stringify(data.data) === "[]"
+        ) {
+            return null;
+        }
+
         return data;
     } catch (error) {
         console.error("Une erreur est survenue lors de l'appel à fetchApi :", error);
