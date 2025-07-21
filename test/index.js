@@ -276,8 +276,8 @@ function sortGradesByDate(grades) {
         .sort((a, b) => new Date(a.date) - new Date(b.date));
 }
 
-const calculateStreak = (gradesArrayChronologicaly, periodCode) => {
-    const periodObj = new Period(jsonData[periodCode], periodCode);
+const calculateStreak = (gradesArrayChronologicaly, periodCode, apiData) => {
+    const periodObj = new Period(apiData[periodCode], periodCode);
     let gradesItered = [];
     let streakScores = periodObj.createReferentialStreakScore();
     let globalStreakScore = 0;
@@ -356,8 +356,15 @@ const calculateStreak = (gradesArrayChronologicaly, periodCode) => {
 
 Object.keys(jsonData).map((key) => {
     const a = new Period(jsonData[key], key);
-    calculateStreak(sortGradesByDate(createValidGradesArray(jsonData, key)), key);
-    console.log(a.makeGeneralAverage());
+    console.log(
+        calculateStreak(
+            sortGradesByDate(createValidGradesArray(jsonData, key)),
+            key,
+            jsonData
+        ),
+        "pipi"
+    );
+    // console.log(a.makeGeneralAverage());
 });
 
 /*
