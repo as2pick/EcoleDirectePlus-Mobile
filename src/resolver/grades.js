@@ -1,4 +1,5 @@
 import fetchApi from "../services/fetchApi";
+import { calculateWeightedAverage, parseNumber } from "../utils/grades/makeAverage";
 
 export default async function gradesResolver({ token }) {
     try {
@@ -14,107 +15,180 @@ export default async function gradesResolver({ token }) {
         );
         const grades = gradesResponse.data;
 
-        const periodDetails = grades.periodes.reduce(
-            (acc, { periode, idPeriode, ensembleMatieres }) => {
-                const disciplines = getDisciplinesForPeriod(ensembleMatieres);
+        // Format periods
+        const periodsObj = grades.periodes.reduce((acc, period) => {
+            if (period.annuel) return acc;
 
-                disciplines.forEach((discipline) => {
-                    const disciplineGrades = getGradesForDiscipline(
-                        grades.notes,
-                        idPeriode
-                    ).filter(
-                        (grade) => grade.disciplineName === discipline.discipline
+            const groups = [];
+            let currentGroup = null;
+
+            for (const disciplineRaw of period.ensembleMatieres.disciplines) {
+                const discipline = parseDiscipline(disciplineRaw);
+
+                if (discipline.isDisciplineGroup) {
+                    delete discipline.code;
+                    delete discipline.coef;
+
+                    currentGroup = {
+                        ...discipline,
+                        disciplines: [],
+                        disciplineCodes: [],
+                    };
+
+                    groups.push(currentGroup);
+                } else if (currentGroup) {
+                    currentGroup.disciplines.push(discipline);
+                    currentGroup.disciplineCodes.push(discipline.code);
+                } else {
+                    groups.push(discipline);
+                }
+            }
+
+            acc[period.codePeriode] = {
+                groups,
+            };
+
+            return acc;
+        }, {});
+
+        // Enrich disciplines with grades, averages, streaks
+        for (const [periodCode, periodData] of Object.entries(periodsObj)) {
+            periodData.groups = periodData.groups.map((group) => {
+                if (group.isDisciplineGroup) {
+                    group.disciplines = group.disciplines.map((discipline) => {
+                        const enriched = enrichDiscipline(
+                            discipline,
+                            periodCode,
+                            grades.notes
+                        );
+                        return enriched;
+                    });
+                    return group;
+                } else {
+                    const enriched = enrichDiscipline(
+                        group,
+                        periodCode,
+                        grades.notes
                     );
+                    return enriched;
+                }
+            });
+        }
 
-                    discipline.grades = disciplineGrades;
-                });
-
-                acc.push({
-                    name: periode,
-                    id: idPeriode,
-                    disciplines,
-                    generalAverage: ensembleMatieres.moyenneGenerale,
-                    maxAverage: ensembleMatieres.moyenneMax,
-                    minAverage: ensembleMatieres.moyenneMin,
-                    classAverage: ensembleMatieres.moyenneClasse,
-                });
-                return acc;
-            },
-            []
-        );
-
-        return periodDetails;
+        return periodsObj;
     } catch (error) {
         console.error("Error fetching grades:", error);
         throw error;
     }
 }
 
-const getDisciplinesForPeriod = (period) => {
-    const { disciplines } = period;
-
-    return disciplines
-        .filter(({ groupeMatiere }) => !groupeMatiere)
-        .map(
-            ({
-                discipline,
-                moyenne,
-                moyenneClasse,
-                moyenneMin,
-                moyenneMax,
-                coef,
-            }) => ({
-                discipline,
-                average: moyenne,
-                classAverage: moyenneClasse,
-                minAverage: moyenneMin,
-                maxAverage: moyenneMax,
-                coef,
-            })
-        );
+const skillColorsCodes = {
+    "-3": "not rated",
+    "-2": "dispensed",
+    "-1": "abscent",
+    1: "red",
+    2: "yellow",
+    3: "blue",
+    4: "green",
 };
 
-const getGradesForDiscipline = (grades, periodId) => {
-    return grades
-        .filter(({ codePeriode }) => codePeriode === periodId)
-        .map(
-            ({
-                devoir,
-                libelleMatiere,
-                date,
-                dateSaisie,
-                coef,
-                noteSur,
-                valeur,
-                nonSignificatif,
-                moyenneClasse,
-                minClasse,
-                maxClasse,
-                elementsProgramme,
-            }) => ({
-                assignment: devoir,
-                disciplineName: libelleMatiere,
-                dateEntered: dateSaisie,
-                isOptional: nonSignificatif,
-                gradeDetails: {
-                    denominator: noteSur,
-                    coef,
-                    date,
-                    studentGrade: valeur,
-                    classAverage: moyenneClasse,
-                    classMax: maxClasse,
-                    classMin: minClasse,
-                },
-                academicSkills: elementsProgramme
-                    ? elementsProgramme.map(
-                          ({ descriptif, valeur, libelleCompetence }) => ({
-                              description: descriptif,
-                              skillName: libelleCompetence,
-                              value: valeur,
-                          })
-                      )
-                    : [],
+function parseDiscipline(discipline) {
+    const obj = {
+        code: discipline.codeMatiere,
+        libelle: discipline.discipline,
+        averageDatas: {
+            classAverage: parseNumber(discipline.moyenneClasse),
+            minAverage: parseNumber(discipline.moyenneMin),
+            maxAverage: parseNumber(discipline.moyenneMax),
+            userAverage: null,
+        },
+        coef: discipline.coef,
+        isDisciplineGroup: discipline.groupeMatiere,
+    };
+    return obj;
+}
+
+function formatGrade(grade, periodCode) {
+    const {
+        codeMatiere,
+        codePeriode,
+        devoir,
+        libelleMatiere,
+        date,
+        coef,
+        noteSur,
+        valeur,
+        nonSignificatif,
+        moyenneClasse,
+        minClasse,
+        maxClasse,
+        elementsProgramme,
+        typeDevoir,
+    } = grade;
+
+    return {
+        libelle: devoir,
+        notSignificant: nonSignificatif,
+        date,
+        inAttributedPeriod: codePeriode !== periodCode,
+        isExam: codePeriode.includes("X"),
+        homeworkType: typeDevoir,
+        disciplineName: libelleMatiere,
+        codes: {
+            period: codePeriode,
+            discipline: codeMatiere,
+        },
+        data: {
+            coef: parseFloat(coef),
+            classAverage: parseNumber(moyenneClasse),
+            outOf: parseNumber(noteSur),
+            classMax: parseNumber(maxClasse),
+            classMin: parseNumber(minClasse),
+            grade: parseNumber(valeur),
+        },
+        skills: elementsProgramme.map(
+            ({ descriptif, valeur, libelleCompetence }) => ({
+                name: libelleCompetence,
+                description: descriptif,
+                value: skillColorsCodes[String(valeur)] || null,
             })
-        );
-};
+        ),
+        onlySkills:
+            (valeur == null || valeur === undefined) && elementsProgramme.length > 0,
+    };
+}
+
+function getGradesForDiscipline({ periodCode, disciplineCode }, rawGrades) {
+    return rawGrades.filter(
+        ({ codePeriode, codeMatiere }) =>
+            codePeriode.includes(periodCode) && codeMatiere === disciplineCode
+    );
+}
+
+function enrichDiscipline(discipline, periodCode, rawGrades) {
+    const gradesList = getGradesForDiscipline(
+        { disciplineCode: discipline.code, periodCode },
+        rawGrades
+    );
+
+    const formattedGrades = gradesList.map((grade) =>
+        formatGrade(grade, periodCode)
+    );
+
+    const validGrades = formattedGrades.filter(
+        (g) => g.data.grade != null && !g.onlySkills
+    );
+
+    const average =
+        validGrades.length > 0 ? calculateWeightedAverage(validGrades) : null;
+
+    return {
+        ...discipline,
+        grades: formattedGrades,
+        averageDatas: {
+            ...discipline.averageDatas,
+            userAverage: average,
+        },
+    };
+}
 
