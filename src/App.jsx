@@ -5,7 +5,7 @@ import authService from "./services/login/authService";
 
 export default function App() {
     useEffect(() => {
-        authService.deleteStoredApiDatas(); // TEEMPPP !!!!
+        authService.deleteStoredApiDatas();
     }, []);
     return (
         <RootProviders>
