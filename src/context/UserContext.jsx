@@ -11,6 +11,8 @@ export const UserProvider = ({ children }) => {
     const [sortedTimetableData, setSortedTimetableData] = useState(null);
     // grades
     const [sortedGradesData, setSortedGradesData] = useState(null);
+    // homeworks
+    const [sortedHomeworksData, setSortedHomeworksData] = useState(null);
     const contextValueUser = useMemo(
         () => ({
             globalUserData,
@@ -25,6 +27,10 @@ export const UserProvider = ({ children }) => {
             sortedGradesData,
             setSortedGradesData,
 
+            // homeworks
+            sortedHomeworksData,
+            setSortedHomeworksData,
+
             //
 
             setGlobalUserData,
@@ -37,6 +43,7 @@ export const UserProvider = ({ children }) => {
             sortedTimetableData,
             isConnected,
             sortedGradesData,
+            sortedHomeworksData,
         ]
     );
     return (
