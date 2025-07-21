@@ -84,6 +84,9 @@ export const SignInProvider = ({ children }) => {
 
     const bootstrapAsync = async () => {
         try {
+            console.log(
+                "Loading screen locked in bootstrap async ? Go to 123 code with reco or 124 for regenerate"
+            );
             const credentials = await authService.restoreCredentials();
             const hasCipher = Boolean(credentials?.cipherText);
             const hasLoginCreds = Boolean(credentials?.password);
@@ -94,7 +97,7 @@ export const SignInProvider = ({ children }) => {
                     cipherText: credentials.cipherText,
                     userSetters,
                 });
-
+                if (success) console.log("123 code");
                 if (success) return;
             }
 
@@ -104,7 +107,7 @@ export const SignInProvider = ({ children }) => {
                     credentialsPassword: credentials.password,
                     userSetters,
                 });
-
+                if (restored) console.log("124 code");
                 if (restored) return;
 
                 console.log("Error when generating user token");
