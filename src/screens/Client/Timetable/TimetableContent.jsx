@@ -99,8 +99,9 @@ export default function TimetableContent() {
     return (
         <SafeAreaView
             style={{
-                position: "absolute",
+                // position: "absolute",
                 width: "100%",
+
                 flex: 1,
             }}
             onLayout={() => setTimetableCoreSuccessLoaded(true)}
