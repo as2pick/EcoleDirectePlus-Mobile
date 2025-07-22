@@ -1,5 +1,5 @@
 import { Button, Text } from "react-native";
-import { useAppSettings } from "../../context/AppSettingsContext";
+import { useAppSettings } from "../../../context/AppSettingsContext";
 
 export default function SettingsScreen({}) {
     const { state, dispatch } = useAppSettings();

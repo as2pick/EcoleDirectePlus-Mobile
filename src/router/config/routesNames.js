@@ -20,11 +20,14 @@ export const routesNames = {
 
         messaging: "client_messaging",
     },
+    core: {
+        settings: "client_core_settings",
+    },
     navigators: {
-        settings: "navigators_variable_settings",
+        core: "navigators_variable_settings",
         splash: "navigators_splash",
-        root: "navigators_root",
-        authentification: "navigators_authentification",
+        tabs: "navigators_root",
+        auth: "navigators_authentification",
     },
 };
 

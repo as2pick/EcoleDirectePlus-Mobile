@@ -1,6 +1,5 @@
 import { Button } from "@react-navigation/elements";
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import InDev from "../../../components/UI/InDev";
 import { useUser } from "../../../context/UserContext";
@@ -21,9 +20,7 @@ export default function HomeScreen() {
             >
                 Disconect and forget secrets
             </Button>
-            <Button
-                onPress={() => navigation.navigate(routesNames.navigators.settings)}
-            >
+            <Button onPress={() => navigation.navigate(routesNames.navigators.core)}>
                 Navigate to settings
             </Button>
             <InDev />

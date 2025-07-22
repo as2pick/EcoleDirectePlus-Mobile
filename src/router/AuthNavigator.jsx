@@ -6,9 +6,9 @@ import { useSingIn } from "../context/SignInContext";
 import { useUser } from "../context/UserContext";
 import SplashScreen from "../screens/Splash/SplashScreen";
 import { THEMES } from "../themes/themes";
-import LoginStack from "./LoginStack";
-import RootTabs from "./RootTabs";
 import { routesNames } from "./config/routesNames";
+import Auth from "./display/auth/Auth";
+import Client from "./display/client/Client";
 
 const Stack = createNativeStackNavigator();
 
@@ -19,7 +19,7 @@ export default function AuthNavigator() {
         navigators: { authentification, root, splash, settings },
     } = routesNames;
     const [theme, setTheme] = useState(THEMES.etheral);
-
+    // const navigation = useNavigation();
     // setDefaultProps(Text, {
     //     style: [theme.fonts.regular, { color: theme.colors.txt.txt1 }],
     // });
@@ -32,9 +32,9 @@ export default function AuthNavigator() {
                 {state.isLoading ? (
                     <SplashScreen />
                 ) : isConnected ? (
-                    <RootTabs />
+                    <Client />
                 ) : (
-                    <LoginStack />
+                    <Auth />
                 )}
             </NavigationContainer>
         </GestureHandlerRootView>

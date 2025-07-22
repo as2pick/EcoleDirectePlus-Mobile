@@ -12,5 +12,7 @@ const authScreens = [
     createScreen(privacyPolicy, PrivacyPolicyScreen),
 ];
 
+console.log(authScreens);
+
 export default authScreens;
 
