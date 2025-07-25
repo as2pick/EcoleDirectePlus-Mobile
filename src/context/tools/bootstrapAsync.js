@@ -60,7 +60,7 @@ export async function tryRestoreToken({
         });
 
         const accountData = data.accounts[0];
-        dispatch({ type: "SIGN_IN", token });
+        dispatch({ type: "SIGN_IN", userToken: token });
 
         storeDatas({
             data: accountData,
