@@ -1,4 +1,4 @@
-import { parseNumber } from "../../../../utils/grades/makeAverage";
+import { parseNumber } from "../../../../../utils/grades/makeAverage";
 
 export default class Discipline {
     constructor({ code, libelle, averageDatas, coef, grades }) {
@@ -66,3 +66,4 @@ export default class Discipline {
         return parseNumber(totalWeightedScore / totalCoef);
     }
 }
+

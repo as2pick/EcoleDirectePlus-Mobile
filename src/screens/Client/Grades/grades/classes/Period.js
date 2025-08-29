@@ -1,4 +1,4 @@
-import { parseNumber } from "../../../../utils/grades/makeAverage";
+import { parseNumber } from "../../../../../utils/grades/makeAverage";
 import Discipline from "./Discipline";
 
 export default class Period {
@@ -95,3 +95,4 @@ export default class Period {
         };
     }
 }
+

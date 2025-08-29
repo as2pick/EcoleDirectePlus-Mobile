@@ -1,6 +1,6 @@
-import Grade from "../../screens/Client/Grades/grades/classes/Grade";
-import Period from "../../screens/Client/Grades/grades/classes/Period";
-import { parseNumber } from "./makeAverage";
+import { parseNumber } from "../../../../utils/grades/makeAverage";
+import Grade from "./classes/Grade";
+import Period from "./classes/Period";
 
 export const createValidGradesArray = (gradesData, periodCode) => {
     if (!gradesData[periodCode]?.groups) return [];

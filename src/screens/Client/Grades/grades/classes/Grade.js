@@ -10,6 +10,7 @@ export default class Grade {
         skills,
         onlySkills,
         isExam,
+        actionOnStreak = "nothing",
     }) {
         this.libelle = libelle;
         this.notSignificant = notSignificant;
@@ -21,7 +22,7 @@ export default class Grade {
         this.skills = skills;
         this.onlySkills = onlySkills;
         this.isExam = isExam;
-        this.actionOnStreak = "nothing";
+        this.actionOnStreak = actionOnStreak;
     }
 
     getGrade() {

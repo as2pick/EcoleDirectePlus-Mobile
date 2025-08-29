@@ -130,7 +130,6 @@ function formatGrade(grade, periodCode) {
         libelle: devoir,
         notSignificant: nonSignificatif,
         date,
-        inAttributedPeriod: codePeriode !== periodCode,
         isExam: codePeriode.includes("X"),
         homeworkType: typeDevoir,
         disciplineName: libelleMatiere,
@@ -155,6 +154,8 @@ function formatGrade(grade, periodCode) {
         ),
         onlySkills:
             (valeur == null || valeur === undefined) && elementsProgramme.length > 0,
+
+        actionOnStreak: null,
     };
 }
 
