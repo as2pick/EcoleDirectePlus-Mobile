@@ -60,9 +60,6 @@ export default function TimetableContent() {
 
     useFocusEffect(
         useCallback(() => {
-            if (sortedTimetableData && Object.keys(sortedTimetableData).length > 0)
-                return;
-
             if (!sortedTimetableData || sortedTimetableData.length === 0) {
                 setLoading(true);
                 storageServiceStates
