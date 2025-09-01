@@ -1,7 +1,8 @@
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { useCallback, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import InDev from "../../../components/UI/InDev";
+import { GradientBackground } from "../../../components";
+import InDev from "../../../components/Ui/InDev";
 import { useUser } from "../../../context/UserContext";
 import { storageServiceStates } from "../../../helpers/storageService";
 import { routesNames } from "../../../router/config/routesNames";
@@ -145,8 +146,10 @@ export default function GradesContent() {
     }, [displayPeriode]);
 
     return (
-        <SafeAreaView>
-            {/*<DropDownPicker
+        <>
+            <GradientBackground />
+            <SafeAreaView>
+                {/*<DropDownPicker
                 open={open}
                 value={selectedPeriodDropDownId}
                 items={periodeItems}
@@ -169,8 +172,9 @@ export default function GradesContent() {
                 <Text>{JSON.stringify(displayPeriode)}</Text>
             </ScrollView>*/}
 
-            <InDev />
-        </SafeAreaView>
+                <InDev />
+            </SafeAreaView>
+        </>
     );
 }
 

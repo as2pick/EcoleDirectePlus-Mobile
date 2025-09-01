@@ -45,7 +45,10 @@ export const THEMES = {
         ...NavigationDefaultTheme,
         colors: {
             ...NavigationDefaultTheme.colors,
-            background: "rgb(18, 18, 38)", // default key
+            // background: "rgb(18, 18, 138)", // default key
+            background: {
+                gradient: ["rgb(18, 18, 48)", "rgb(43, 43, 63)"], // +20 or +30
+            },
             bg: {
                 bg1: "rgb(25, 25, 56)",
                 bg2: "rgb(19, 19, 34)",
