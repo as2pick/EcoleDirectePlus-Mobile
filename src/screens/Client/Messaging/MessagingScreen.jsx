@@ -1,5 +1,6 @@
-import { GradientBackground } from "../../../components";
+import InDev from "../../../components/Ui/InDev";
+
 export default function MessagingScreen() {
-    return <GradientBackground />;
+    return <InDev></InDev>;
 }
 

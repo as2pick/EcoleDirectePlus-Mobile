@@ -2,6 +2,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { MainLayout } from "../components";
 import { useSingIn } from "../context/SignInContext";
 import { useUser } from "../context/UserContext";
 import SplashScreen from "../screens/Splash/SplashScreen";
@@ -30,13 +31,15 @@ export default function AuthNavigator() {
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
             <NavigationContainer theme={theme}>
-                {state.isLoading ? (
-                    <SplashScreen />
-                ) : isConnected ? (
-                    <Client />
-                ) : (
-                    <Auth />
-                )}
+                <MainLayout>
+                    {state.isLoading ? (
+                        <SplashScreen />
+                    ) : isConnected ? (
+                        <Client />
+                    ) : (
+                        <Auth />
+                    )}
+                </MainLayout>
             </NavigationContainer>
         </GestureHandlerRootView>
     );

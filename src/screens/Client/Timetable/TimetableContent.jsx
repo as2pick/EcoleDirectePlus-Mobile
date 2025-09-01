@@ -97,8 +97,7 @@ export default function TimetableContent() {
     }
 
     return (
-        <>
-            <GradientBackground />
+
             <SafeAreaView
                 style={{
                     // position: "absolute",
@@ -198,7 +197,7 @@ export default function TimetableContent() {
                     </VerticalScrollView>
                 </Animated.View>
             </SafeAreaView>
-        </>
+
     );
 }
 

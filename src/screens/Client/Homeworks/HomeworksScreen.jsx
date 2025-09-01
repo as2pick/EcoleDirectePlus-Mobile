@@ -3,7 +3,6 @@ import { useCallback, useState } from "react";
 import { Text } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { GradientBackground } from "../../../components";
 import { useUser } from "../../../context/UserContext";
 import { storageServiceStates } from "../../../helpers/storageService";
 export default function HomeworksScreen() {
@@ -33,14 +32,11 @@ export default function HomeworksScreen() {
         }, [userAccesToken, sortedHomeworksData])
     );
     return (
-        <>
-            <GradientBackground />
-            <SafeAreaView>
-                <ScrollView>
-                    <Text>{JSON.stringify(sortedHomeworksData)}</Text>
-                </ScrollView>
-            </SafeAreaView>
-        </>
+        <SafeAreaView>
+            <ScrollView>
+                <Text>{JSON.stringify(sortedHomeworksData)}</Text>
+            </ScrollView>
+        </SafeAreaView>
     );
 }
 

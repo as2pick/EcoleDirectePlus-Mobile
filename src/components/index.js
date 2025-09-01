@@ -1,3 +1,4 @@
+export { default as MainLayout } from "./Layout/MainLayout";
 export { default as A2fSelectableModal } from "./Modal/A2fSelectableModal";
 export { default as CustomTopHeader } from "./Navigation/CustomTopHeader";
 export { default as CheckBox } from "./Ui/CheckBox";

@@ -42,6 +42,7 @@ export const THEMES = {
     },
     etheral: {
         //dark
+        isDark: false,
         ...NavigationDefaultTheme,
         colors: {
             ...NavigationDefaultTheme.colors,
