@@ -14,10 +14,10 @@ export default function RootProviders({ children }) {
                             {/* <View style={{ flex: 1 }}> */}
                             {/* {Platform.OS === "android" && (
                                     <StatusBar
-                                        backgroundColor="transparent"
-                                        translucent={true}
+                                    backgroundColor="transparent"
+                                    translucent={true}
                                     />
-                                )} */}
+                                    )} */}
                             {children}
                             {/* </View> */}
                         </SignInProvider>

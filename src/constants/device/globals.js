@@ -1,7 +1,7 @@
 import { Dimensions } from "react-native";
 import { CONFIG } from "../config";
 
-let { width, height } = Dimensions.get("screen");
+let { width, height } = Dimensions.get("window");
 
 height -= CONFIG.tabBarHeight;
 

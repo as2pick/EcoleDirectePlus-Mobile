@@ -15,7 +15,7 @@ import Animated, {
     withSpring,
 } from "react-native-reanimated";
 import RoadFinish from "../../../../assets/svg/RoadFinish";
-import { GradientBackground, OverLoader } from "../../../components";
+import { OverLoader } from "../../../components";
 import VerticalScrollView from "../../../components/Layout/VerticalScrollView";
 import { CONFIG } from "../../../constants/config";
 import { GLOBALS_DATAS } from "../../../constants/device/globals";
@@ -97,67 +97,66 @@ export default function TimetableContent() {
     }
 
     return (
+        <SafeAreaView
+            style={{
+                // position: "absolute",
+                width: "100%",
 
-            <SafeAreaView
-                style={{
-                    // position: "absolute",
-                    width: "100%",
-
-                    flex: 1,
-                }}
-                onLayout={() => setTimetableCoreSuccessLoaded(true)}
+                flex: 1,
+            }}
+            onLayout={() => setTimetableCoreSuccessLoaded(true)}
+        >
+            <Animated.View
+                style={[
+                    dynamicOpacityStyle,
+                    {
+                        margin: 24,
+                        overflow: "hidden",
+                        flex: 1,
+                        height: screenHeight,
+                        borderRadius: 23,
+                    },
+                ]}
             >
-                <Animated.View
-                    style={[
-                        dynamicOpacityStyle,
-                        {
-                            margin: 24,
-                            overflow: "hidden",
-                            flex: 1,
-                            height: screenHeight,
-                            borderRadius: 23,
-                        },
-                    ]}
+                <View
+                    style={{
+                        alignItems: "center",
+                        width: "100%",
+                        height: "8%",
+                        zIndex: 100,
+                    }}
                 >
-                    <View
+                    <TouchableOpacity
                         style={{
+                            backgroundColor: theme.colors.bg.bg4,
+                            width: "70%",
+                            position: "absolute",
+                            height: "65%",
+                            borderRadius: 50,
+                            justifyContent: "center",
                             alignItems: "center",
-                            width: "100%",
-                            height: "8%",
-                            zIndex: 100,
+                            overflow: "hidden",
+                            bottom: 0,
                         }}
-                    >
-                        <TouchableOpacity
-                            style={{
-                                backgroundColor: theme.colors.bg.bg4,
-                                width: "70%",
-                                position: "absolute",
-                                height: "65%",
-                                borderRadius: 50,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                overflow: "hidden",
-                                bottom: 0,
-                            }}
-                            onLongPress={() =>
-                                scrollViewRef.current.scrollToIndex(
-                                    sortedTimetableData.findIndex(
-                                        (day) => day.date === CONFIG.dateNow
-                                    )
+                        onLongPress={() =>
+                            scrollViewRef.current.scrollToIndex(
+                                sortedTimetableData.findIndex(
+                                    (day) => day.date === CONFIG.dateNow
                                 )
-                            }
+                            )
+                        }
+                    >
+                        <Text
+                            style={{
+                                fontWeight: 600,
+                                fontSize: 18,
+                            }}
                         >
-                            <Text
-                                style={{
-                                    fontWeight: 600,
-                                    fontSize: 18,
-                                }}
-                            >
-                                {activeDate}
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
-                    {/* <TouchableOpacity
+                            {activeDate}
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+                {/* <TouchableOpacity
                     style={{
                         position: "absolute",
                         width: 60,
@@ -175,29 +174,28 @@ export default function TimetableContent() {
                     }}
                 /> */}
 
-                    <VerticalScrollView
-                        arrayLength={sortedTimetableData?.length}
-                        getIndex={(i) => setCurrentIndex(i)}
-                        ref={scrollViewRef}
-                    >
-                        {!loading &&
-                            sortedTimetableData?.map((currentDay, index) => (
-                                <DayShedule
-                                    key={index}
-                                    currentDay={currentDay}
-                                    navigation={navigation}
-                                    theme={theme}
-                                    timetableViewDims={{
-                                        getter: timetableViewDims,
-                                        setter: setTimetableViewDims,
-                                    }}
-                                    index={index}
-                                />
-                            ))}
-                    </VerticalScrollView>
-                </Animated.View>
-            </SafeAreaView>
-
+                <VerticalScrollView
+                    arrayLength={sortedTimetableData?.length}
+                    getIndex={(i) => setCurrentIndex(i)}
+                    ref={scrollViewRef}
+                >
+                    {!loading &&
+                        sortedTimetableData?.map((currentDay, index) => (
+                            <DayShedule
+                                key={index}
+                                currentDay={currentDay}
+                                navigation={navigation}
+                                theme={theme}
+                                timetableViewDims={{
+                                    getter: timetableViewDims,
+                                    setter: setTimetableViewDims,
+                                }}
+                                index={index}
+                            />
+                        ))}
+                </VerticalScrollView>
+            </Animated.View>
+        </SafeAreaView>
     );
 }
 
