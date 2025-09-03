@@ -1,6 +1,6 @@
 import { createContext, useContext, useMemo, useState } from "react";
 
-const userContext = createContext();
+const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
     // user data
@@ -47,11 +47,11 @@ export const UserProvider = ({ children }) => {
         ]
     );
     return (
-        <userContext.Provider value={contextValueUser}>
+        <UserContext.Provider value={contextValueUser}>
             {children}
-        </userContext.Provider>
+        </UserContext.Provider>
     );
 };
 
-export const useUser = () => useContext(userContext);
+export const useUser = () => useContext(UserContext);
 

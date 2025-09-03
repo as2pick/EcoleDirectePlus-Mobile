@@ -1,6 +1,6 @@
 import { createContext, useContext, useMemo, useReducer } from "react";
 
-const appSettingsContext = createContext();
+const AppSettingsContext = createContext();
 
 export const AppSettingsProvider = ({ children }) => {
     // app config
@@ -21,11 +21,11 @@ export const AppSettingsProvider = ({ children }) => {
     );
 
     return (
-        <appSettingsContext.Provider value={contextValueAppSettings}>
+        <AppSettingsContext.Provider value={contextValueAppSettings}>
             {children}
-        </appSettingsContext.Provider>
+        </AppSettingsContext.Provider>
     );
 };
 
-export const useAppSettings = () => useContext(appSettingsContext);
+export const useAppSettings = () => useContext(AppSettingsContext);
 

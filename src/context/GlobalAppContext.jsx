@@ -1,6 +1,6 @@
-import React, { createContext, useContext, useMemo } from "react";
+import { createContext, useContext, useMemo } from "react";
 
-const globalAppContext = createContext();
+const GlobalAppContext = createContext();
 
 export const GlobalAppProvider = ({ children }) => {
     // global states
@@ -8,11 +8,11 @@ export const GlobalAppProvider = ({ children }) => {
     const contextValue = useMemo(() => ({}), []);
 
     return (
-        <globalAppContext.Provider value={contextValue}>
+        <GlobalAppContext.Provider value={contextValue}>
             {children}
-        </globalAppContext.Provider>
+        </GlobalAppContext.Provider>
     );
 };
 
-export const useGlobalApp = () => useContext(globalAppContext);
+export const useGlobalApp = () => useContext(GlobalAppContext);
 
