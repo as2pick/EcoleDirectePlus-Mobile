@@ -1,6 +1,5 @@
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback, useState } from "react";
-import { Text } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useUser } from "../../../context/UserContext";
@@ -34,7 +33,7 @@ export default function HomeworksScreen() {
     return (
         <SafeAreaView>
             <ScrollView>
-                <Text>{JSON.stringify(sortedHomeworksData)}</Text>
+                {/* <Text>{JSON.stringify(sortedHomeworksData)}</Text> */}
             </ScrollView>
         </SafeAreaView>
     );
