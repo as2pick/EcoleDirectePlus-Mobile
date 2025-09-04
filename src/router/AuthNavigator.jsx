@@ -31,15 +31,15 @@ export default function AuthNavigator() {
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
             <NavigationContainer theme={theme}>
-                <MainLayout>
-                    {state.isLoading ? (
-                        <SplashScreen />
-                    ) : isConnected ? (
+                {state.isLoading ? (
+                    <SplashScreen />
+                ) : isConnected ? (
+                    <MainLayout>
                         <Client />
-                    ) : (
-                        <Auth />
-                    )}
-                </MainLayout>
+                    </MainLayout>
+                ) : (
+                    <Auth />
+                )}
             </NavigationContainer>
         </GestureHandlerRootView>
     );
