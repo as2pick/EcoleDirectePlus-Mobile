@@ -134,7 +134,6 @@ export default function GradesContent() {
     return (
         <SafeAreaView>
             <InDev />
-            ''{" "}
             <View
                 style={{
                     width: 300,
