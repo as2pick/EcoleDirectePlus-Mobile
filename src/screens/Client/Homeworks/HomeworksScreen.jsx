@@ -1,14 +1,15 @@
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback, useState } from "react";
-import { ScrollView } from "react-native-gesture-handler";
+import { Switch, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useTheme } from "../../../context/ThemeContext";
 import { useUser } from "../../../context/UserContext";
 import { storageServiceStates } from "../../../helpers/storageService";
 export default function HomeworksScreen() {
     const { sortedHomeworksData, setSortedHomeworksData, userAccesToken } =
         useUser();
     const [loading, setLoading] = useState(true);
-
+    const { toggleTheme, colorScheme } = useTheme();
     useFocusEffect(
         useCallback(() => {
             if (
@@ -31,10 +32,20 @@ export default function HomeworksScreen() {
         }, [userAccesToken, sortedHomeworksData])
     );
     return (
-        <SafeAreaView>
-            <ScrollView>
+        <SafeAreaView style={{ flex: 1 }}>
+            {/* <ScrollView> */}
+            <View
+                style={{
+                    transform: [{ scaleX: 5 }, { scaleY: 5 }],
+                    justifyContent: "center",
+                    alignItems: "center",
+                    flex: 1,
+                }}
+            >
                 {/* <Text>{JSON.stringify(sortedHomeworksData)}</Text> */}
-            </ScrollView>
+                <Switch value={colorScheme === "dark"} onValueChange={toggleTheme} />
+            </View>
+            {/* </ScrollView> */}
         </SafeAreaView>
     );
 }

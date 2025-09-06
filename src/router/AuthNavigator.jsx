@@ -4,6 +4,7 @@ import { useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { MainLayout } from "../components";
 import { useSingIn } from "../context/SignInContext";
+import { useTheme } from "../context/ThemeContext";
 import { useUser } from "../context/UserContext";
 import SplashScreen from "../screens/Splash/SplashScreen";
 import { THEMES } from "../themes/themes";
@@ -14,6 +15,8 @@ import Client from "./display/client/Client";
 const Stack = createNativeStackNavigator();
 
 export default function AuthNavigator() {
+    const { colorScheme } = useTheme();
+
     const { state } = useSingIn();
     const { isConnected, userAccesToken } = useUser();
     const {
@@ -21,6 +24,10 @@ export default function AuthNavigator() {
     } = routesNames;
     const [theme, setTheme] = useState(THEMES.etheral);
 
+    const themeAssociation = {
+        light: THEMES.opulent,
+        dark: THEMES.etheral,
+    };
     // const navigation = useNavigation();
     // setDefaultProps(Text, {
     //     style: [theme.fonts.regular, { color: theme.colors.txt.txt1 }],
@@ -30,7 +37,7 @@ export default function AuthNavigator() {
     // });
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
-            <NavigationContainer theme={theme}>
+            <NavigationContainer theme={themeAssociation[colorScheme]}>
                 {state.isLoading ? (
                     <SplashScreen />
                 ) : isConnected ? (
