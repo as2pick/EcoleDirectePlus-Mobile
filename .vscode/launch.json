@@ -1,0 +1,13 @@
+{
+    "configurations": [
+        {
+            "type": "expo",
+            "request": "attach",
+            "name": "Debug Expo app",
+            "projectRoot": "${workspaceFolder}",
+            "bundlerPort": "8081",
+            "bundlerHost": "192.168.1.162"
+        }
+    ]
+}
+
