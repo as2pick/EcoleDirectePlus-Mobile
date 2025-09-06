@@ -162,17 +162,6 @@ export default function GradesContent() {
                     }}
                     title="CHANGER PÉRIODE"
                 />
-
-                <View style={{ marginTop: 10 }}>
-                    <Button
-                        onPress={() => {
-                            console.log("Strengths:", strengths);
-                            console.log("Weaknesses:", weaknesses);
-                            console.log("DisplayPeriode:", displayPeriode);
-                        }}
-                        title="DEBUG LOG"
-                    />
-                </View>
             </View>
         </SafeAreaView>
     );

@@ -40,7 +40,7 @@ export const THEMES = {
     },
     etheral: {
         //dark
-        isDark: false,
+        isDark: true,
         ...NavigationDefaultTheme,
         colors: {
             ...NavigationDefaultTheme.colors,
