@@ -1,6 +1,5 @@
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { useCallback, useEffect, useState } from "react";
-import { Button, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import InDev from "../../../components/Ui/InDev";
 import { useUser } from "../../../context/UserContext";
@@ -134,35 +133,6 @@ export default function GradesContent() {
     return (
         <SafeAreaView>
             <InDev />
-            <View
-                style={{
-                    width: 300,
-                    height: 300,
-                    backgroundColor: "red",
-                    flex: 1,
-                    position: "absolute",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    bottom: 0,
-                }}
-            >
-                <TextInput
-                    placeholder="TYPE TEXTE"
-                    value={testT}
-                    onChangeText={(text) => setTESTT(text)}
-                />
-
-                <Button
-                    onPress={() => {
-                        if (sortedGradesData[`A00${testT}`]) {
-                            setDisplayPeriode(sortedGradesData[`A00${testT}`]);
-                        } else {
-                            console.warn(`Période A00${testT} non trouvée`);
-                        }
-                    }}
-                    title="CHANGER PÉRIODE"
-                />
-            </View>
         </SafeAreaView>
     );
 }
