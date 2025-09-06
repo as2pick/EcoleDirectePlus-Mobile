@@ -1,11 +1,15 @@
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { useCallback, useEffect, useState } from "react";
+import { Button, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { GradientBackground } from "../../../components";
 import InDev from "../../../components/Ui/InDev";
 import { useUser } from "../../../context/UserContext";
 import { storageServiceStates } from "../../../helpers/storageService";
 import { routesNames } from "../../../router/config/routesNames";
+import {
+    calculateStrengthsWeaknesses,
+    deepEqualExcept,
+} from "./grades/helpers/extras";
 import {
     calculateStreak,
     createValidGradesArray,
@@ -26,93 +30,71 @@ export default function GradesContent() {
     const [error, setError] = useState(null);
     const [periodes, setPeriodes] = useState([]);
     const [displayPeriode, setDisplayPeriode] = useState({});
-    // DropDownPicker
-    const [open, setOpen] = useState(false);
-    const [selectedPeriodDropDownId, setSelectedPeriodDropDownId] = useState(null);
-    const [selectedPeriodName, setSelectedPeriodName] = useState(null);
-    const [periodeItems, setPeriodeItems] = useState([]);
+    const [strengths, setStrengths] = useState([]);
+    const [weaknesses, setWeaknesses] = useState([]);
+    const [testT, setTESTT] = useState("1");
 
-    const deepEqualExcept = (obj1, obj2, excludedKeys = []) => {
-        if (obj1 === obj2) return true;
-
-        if (obj1 == null || obj2 == null) return obj1 === obj2;
-        if (typeof obj1 !== typeof obj2) return false;
-
-        if (Array.isArray(obj1) && Array.isArray(obj2)) {
-            if (obj1.length !== obj2.length) return false;
-            return obj1.every((el, i) => deepEqualExcept(el, obj2[i], excludedKeys));
-        }
-
-        if (typeof obj1 === "object") {
-            const keys1 = Object.keys(obj1).filter((k) => !excludedKeys.includes(k));
-            const keys2 = Object.keys(obj2).filter((k) => !excludedKeys.includes(k));
-
-            if (keys1.length !== keys2.length) return false;
-
-            return keys1.every((k) =>
-                deepEqualExcept(obj1[k], obj2[k], excludedKeys)
+    const injectStreakDataIntoGrades = useCallback((userGrades) => {
+        Object.entries(userGrades).forEach(([periodKey, periodData]) => {
+            const gradesArrayChronologicaly = sortGradesByDate(
+                createValidGradesArray(userGrades, periodKey)
             );
-        }
 
-        return obj1 === obj2;
-    };
+            const streak = calculateStreak(
+                gradesArrayChronologicaly,
+                periodKey,
+                userGrades
+            );
+
+            const periodDisciplines = periodData.groups.flatMap((group) =>
+                group.isDisciplineGroup ? group.disciplines : [group]
+            );
+
+            streak.gradesItered.forEach((gradeData) => {
+                const discipline = periodDisciplines.find(
+                    ({ code }) => code === gradeData.codes.discipline
+                );
+                if (!discipline) return;
+
+                const gradeToUpdate = discipline.grades.find((g) =>
+                    deepEqualExcept(g, gradeData, ["actionOnStreak"])
+                );
+
+                if (gradeToUpdate) {
+                    gradeToUpdate.actionOnStreak = gradeData.actionOnStreak;
+                }
+            });
+        });
+    }, []);
+
+    const fetchAndProcessGrades = useCallback(async () => {
+        try {
+            setLoading(true);
+            setError(null);
+
+            const userGrades = await storageServiceStates.getter({
+                originKey: "grades",
+            });
+
+            injectStreakDataIntoGrades(userGrades);
+
+            setSortedGradesData(userGrades);
+            setPeriodes(Object.keys(userGrades));
+            setDisplayPeriode(userGrades["A001"]);
+        } catch (err) {
+            setError(err.message);
+            console.error("Erreur lors du chargement des notes:", err);
+        } finally {
+            setLoading(false);
+        }
+    }, [setSortedGradesData, injectStreakDataIntoGrades]);
 
     useFocusEffect(
         useCallback(() => {
             if (sortedGradesData && Object.keys(sortedGradesData).length > 0) return;
 
-            const fetchGrades = async () => {
-                try {
-                    setLoading(true);
-
-                    const userGrades = await storageServiceStates.getter({
-                        originKey: "grades",
-                    });
-
-                    setSortedGradesData(userGrades);
-                    setPeriodes(Object.keys(userGrades));
-
-                    Object.entries(userGrades).forEach(([periodKey, periodData]) => {
-                        const gradesArrayChronologicaly = sortGradesByDate(
-                            createValidGradesArray(userGrades, periodKey)
-                        );
-
-                        const streak = calculateStreak(
-                            gradesArrayChronologicaly,
-                            periodKey,
-                            userGrades
-                        );
-
-                        const periodDisciplines = periodData.groups.flatMap(
-                            (group) =>
-                                group.isDisciplineGroup ? group.disciplines : [group]
-                        );
-
-                        streak.gradesItered.forEach((gradeData) => {
-                            const discipline = periodDisciplines.find(
-                                ({ code }) => code === gradeData.codes.discipline
-                            );
-                            if (!discipline) return;
-
-                            const gradeToUpdate = discipline.grades.find((g) =>
-                                deepEqualExcept(g, gradeData, ["actionOnStreak"])
-                            );
-
-                            if (gradeToUpdate) {
-                                gradeToUpdate.actionOnStreak =
-                                    gradeData.actionOnStreak;
-                            }
-                        });
-                    });
-                } catch (err) {
-                    setError(err.message);
-                } finally {
-                    setLoading(false);
-                }
-            };
-
-            fetchGrades();
-        }, [userAccesToken, sortedGradesData])
+            fetchAndProcessGrades();
+        }, [userAccesToken, sortedGradesData, fetchAndProcessGrades])
     );
 
     useEffect(() => {
@@ -130,51 +112,70 @@ export default function GradesContent() {
             label,
             value: valuePeriodFormatted[index],
         }));
-
-        setPeriodeItems(items);
-        setSelectedPeriodDropDownId(items[0].value);
-        setSelectedPeriodName(items[0].label);
-        setDisplayPeriode(sortedGradesData[items[0].label]);
-    }, [periodes]);
-
-    useEffect(() => {
-        if (!periodes) return;
     }, [periodes]);
 
     useEffect(() => {
         if (Object.keys(displayPeriode).length === 0) return;
+
+        try {
+            const { strengths, weaknesses } = calculateStrengthsWeaknesses(
+                displayPeriode,
+                5
+            );
+            setStrengths(strengths);
+            setWeaknesses(weaknesses);
+        } catch (error) {
+            console.error("Erreur lors du calcul des forces/faiblesses:", error);
+            setStrengths([]);
+            setWeaknesses([]);
+        }
     }, [displayPeriode]);
 
     return (
-        <>
-            <GradientBackground />
-            <SafeAreaView>
-                {/*<DropDownPicker
-                open={open}
-                value={selectedPeriodDropDownId}
-                items={periodeItems}
-                setOpen={setOpen}
-                setValue={setSelectedPeriodDropDownId}
-                onSelectItem={({ label }) => {
-                    setDisplayPeriode(sortedGradesData[label]);
-                    setSelectedPeriodName(label);
+        <SafeAreaView>
+            <InDev />
+            ''{" "}
+            <View
+                style={{
+                    width: 300,
+                    height: 300,
+                    backgroundColor: "red",
+                    flex: 1,
+                    position: "absolute",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    bottom: 0,
                 }}
-                setItems={setPeriodes}
-                placeholder="Select"
-            />
-            {selectedPeriodDropDownId && (
-                <Text>Choix: {selectedPeriodDropDownId.toUpperCase()}</Text>
-            )}
+            >
+                <TextInput
+                    placeholder="TYPE TEXTE"
+                    value={testT}
+                    onChangeText={(text) => setTESTT(text)}
+                />
 
-            <Text>{selectedPeriodDropDownId}</Text>
-            <Text>{selectedPeriodName}</Text>
-            <ScrollView>
-                <Text>{JSON.stringify(displayPeriode)}</Text>
-            </ScrollView>*/}
+                <Button
+                    onPress={() => {
+                        if (sortedGradesData[`A00${testT}`]) {
+                            setDisplayPeriode(sortedGradesData[`A00${testT}`]);
+                        } else {
+                            console.warn(`Période A00${testT} non trouvée`);
+                        }
+                    }}
+                    title="CHANGER PÉRIODE"
+                />
 
-                <InDev />
-            </SafeAreaView>
-        </>
+                <View style={{ marginTop: 10 }}>
+                    <Button
+                        onPress={() => {
+                            console.log("Strengths:", strengths);
+                            console.log("Weaknesses:", weaknesses);
+                            console.log("DisplayPeriode:", displayPeriode);
+                        }}
+                        title="DEBUG LOG"
+                    />
+                </View>
+            </View>
+        </SafeAreaView>
     );
 }
 
