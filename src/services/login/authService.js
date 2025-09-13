@@ -119,6 +119,10 @@ const authService = {
                 AsyncStorage.removeItem(origin);
                 console.log(`Deleted key in AsyncStorage ${origin}`);
             });
+            ["@user_theme", "@follow_system_theme"].map((d) => {
+                AsyncStorage.removeItem(d);
+                console.log(`Deleted key in AsyncStorage ${d}`);
+            });
         } catch (e) {
             console.log("Error in deleteStoredApiDatas", e);
         }

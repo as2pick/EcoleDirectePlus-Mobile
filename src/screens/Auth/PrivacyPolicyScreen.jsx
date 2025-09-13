@@ -2,6 +2,7 @@ import { useTheme } from "@react-navigation/native";
 import { StyleSheet, Text, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import CopyLeft from "../../../assets/svg/CopyLeft";
+
 import {
     CustomTopHeader,
     LinkText,
@@ -62,7 +63,7 @@ export default function PrivacyPolicyScreen() {
                 headerTitle={"Privacy Policy And Terms of Use"}
                 height={38}
             />
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.scrollview}>
                     <View>
                         <Title customStyle={styles.title}>

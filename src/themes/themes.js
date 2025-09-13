@@ -80,3 +80,10 @@ export const THEMES = {
     },
 };
 
+export const THEMES_ASSOCIATIONS = {
+    light: THEMES.opulent,
+    dark: THEMES.etheral,
+};
+export const THEME_KEY = "@user_theme";
+export const SYSTEM_FOLLOW_KEY = "@follow_system_theme";
+
