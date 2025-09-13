@@ -2,6 +2,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import * as Network from "expo-network";
 import { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+
 import { MainLayout } from "../components";
 import { useGlobalApp } from "../context/GlobalAppContext";
 import { useSingIn } from "../context/SignInContext";

@@ -20,8 +20,13 @@ export const ThemeProvider = ({ children }) => {
                 ]);
                 const shouldFollowSystem =
                     followSystemStr !== null ? JSON.parse(followSystemStr) : true;
-
                 setIsFollowingSystem(shouldFollowSystem);
+                console.log(
+                    savedThemeStr,
+                    followSystemStr,
+                    shouldFollowSystem,
+                    systemColorScheme
+                );
 
                 const savedTheme = savedThemeStr ? JSON.parse(savedThemeStr) : null;
 
@@ -99,6 +104,7 @@ export const ThemeProvider = ({ children }) => {
                     JSON.stringify(followSystem)
                 ),
             ]);
+            console.log("Saved theme in persistent storage:", themeValue);
         } catch (error) {
             console.log("Error set theme:", error);
         }

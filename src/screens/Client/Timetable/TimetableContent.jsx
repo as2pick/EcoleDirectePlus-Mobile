@@ -63,6 +63,7 @@ export default function TimetableContent() {
                         setLoading(false);
                     });
             } else {
+                console.log("Already exist in strorage");
             }
         }, [userAccesToken, sortedTimetableData])
     );
