@@ -9,7 +9,8 @@ export default function HomeworksScreen() {
     const { sortedHomeworksData, setSortedHomeworksData, userAccesToken } =
         useUser();
     const [loading, setLoading] = useState(true);
-    const { toggleTheme, colorScheme } = useTheme();
+    const { toggleTheme, colorScheme, isFollowingSystem, followSystemTheme } =
+        useTheme();
     useFocusEffect(
         useCallback(() => {
             if (
@@ -44,6 +45,10 @@ export default function HomeworksScreen() {
             >
                 {/* <Text>{JSON.stringify(sortedHomeworksData)}</Text> */}
                 <Switch value={colorScheme === "dark"} onValueChange={toggleTheme} />
+                <Switch
+                    value={isFollowingSystem}
+                    onValueChange={followSystemTheme}
+                />
             </View>
             {/* </ScrollView> */}
         </SafeAreaView>
