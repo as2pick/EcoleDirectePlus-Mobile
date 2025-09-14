@@ -15,7 +15,7 @@ import { completeA2fLogin, handleA2fSubmit } from "./tools/a2fHandler";
 import { tryLoginWithStoredCreds, tryRestoreToken } from "./tools/bootstrapAsync";
 import storeDatas from "./tools/storeLoginDatas";
 
-const signInContext = createContext();
+const SignInContext = createContext();
 
 const defaultA2fInfos = {
     identifiant: null,
@@ -227,11 +227,11 @@ export const SignInProvider = ({ children }) => {
     );
 
     return (
-        <signInContext.Provider value={authContext}>
+        <SignInContext.Provider value={authContext}>
             {children}
-        </signInContext.Provider>
+        </SignInContext.Provider>
     );
 };
 
-export const useSingIn = () => useContext(signInContext);
+export const useSingIn = () => useContext(SignInContext);
 

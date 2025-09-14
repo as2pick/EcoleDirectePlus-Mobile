@@ -1,5 +1,6 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import NavigationBottomBar from "../../../../components/Navigation/NavigationBottomBar";
+
+import { NavigationBottomBar } from "../../../../components";
 import { routesNames } from "../../../config/routesNames";
 import mapScreens from "../../../helpers/mapScreens";
 import tabClientScreens from "./indexClientTabs";
@@ -13,7 +14,7 @@ export default function Tabs() {
         <Tab.Navigator
             tabBar={(props) => <NavigationBottomBar {...props} />}
             initialRouteName={routesNames.client.home}
-            screenOptions={{ headerShown: false }}
+            screenOptions={{ headerShown: false, animation: "fade" }}
         >
             {screens}
         </Tab.Navigator>

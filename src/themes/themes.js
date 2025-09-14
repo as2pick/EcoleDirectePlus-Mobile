@@ -2,33 +2,34 @@ import { DefaultTheme as NavigationDefaultTheme } from "@react-navigation/native
 
 export const THEMES = {
     opulent: {
-        // light
+        isDark: false, // ou true si tu veux une version sombre
         ...NavigationDefaultTheme,
-        /*
         colors: {
-            ...DefaultTheme.colors,
-           background: "rgb(255, 255, 255)",
+            ...NavigationDefaultTheme.colors,
+            background: {
+                gradient: ["rgb(80, 0, 0)", "rgb(120, 0, 0)"], // Rouge profond en dégradé
+            },
             bg: {
-                bg1: "rgb(168, 156, 255)",
-                bg2: "rgb(157, 153, 244)",
-                bg3: "rgb(113, 115, 241)",
-                bg4: "rgb(190, 170, 225)",
-                bg5: "rgb(180, 160, 215)",
-                bg6: "rgb(170, 150, 205)",
+                bg1: "rgb(180, 30, 30)", // Rouge vif
+                bg2: "rgb(150, 20, 20)", // Rouge foncé
+                bg3: "rgb(200, 50, 50)", // Rouge clair
+                bg4: "rgb(120, 0, 0)", // Rouge sombre
+                bg5: "rgb(255, 180, 180)", // Rose pâle
+                bg6: "rgb(100, 0, 0)", // Rouge très foncé
             },
             txt: {
-                txt1: "rgb(40, 20, 80)",
-                txt2: "rgb(70, 50, 120)",
-                txt3: "rgb(100, 80, 160)",
+                txt1: "rgb(255, 255, 255)", // Blanc pour contraste
+                txt2: "rgb(255, 200, 200)", // Rose clair
+                txt3: "rgb(255, 150, 150)", // Rose moyen
             },
             navbar: {
-                icons: "rgb(40, 20, 80)",
-                active_icon_bg: "rgb(151, 121, 202)",
-                icons_bg: "rgb(184, 184, 249)",
-                background: "rgb(184, 184, 249)",
-                border: "rgb(0, 0, 0)",
+                icons: "rgb(255, 255, 255)", // Icônes blanches
+                active_icon_bg: "rgb(120, 0, 0)", // Rouge actif
+                icons_bg: "rgb(80, 0, 0)", // Rouge foncé pour fond d'icônes
+                background: "rgb(60, 0, 0)", // Rouge très foncé pour la navbar
+                border: "rgb(150, 0, 0)", // Rouge pour bordure
             },
-            border: "rgb(180, 160, 215)",
+            border: "rgb(200, 50, 50)", // Rouge clair pour les bordures générales
         },
         fonts: {
             bold: { fontFamily: "Luciole-Regular", fontWeight: "600" },
@@ -36,16 +37,17 @@ export const THEMES = {
             medium: { fontFamily: "Luciole-Regular", fontWeight: "normal" },
             regular: { fontFamily: "Lexend-Regular", fontWeight: "normal" },
         },
-        ...GLOBALS_DATAS,
-        // /kill eyes
-        */
     },
     etheral: {
         //dark
+        isDark: true,
         ...NavigationDefaultTheme,
         colors: {
             ...NavigationDefaultTheme.colors,
-            background: "rgb(18, 18, 38)", // default key
+            // background: "rgb(18, 18, 138)", // default key
+            background: {
+                gradient: ["rgb(18, 18, 48)", "rgb(43, 43, 63)"], // +20 or +30
+            },
             bg: {
                 bg1: "rgb(25, 25, 56)",
                 bg2: "rgb(19, 19, 34)",

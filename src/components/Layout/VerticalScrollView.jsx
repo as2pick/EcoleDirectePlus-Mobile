@@ -1,17 +1,13 @@
 import React, { forwardRef, useImperativeHandle, useState } from "react";
 import { StyleSheet, View } from "react-native";
-import {
-    Gesture,
-    GestureDetector,
-    GestureHandlerRootView,
-} from "react-native-gesture-handler";
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
-    runOnJS,
     useAnimatedStyle,
     useDerivedValue,
     useSharedValue,
     withSpring,
 } from "react-native-reanimated";
+import { scheduleOnRN } from "react-native-worklets";
 import { GLOBALS_DATAS } from "../../constants/device/globals";
 
 const {
@@ -24,7 +20,7 @@ const VerticalScrollView = forwardRef(({ children, arrayLength, getIndex }, ref)
     const [activePageIndex, setActivePageIndex] = useState(0);
 
     useDerivedValue(() => {
-        runOnJS(getIndex)(pageIndex.value);
+        scheduleOnRN(getIndex, pageIndex.value);
     });
 
     const scrollToIndex = (index, withAnimation = true) => {
@@ -35,6 +31,7 @@ const VerticalScrollView = forwardRef(({ children, arrayLength, getIndex }, ref)
             translateY.value = withSpring(-index * height, {
                 stiffness: 100,
                 damping: 15,
+                duration: 750,
             });
         } else {
             translateY.value = -index * height;
@@ -60,6 +57,7 @@ const VerticalScrollView = forwardRef(({ children, arrayLength, getIndex }, ref)
                 translateY.value = withSpring(event.translationY * 0.2, {
                     stiffness: 200,
                     damping: 20,
+                    duration: 750,
                 });
             } else if (
                 event.translationY < 0 && // down swipe (< 0 -> down ; > 0 -> up)
@@ -74,6 +72,7 @@ const VerticalScrollView = forwardRef(({ children, arrayLength, getIndex }, ref)
                     {
                         stiffness: 200,
                         damping: 20,
+                        duration: 750,
                     }
                 );
             } else {
@@ -82,6 +81,7 @@ const VerticalScrollView = forwardRef(({ children, arrayLength, getIndex }, ref)
                     {
                         stiffness: 225,
                         damping: 50,
+                        duration: 750,
                     }
                 );
             }
@@ -94,7 +94,7 @@ const VerticalScrollView = forwardRef(({ children, arrayLength, getIndex }, ref)
                 newIndex -= 1;
             }
 
-            runOnJS(scrollToIndex)(newIndex);
+            scheduleOnRN(scrollToIndex, newIndex);
         });
 
     const animatedStyle = useAnimatedStyle(() => ({
@@ -102,17 +102,15 @@ const VerticalScrollView = forwardRef(({ children, arrayLength, getIndex }, ref)
     }));
 
     return (
-        <GestureHandlerRootView style={{ flex: 1 }}>
-            <GestureDetector gesture={gesture}>
-                <Animated.View style={[styles.container, animatedStyle]}>
-                    {React.Children.map(children, (child, index) => (
-                        <View key={index} style={styles.page}>
-                            {child}
-                        </View>
-                    ))}
-                </Animated.View>
-            </GestureDetector>
-        </GestureHandlerRootView>
+        <GestureDetector gesture={gesture}>
+            <Animated.View style={[styles.container, animatedStyle]}>
+                {React.Children.map(children, (child, index) => (
+                    <View key={index} style={styles.page}>
+                        {child}
+                    </View>
+                ))}
+            </Animated.View>
+        </GestureDetector>
     );
 });
 
