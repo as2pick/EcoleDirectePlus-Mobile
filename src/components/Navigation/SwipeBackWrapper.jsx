@@ -39,8 +39,6 @@ export default function SwipeBackWrapper({
             }
         })
         .onEnd((event) => {
-            console.log(Math.abs(event.translationX));
-
             const dir = direction === "right" ? 1 : -1;
 
             const shouldGoBack =
