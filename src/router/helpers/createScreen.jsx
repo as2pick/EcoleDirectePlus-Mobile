@@ -1,21 +1,17 @@
 import { useTheme } from "@react-navigation/native";
 
-export default createScreen = (
-    screenName,
-    ScreenComponent,
-    options = {},
-    props = {}
-) => {
-    const ScreenWrapper = () => {
+const createScreen = (screenName, ScreenComponent, options = {}, props = {}) => {
+    const ScreenWrapper = (screenProps) => {
         const theme = useTheme();
-        return <ScreenComponent theme={theme} />;
+        return <ScreenComponent {...screenProps} {...props} theme={theme} />;
     };
 
     return {
-        screenName,
+        screenName: screenName,
         screenComponent: ScreenWrapper,
         options,
-        ...props,
     };
 };
+
+export default createScreen;
 

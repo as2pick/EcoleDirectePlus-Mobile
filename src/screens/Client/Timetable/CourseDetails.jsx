@@ -10,7 +10,7 @@ import PenSquareIcon from "../../../../assets/svg/micro/PenSquareIcon";
 import PeoplesIcon from "../../../../assets/svg/micro/PeoplesIcon";
 import PersonIcon from "../../../../assets/svg/micro/PersonIcon";
 import TrashIcon from "../../../../assets/svg/micro/TrashIcon";
-import { CustomTopHeader } from "../../../components";
+import { CustomTopHeader, SwipeBackWrapper } from "../../../components";
 import { toHoursMinutes, toMilliseconds } from "../../../utils/time";
 
 export default function CourseDetails({ route }) {
@@ -127,208 +127,209 @@ export default function CourseDetails({ route }) {
         timing = "Erreur lors de la lecture du temps";
     }
     return (
-        <View style={{ flex: 2, backgroundColor: colors.bg.bg2 }}>
-            <CustomTopHeader
-                headerTitle={"Retour à l'emploi du temps"}
-                backArrow={{ color: "white", size: 24 }}
-                height={33}
-                backgroundColor={colors.background}
-            />
-            <View
-                style={{
-                    justifyContent: "space-evenly",
-                    flex: 1,
-                    marginVertical: "3%",
-                }}
-            >
+        <SwipeBackWrapper>
+            <View style={{ flex: 1, backgroundColor: colors.bg.bg2 }}>
+                <CustomTopHeader
+                    headerTitle={"Retour à l'emploi du temps"}
+                    backArrow={{ color: "white", size: 24 }}
+                    height={33}
+                    backgroundColor={colors.background}
+                />
                 <View
                     style={{
-                        alignItems: "center",
+                        justifyContent: "space-evenly",
+                        flex: 1,
+                        marginVertical: "3%",
                     }}
                 >
                     <View
                         style={{
-                            backgroundColor: color,
-                            borderRadius: 6,
-
-                            paddingHorizontal: 8,
-                            paddingVertical: 2,
-                        }}
-                    >
-                        <Text
-                            style={{
-                                fontSize: 26,
-                                color: textColor,
-                            }}
-                        >
-                            {libelle}
-                        </Text>
-                    </View>
-                    <View
-                        style={{
-                            marginTop: "10%",
-                            gap: 8,
                             alignItems: "center",
                         }}
                     >
-                        {startCourseTiming && (
-                            <View
-                                style={{
-                                    flexDirection: "row",
-                                    alignItems: "center",
-                                }}
-                            >
-                                <ClockIcon />
-                                <Text
-                                    style={{
-                                        fontSize: 17.5,
-                                        fontWeight: 600,
-                                        marginLeft: 15,
-                                    }}
-                                >{`${startCourseTiming}`}</Text>
-                            </View>
-                        )}
-                        {isCancelled && (
-                            <View
-                                style={{
-                                    flexDirection: "row",
-                                    alignItems: "center",
-                                }}
-                            >
-                                <TrashIcon />
-                                <Text
-                                    style={{
-                                        fontSize: 17.5,
-                                        fontWeight: 600,
-                                        marginLeft: 15,
-                                    }}
-                                >{`Annulé`}</Text>
-                            </View>
-                        )}
-                        {isEdited && (
-                            <View
-                                style={{
-                                    flexDirection: "row",
-                                    alignItems: "center",
-                                }}
-                            >
-                                <PenSquareIcon />
-                                <Text
-                                    style={{
-                                        fontSize: 17.5,
-                                        fontWeight: 600,
-                                        marginLeft: 15,
-                                    }}
-                                >{`Modifié`}</Text>
-                            </View>
-                        )}
-                        {isDispensed && (
-                            <View
-                                style={{
-                                    flexDirection: "row",
-                                    alignItems: "center",
-                                }}
-                            >
-                                <BellOffIcon />
-                                <Text
-                                    style={{
-                                        fontSize: 17.5,
-                                        fontWeight: 600,
-                                        marginLeft: 15,
-                                    }}
-                                >{`Dispensé`}</Text>
-                            </View>
-                        )}
-                    </View>
-                </View>
-                <View>
-                    {timing && (
-                        <>
-                            <Separation />
-                            <View
-                                style={{
-                                    flexDirection: "row",
-                                    alignItems: "center",
-                                    marginLeft: "12.5%",
-                                    marginVertical: "7%",
-                                }}
-                            >
-                                <HourglassIcon />
-                                <Text
-                                    style={{
-                                        fontSize: 17.5,
-                                        fontWeight: 600,
-                                        marginLeft: 30,
-                                    }}
-                                >{`${timing}`}</Text>
-                            </View>
-                        </>
-                    )}
+                        <View
+                            style={{
+                                backgroundColor: color,
+                                borderRadius: 6,
 
-                    <Separation />
-                    <View
-                        style={{
-                            flexDirection: "column",
-                            marginLeft: "12.5%",
-                            marginVertical: "7%",
-                            gap: 10,
-                        }}
-                    >
-                        {teacher && (
-                            <View
+                                paddingHorizontal: 8,
+                                paddingVertical: 2,
+                            }}
+                        >
+                            <Text
                                 style={{
-                                    flexDirection: "row",
-                                    alignItems: "center",
+                                    fontSize: 26,
+                                    color: textColor,
                                 }}
                             >
-                                <PersonIcon />
-                                <Text
+                                {libelle}
+                            </Text>
+                        </View>
+                        <View
+                            style={{
+                                marginTop: "10%",
+                                gap: 8,
+                                alignItems: "center",
+                            }}
+                        >
+                            {startCourseTiming && (
+                                <View
                                     style={{
-                                        fontSize: 17.5,
-                                        fontWeight: 600,
-                                        marginLeft: 30,
+                                        flexDirection: "row",
+                                        alignItems: "center",
                                     }}
-                                >{`${teacher}`}</Text>
-                            </View>
-                        )}
-                        {room && (
-                            <View
-                                style={{
-                                    flexDirection: "row",
-                                    alignItems: "center",
-                                }}
-                            >
-                                <DoorOpenIcon />
-                                <Text
+                                >
+                                    <ClockIcon />
+                                    <Text
+                                        style={{
+                                            fontSize: 17.5,
+                                            fontWeight: 600,
+                                            marginLeft: 15,
+                                        }}
+                                    >{`${startCourseTiming}`}</Text>
+                                </View>
+                            )}
+                            {isCancelled && (
+                                <View
                                     style={{
-                                        fontSize: 17.5,
-                                        fontWeight: 600,
-                                        marginLeft: 30,
+                                        flexDirection: "row",
+                                        alignItems: "center",
                                     }}
-                                >{`${room}`}</Text>
-                            </View>
-                        )}
-                        {group && (
-                            <View
-                                style={{
-                                    flexDirection: "row",
-                                    alignItems: "center",
-                                }}
-                            >
-                                <PeoplesIcon />
-                                <Text
+                                >
+                                    <TrashIcon />
+                                    <Text
+                                        style={{
+                                            fontSize: 17.5,
+                                            fontWeight: 600,
+                                            marginLeft: 15,
+                                        }}
+                                    >{`Annulé`}</Text>
+                                </View>
+                            )}
+                            {isEdited && (
+                                <View
                                     style={{
-                                        fontSize: 17.5,
-                                        fontWeight: 600,
-                                        marginLeft: 30,
+                                        flexDirection: "row",
+                                        alignItems: "center",
                                     }}
-                                >{`${group}`}</Text>
-                            </View>
-                        )}
+                                >
+                                    <PenSquareIcon />
+                                    <Text
+                                        style={{
+                                            fontSize: 17.5,
+                                            fontWeight: 600,
+                                            marginLeft: 15,
+                                        }}
+                                    >{`Modifié`}</Text>
+                                </View>
+                            )}
+                            {isDispensed && (
+                                <View
+                                    style={{
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                    }}
+                                >
+                                    <BellOffIcon />
+                                    <Text
+                                        style={{
+                                            fontSize: 17.5,
+                                            fontWeight: 600,
+                                            marginLeft: 15,
+                                        }}
+                                    >{`Dispensé`}</Text>
+                                </View>
+                            )}
+                        </View>
                     </View>
-                    {(teacher || room || group) && <Separation />}
-                </View>
-                {/* <View
+                    <View>
+                        {timing && (
+                            <>
+                                <Separation />
+                                <View
+                                    style={{
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                        marginLeft: "12.5%",
+                                        marginVertical: "7%",
+                                    }}
+                                >
+                                    <HourglassIcon />
+                                    <Text
+                                        style={{
+                                            fontSize: 17.5,
+                                            fontWeight: 600,
+                                            marginLeft: 30,
+                                        }}
+                                    >{`${timing}`}</Text>
+                                </View>
+                            </>
+                        )}
+
+                        <Separation />
+                        <View
+                            style={{
+                                flexDirection: "column",
+                                marginLeft: "12.5%",
+                                marginVertical: "7%",
+                                gap: 10,
+                            }}
+                        >
+                            {teacher && (
+                                <View
+                                    style={{
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                    }}
+                                >
+                                    <PersonIcon />
+                                    <Text
+                                        style={{
+                                            fontSize: 17.5,
+                                            fontWeight: 600,
+                                            marginLeft: 30,
+                                        }}
+                                    >{`${teacher}`}</Text>
+                                </View>
+                            )}
+                            {room && (
+                                <View
+                                    style={{
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                    }}
+                                >
+                                    <DoorOpenIcon />
+                                    <Text
+                                        style={{
+                                            fontSize: 17.5,
+                                            fontWeight: 600,
+                                            marginLeft: 30,
+                                        }}
+                                    >{`${room}`}</Text>
+                                </View>
+                            )}
+                            {group && (
+                                <View
+                                    style={{
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                    }}
+                                >
+                                    <PeoplesIcon />
+                                    <Text
+                                        style={{
+                                            fontSize: 17.5,
+                                            fontWeight: 600,
+                                            marginLeft: 30,
+                                        }}
+                                    >{`${group}`}</Text>
+                                </View>
+                            )}
+                        </View>
+                        {(teacher || room || group) && <Separation />}
+                    </View>
+                    {/* <View
                     style={{
                         marginTop: 15,
                         flexDirection: "row",
@@ -372,8 +373,9 @@ export default function CourseDetails({ route }) {
                         </Text>
                     </Pressable>
                 </View> */}
+                </View>
             </View>
-        </View>
+        </SwipeBackWrapper>
     );
 }
 

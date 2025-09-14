@@ -1,8 +1,8 @@
-import { createStackNavigator } from "@react-navigation/stack";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import mapScreens from "../../helpers/mapScreens";
 import appNavigatorOrganisation from "./indexClient";
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
 export default function Client() {
     const screens = mapScreens({
@@ -11,7 +11,7 @@ export default function Client() {
     });
 
     return (
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Navigator screenOptions={{ headerShown: false, animation: "fade" }}>
             {screens}
         </Stack.Navigator>
     );
