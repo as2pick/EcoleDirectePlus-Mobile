@@ -63,13 +63,11 @@ export default function TimetableContent() {
                         setLoading(false);
                     });
             } else {
-                console.log("Already exist in strorage");
             }
         }, [userAccesToken, sortedTimetableData])
     );
 
     const activeDate = sortedTimetableData?.[currentIndex]?.iSODate || "";
-
     useEffect(() => {
         if (!timetableCoreSuccessLoaded) return;
 
