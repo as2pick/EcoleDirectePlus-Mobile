@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { originName } from "../resolver/resolver";
 import { arraysEqual } from "../utils/json";
-import apiService from "./apiService";
+import apiService, { dataUpdater } from "./apiService";
 
 export default async function dataManager(
     userToken,
@@ -21,12 +21,13 @@ export default async function dataManager(
     }
 
     const keysStored = rawStorageKeys.filter((key) => originName.includes(key));
-
+    console.log(keysStored);
     if (arraysEqual(keysStored, originName)) {
         if (network.isOnline) {
             console.log(
                 "Toutes les données sont en stockage et le réseau est en ligne."
             );
+            dataUpdater(userToken);
             // update datas if necessary
             return;
         } else {
@@ -65,58 +66,5 @@ export default async function dataManager(
             // prblm use default datas (generic JSON) and warn
         }
     }
-
-    // if (!isStorageEmpty && network.isOnline) {
-    //     console.log(
-    //         "All datas are in your storage, we start API update to compare changes"
-    //     );
-    // } else if (isStorageEmpty && network.isOnline) {
-    //     await apiService({
-    //         origin: "all",
-    //         userToken: userToken /* origin="all" because storage is empty */,
-    //     });
-
-    //     return;
-    // } else if (!isStorageEmpty && !network.isOnline) {
-    //     // throw custom error (warning) view custom throw errors
-    //     console.log(
-    //         "Warning ! You are not connected to internet but you have all datas stored on your device, unable to update API data"
-    //     );
-    // } else if (isStorageEmpty && !network.isOnline) {
-    //     throw new Error(
-    //         "Storage is empty and you are not connected to Internet, unable to fetch API"
-    //     );
-    // }
-
-    // if (
-    //     !arraysEqual(
-    //         rawStorageKeys.filter((key) => originName.includes(key)),
-    //         originName
-    //     ) &&
-    //     network.isOnline
-    // ) {
-    //     const missing = originName.filter((item) => !rawStorageKeys.includes(item));
-    //     console.log(`Fetch ${missing} datas`);
-    //     await Promise.all(
-    //         missing.map((element) =>
-    //             apiService({ userToken: userToken, origin: element })
-    //         )
-    //     );
-    // } else if (
-    //     !arraysEqual(
-    //         rawStorageKeys.filter((key) => originName.includes(key)),
-    //         originName
-    //     ) &&
-    //     !network.isOnline
-    // ) {
-    //     // throw custom error (warning) view custom throw errors
-    //     console.log(
-    //         `[@#@#@] WARNING - STORAGE IS INCOMPLETED ${originName.filter((item) => !rawStorageKeys.includes(item))} MISSING, YOU ARE NOT CONNECTED TO INTERNET: UNABLE TO FETCH API`
-    //     );
-    // }
-
-    // here all data is in storage
-
-    // compare storage and api
 }
 

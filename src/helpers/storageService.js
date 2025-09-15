@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { isJsonObject } from "../utils/json";
+import { isJsonObject, isParsableJson } from "../utils/json";
 
 export const storageServiceStates = {
     setter: async ({ originKey, dataToStore }) => {
@@ -12,10 +12,9 @@ export const storageServiceStates = {
     getter: async ({ originKey }) => {
         const data = await AsyncStorage.getItem(originKey);
         if (data !== null) {
-            try {
+            if (isParsableJson(data)) {
                 return JSON.parse(data);
-            } catch (error) {
-                console.error("Error parsing data:", error);
+            } else {
                 return data;
             }
         }
