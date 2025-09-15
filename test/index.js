@@ -1,6 +1,6 @@
-const strengths = Array.from({ length: 3 }, () => undefined);
-const weaknesses = Array.from({ length: 3 }, () => undefined);
+import { generateChecksum } from "../src/utils/crypto.js";
 
-console.log(strengths);
-console.log(weaknesses);
+const obj = { a: 1, b: 2, c: [3, 4, 5] };
+const checksum = await generateChecksum(obj);
+console.log(checksum); // Exemple : "a5f7d2b3..."
 
