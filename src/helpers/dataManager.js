@@ -21,19 +21,16 @@ export default async function dataManager(
     }
 
     const keysStored = rawStorageKeys.filter((key) => originName.includes(key));
-    console.log(keysStored);
+    console.log("Data keys stored on device : ", keysStored);
     if (arraysEqual(keysStored, originName)) {
         if (network.isOnline) {
-            console.log(
-                "Toutes les données sont en stockage et le réseau est en ligne."
-            );
+            console.log("All datas are stored on devices and network is connected");
             dataUpdater(userToken);
+
             // update datas if necessary
             return;
         } else {
-            console.log(
-                "Toutes les données sont en stockage, mais le réseau est hors ligne."
-            );
+            console.log("All datas are stored on devices but network is offline");
             // warning
             return;
         }
@@ -42,7 +39,9 @@ export default async function dataManager(
             const missing = originName.filter(
                 (item) => !rawStorageKeys.includes(item)
             );
-            console.log("Données manquantes et le réseau est en ligne.");
+            console.log(
+                "Invalid data count stored, network connected ,process to update them"
+            );
             // fetch api obligation
             if (originName.length - missing.length === 0) {
                 // completely empty
@@ -62,7 +61,7 @@ export default async function dataManager(
                 return;
             }
         } else {
-            console.log("Données manquantes et le réseau est hors ligne.");
+            console.log("Invalid data and network is offline");
             // prblm use default datas (generic JSON) and warn
         }
     }
