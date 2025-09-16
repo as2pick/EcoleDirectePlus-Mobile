@@ -6,7 +6,6 @@ export default async function apiService({ origin, userToken, extra = null }) {
     if (origin !== "all" && !originName.includes(origin)) return;
 
     if (origin === "all") {
-        // console.log(`Start to fetch all routes: ${originName}`);
         const promises = originName.map(async (origin) => {
             const resolverFunction = resolvers[origin];
             const data = await resolverFunction({ token: userToken, ...extra });
@@ -20,7 +19,6 @@ export default async function apiService({ origin, userToken, extra = null }) {
                 originKey: `checksum_${origin}`,
                 dataToStore: apiDataChecksum,
             });
-            return;
         });
 
         await Promise.all(promises);
@@ -45,14 +43,27 @@ export default async function apiService({ origin, userToken, extra = null }) {
 
 export async function dataUpdater(userToken) {
     const promises = originName.map(async (origin) => {
-        const resolverFunction = resolvers[origin];
-        const data = await resolverFunction({ token: userToken });
-        const storedApiChecksum = await storageServiceStates.getter({
-            originKey: `checksum_${origin}`,
-        });
-        console.log(storedApiChecksum);
+        try {
+            const resolverFunction = resolvers[origin];
+            const data = await resolverFunction({ token: userToken });
+            const apiChecksum = await generateChecksum(data);
+            const storedApiChecksum = await storageServiceStates.getter({
+                originKey: `checksum_${origin}`,
+            });
+            if (apiChecksum !== storedApiChecksum) {
+                console.log(`Data out-to-date, updating for ${origin}`);
+                apiService({ origin, userToken });
+            } else {
+                console.log(`Data up-to-date for ${origin}`);
+            }
+        } catch (error) {
+            console.log(
+                `Error while refresh API data for origin ${origin} : `,
+                error
+            );
+        }
     });
 
-    await Promise.all(promises);
+    await Promise.allSettled(promises);
 }
 
