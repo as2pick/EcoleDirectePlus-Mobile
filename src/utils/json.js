@@ -8,8 +8,7 @@ import _ from "lodash";
 export function isParsableJson(value) {
     try {
         const parsedValue = JSON.parse(value);
-
-        return _.isPlainObject(parsedValue);
+        return typeof parsedValue === "object" && parsedValue !== null;
     } catch (error) {
         return false;
     }
