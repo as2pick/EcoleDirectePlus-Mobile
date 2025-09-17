@@ -54,7 +54,7 @@ export async function dataUpdater(userToken) {
                 console.log(`Data out-to-date, updating for ${origin}`);
                 apiService({ origin, userToken });
             } else {
-                console.log(`Data up-to-date for ${origin}`);
+                console.log(`Up-to-date data for ${origin}`);
             }
         } catch (error) {
             console.log(
