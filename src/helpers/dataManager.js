@@ -21,7 +21,7 @@ export default async function dataManager(
     }
 
     const keysStored = rawStorageKeys.filter((key) => originName.includes(key));
-    console.log("Data keys stored on device : ", keysStored);
+    console.log(`Data keys stored on device :${keysStored.map((d) => ` ${d}`)}`);
     if (arraysEqual(keysStored, originName)) {
         if (network.isOnline) {
             console.log("All datas are stored on devices and network is connected");
