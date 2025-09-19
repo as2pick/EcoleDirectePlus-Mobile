@@ -1,8 +1,8 @@
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { useCallback, useEffect, useState } from "react";
-import { Button, TextInput, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import InDev from "../../../components/Ui/InDev";
+import { Text, View } from "react-native";
+import BottomSheet from "../../../components/Layout/BottomSheet";
+import Onboarding from "../../../components/Layout/Onboarding";
 import { useUser } from "../../../context/UserContext";
 import { storageServiceStates } from "../../../helpers/storageService";
 import { routesNames } from "../../../router/config/routesNames";
@@ -132,50 +132,26 @@ export default function GradesContent() {
     }, [displayPeriode]);
 
     return (
-        <SafeAreaView>
-            <InDev />
-
-            <View
-                style={{
-                    width: 300,
-                    height: 300,
-                    backgroundColor: "red",
-                    flex: 1,
-                    position: "absolute",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    bottom: 0,
-                }}
-            >
-                <TextInput
-                    placeholder="TYPE TEXTE"
-                    value={testT}
-                    onChangeText={(text) => setTESTT(text)}
+        <View style={{ flex: 1 }}>
+            <View style={{ flex: 0.4 }}>
+                <Onboarding
+                    data={[
+                        { displayText: "Ta streak", value: "12" },
+                        { displayText: "Ta moy g", value: "16" },
+                    ]}
                 />
-
-                <Button
-                    onPress={() => {
-                        if (sortedGradesData[`A00${testT}`]) {
-                            setDisplayPeriode(sortedGradesData[`A00${testT}`]);
-                        } else {
-                            console.warn(`Période A00${testT} non trouvée`);
-                        }
-                    }}
-                    title="CHANGER PÉRIODE"
-                />
-
-                <View style={{ marginTop: 10 }}>
-                    <Button
-                        onPress={() => {
-                            console.log("Strengths:", strengths);
-                            console.log("Weaknesses:", weaknesses);
-                            console.log("DisplayPeriode:", displayPeriode);
-                        }}
-                        title="DEBUG LOG"
-                    />
-                </View>
             </View>
-        </SafeAreaView>
+            <View style={{ position: "absolute", width: "100%", height: "100%" }}>
+                <BottomSheet
+                    style={{ backgroundColor: "blue", borderRadius: 20 }}
+                    displayLine
+                >
+                    <View>
+                        <Text>Hello World! </Text>
+                    </View>
+                </BottomSheet>
+            </View>
+        </View>
     );
 }
 
