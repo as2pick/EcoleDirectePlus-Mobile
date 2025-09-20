@@ -32,7 +32,6 @@ export default function GradesContent() {
     const [displayPeriode, setDisplayPeriode] = useState({});
     const [strengths, setStrengths] = useState([]);
     const [weaknesses, setWeaknesses] = useState([]);
-    const [testT, setTESTT] = useState("1");
 
     const injectStreakDataIntoGrades = useCallback((userGrades) => {
         Object.entries(userGrades).forEach(([periodKey, periodData]) => {
@@ -136,8 +135,26 @@ export default function GradesContent() {
             <View style={{ flex: 0.4 }}>
                 <Onboarding
                     data={[
-                        { displayText: "Ta streak", value: "12" },
-                        { displayText: "Ta moy g", value: "16" },
+                        {
+                            displayText: "Ta streak",
+                            value: "12",
+                            gradient: {
+                                colors: ["rgb(255, 15, 0)", "rgba(255, 150, 0, .7)"],
+                                locations: [0.24, 0.68],
+                                start: { x: 0, y: 0 },
+                                end: { x: 0, y: 1 },
+                            },
+                        },
+                        {
+                            displayText: "Ta moy g",
+                            value: "16",
+                            gradient: {
+                                colors: ["rgb(68, 55, 149)", "rgb(119, 29, 124)"],
+                                locations: [0.21, 0.66],
+                                start: { x: 0, y: 0 },
+                                end: { x: 0, y: 1 },
+                            },
+                        },
                     ]}
                 />
             </View>
@@ -147,7 +164,7 @@ export default function GradesContent() {
                     displayLine
                 >
                     <View>
-                        <Text>Hello World! </Text>
+                        <Text>Hello Worlde!</Text>
                     </View>
                 </BottomSheet>
             </View>

@@ -22,7 +22,6 @@ export default function Onboarding({ data }) {
 
     return (
         <View style={styles.container}>
-            {/* FlatList avec les items d'onboarding */}
             <FlatList
                 data={data}
                 renderItem={({ item }) => <OnboardingItem item={item} />}
@@ -40,7 +39,6 @@ export default function Onboarding({ data }) {
                 style={styles.flatList}
             />
 
-            {/* Paginator en overlay au-dessus du contenu */}
             <View style={styles.paginatorOverlay}>
                 <Paginator data={data} scrollX={scrollX} />
             </View>
@@ -60,15 +58,10 @@ const styles = StyleSheet.create({
     },
     paginatorOverlay: {
         position: "absolute",
-        bottom: "20%", // Distance du bas de l'écran (ajustez selon vos besoins)
+        bottom: "20%",
         left: 0,
         right: 0,
         alignItems: "center",
-
-        // Optionnel: ajoutez un fond semi-transparent pour plus de visibilité
-        // backgroundColor: 'rgba(0, 0, 0, 0.1)',
-        // paddingVertical: 10,
-        // borderRadius: 20,
     },
 });
 

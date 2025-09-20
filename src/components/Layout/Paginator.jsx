@@ -17,7 +17,7 @@ export default function Paginator({ data, scrollX }) {
                     const dotWidth = interpolate(
                         scrollX.value,
                         inputRange,
-                        [10, 20, 10],
+                        [6, 18, 6],
                         Extrapolation.CLAMP
                     );
 
@@ -38,9 +38,9 @@ export default function Paginator({ data, scrollX }) {
                     <Animated.View
                         style={[
                             {
-                                height: 10,
-                                borderRadius: 5,
-                                marginHorizontal: 8,
+                                height: 6,
+                                borderRadius: 3,
+                                marginHorizontal: 4,
                                 backgroundColor: "green",
                             },
                             animatedDotStyle,

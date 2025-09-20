@@ -1,5 +1,5 @@
 import fetchApi from "../services/fetchApi";
-import { calculateWeightedAverage, parseNumber } from "../utils/grades/makeAverage";
+import { parseNumber } from "../utils/grades/makeAverage";
 
 export default async function gradesResolver({ token }) {
     try {
@@ -176,19 +176,11 @@ function enrichDiscipline(discipline, periodCode, rawGrades) {
         formatGrade(grade, periodCode)
     );
 
-    const validGrades = formattedGrades.filter(
-        (g) => g.data.grade != null && !g.onlySkills
-    );
-
-    const average =
-        validGrades.length > 0 ? calculateWeightedAverage(validGrades) : null;
-
     return {
         ...discipline,
         grades: formattedGrades,
         averageDatas: {
             ...discipline.averageDatas,
-            userAverage: average,
         },
     };
 }
