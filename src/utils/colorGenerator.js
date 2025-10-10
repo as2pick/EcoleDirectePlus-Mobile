@@ -108,6 +108,20 @@ export const cssRgbToHsl = (text) => {
     return [h, s, l];
 };
 
+export const cssHslaToHsla = (text) => {
+    const values = text.match(/[\d.]+%?/g);
+
+    if (!values || values.length < 4) {
+        throw new Error("Invalid HSLA string");
+    }
+
+    const [h, s, l, a] = values.map((v, i) =>
+        v.includes("%") ? parseFloat(v) : parseFloat(v)
+    );
+
+    return [h, s, l, a];
+};
+
 export const isDarkColor = (hsl) => {
     const lightness = parseFloat(hsl.match(/,\s*(\d+)%\)$/)[1]);
     return lightness < 50;

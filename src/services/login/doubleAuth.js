@@ -1,22 +1,5 @@
-import handleBase64 from "../../utils/handleBase64.js";
+import base64Handler from "../../utils/handleBase64.js";
 import fetchApi from "../fetchApi.js";
-
-const ConvertOutput = (data) => {
-    const handlePropositions = () => {
-        const convertedArray = [];
-
-        data.propositions.map((prop) => {
-            convertedArray.push(handleBase64.decode(prop));
-        });
-
-        return convertedArray;
-    };
-
-    return {
-        question: handleBase64.decode(data.question),
-        propositions: handlePropositions(),
-    };
-};
 
 export const getResponseChoices = async (token) => {
     const requestParams = {
@@ -35,7 +18,7 @@ export const getResponseChoices = async (token) => {
     const question = doubleAuthGetChoices.question;
     const encodedChoices = doubleAuthGetChoices.propositions;
     const decodedChoices = encodedChoices.map((value) => {
-        return handleBase64.decode(value);
+        return base64Handler.decode(value);
     });
 
     const choices = decodedChoices.reduce((acc, key, index) => {
@@ -45,7 +28,7 @@ export const getResponseChoices = async (token) => {
     }, {});
     return {
         choices: { ...choices },
-        question: { [handleBase64.decode(question)]: question },
+        question: { [base64Handler.decode(question)]: question },
     };
 };
 

@@ -1225,6 +1225,30 @@
         ],
         "notes": [
             {
+                "id": 12584156,
+                "devoir": "Contrôle intégrales et primitives",
+                "codePeriode": "A001",
+                "codeMatiere": "MATHS",
+                "libelleMatiere": "MATHEMATIQUES",
+                "codeSousMatiere": "",
+                "typeDevoir": "",
+                "enLettre": false,
+                "commentaire": "Revoir les formules de base et s'entraîner davantage",
+                "uncSujet": "",
+                "uncCorrige": "",
+                "date": "2024-10-04",
+                "dateSaisie": "2024-10-06",
+                "coef": "2",
+                "noteSur": "20",
+                "valeur": "4.5",
+                "valeurisee": false,
+                "nonSignificatif": false,
+                "moyenneClasse": "11.80",
+                "minClasse": "3.50",
+                "maxClasse": "18.50",
+                "elementsProgramme": []
+            },
+            {
                 "id": 12583524,
                 "devoir": "Listening comprehension",
                 "codePeriode": "A001",
@@ -1248,6 +1272,7 @@
                 "maxClasse": "10.00",
                 "elementsProgramme": []
             },
+
             {
                 "id": 12583312,
                 "devoir": "évaluation équations différentielles",
@@ -2807,3 +2832,4 @@
         }
     }
 }
+

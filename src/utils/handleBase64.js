@@ -1,19 +1,28 @@
-import base64 from "base-64";
-
-const { decode, encode } = base64;
-
-class base64Handler {
+class Base64Handler {
     encode(rawInput) {
-        const utf8String = unescape(encodeURIComponent(String(rawInput)));
-        return encode(utf8String);
+        try {
+            const utf8Bytes = new TextEncoder().encode(String(rawInput));
+            const base64String = globalThis.btoa(String.fromCharCode(...utf8Bytes));
+            return base64String;
+        } catch (err) {
+            return rawInput;
+        }
     }
+
     decode(rawInput) {
-        const decodedString = decode(String(rawInput));
-        return decodeURIComponent(escape(decodedString));
+        try {
+            const binaryString = globalThis.atob(String(rawInput));
+            const bytes = Uint8Array.from(binaryString, (char) =>
+                char.charCodeAt(0)
+            );
+            const decoded = new TextDecoder("utf-8").decode(bytes);
+            return decoded;
+        } catch (err) {
+            return rawInput;
+        }
     }
 }
 
-const handleBase64 = new base64Handler();
-
-export default handleBase64;
+const base64Handler = new Base64Handler();
+export default base64Handler;
 
