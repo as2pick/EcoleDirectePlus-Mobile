@@ -1,4 +1,3 @@
-import Grade from "../../screens/Client/Grades/grades/classes/Grade";
 import Period from "../../screens/Client/Grades/grades/classes/Period";
 import { parseNumber } from "./makeAverage";
 
@@ -81,59 +80,57 @@ export const calculateStreak = (gradesArrayChronologicaly, periodCode, apiData) 
     let globalStreakScore = 0;
 
     for (const grade of gradesArrayChronologicaly) {
-        const gradeObj = new Grade(grade);
-
         if (gradesItered.length === 0) {
-            gradeObj.actionOnStreak = gradeObj.data.grade >= 10 ? "up" : "nothing";
+            grade.actionOnStreak = grade.data.grade >= 10 ? "up" : "nothing";
 
-            if (gradeObj.actionOnStreak === "up") {
-                streakScores[periodCode][gradeObj.codes.discipline] += 1;
+            if (grade.actionOnStreak === "up") {
+                streakScores[periodCode][grade.codes.discipline] += 1;
                 globalStreakScore += 1;
             }
 
-            gradesItered.push(gradeObj);
+            gradesItered.push(grade);
             continue;
         }
 
         const quantityOfGradesInDiscipline = gradesItered.filter(
-            (g) => g.codes.discipline === gradeObj.codes.discipline
+            (g) => g.codes.discipline === grade.codes.discipline
         ).length;
 
         const oldGeneralAverage = calculateWeightedAverageFromArray(gradesItered);
         const oldDisciplineAverage = calculateWeightedAverageFromArray(
             gradesItered,
-            gradeObj.codes.discipline
+            grade.codes.discipline
         );
 
-        gradesItered.push(gradeObj);
+        gradesItered.push(grade);
 
         const newDisciplineAverage = calculateWeightedAverageFromArray(
             gradesItered,
-            gradeObj.codes.discipline
+            grade.codes.discipline
         );
 
         if (quantityOfGradesInDiscipline === 0) {
             if (newDisciplineAverage > oldGeneralAverage) {
-                gradeObj.actionOnStreak = "up";
-                streakScores[periodCode][gradeObj.codes.discipline] += 1;
+                grade.actionOnStreak = "up";
+                streakScores[periodCode][grade.codes.discipline] += 1;
                 globalStreakScore += 1;
             } else {
-                gradeObj.actionOnStreak = "nothing";
+                grade.actionOnStreak = "nothing";
             }
             continue;
         }
 
         if (newDisciplineAverage > oldDisciplineAverage) {
-            gradeObj.actionOnStreak = "up";
-            streakScores[periodCode][gradeObj.codes.discipline] += 1;
+            grade.actionOnStreak = "up";
+            streakScores[periodCode][grade.codes.discipline] += 1;
             globalStreakScore += 1;
         } else {
-            gradeObj.actionOnStreak = "nothing";
-            globalStreakScore -= streakScores[periodCode][gradeObj.codes.discipline];
-            streakScores[periodCode][gradeObj.codes.discipline] = 0;
+            grade.actionOnStreak = "nothing";
+            globalStreakScore -= streakScores[periodCode][grade.codes.discipline];
+            streakScores[periodCode][grade.codes.discipline] = 0;
 
             for (let g of gradesItered.filter(
-                (g) => g.codes.discipline === gradeObj.codes.discipline
+                (g) => g.codes.discipline === grade.codes.discipline
             )) {
                 if (g.actionOnStreak === "up") g.actionOnStreak = "previous up";
             }
@@ -145,9 +142,5 @@ export const calculateStreak = (gradesArrayChronologicaly, periodCode, apiData) 
         globalStreakScore,
         gradesItered,
     };
-};
-
-export const formatGradeText = (gradeInt = 0.0) => {
-    return String(gradeInt).replace(".", ",");
 };
 

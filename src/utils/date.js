@@ -22,3 +22,4 @@ export function getPreviousMonday(dateString) {
 
     return date.toISOString().split("T")[0];
 }
+

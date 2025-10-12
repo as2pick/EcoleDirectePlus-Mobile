@@ -71,3 +71,8 @@ export const deepEqualExcept = (obj1, obj2, excludedKeys = []) => {
 
     return obj1 === obj2;
 };
+
+export const formatGradeText = (gradeInt = 0.0) => {
+    return String(gradeInt).replace(".", ",");
+};
+

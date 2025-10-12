@@ -1,7 +1,7 @@
 import { Text, TouchableOpacity, View } from "react-native";
 import Animated from "react-native-reanimated";
-import { formatGradeText } from "../../../../../utils/grades/grades";
 import { parseNumber } from "../../../../../utils/grades/makeAverage";
+import { formatGradeText } from "../helper";
 import Grade from "./Grade";
 
 export default class Discipline {

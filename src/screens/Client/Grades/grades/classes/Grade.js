@@ -8,7 +8,7 @@ import {
     UpTheStreak,
 } from "../../../../../../assets/svg/badges";
 import { routesNames } from "../../../../../router/config/routesNames";
-import { formatGradeText } from "../../../../../utils/grades/grades";
+import { formatGradeText } from "../helper";
 
 export default class Grade {
     constructor({

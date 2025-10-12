@@ -1,5 +1,5 @@
 import Discipline from "../screens/Client/Grades/grades/classes/Discipline";
-import { deepEqualExcept } from "../screens/Client/Grades/grades/helpers/extras";
+import { deepEqualExcept } from "../screens/Client/Grades/grades/helper";
 import {
     calculateStreak,
     createValidGradesArray,

@@ -10,11 +10,10 @@ import { ScrollableStack } from "../../../components";
 import { useUser } from "../../../context/UserContext";
 import { storageServiceStates } from "../../../helpers/storageService";
 import { cssHslaToHsla } from "../../../utils/colorGenerator";
-import { formatGradeText } from "../../../utils/grades/grades";
 import { parseNumber } from "../../../utils/grades/makeAverage";
 import Discipline from "./grades/classes/Discipline";
 import Period from "./grades/classes/Period";
-import { calculateStrengthsWeaknesses } from "./grades/helpers/extras";
+import { calculateStrengthsWeaknesses, formatGradeText } from "./grades/helper";
 
 const { width } = Dimensions.get("window");
 // const GradeItem = memo(({ item, index, dataLength, isExpanded, onPress }) => {
