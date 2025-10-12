@@ -13,6 +13,7 @@ import { cssHslaToHsla } from "../../../utils/colorGenerator";
 import { parseNumber } from "../../../utils/grades/makeAverage";
 import Discipline from "./grades/classes/Discipline";
 import Period from "./grades/classes/Period";
+import AddGradeModal from "./grades/components/SimulateGradeModal";
 import { calculateStrengthsWeaknesses, formatGradeText } from "./grades/helper";
 
 const { width } = Dimensions.get("window");
@@ -228,7 +229,17 @@ export default function GradesContent() {
     const [generalAverage, setGeneralAverage] = useState(0);
     const [globalStreakScore, setGlobalStreakScore] = useState(0);
     const [expandedChain, setExpandedChain] = useState(null);
+    const [isAddGradeModalVisible, setIsAddGradeModalVisible] = useState(false);
+    const [simulatedDisciplineCodes, setSimulatedDisciplineCodes] = useState({});
 
+    const openAddGradeModal = useCallback((disciplineCodes) => {
+        setIsAddGradeModalVisible(true);
+        setSimulatedDisciplineCodes(disciplineCodes);
+    }, []);
+
+    const closeAddGradeModal = useCallback(() => {
+        setIsAddGradeModalVisible(false);
+    }, []);
     const fetchAndProcessGrades = useCallback(async () => {
         try {
             setLoading(true);
@@ -339,6 +350,7 @@ export default function GradesContent() {
                     ),
 
                 navigation: navigation,
+                openAddGradeModal: openAddGradeModal,
             });
         }
     };
@@ -347,7 +359,6 @@ export default function GradesContent() {
         (item, index) => item.id?.toString() || `${item.libelle}-${index}`,
         []
     );
-
     return (
         <View style={{ flex: 1 }}>
             <View style={{ flex: 0.4, elevation: 8 }}>
@@ -474,6 +485,11 @@ export default function GradesContent() {
                     /> */}
                 </BottomSheet>
             </View>
+            <AddGradeModal
+                visible={isAddGradeModalVisible}
+                onClose={closeAddGradeModal}
+                disciplineCodes={simulatedDisciplineCodes}
+            />
         </View>
     );
 }

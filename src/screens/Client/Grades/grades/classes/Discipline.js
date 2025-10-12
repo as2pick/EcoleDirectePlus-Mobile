@@ -175,7 +175,14 @@ export default class Discipline {
             </View>
         );
     }
-    RenderDiscipline({ index, dataLength, isExpanded, onPress, navigation }) {
+    RenderDiscipline({
+        index,
+        dataLength,
+        isExpanded,
+        onPress,
+        navigation,
+        openAddGradeModal,
+    }) {
         const averages = [
             { label: "Classe", value: this.averageDatas.classAverage },
             { label: "Max.", value: this.averageDatas.maxAverage },
@@ -311,7 +318,12 @@ export default class Discipline {
                                 ))}
                             </View>
                             {this.grades.map((grade, idx) => {
-                                return new Grade(grade).RenderGrade(navigation, idx);
+                                return new Grade(grade).RenderGrade(
+                                    navigation,
+                                    idx,
+                                    this.grades.length,
+                                    openAddGradeModal
+                                );
                             })}
                         </Animated.View>
                     )}

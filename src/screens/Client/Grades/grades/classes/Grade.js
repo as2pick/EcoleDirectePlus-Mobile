@@ -8,6 +8,7 @@ import {
     UpTheStreak,
 } from "../../../../../../assets/svg/badges";
 import { routesNames } from "../../../../../router/config/routesNames";
+import { cssHslaToHsla } from "../../../../../utils/colorGenerator";
 import { formatGradeText } from "../helper";
 
 export default class Grade {
@@ -55,7 +56,7 @@ export default class Grade {
             badges: this.badges,
         };
     }
-    RenderGrade(navigation, idx) {
+    RenderGrade(navigation, idx, gradeLength, openAddGradeModal) {
         const uiBadges = {
             max_grade: MaxGrade,
             best_grade: BestGrade,
@@ -66,10 +67,9 @@ export default class Grade {
         };
 
         let backgroundColor = null;
-
         switch (this.actionOnStreak) {
             case "nothing":
-                backgroundColor = "hsl(240, 24%, 28%)";
+                backgroundColor = "hsla(240, 24%, 28%, 1)";
                 break;
             case "up":
                 backgroundColor = "hsla(36, 100%, 34%, .3)";
@@ -81,14 +81,16 @@ export default class Grade {
                 backgroundColor = "red";
         }
 
-        return (
+        const hsla = cssHslaToHsla(backgroundColor);
+        const borderColor = `hsla(${hsla[0]}, ${hsla[1]}%, ${hsla[2] + 16}%, ${hsla[3]})`;
+
+        const gradeItem = (
             <TouchableOpacity
                 onPress={() =>
                     navigation.navigate(routesNames.client.grades.details, {
                         gradeData: this.getGrade(),
                     })
                 }
-                key={idx}
             >
                 <View
                     style={{
@@ -100,6 +102,8 @@ export default class Grade {
                         paddingHorizontal: 14,
                         paddingVertical: 8,
                         borderRadius: 13,
+                        borderColor,
+                        borderWidth: 1.4,
                     }}
                 >
                     <Text style={{}}>{this.libelle}</Text>
@@ -124,6 +128,38 @@ export default class Grade {
                 </View>
             </TouchableOpacity>
         );
+
+        // Si c'est la dernière note, ajouter le bouton "+" en dessous
+        if (idx === gradeLength - 1) {
+            return (
+                <View key={idx}>
+                    {gradeItem}
+                    <TouchableOpacity
+                        onPress={() => openAddGradeModal(this.codes)}
+                        style={{ marginTop: 24 }}
+                    >
+                        <View
+                            style={{
+                                marginHorizontal: 20,
+                                justifyContent: "center",
+                                alignItems: "center",
+                                backgroundColor: "hsla(240, 14%, 32%, .25)",
+                                paddingHorizontal: 14,
+                                paddingVertical: 2,
+                                borderRadius: 20,
+                                // marginTop: 8,
+                                borderColor: "hsla(240, 14%, 32%, .6)",
+                                borderWidth: 1,
+                            }}
+                        >
+                            <Text>+</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            );
+        }
+
+        return <View key={idx}>{gradeItem}</View>;
     }
 }
 
