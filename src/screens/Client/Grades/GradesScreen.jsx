@@ -16,6 +16,7 @@ export default function GradesScreen() {
             initialRouteName={content}
             screenOptions={{
                 headerShown: false,
+                animation: "fade",
             }}
         >
             <NativeStack.Screen name={content} component={GradesContent} />

@@ -1,5 +1,13 @@
+import Discipline from "../screens/Client/Grades/grades/classes/Discipline";
+import { deepEqualExcept } from "../screens/Client/Grades/grades/helpers/extras";
+import {
+    calculateStreak,
+    createValidGradesArray,
+    sortGradesByDate,
+} from "../screens/Client/Grades/grades/streakManagment";
 import fetchApi from "../services/fetchApi";
 import { parseNumber } from "../utils/grades/makeAverage";
+import base64Handler from "../utils/handleBase64";
 
 export default async function gradesResolver({ token }) {
     try {
@@ -14,7 +22,7 @@ export default async function gradesResolver({ token }) {
             }
         );
         const grades = gradesResponse.data;
-
+        // const grades = require("../../test/api.json").data;
         // Format periods
         const periodsObj = grades.periodes.reduce((acc, period) => {
             if (period.annuel) return acc;
@@ -56,26 +64,23 @@ export default async function gradesResolver({ token }) {
             periodData.groups = periodData.groups.map((group) => {
                 if (group.isDisciplineGroup) {
                     group.disciplines = group.disciplines.map((discipline) => {
-                        const enriched = enrichDiscipline(
+                        return enrichDiscipline(
                             discipline,
                             periodCode,
                             grades.notes
                         );
-                        return enriched;
                     });
+                    group.averageDatas.userAverage = new Discipline(
+                        group
+                    ).getDisciplineGroupAverage();
                     return group;
                 } else {
-                    const enriched = enrichDiscipline(
-                        group,
-                        periodCode,
-                        grades.notes
-                    );
-                    return enriched;
+                    return enrichDiscipline(group, periodCode, grades.notes);
                 }
             });
         }
 
-        return periodsObj;
+        return streakDataInjectedIntoGrades(periodsObj);
     } catch (error) {
         console.error("Error fetching grades:", error);
         throw error;
@@ -93,6 +98,20 @@ const skillColorsCodes = {
 };
 
 function parseDiscipline(discipline) {
+    // if (!discipline) return undefined;
+
+    const teachersWithoutId =
+        discipline.professeurs?.map(({ nom }) => [nom]) || undefined;
+
+    const decodedClassAssessment =
+        base64Handler.decode(discipline.appreciationClasse) || undefined;
+
+    let decodedUserAssessment =
+        discipline?.appreciations?.map((chain) =>
+            base64Handler.decode(chain)
+        )[0] /* atention if too many users report less appreciations ! */ ||
+        undefined;
+
     const obj = {
         code: discipline.codeMatiere,
         libelle: discipline.discipline,
@@ -104,7 +123,13 @@ function parseDiscipline(discipline) {
         },
         coef: discipline.coef,
         isDisciplineGroup: discipline.groupeMatiere,
+        workforce: discipline.effectif,
+        rank: discipline.rang,
+        teachers: teachersWithoutId,
+        classAssessment: decodedClassAssessment,
+        userAssessment: decodedUserAssessment,
     };
+
     return obj;
 }
 
@@ -155,7 +180,8 @@ function formatGrade(grade, periodCode) {
         onlySkills:
             (valeur == null || valeur === undefined) && elementsProgramme.length > 0,
 
-        actionOnStreak: null,
+        actionOnStreak: undefined,
+        badges: [],
     };
 }
 
@@ -176,12 +202,85 @@ function enrichDiscipline(discipline, periodCode, rawGrades) {
         formatGrade(grade, periodCode)
     );
 
-    return {
+    const enrichedDiscipline = {
         ...discipline,
         grades: formattedGrades,
         averageDatas: {
             ...discipline.averageDatas,
         },
     };
+
+    enrichedDiscipline.averageDatas.userAverage = new Discipline(
+        enrichedDiscipline
+    ).getWeightedAverage();
+    return enrichedDiscipline;
+}
+
+function streakDataInjectedIntoGrades(userGrades) {
+    const result = JSON.parse(JSON.stringify(userGrades));
+    Object.entries(result).forEach(([periodKey, periodData]) => {
+        const gradesSortedByDate = sortGradesByDate(
+            createValidGradesArray(result, periodKey)
+        );
+        const streak = calculateStreak(gradesSortedByDate, periodKey, result);
+        periodData.globalStreakScore = streak.globalStreakScore;
+        const periodStreakScores = streak.streakScores?.[periodKey] || {};
+
+        const periodDisciplines = periodData.groups.flatMap((group) =>
+            group.isDisciplineGroup ? group.disciplines : [group]
+        );
+
+        periodDisciplines.forEach((discipline) => {
+            discipline.streakCount = periodStreakScores[discipline.code] || 0;
+        });
+
+        streak.gradesItered.forEach((gradeData) => {
+            const discipline = periodDisciplines.find(
+                ({ code }) => code === gradeData.codes.discipline
+            );
+            if (!discipline) return;
+            const gradeToUpdate = discipline.grades.find((g) =>
+                deepEqualExcept(g, gradeData, ["actionOnStreak"])
+            );
+            if (gradeToUpdate) {
+                gradeToUpdate.actionOnStreak = gradeData.actionOnStreak;
+            }
+        });
+    });
+
+    return badgesDataInjectedIntoGrades(result);
+}
+
+function badgesDataInjectedIntoGrades(userGrades) {
+    const result = JSON.parse(JSON.stringify(userGrades)); // deep copy
+
+    Object.values(result).forEach((periodData) => {
+        const periodDisciplines = periodData.groups.flatMap((group) =>
+            group.isDisciplineGroup ? group.disciplines : [group]
+        );
+
+        periodDisciplines.forEach((discipline) => {
+            const currentDisciplineAverage = discipline.averageDatas.userAverage;
+
+            discipline.grades.forEach((gradeObj) => {
+                const { classAverage, classMax, outOf, grade } =
+                    gradeObj?.data || {};
+                const badges = [];
+                if (!grade) return;
+
+                if (gradeObj.actionOnStreak === "up") badges.push("up_the_streak");
+                if (grade === outOf) badges.push("max_grade");
+                if (grade === classMax) badges.push("best_grade");
+                if (grade > classAverage) badges.push("upper_than_class_average");
+                if (currentDisciplineAverage && grade > currentDisciplineAverage)
+                    badges.push("upper_than_discipline_average");
+                if (grade === currentDisciplineAverage)
+                    badges.push("equal_to_discipline_average");
+
+                gradeObj.badges = badges;
+            });
+        });
+    });
+    return result;
 }
 

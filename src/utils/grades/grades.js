@@ -147,3 +147,7 @@ export const calculateStreak = (gradesArrayChronologicaly, periodCode, apiData) 
     };
 };
 
+export const formatGradeText = (gradeInt = 0.0) => {
+    return String(gradeInt).replace(".", ",");
+};
+
