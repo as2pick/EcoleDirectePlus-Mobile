@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
@@ -14,16 +14,17 @@ export default function BottomSheet({
     displayLine = false,
     height = "95%",
     debateSpacing = "30%",
-    movementDetectionHeight = "40%",
+    opened,
     style = {},
 }) {
     debateSpacing = Number(debateSpacing.replace("%", ""));
 
     const [isUp, setIsUp] = useState(false);
     const [usableHeight, setUsableHeight] = useState(0);
+    const translateY = useSharedValue(debateSpacing);
+    const previousY = useSharedValue({ y: 0 });
 
-    const translateY = useSharedValue(debateSpacing); // percents
-    const previousY = useSharedValue({ y: 0 }); // in pixels
+    useEffect(() => opened(isUp), [isUp]);
     const togglePosition = () => {
         translateY.value = withTiming(isUp ? debateSpacing : 0, {
             duration: 250,
@@ -32,15 +33,15 @@ export default function BottomSheet({
         setIsUp(!isUp);
     };
 
-    const gesure = Gesture.Pan()
+    const panGesture = Gesture.Pan()
+        .activeOffsetY([-10, 10])
+        .failOffsetX([-10, 10])
         .onStart(() => {
             previousY.value = { y: (translateY.value * usableHeight) / 100 };
-            // set previousY. convert translateY from % to pixels
         })
         .onUpdate((event) => {
             translateY.value =
                 ((event.translationY + previousY.value.y) * 100) / usableHeight;
-            // set translateY. integrate previousY (in pixels) + actual translation (in pixels). convert to %
             translateY.value = Math.max(translateY.value, 0);
             translateY.value = Math.min(translateY.value, debateSpacing);
         })
@@ -77,41 +78,30 @@ export default function BottomSheet({
             style={styles.container}
             onLayout={(e) => setUsableHeight(e.nativeEvent.layout.height)}
         >
-            <Animated.View
-                style={[
-                    styles.slidingView,
-                    { height: height },
-                    style,
-                    animatedStyle,
-                ]}
-            >
-                <GestureDetector gesture={gesure}>
-                    <View
-                        style={[
-                            styles.detectionArea,
-                            { height: movementDetectionHeight },
-                        ]}
-                    />
-                </GestureDetector>
-                {displayLine && (
-                    <View
-                        style={{
-                            alignItems: "center",
-                            marginTop: 24,
-                        }}
-                    >
+            <GestureDetector gesture={panGesture}>
+                <Animated.View
+                    style={[styles.slidingView, { height }, style, animatedStyle]}
+                >
+                    {displayLine && (
                         <View
                             style={{
-                                width: 35,
-                                height: 6,
-                                borderRadius: 10,
-                                backgroundColor: "white",
+                                alignItems: "center",
+                                marginTop: 24,
                             }}
-                        />
-                    </View>
-                )}
-                {children}
-            </Animated.View>
+                        >
+                            <View
+                                style={{
+                                    width: 35,
+                                    height: 6,
+                                    borderRadius: 10,
+                                    backgroundColor: "white",
+                                }}
+                            />
+                        </View>
+                    )}
+                    {children}
+                </Animated.View>
+            </GestureDetector>
         </View>
     );
 }
@@ -119,19 +109,7 @@ export default function BottomSheet({
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-    },
-    detectionArea: {
-        position: "absolute",
-        flex: 1,
-        width: "100%",
-        alignSelf: "center",
-    },
-
-    slidingView: {
-        position: "absolute",
-        bottom: 0,
-        left: 0,
-        right: 0,
+        justifyContent: "flex-end",
     },
 });
 
