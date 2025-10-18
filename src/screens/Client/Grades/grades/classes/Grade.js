@@ -106,7 +106,13 @@ export default class Grade {
                         borderWidth: 1.4,
                     }}
                 >
-                    <Text style={{}}>{this.libelle}</Text>
+                    <Text
+                        style={{ flexShrink: 1 }}
+                        numberOfLines={1}
+                        ellipsizeMode="tail"
+                    >
+                        {this.libelle}
+                    </Text>
                     <View
                         style={{
                             flexDirection: "row",
