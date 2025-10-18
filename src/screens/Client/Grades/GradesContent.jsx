@@ -552,23 +552,32 @@ const StrengthsAndWeakness = ({ data, firstColor }) => {
                 >
                     <View
                         style={{
+                            flex: 1,
                             flexDirection: "row",
+                            alignItems: "center",
                             marginLeft: 6,
-                            marginHorizontal: 12,
+                            marginRight: 8,
                         }}
                     >
-                        <Text>{i + 1} ·</Text>
-                        <Text>{subject}</Text>
+                        <Text>{i + 1} · </Text>
+                        <Text
+                            numberOfLines={1}
+                            ellipsizeMode="tail"
+                            style={{ flexShrink: 1 }}
+                        >
+                            {subject}
+                        </Text>
                     </View>
+
                     <View
                         style={{
                             paddingHorizontal: 9,
                             paddingVertical: 4,
                             backgroundColor: "hsla(240, 26%, 13%, 0.35)",
                             borderRadius: 50,
-                            justifyContent: "space-between",
-                            minWidth: "18%",
+                            justifyContent: "center",
                             alignItems: "center",
+                            minWidth: "18%",
                         }}
                     >
                         <Text>{average}</Text>

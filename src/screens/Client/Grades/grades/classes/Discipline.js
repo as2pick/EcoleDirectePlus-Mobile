@@ -271,7 +271,7 @@ export default class Discipline {
                             </View>
                             <View style={{ maxWidth: "64%" }}>
                                 <Text
-                                    style={{ fontSize: 20 }}
+                                    style={{ fontSize: 14 }}
                                     numberOfLines={1}
                                     ellipsizeMode="tail"
                                 >
