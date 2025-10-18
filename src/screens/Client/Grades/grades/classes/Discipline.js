@@ -246,7 +246,8 @@ export default class Discipline {
                                     style={{
                                         width: 34,
                                         height: 34,
-                                        borderRadius: 500,
+                                        borderRadius: "50%",
+                                        overflow: "hidden",
                                         backgroundColor:
                                             this.streakCount === 0
                                                 ? "transparent"
