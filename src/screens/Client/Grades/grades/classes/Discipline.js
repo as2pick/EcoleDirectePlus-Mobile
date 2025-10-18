@@ -156,7 +156,13 @@ export default class Discipline {
                         alignItems: "center",
                     }}
                 >
-                    <Text style={{ fontSize: 20 }}>{this.libelle}</Text>
+                    <Text
+                        style={{ fontSize: 20, width: "70%" }}
+                        numberOfLines={1}
+                        ellipsizeMode="tail"
+                    >
+                        {this.libelle}
+                    </Text>
                     <View
                         style={{
                             backgroundColor: "hsla(240, 26%, 13%, .35)",
@@ -263,13 +269,21 @@ export default class Discipline {
                                     </Text>
                                 </View>
                             </View>
-                            <View>
-                                <Text style={{ fontSize: 14 }}>{this.libelle}</Text>
+                            <View style={{ maxWidth: "64%" }}>
+                                <Text
+                                    style={{ fontSize: 20 }}
+                                    numberOfLines={1}
+                                    ellipsizeMode="tail"
+                                >
+                                    {this.libelle}
+                                </Text>
                                 <Text
                                     style={{
                                         fontSize: 14,
                                         opacity: 0.72,
                                     }}
+                                    numberOfLines={1}
+                                    ellipsizeMode="tail"
                                 >
                                     {Array.isArray(this.teachers)
                                         ? this.teachers.length > 1

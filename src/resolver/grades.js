@@ -21,8 +21,8 @@ export default async function gradesResolver({ token }) {
                 },
             }
         );
-        // const grades = gradesResponse.data;
-        const grades = require("../../test/api.json").data;
+        const grades = gradesResponse.data;
+        // const grades = require("../../test/api.json").data;
         // Format periods
         const periodsObj = grades.periodes.reduce((acc, period) => {
             if (period.annuel) return acc;
