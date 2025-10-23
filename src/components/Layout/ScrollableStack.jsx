@@ -5,11 +5,11 @@ import Animated, {
 import Stack from "./Stack";
 
 export default function ScrollableStack({
+    children,
     horizontal = false,
     showsScrollIndicator = false,
     paging = false,
     contentContainerStyle,
-    children,
     ...props
 }) {
     const scrollX = useSharedValue(0);
@@ -30,7 +30,8 @@ export default function ScrollableStack({
             showsHorizontalScrollIndicator={showsScrollIndicator}
             pagingEnabled={paging}
             onScroll={onScroll}
-            scrollEventThrottle={16} // important pour bien rafraîchir les valeurs
+            // scrollEnabled={false}
+            scrollEventThrottle={16}
         >
             <Stack direction={horizontal ? "horizontal" : "vertical"} {...props}>
                 {children}

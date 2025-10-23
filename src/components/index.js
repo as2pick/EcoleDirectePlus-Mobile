@@ -1,4 +1,5 @@
 export { default as BottomSheet } from "./Layout/BottomSheet";
+export { default as DropDown } from "./Layout/DropDown";
 export { default as MainLayout } from "./Layout/MainLayout";
 export { default as Onboarding } from "./Layout/Onboarding";
 export { default as ScrollableStack } from "./Layout/ScrollableStack";

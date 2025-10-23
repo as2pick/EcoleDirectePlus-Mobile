@@ -6,7 +6,8 @@ import GradeArrow from "../../../../assets/svg/GradeArrow";
 import BottomSheet from "../../../components/Layout/BottomSheet";
 
 import { FlatList } from "react-native-gesture-handler";
-import { ScrollableStack } from "../../../components";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { DropDown, ScrollableStack } from "../../../components";
 import { useUser } from "../../../context/UserContext";
 import { storageServiceStates } from "../../../helpers/storageService";
 import { cssHslaToHsla } from "../../../utils/colorGenerator";
@@ -361,7 +362,40 @@ export default function GradesContent() {
     );
     return (
         <View style={{ flex: 1 }}>
-            <View style={{ flex: 0.4, elevation: 8 }}>
+            <View
+                style={{
+                    flex: 0.4,
+                    pointerEvents: bottomSheetOpened ? "none" : "auto",
+                }}
+            >
+                <SafeAreaView
+                    style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        alignItems: "center",
+                        justifyContent: "flex-start",
+                        marginTop: 10,
+                        zIndex: 1,
+                    }}
+                >
+                    {/* <View
+                        style={{
+                            backgroundColor: "hsla(0, 0%, 0%, .32)",
+                            paddingHorizontal: 20,
+                            paddingVertical: 4,
+                            borderRadius: 10,
+                            flexDirection: "row",
+                            alignItems: "center",
+                            // justifyContent: "space-between",
+                        }}
+                    >
+                        <Text style={{}}>Trimestre 1</Text>
+                        <SimpleArrow />
+                    </View> */}
+                    <DropDown></DropDown>
+                </SafeAreaView>
                 <ScrollableStack
                     horizontal
                     paging
@@ -458,7 +492,13 @@ export default function GradesContent() {
                             </View>
                         </ScrollableStack>
                     </View>
-                    <View style={{ marginHorizontal: 20, flex: 1, marginTop: 20 }}>
+                    <View
+                        style={{
+                            marginHorizontal: 20,
+                            flex: 1,
+                            marginVertical: 20,
+                        }}
+                    >
                         <FlatList
                             data={renderDisciplinesArray}
                             renderItem={renderItem}
@@ -511,7 +551,12 @@ const HeaderStatsCarousel = ({ item }) => (
                 >
                     {item.text}
                 </Text>
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <View
+                    style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                    }}
+                >
                     {Array.from({ length: 3 }).map((_, i) => (
                         <GradeArrow key={`left-${i}`} />
                     ))}
