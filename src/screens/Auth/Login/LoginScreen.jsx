@@ -1,7 +1,6 @@
 import { useNavigation, useTheme } from "@react-navigation/native";
 import { useCallback, useEffect, useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import AccountIcon from "../../../../assets/svg/AccountIcon.jsx";
 import DiscordLogo from "../../../../assets/svg/DiscordLogo.jsx";
 import EDPLogo from "../../../../assets/svg/EDPLogo.jsx";
@@ -10,10 +9,12 @@ import KeyIcon from "../../../../assets/svg/KeyIcon.jsx";
 import {
     A2fSelectableModal,
     CheckBox,
+    GradientText,
     LinkButton,
     OverLoader,
 } from "../../../components/index.js";
 
+import { SafeAreaView } from "react-native-safe-area-context";
 import { getApiMessage } from "../../../constants/api/codes.js";
 import { useSingIn } from "../../../context/SignInContext.jsx";
 import { routesNames } from "../../../router/config/routesNames.js";
@@ -98,11 +99,14 @@ export default function LoginScreen() {
             <View style={styles.form}>
                 <View style={styles.logo.box}>
                     <EDPLogo size={88} />
-                    <Text
-                        style={[styles.logo.text, { color: theme.colors.txt.txt3 }]}
-                    >
-                        Connexion
-                    </Text>
+                    <GradientText
+                        text={"Ecole Directe Plus"}
+                        textStyle={{
+                            fontWeight: "900",
+                            fontSize: 32,
+                            backgroundColor: "transparent",
+                        }}
+                    />
                 </View>
                 <View style={[styles.input.box]}>
                     <View style={styles.input.cases}>
@@ -231,6 +235,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: "center",
+        backgroundColor: "hsl(240, 33%, 7%)", // THEMES !!! CHANGE THIS TO ACCORD WITH THEMES MANAGMENT
     },
     logos: {
         flexDirection: "row",

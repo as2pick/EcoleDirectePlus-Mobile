@@ -7,6 +7,7 @@ export { default as NavigationBottomBar } from "./Navigation/NavigationBottomBar
 export { default as SwipeBackWrapper } from "./Navigation/SwipeBackWrapper";
 export { default as CheckBox } from "./Ui/CheckBox";
 export { default as GradientBackground } from "./Ui/GradientBackground";
+export { default as GradientText } from "./Ui/GradientText";
 export { default as LinkButton } from "./Ui/LinkButton";
 export { default as LinkText } from "./Ui/LinkText";
 export { default as LoadingSpinner } from "./Ui/LoadingSpinner/Loader";
