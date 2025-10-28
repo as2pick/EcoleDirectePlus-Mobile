@@ -14,7 +14,6 @@ export default function CustomDropdown({
         { label: "Trimestre 2", value: "A002" },
         { label: "Trimestre 3", value: "A003" },
     ],
-    placeholder = "Choisis une période",
     onSelect = () => {},
 }) {
     const [selected, setSelected] = useState(null);
@@ -23,8 +22,9 @@ export default function CustomDropdown({
     const progress = useSharedValue(0); // 0 = fermé, 1 = ouvert
 
     const toggleDropdown = () => {
-        setOpen((prev) => !prev);
-        progress.value = withTiming(open ? 0 : 1, { duration: 200 });
+        const next = !open;
+        setOpen(next);
+        progress.value = withTiming(next ? 1 : 0, { duration: 200 });
     };
 
     const handleSelect = (item) => {
@@ -36,35 +36,47 @@ export default function CustomDropdown({
 
     const dropdownStyle = useAnimatedStyle(() => ({
         opacity: progress.value,
-        transform: [{ scaleY: progress.value }],
-        height: interpolate(progress.value, [0, 1], [0, options.length * 50]), // option height = 50
+        // transform: [{ translateY: interpolate(progress.value, [0, 1], [-20, 0]) }],
+        height: Math.min(
+            interpolate(progress.value, [0, 1], [0, options.length * 50]),
+            150
+        ),
+        borderRadius: interpolate(progress.value, [0, 1], [0, 20]),
     }));
 
     const arrowStyle = useAnimatedStyle(() => ({
         transform: [
-            { rotate: `${interpolate(progress.value, [0, 1], [0, 90])}deg` },
+            { rotate: `${interpolate(progress.value, [0, 1], [0, 180])}deg` },
         ],
+    }));
+
+    const buttonAnimatedStyle = useAnimatedStyle(() => ({
+        borderBottomLeftRadius: interpolate(progress.value, [0, 1], [20, 0]),
+        borderBottomRightRadius: interpolate(progress.value, [0, 1], [20, 0]),
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+        borderColor: "hsla(240, 14%, 18%, .98)",
+
+        borderTopWidth: interpolate(progress.value, [0, 1], [0, 1.6]),
+        borderLeftWidth: interpolate(progress.value, [0, 1], [0, 1.6]),
+        borderRightWidth: interpolate(progress.value, [0, 1], [0, 1.6]),
     }));
 
     return (
         <View style={styles.container}>
-            {/* Bouton principal */}
-            <TouchableOpacity
-                onPress={toggleDropdown}
-                activeOpacity={0.8}
-                style={styles.button}
-            >
-                <View style={styles.buttonContent}>
-                    <Animated.View style={arrowStyle}>
-                        <SimpleArrow />
-                    </Animated.View>
-                    <Text style={styles.buttonText}>
-                        {selected ? selected.label : placeholder}
-                    </Text>
-                </View>
-            </TouchableOpacity>
+            <Animated.View style={[styles.button, buttonAnimatedStyle]}>
+                <TouchableOpacity onPress={toggleDropdown} activeOpacity={0.8}>
+                    <View style={styles.buttonContent}>
+                        <Animated.View style={arrowStyle}>
+                            <SimpleArrow />
+                        </Animated.View>
+                        <Text style={styles.buttonText}>
+                            {selected ? selected.label : options[0].label}
+                        </Text>
+                    </View>
+                </TouchableOpacity>
+            </Animated.View>
 
-            {/* Liste déroulante */}
             <Animated.View style={[styles.dropdown, dropdownStyle]}>
                 <FlatList
                     data={options}
@@ -74,8 +86,13 @@ export default function CustomDropdown({
                             style={styles.option}
                             onPress={() => handleSelect(item)}
                         >
-                            <SimpleArrow />
-                            <Text style={styles.optionText}>{item.label}</Text>
+                            <Text
+                                style={styles.optionText}
+                                numberOfLines={1}
+                                ellipsizeMode="tail"
+                            >
+                                {item.label}
+                            </Text>
                         </TouchableOpacity>
                     )}
                 />
@@ -85,36 +102,32 @@ export default function CustomDropdown({
 }
 
 const styles = StyleSheet.create({
-    container: { width: 220, alignItems: "center" },
+    container: { width: "58%", maxHeight: 170, alignItems: "center" },
     button: {
-        backgroundColor: "hsl(240, 30%, 20%)",
-        borderRadius: 8,
-        paddingVertical: 10,
-        paddingHorizontal: 14,
-        borderWidth: 1,
-        borderColor: "hsl(240, 25%, 40%)",
+        paddingVertical: 8,
+        paddingHorizontal: 18,
+        backgroundColor: "hsla(0, 0%, 0%, .3)",
     },
     buttonContent: {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
     },
-    buttonText: { color: "white", fontSize: 16, marginLeft: 8 },
+    buttonText: { marginLeft: 8 },
     dropdown: {
-        marginTop: 8,
-        backgroundColor: "hsl(240, 35%, 15%)",
-        borderRadius: 8,
-        borderWidth: 1,
-        borderColor: "hsl(240, 25%, 40%)",
         overflow: "hidden",
         width: "100%",
+        backgroundColor: "hsla(240, 14%, 18%, .98)",
+        paddingVertical: 10,
     },
     option: {
-        flexDirection: "row",
         alignItems: "center",
-        paddingVertical: 10,
-        paddingHorizontal: 14,
+        marginVertical: 4,
+        borderRadius: 5,
+        marginHorizontal: 12,
+        paddingVertical: 5,
+        backgroundColor: "hsl(240, 25%, 30%)",
     },
-    optionText: { color: "white", marginLeft: 8, fontSize: 15 },
+    optionText: { flexShrink: 1 },
 });
 

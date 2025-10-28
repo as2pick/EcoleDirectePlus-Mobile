@@ -8,6 +8,7 @@ import BottomSheet from "../../../components/Layout/BottomSheet";
 import { FlatList } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { DropDown, ScrollableStack } from "../../../components";
+import { API } from "../../../constants/api/api";
 import { useUser } from "../../../context/UserContext";
 import { storageServiceStates } from "../../../helpers/storageService";
 import { cssHslaToHsla } from "../../../utils/colorGenerator";
@@ -223,6 +224,7 @@ export default function GradesContent() {
     const [error, setError] = useState(null);
     const [periodes, setPeriodes] = useState([]);
     const [displayPeriode, setDisplayPeriode] = useState({});
+    const [displayPeriodeName, setDisplayPeriodeName] = useState(); // DEFAULT A001
     const [strengths, setStrengths] = useState([]);
     const [weaknesses, setWeaknesses] = useState([]);
     const [bottomSheetOpened, setBottomSheetOpened] = useState(false);
@@ -248,10 +250,15 @@ export default function GradesContent() {
             const userGrades = await storageServiceStates.getter({
                 originKey: "grades",
             });
-
             setSortedGradesData(userGrades);
-            setPeriodes(Object.keys(userGrades));
+            setPeriodes(
+                Object.entries(userGrades).map(([value, { periodName }]) => ({
+                    label: periodName,
+                    value,
+                }))
+            );
             setDisplayPeriode(userGrades["A001"]);
+            setDisplayPeriodeName(API.DEFAULT_PERIOD_KEY); // A001
         } catch (err) {
             setError(err.message);
             console.error("Erreur lors du chargement des notes:", err);
@@ -284,20 +291,20 @@ export default function GradesContent() {
         }
     }, [displayPeriode]);
 
-    useEffect(() => {
-        if (!periodes.length) return;
-        const valuePeriodFormatted = periodes.map((period) =>
-            period
-                .toLowerCase()
-                .normalize("NFD")
-                .replace(/[\u0300-\u036f]/g, "")
-                .replace(/[^a-z0-9]/g, "")
-        );
-        const items = periodes.map((label, index) => ({
-            label,
-            value: valuePeriodFormatted[index],
-        }));
-    }, [periodes]);
+    // useEffect(() => {
+    //     if (!periodes.length) return;
+    //     const valuePeriodFormatted = periodes.map((period) =>
+    //         period
+    //             .toLowerCase()
+    //             .normalize("NFD")
+    //             .replace(/[\u0300-\u036f]/g, "")
+    //             .replace(/[^a-z0-9]/g, "")
+    //     );
+    //     const items = periodes.map((label, index) => ({
+    //         label,
+    //         value: valuePeriodFormatted[index],
+    //     }));
+    // }, [periodes]);
 
     useEffect(() => {
         if (Object.keys(displayPeriode).length === 0) return;
@@ -376,7 +383,7 @@ export default function GradesContent() {
                         right: 0,
                         alignItems: "center",
                         justifyContent: "flex-start",
-                        marginTop: 10,
+                        marginTop: 3,
                         zIndex: 1,
                     }}
                 >
@@ -394,7 +401,14 @@ export default function GradesContent() {
                         <Text style={{}}>Trimestre 1</Text>
                         <SimpleArrow />
                     </View> */}
-                    <DropDown></DropDown>
+                    {periodes.length > 0 && (
+                        <DropDown
+                            onSelect={(value) =>
+                                setDisplayPeriode(sortedGradesData[value])
+                            }
+                            options={periodes}
+                        />
+                    )}
                 </SafeAreaView>
                 <ScrollableStack
                     horizontal
@@ -442,6 +456,7 @@ export default function GradesContent() {
                         backgroundColor: "hsl(240, 35%, 11%)",
                         borderTopLeftRadius: 42,
                         borderTopRightRadius: 42,
+                        zIndex: 1000,
                     }}
                     displayLine
                     opened={(state) => setBottomSheetOpened(state)}
