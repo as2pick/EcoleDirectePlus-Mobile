@@ -20,6 +20,7 @@ export default class Discipline {
         userAssessment = undefined,
         disciplines = undefined, // beaceause we have disciplinesGroups "Matières Littéraires" or directly disciplines "MATHS"
         disciplineCodes = undefined,
+        simulatedGrades = [],
     }) {
         this.code = code;
         this.libelle = libelle;
@@ -35,6 +36,7 @@ export default class Discipline {
         this.userAssessment = userAssessment;
         this.disciplines = disciplines;
         this.disciplineCodes = disciplineCodes;
+        this.simulatedGrades = simulatedGrades;
     }
     getDiscipline() {
         return {
@@ -200,6 +202,10 @@ export default class Discipline {
             paddingVertical: 8,
             borderRadius: 8,
         };
+
+        const enrichedDisciplinesId = (codes) =>
+            openAddGradeModal({ ...codes, libelle: this.libelle });
+
         return (
             <TouchableOpacity activeOpacity={0.7} onPress={onPress}>
                 <Animated.View
@@ -337,8 +343,11 @@ export default class Discipline {
                                     navigation,
                                     idx,
                                     this.grades.length,
-                                    openAddGradeModal
+                                    enrichedDisciplinesId
                                 );
+                            })}
+                            {this.simulatedGrades.map((grade, idx) => {
+                                return new Grade(grade).RenderSimulatedGrade(idx);
                             })}
                         </Animated.View>
                     )}

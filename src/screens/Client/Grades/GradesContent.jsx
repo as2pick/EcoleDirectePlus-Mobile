@@ -19,203 +19,6 @@ import AddGradeModal from "./grades/components/SimulateGradeModal";
 import { calculateStrengthsWeaknesses, formatGradeText } from "./grades/helper";
 
 const { width } = Dimensions.get("window");
-// const GradeItem = memo(({ item, index, dataLength, isExpanded, onPress }) => {
-//     if (item.isDisciplineGroup) {
-//         return (
-//             <View
-//                 style={{
-//                     backgroundColor: "hsl(240, 24%, 29%)",
-//                     overflow: "hidden",
-
-//                     ...(index === 0
-//                         ? {
-//                               borderTopLeftRadius: 12,
-//                               borderTopRightRadius: 12,
-//                               borderBottomLeftRadius: 3,
-//                               borderBottomRightRadius: 3,
-//                           }
-//                         : { borderRadius: 3 }),
-//                     ...(dataLength - 1 === index
-//                         ? {
-//                               borderTopLeftRadius: 3,
-//                               borderTopRightRadius: 3,
-//                               borderBottomLeftRadius: 12,
-//                               borderBottomRightRadius: 12,
-//                           }
-//                         : { borderRadius: 3 }),
-//                 }}
-//                 key={index}
-//             >
-//                 <View
-//                     style={{
-//                         flexDirection: "row",
-//                         justifyContent: "space-between",
-//                         padding: 18,
-//                         alignItems: "center",
-//                     }}
-//                 >
-//                     <Text style={{ fontSize: 20 }}>{item.libelle}</Text>
-//                     <View
-//                         style={{
-//                             backgroundColor: "hsla(240, 26%, 13%, .35)",
-//                             borderRadius: 14,
-//                             paddingHorizontal: 8,
-//                             paddingVertical: 1,
-//                             alignItems: "center",
-//                             justifyContent: "center",
-//                         }}
-//                     >
-//                         <Text style={{ fontSize: 24 }}>
-//                             {item.averageDatas.userAverage}
-//                         </Text>
-//                     </View>
-//                 </View>
-//             </View>
-//         );
-//     }
-
-//     return (
-//         <TouchableOpacity activeOpacity={0.7} onPress={onPress}>
-//             <Animated.View
-//                 style={{
-//                     backgroundColor: "hsl(240, 27%, 16%)",
-//                     overflow: "hidden",
-
-//                     ...(index === 0
-//                         ? {
-//                               borderTopLeftRadius: 12,
-//                               borderTopRightRadius: 12,
-//                               borderBottomLeftRadius: 3,
-//                               borderBottomRightRadius: 3,
-//                           }
-//                         : { borderRadius: 3 }),
-//                     ...(dataLength - 1 === index
-//                         ? {
-//                               borderTopLeftRadius: 3,
-//                               borderTopRightRadius: 3,
-//                               borderBottomLeftRadius: 12,
-//                               borderBottomRightRadius: 12,
-//                           }
-//                         : { borderRadius: 3 }),
-//                 }}
-//             >
-//                 {/* HEADER */}
-//                 <View
-//                     style={{
-//                         flexDirection: "row",
-//                         justifyContent: "space-between",
-//                         padding: 18,
-//                         height: 80,
-//                         alignItems: "center",
-//                     }}
-//                 >
-//                     <View style={{ flexDirection: "row", gap: 18 }}>
-//                         <View
-//                             style={{
-//                                 alignItems: "center",
-//                                 justifyContent: "center",
-//                                 borderRadius: 500,
-//                                 width: 42,
-//                                 height: 42,
-//                                 borderWidth: 2,
-//                                 borderColor: "white",
-//                                 backgroundColor: "hsl(240, 27%, 16%)",
-//                             }}
-//                         >
-//                             <View
-//                                 style={{
-//                                     width: 34,
-//                                     height: 34,
-//                                     borderRadius: 500,
-//                                     backgroundColor: "hsl(35, 100%, 50%)",
-//                                     alignItems: "center",
-//                                     justifyContent: "center",
-//                                 }}
-//                             >
-//                                 <Text style={{ fontSize: 24, textAlign: "center" }}>
-//                                     {item.streakCount}
-//                                 </Text>
-//                             </View>
-//                         </View>
-//                         <View>
-//                             <Text style={{ fontSize: 14 }}>{item.libelle}</Text>
-//                             <Text style={{ fontSize: 14 }}>{item.teatcher}</Text>
-//                         </View>
-//                     </View>
-//                     <Text style={{ fontSize: 24 }}>
-//                         {item.averageDatas.userAverage}
-//                     </Text>
-//                 </View>
-
-//                 {/* CONTENU EXPANDABLE */}
-//                 {isExpanded && (
-//                     <Animated.View style={{ gap: 8, paddingBottom: 18 }}>
-//                         {item.grades.map((grade, idx) => (
-//                             <GradeRender key={idx} gradeData={grade} />
-//                         ))}
-//                     </Animated.View>
-//                 )}
-//             </Animated.View>
-//         </TouchableOpacity>
-//     );
-// });
-// const GradeRender = ({ gradeData }) => {
-//     const grade = new Grade({ gradeData });
-//     const uiBadges = {
-//         max_grade: MaxGrade,
-//         best_grade: BestGrade,
-//         upper_than_class_average: UpperThanClassAverage,
-//         upper_than_discipline_average: UpperThanDisciplineAverage,
-//         up_the_streak: UpTheStreak,
-//         equal_to_discipline_average: EqualToDisciplineAverage,
-//     };
-//     const navigation = useNavigation();
-//     let backgroundColor = null;
-//     switch (grade.actionOnStreak) {
-//         case null:
-//             backgroundColor = "hsl(240, 24%, 28%)";
-//             break;
-//         case true:
-//             backgroundColor = "hsla(36, 100%, 34%, .3)";
-//             break;
-//         case false:
-//             backgroundColor = "hsla(240, 10%, 41%, .3)";
-//             break;
-//     }
-
-//     return (
-//         <TouchableOpacity
-//             onPress={() => navigation.navigate(routesNames.client.grades.details)}
-//         >
-//             <View
-//                 style={{
-//                     flexDirection: "row",
-//                     marginHorizontal: 20,
-//                     justifyContent: "space-between",
-//                     alignItems: "center",
-//                     backgroundColor,
-//                     paddingHorizontal: 14,
-//                     paddingVertical: 8,
-//                     borderRadius: 13,
-//                 }}
-//             >
-//                 <Text style={{}}>{grade.libelle}</Text>
-//                 <View
-//                     style={{ flexDirection: "row", gap: 10, marginHorizontal: 10 }}
-//                 >
-//                     {grade.badges.map((badge, i) => {
-//                         const BadgeComponent = uiBadges[badge];
-//                         return <BadgeComponent key={`${badge}-${i}`} size={24} />;
-//                     })}
-//                 </View>
-//                 <Text>
-//                     {grade.data.grade}
-//                     {grade.data.outOf !== 20 && `/${grade.data.outOf}`}
-//                 </Text>
-//             </View>
-//         </TouchableOpacity>
-//     );
-// };
 
 export default function GradesContent() {
     const { sortedGradesData, setSortedGradesData, userAccesToken } = useUser();
@@ -234,6 +37,7 @@ export default function GradesContent() {
     const [expandedChain, setExpandedChain] = useState(null);
     const [isAddGradeModalVisible, setIsAddGradeModalVisible] = useState(false);
     const [simulatedDisciplineCodes, setSimulatedDisciplineCodes] = useState({});
+    const [simulatedGradesDatas, setSimulatedGradeDatas] = useState([]);
 
     const openAddGradeModal = useCallback((disciplineCodes) => {
         setIsAddGradeModalVisible(true);
@@ -291,21 +95,6 @@ export default function GradesContent() {
         }
     }, [displayPeriode]);
 
-    // useEffect(() => {
-    //     if (!periodes.length) return;
-    //     const valuePeriodFormatted = periodes.map((period) =>
-    //         period
-    //             .toLowerCase()
-    //             .normalize("NFD")
-    //             .replace(/[\u0300-\u036f]/g, "")
-    //             .replace(/[^a-z0-9]/g, "")
-    //     );
-    //     const items = periodes.map((label, index) => ({
-    //         label,
-    //         value: valuePeriodFormatted[index],
-    //     }));
-    // }, [periodes]);
-
     useEffect(() => {
         if (Object.keys(displayPeriode).length === 0) return;
 
@@ -340,6 +129,12 @@ export default function GradesContent() {
 
     const renderItem = ({ item, index }) => {
         const DisciplineClass = new Discipline(item);
+        DisciplineClass.simulatedGrades =
+            simulatedGradesDatas.filter(
+                (simGrade) =>
+                    simGrade.codes.discipline === DisciplineClass.code &&
+                    simGrade.codes.period === displayPeriodeName
+            ) || [];
         if (DisciplineClass.isDisciplineGroup) {
             return DisciplineClass.RenderDisciplineGroup({
                 dataLength: renderDisciplinesArray.length,
@@ -367,6 +162,7 @@ export default function GradesContent() {
         (item, index) => item.id?.toString() || `${item.libelle}-${index}`,
         []
     );
+
     return (
         <View style={{ flex: 1 }}>
             <View
@@ -387,25 +183,12 @@ export default function GradesContent() {
                         zIndex: 1,
                     }}
                 >
-                    {/* <View
-                        style={{
-                            backgroundColor: "hsla(0, 0%, 0%, .32)",
-                            paddingHorizontal: 20,
-                            paddingVertical: 4,
-                            borderRadius: 10,
-                            flexDirection: "row",
-                            alignItems: "center",
-                            // justifyContent: "space-between",
-                        }}
-                    >
-                        <Text style={{}}>Trimestre 1</Text>
-                        <SimpleArrow />
-                    </View> */}
                     {periodes.length > 0 && (
                         <DropDown
-                            onSelect={(value) =>
-                                setDisplayPeriode(sortedGradesData[value])
-                            }
+                            onSelect={(value) => {
+                                setDisplayPeriode(sortedGradesData[value]);
+                                setDisplayPeriodeName(value);
+                            }}
                             options={periodes}
                         />
                     )}
@@ -520,30 +303,15 @@ export default function GradesContent() {
                             keyExtractor={keyExtractor}
                             contentContainerStyle={{ gap: 3 }}
                             showsVerticalScrollIndicator={false}
-                            // removeClippedSubviews={true}
-                            // maxToRenderPerBatch={10}
-                            // updateCellsBatchingPeriod={50}
-                            // initialNumToRender={15}
-                            // windowSize={10}
                         />
                     </View>
-                    {/* <Grade
-                        badges={[
-                            "best_grade",
-                            "upper_than_class_average",
-                            "up_the_streak", // obviously
-                        ]}
-                        grade={"20"}
-                        name={"Eval 1"}
-                        outOf={"10"}
-                        upTheStreak={null}
-                    /> */}
                 </BottomSheet>
             </View>
             <AddGradeModal
                 visible={isAddGradeModalVisible}
                 onClose={closeAddGradeModal}
                 disciplineCodes={simulatedDisciplineCodes}
+                setSimulatedGradeDatas={setSimulatedGradeDatas}
             />
         </View>
     );

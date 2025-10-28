@@ -12,8 +12,14 @@ import Grade from "../classes/Grade";
 
 const PLACEHOLDERS = { coef: 1, grade: 15, outOf: 20 };
 
-export default function AddGradeModal({ visible, onClose, disciplineCodes }) {
-    const [simulatedGrade, setSimulatedGrade] = useState(PLACEHOLDERS); // ✅ Corrigé
+export default function AddGradeModal({
+    visible,
+    onClose,
+    disciplineCodes,
+    setSimulatedGradeDatas,
+}) {
+    const [simulatedGrade, setSimulatedGrade] = useState(PLACEHOLDERS);
+    const [simulationCount, setSimulationCount] = useState(1);
     const translateY = useSharedValue(500);
     const opacity = useSharedValue(0);
 
@@ -34,10 +40,6 @@ export default function AddGradeModal({ visible, onClose, disciplineCodes }) {
     const backdropStyle = useAnimatedStyle(() => ({
         opacity: opacity.value,
     }));
-
-    useEffect(() => {
-        console.log(simulatedGrade);
-    }, [simulatedGrade]);
 
     if (!visible) return null;
 
@@ -257,15 +259,24 @@ export default function AddGradeModal({ visible, onClose, disciplineCodes }) {
                             borderRadius: 13,
                             alignItems: "center",
                         }}
-                        onPress={() =>
-                            console.log(
-                                new Grade({
-                                    data: simulatedGrade,
-                                    codes: disciplineCodes,
-                                    date: getTodayDateString(),
-                                })
-                            )
-                        }
+                        onPress={() => {
+                            setSimulationCount((prev) => prev + 1);
+                            const generateGradeSimulation = new Grade({
+                                data: simulatedGrade,
+                                codes: {
+                                    discipline: disciplineCodes.discipline,
+                                    period: disciplineCodes.period,
+                                },
+                                date: getTodayDateString(),
+                                disciplineName: disciplineCodes.libelle,
+                                libelle: `Simulation #${simulationCount}`,
+                            });
+
+                            setSimulatedGradeDatas((prev) => [
+                                ...prev,
+                                generateGradeSimulation,
+                            ]);
+                        }}
                     >
                         <Text
                             style={{

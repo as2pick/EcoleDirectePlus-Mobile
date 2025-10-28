@@ -142,7 +142,7 @@ export default class Grade {
                     {gradeItem}
                     <TouchableOpacity
                         onPress={() => openAddGradeModal(this.codes)}
-                        style={{ marginTop: 24 }}
+                        style={{ marginVertical: 20 }}
                     >
                         <View
                             style={{
@@ -164,6 +164,46 @@ export default class Grade {
                 </View>
             );
         }
+
+        return <View key={idx}>{gradeItem}</View>;
+    }
+
+    RenderSimulatedGrade(idx) {
+        const gradeItem = (
+            <View
+                style={{
+                    flexDirection: "row",
+                    marginHorizontal: 20,
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    backgroundColor: "hsla(206, 54%, 28%)",
+                    paddingHorizontal: 14,
+                    paddingVertical: 8,
+                    borderRadius: 13,
+                    borderColor: "hsla(206, 54%, 44%)",
+                    borderWidth: 1.4,
+                }}
+            >
+                <Text
+                    style={{ flexShrink: 1 }}
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                >
+                    {this.libelle}
+                </Text>
+                <View
+                    style={{
+                        flexDirection: "row",
+                        gap: 10,
+                        marginHorizontal: 10,
+                    }}
+                ></View>
+                <Text>
+                    {formatGradeText(this.data.grade)}
+                    {this.data.outOf !== 20 && `/${this.data.outOf}`}
+                </Text>
+            </View>
+        );
 
         return <View key={idx}>{gradeItem}</View>;
     }
