@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity, View } from "react-native";
+import { Pressable, Text, TouchableOpacity, View } from "react-native";
 import {
     BestGrade,
     EqualToDisciplineAverage,
@@ -7,7 +7,6 @@ import {
     UpperThanDisciplineAverage,
     UpTheStreak,
 } from "../../../../../../assets/svg/badges";
-import { routesNames } from "../../../../../router/config/routesNames";
 import { cssHslaToHsla } from "../../../../../utils/colorGenerator";
 import { formatGradeText } from "../helper";
 
@@ -25,6 +24,7 @@ export default class Grade {
         isExam,
         actionOnStreak = "nothing",
         badges,
+        isSimulation = false,
     }) {
         this.libelle = libelle;
         this.notSignificant = notSignificant;
@@ -38,6 +38,7 @@ export default class Grade {
         this.isExam = isExam;
         this.actionOnStreak = actionOnStreak;
         this.badges = badges;
+        this.isSimulation = isSimulation;
     }
 
     getGrade() {
@@ -54,9 +55,13 @@ export default class Grade {
             isExam: this.isExam == undefined ? false : this.isExam,
             actionOnStreak: this.actionOnStreak,
             badges: this.badges,
+            isSimulation: this.isSimulation,
         };
     }
-    RenderGrade(navigation, idx, gradeLength, openAddGradeModal) {
+    RenderGrade(idx, dispatch) {
+        if (this.isSimulation)
+            console.log("You asked to render a simulated grade as normal grade !");
+
         const uiBadges = {
             max_grade: MaxGrade,
             best_grade: BestGrade,
@@ -87,8 +92,12 @@ export default class Grade {
         const gradeItem = (
             <TouchableOpacity
                 onPress={() =>
-                    navigation.navigate(routesNames.client.grades.details, {
-                        gradeData: this.getGrade(),
+                    // navigation.navigate(routesNames.client.grades.details, {
+                    //     gradeData: this.getGrade(),
+                    // })
+                    dispatch({
+                        type: "SEE_GRADE_DETAILS",
+                        payload: this.getGrade(),
                     })
                 }
             >
@@ -120,57 +129,36 @@ export default class Grade {
                             marginHorizontal: 10,
                         }}
                     >
-                        {this.badges.map((badge, i) => {
-                            const BadgeComponent = uiBadges[badge];
-                            return (
-                                <BadgeComponent key={`${badge}-${i}`} size={24} />
-                            );
-                        })}
+                        {this.badges &&
+                            this.badges.map((badge, i) => {
+                                const BadgeComponent = uiBadges[badge];
+                                return (
+                                    <BadgeComponent
+                                        key={`${badge}-${i}`}
+                                        size={24}
+                                    />
+                                );
+                            })}
                     </View>
                     <Text>
-                        {formatGradeText(this.data.grade)}
+                        {this.notSignificant
+                            ? `(${formatGradeText(this.data.grade)})`
+                            : formatGradeText(this.data.grade)}
                         {this.data.outOf !== 20 && `/${this.data.outOf}`}
                     </Text>
                 </View>
             </TouchableOpacity>
         );
 
-        // Si c'est la dernière note, ajouter le bouton "+" en dessous
-        if (idx === gradeLength - 1) {
-            return (
-                <View key={idx}>
-                    {gradeItem}
-                    <TouchableOpacity
-                        onPress={() => openAddGradeModal(this.codes)}
-                        style={{ marginVertical: 20 }}
-                    >
-                        <View
-                            style={{
-                                marginHorizontal: 20,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                backgroundColor: "hsla(240, 14%, 32%, .25)",
-                                paddingHorizontal: 14,
-                                paddingVertical: 2,
-                                borderRadius: 20,
-                                // marginTop: 8,
-                                borderColor: "hsla(240, 14%, 32%, .6)",
-                                borderWidth: 1,
-                            }}
-                        >
-                            <Text>+</Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
-            );
-        }
-
         return <View key={idx}>{gradeItem}</View>;
     }
 
-    RenderSimulatedGrade(idx) {
+    RenderSimulatedGrade(idx, dispatch) {
+        if (!this.isSimulation)
+            console.log("You asked to render a normal grade as simulated grade !");
+
         const gradeItem = (
-            <View
+            <Pressable
                 style={{
                     flexDirection: "row",
                     marginHorizontal: 20,
@@ -182,6 +170,12 @@ export default class Grade {
                     borderRadius: 13,
                     borderColor: "hsla(206, 54%, 44%)",
                     borderWidth: 1.4,
+                }}
+                onPress={() => {
+                    dispatch({
+                        type: "REMOVE_SIMULATED_GRADE",
+                        payload: this.getGrade(),
+                    });
                 }}
             >
                 <Text
@@ -202,7 +196,7 @@ export default class Grade {
                     {formatGradeText(this.data.grade)}
                     {this.data.outOf !== 20 && `/${this.data.outOf}`}
                 </Text>
-            </View>
+            </Pressable>
         );
 
         return <View key={idx}>{gradeItem}</View>;

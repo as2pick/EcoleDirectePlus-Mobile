@@ -270,6 +270,9 @@ export default function AddGradeModal({
                                 date: getTodayDateString(),
                                 disciplineName: disciplineCodes.libelle,
                                 libelle: `Simulation #${simulationCount}`,
+                                notSignificant: false,
+                                onlySkills: false,
+                                isSimulation: true,
                             });
 
                             setSimulatedGradeDatas((prev) => [

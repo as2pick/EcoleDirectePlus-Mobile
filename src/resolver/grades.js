@@ -1,10 +1,10 @@
-import Discipline from "../screens/Client/Grades/grades/classes/Discipline";
-import { deepEqualExcept } from "../screens/Client/Grades/grades/helper";
+import Discipline from "../screens/Client/Grades/custom/classes/Discipline";
+import { deepEqualExcept } from "../screens/Client/Grades/custom/helper";
 import {
     calculateStreak,
     createValidGradesArray,
     sortGradesByDate,
-} from "../screens/Client/Grades/grades/streakManagment";
+} from "../screens/Client/Grades/custom/streakManagment";
 import fetchApi from "../services/fetchApi";
 import { parseNumber } from "../utils/grades/makeAverage";
 import base64Handler from "../utils/handleBase64";

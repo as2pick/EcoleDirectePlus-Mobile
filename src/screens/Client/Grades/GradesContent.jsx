@@ -11,17 +11,22 @@ import { DropDown, ScrollableStack } from "../../../components";
 import { API } from "../../../constants/api/api";
 import { useUser } from "../../../context/UserContext";
 import { storageServiceStates } from "../../../helpers/storageService";
+import { routesNames } from "../../../router/config/routesNames";
 import { cssHslaToHsla } from "../../../utils/colorGenerator";
 import { parseNumber } from "../../../utils/grades/makeAverage";
-import Discipline from "./grades/classes/Discipline";
-import Period from "./grades/classes/Period";
-import AddGradeModal from "./grades/components/SimulateGradeModal";
-import { calculateStrengthsWeaknesses, formatGradeText } from "./grades/helper";
+import Discipline from "./custom/classes/Discipline";
+import Period from "./custom/classes/Period";
+import AddGradeModal from "./custom/components/SimulateGradeModal";
+
+import { useGrade } from "./custom/context/LocalContext";
+import { calculateStrengthsWeaknesses, formatGradeText } from "./custom/helper";
 
 const { width } = Dimensions.get("window");
 
 export default function GradesContent() {
     const { sortedGradesData, setSortedGradesData, userAccesToken } = useUser();
+    const { state, dispatch } = useGrade();
+
     const navigation = useNavigation();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -39,14 +44,30 @@ export default function GradesContent() {
     const [simulatedDisciplineCodes, setSimulatedDisciplineCodes] = useState({});
     const [simulatedGradesDatas, setSimulatedGradeDatas] = useState([]);
 
-    const openAddGradeModal = useCallback((disciplineCodes) => {
-        setIsAddGradeModalVisible(true);
-        setSimulatedDisciplineCodes(disciplineCodes);
-    }, []);
+    useEffect(() => {
+        if (state.gradeData) {
+            navigation.navigate(routesNames.client.grades.details, {
+                gradeData: state.gradeData,
+            });
+            dispatch({ type: "RESET_GRADE_DETAILS" });
+        }
+    }, [state.gradeData]);
 
-    const closeAddGradeModal = useCallback(() => {
-        setIsAddGradeModalVisible(false);
-    }, []);
+    useEffect(() => {
+        if (state.simulation.disciplineCode) {
+            setSimulatedDisciplineCodes({
+                ...state.simulation.disciplineCode,
+                period: displayPeriodeName,
+            });
+        }
+    }, [state.simulation.disciplineCode]);
+
+    useEffect(() => {
+        if (state.gradeToRemove) {
+            console.log(state.gradeToRemove, "to remove");
+        }
+    }, [state.gradeToRemove]);
+
     const fetchAndProcessGrades = useCallback(async () => {
         try {
             setLoading(true);
@@ -123,6 +144,10 @@ export default function GradesContent() {
         }
     }, [displayPeriode]);
 
+    useEffect(() => {
+        if (simulatedGradesDatas.length === 0) return;
+    }, [simulatedGradesDatas]);
+
     const handleItemPress = useCallback((chain) => {
         setExpandedChain((prev) => (prev === chain ? null : chain));
     }, []);
@@ -135,6 +160,7 @@ export default function GradesContent() {
                     simGrade.codes.discipline === DisciplineClass.code &&
                     simGrade.codes.period === displayPeriodeName
             ) || [];
+
         if (DisciplineClass.isDisciplineGroup) {
             return DisciplineClass.RenderDisciplineGroup({
                 dataLength: renderDisciplinesArray.length,
@@ -153,7 +179,7 @@ export default function GradesContent() {
                     ),
 
                 navigation: navigation,
-                openAddGradeModal: openAddGradeModal,
+                dispatch: dispatch,
             });
         }
     };
@@ -308,8 +334,8 @@ export default function GradesContent() {
                 </BottomSheet>
             </View>
             <AddGradeModal
-                visible={isAddGradeModalVisible}
-                onClose={closeAddGradeModal}
+                visible={state.simulation.modalOpen}
+                onClose={() => dispatch({ type: "CLOSE_SIMULATION_MODAL" })}
                 disciplineCodes={simulatedDisciplineCodes}
                 setSimulatedGradeDatas={setSimulatedGradeDatas}
             />

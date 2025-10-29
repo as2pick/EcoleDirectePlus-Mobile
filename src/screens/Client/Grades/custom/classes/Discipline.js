@@ -190,6 +190,7 @@ export default class Discipline {
         onPress,
         navigation,
         openAddGradeModal,
+        dispatch,
     }) {
         const averages = [
             { label: "Classe", value: this.averageDatas.classAverage },
@@ -202,10 +203,6 @@ export default class Discipline {
             paddingVertical: 8,
             borderRadius: 8,
         };
-
-        const enrichedDisciplinesId = (codes) =>
-            openAddGradeModal({ ...codes, libelle: this.libelle });
-
         return (
             <TouchableOpacity activeOpacity={0.7} onPress={onPress}>
                 <Animated.View
@@ -339,15 +336,46 @@ export default class Discipline {
                                 ))}
                             </View>
                             {this.grades.map((grade, idx) => {
-                                return new Grade(grade).RenderGrade(
-                                    navigation,
-                                    idx,
-                                    this.grades.length,
-                                    enrichedDisciplinesId
-                                );
+                                return new Grade(grade).RenderGrade(idx, dispatch);
                             })}
+                            <View key={index}>
+                                {/* {gradeItem} */}
+                                <TouchableOpacity
+                                    onPress={() =>
+                                        dispatch({
+                                            type: "OPEN_SIMULATION_MODAL",
+                                            payload: {
+                                                discipline: this.code,
+                                                libelle: this.libelle,
+                                            },
+                                        })
+                                    }
+                                    style={{ marginVertical: 20 }}
+                                >
+                                    <View
+                                        style={{
+                                            marginHorizontal: 20,
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                            backgroundColor:
+                                                "hsla(240, 14%, 32%, .25)",
+                                            paddingHorizontal: 14,
+                                            paddingVertical: 2,
+                                            borderRadius: 20,
+                                            // marginTop: 8,
+                                            borderColor: "hsla(240, 14%, 32%, .6)",
+                                            borderWidth: 1,
+                                        }}
+                                    >
+                                        <Text>+</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
                             {this.simulatedGrades.map((grade, idx) => {
-                                return new Grade(grade).RenderSimulatedGrade(idx);
+                                return new Grade(grade).RenderSimulatedGrade(
+                                    idx,
+                                    dispatch
+                                );
                             })}
                         </Animated.View>
                     )}
