@@ -36,7 +36,11 @@ const gradeReducer = (state, action) => {
                 ...state,
                 gradeToRemove: null,
             };
-
+        case "CREATE_SIMULATED_GRADE":
+            return {
+                ...state,
+                simulatedGrade: action.payload,
+            };
         default:
             return state;
     }

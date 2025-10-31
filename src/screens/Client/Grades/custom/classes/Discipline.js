@@ -124,6 +124,10 @@ export default class Discipline {
         return parseNumber(total / totalCoef);
     }
 
+    injectGrade(gradeToInject) {
+        this.grades = [...this.grades, gradeToInject];
+    }
+
     RenderDisciplineGroup({ dataLength, index }) {
         return (
             <View
@@ -335,9 +339,14 @@ export default class Discipline {
                                     </View>
                                 ))}
                             </View>
-                            {this.grades.map((grade, idx) => {
-                                return new Grade(grade).RenderGrade(idx, dispatch);
-                            })}
+                            {this.grades
+                                .filter(({ isSimulation }) => !isSimulation)
+                                .map((grade, idx) => {
+                                    return new Grade(grade).RenderGrade(
+                                        idx,
+                                        dispatch
+                                    );
+                                })}
                             <View key={index}>
                                 {/* {gradeItem} */}
                                 <TouchableOpacity
@@ -371,12 +380,14 @@ export default class Discipline {
                                     </View>
                                 </TouchableOpacity>
                             </View>
-                            {this.simulatedGrades.map((grade, idx) => {
-                                return new Grade(grade).RenderSimulatedGrade(
-                                    idx,
-                                    dispatch
-                                );
-                            })}
+                            {this.grades
+                                .filter(({ isSimulation }) => isSimulation)
+                                .map((grade, idx) => {
+                                    return new Grade(grade).RenderSimulatedGrade(
+                                        idx,
+                                        dispatch
+                                    );
+                                })}
                         </Animated.View>
                     )}
                 </Animated.View>

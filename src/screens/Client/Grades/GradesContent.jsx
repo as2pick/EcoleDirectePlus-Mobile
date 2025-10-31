@@ -11,7 +11,6 @@ import { DropDown, ScrollableStack } from "../../../components";
 import { API } from "../../../constants/api/api";
 import { useUser } from "../../../context/UserContext";
 import { storageServiceStates } from "../../../helpers/storageService";
-import { routesNames } from "../../../router/config/routesNames";
 import { cssHslaToHsla } from "../../../utils/colorGenerator";
 import { parseNumber } from "../../../utils/grades/makeAverage";
 import Discipline from "./custom/classes/Discipline";
@@ -20,53 +19,45 @@ import AddGradeModal from "./custom/components/SimulateGradeModal";
 
 import { useGrade } from "./custom/context/LocalContext";
 import { calculateStrengthsWeaknesses, formatGradeText } from "./custom/helper";
+import { useSimulation } from "./custom/hooks/useSimulation";
 
 const { width } = Dimensions.get("window");
 
 export default function GradesContent() {
     const { sortedGradesData, setSortedGradesData, userAccesToken } = useUser();
     const { state, dispatch } = useGrade();
-
     const navigation = useNavigation();
+
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
     const [periodes, setPeriodes] = useState([]);
     const [displayPeriode, setDisplayPeriode] = useState({});
     const [displayPeriodeName, setDisplayPeriodeName] = useState(); // DEFAULT A001
-    const [strengths, setStrengths] = useState([]);
-    const [weaknesses, setWeaknesses] = useState([]);
-    const [bottomSheetOpened, setBottomSheetOpened] = useState(false);
-    const [renderDisciplinesArray, setRenderDisciplineArray] = useState([]);
     const [generalAverage, setGeneralAverage] = useState(0);
     const [globalStreakScore, setGlobalStreakScore] = useState(0);
+
+    const [strengths, setStrengths] = useState([]);
+    const [weaknesses, setWeaknesses] = useState([]);
+
+    const [bottomSheetOpened, setBottomSheetOpened] = useState(false);
+    const [renderDisciplinesArray, setRenderDisciplineArray] = useState([]);
     const [expandedChain, setExpandedChain] = useState(null);
-    const [isAddGradeModalVisible, setIsAddGradeModalVisible] = useState(false);
+
     const [simulatedDisciplineCodes, setSimulatedDisciplineCodes] = useState({});
     const [simulatedGradesDatas, setSimulatedGradeDatas] = useState([]);
 
-    useEffect(() => {
-        if (state.gradeData) {
-            navigation.navigate(routesNames.client.grades.details, {
-                gradeData: state.gradeData,
-            });
-            dispatch({ type: "RESET_GRADE_DETAILS" });
-        }
-    }, [state.gradeData]);
-
-    useEffect(() => {
-        if (state.simulation.disciplineCode) {
-            setSimulatedDisciplineCodes({
-                ...state.simulation.disciplineCode,
-                period: displayPeriodeName,
-            });
-        }
-    }, [state.simulation.disciplineCode]);
-
-    useEffect(() => {
-        if (state.gradeToRemove) {
-            console.log(state.gradeToRemove, "to remove");
-        }
-    }, [state.gradeToRemove]);
+    useSimulation({
+        dispatch,
+        displayPeriodeName,
+        setSimulatedDisciplineCodes,
+        state,
+        setRenderDisciplineArray,
+        renderDisciplinesArray,
+        setSimulatedGradeDatas,
+        displayPeriode,
+        setGeneralAverage,
+    });
 
     const fetchAndProcessGrades = useCallback(async () => {
         try {
@@ -82,7 +73,7 @@ export default function GradesContent() {
                     value,
                 }))
             );
-            setDisplayPeriode(userGrades["A001"]);
+            setDisplayPeriode(userGrades[API.DEFAULT_PERIOD_KEY]);
             setDisplayPeriodeName(API.DEFAULT_PERIOD_KEY); // A001
         } catch (err) {
             setError(err.message);
@@ -154,12 +145,6 @@ export default function GradesContent() {
 
     const renderItem = ({ item, index }) => {
         const DisciplineClass = new Discipline(item);
-        DisciplineClass.simulatedGrades =
-            simulatedGradesDatas.filter(
-                (simGrade) =>
-                    simGrade.codes.discipline === DisciplineClass.code &&
-                    simGrade.codes.period === displayPeriodeName
-            ) || [];
 
         if (DisciplineClass.isDisciplineGroup) {
             return DisciplineClass.RenderDisciplineGroup({
@@ -212,7 +197,9 @@ export default function GradesContent() {
                     {periodes.length > 0 && (
                         <DropDown
                             onSelect={(value) => {
-                                setDisplayPeriode(sortedGradesData[value]);
+                                const changedPeriod = sortedGradesData[value];
+                                setDisplayPeriode(changedPeriod);
+
                                 setDisplayPeriodeName(value);
                             }}
                             options={periodes}
@@ -337,7 +324,6 @@ export default function GradesContent() {
                 visible={state.simulation.modalOpen}
                 onClose={() => dispatch({ type: "CLOSE_SIMULATION_MODAL" })}
                 disciplineCodes={simulatedDisciplineCodes}
-                setSimulatedGradeDatas={setSimulatedGradeDatas}
             />
         </View>
     );

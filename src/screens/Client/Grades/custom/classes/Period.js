@@ -13,6 +13,7 @@ export default class Period {
         this.globalStreakScore = globalStreakScore;
         this.periodName = periodName;
     }
+
     makeGeneralAverage() {
         // get all disciplines from all groups (in one array)
         const disciplines = this.groups.flatMap((group) =>

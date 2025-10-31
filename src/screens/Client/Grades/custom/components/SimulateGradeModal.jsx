@@ -9,6 +9,7 @@ import Animated, {
 import { getTodayDateString } from "../../../../../utils/date";
 import { parseNumber } from "../../../../../utils/grades/makeAverage";
 import Grade from "../classes/Grade";
+import { useGrade } from "../context/LocalContext";
 
 const PLACEHOLDERS = { coef: 1, grade: 15, outOf: 20 };
 
@@ -22,6 +23,7 @@ export default function AddGradeModal({
     const [simulationCount, setSimulationCount] = useState(1);
     const translateY = useSharedValue(500);
     const opacity = useSharedValue(0);
+    const { state, dispatch } = useGrade();
 
     useEffect(() => {
         if (visible) {
@@ -275,10 +277,10 @@ export default function AddGradeModal({
                                 isSimulation: true,
                             });
 
-                            setSimulatedGradeDatas((prev) => [
-                                ...prev,
-                                generateGradeSimulation,
-                            ]);
+                            dispatch({
+                                type: "CREATE_SIMULATED_GRADE",
+                                payload: generateGradeSimulation,
+                            });
                         }}
                     >
                         <Text
