@@ -13,12 +13,7 @@ import { useGrade } from "../context/LocalContext";
 
 const PLACEHOLDERS = { coef: 1, grade: 15, outOf: 20 };
 
-export default function AddGradeModal({
-    visible,
-    onClose,
-    disciplineCodes,
-    setSimulatedGradeDatas,
-}) {
+export default function AddGradeModal({ visible, disciplineCodes }) {
     const [simulatedGrade, setSimulatedGrade] = useState(PLACEHOLDERS);
     const [simulationCount, setSimulationCount] = useState(1);
     const translateY = useSharedValue(500);
@@ -54,7 +49,6 @@ export default function AddGradeModal({
                 zIndex: 1000,
             }}
         >
-            {/* Fond semi-transparent cliquable */}
             <Animated.View
                 style={[
                     {
@@ -66,12 +60,11 @@ export default function AddGradeModal({
             >
                 <TouchableOpacity
                     activeOpacity={1}
-                    onPress={onClose}
+                    onPress={() => dispatch({ type: "CLOSE_SIMULATION_MODAL" })}
                     style={{ flex: 1 }}
                 />
             </Animated.View>
 
-            {/* Contenu de la modal */}
             <Animated.View
                 style={[
                     {
@@ -90,7 +83,6 @@ export default function AddGradeModal({
                     modalStyle,
                 ]}
             >
-                {/* Drag indicator */}
                 <View
                     style={{
                         width: 50,
@@ -102,7 +94,6 @@ export default function AddGradeModal({
                     }}
                 />
 
-                {/* Header */}
                 <View style={{ marginBottom: 24 }}>
                     <Text style={{ fontSize: 28, fontWeight: "bold" }}>
                         Ajouter une note {JSON.stringify(disciplineCodes)}
@@ -118,7 +109,6 @@ export default function AddGradeModal({
                 </View>
 
                 <ScrollView showsVerticalScrollIndicator={false}>
-                    {/* Input Note */}
                     <View style={{ marginBottom: 20 }}>
                         <Text style={{ marginBottom: 8, fontSize: 16 }}>Note</Text>
                         <View style={{ flexDirection: "row", gap: 12 }}>
@@ -180,7 +170,6 @@ export default function AddGradeModal({
                         </View>
                     </View>
 
-                    {/* Input Coefficient */}
                     <View style={{ marginBottom: 20 }}>
                         <Text style={{ marginBottom: 8, fontSize: 16 }}>
                             Coefficient
@@ -232,10 +221,10 @@ export default function AddGradeModal({
                         </Text>
                     </View>
                 )}
-                {/* Boutons d'action */}
+
                 <View style={{ flexDirection: "row", gap: 12, marginTop: 16 }}>
                     <TouchableOpacity
-                        onPress={onClose}
+                        onPress={() => dispatch({ type: "CLOSE_SIMULATION_MODAL" })}
                         style={{
                             flex: 1,
                             backgroundColor: "hsla(240, 30%, 25%, 0.8)",
@@ -282,6 +271,9 @@ export default function AddGradeModal({
                                 payload: generateGradeSimulation.getGrade(),
                             });
                             setSimulatedGrade(PLACEHOLDERS);
+                            dispatch({
+                                type: "CLOSE_SIMULATION_MODAL",
+                            });
                         }}
                     >
                         <Text

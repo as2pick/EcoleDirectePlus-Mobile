@@ -8,6 +8,7 @@ import {
 import fetchApi from "../services/fetchApi";
 import { parseNumber } from "../utils/grades/makeAverage";
 import base64Handler from "../utils/handleBase64";
+import { deepCopyObject } from "../utils/json";
 
 export default async function gradesResolver({ token }) {
     try {
@@ -217,13 +218,14 @@ function enrichDiscipline(discipline, periodCode, rawGrades) {
 }
 
 function streakDataInjectedIntoGrades(userGrades) {
-    const result = JSON.parse(JSON.stringify(userGrades));
+    const result = deepCopyObject(userGrades);
     Object.entries(result).forEach(([periodKey, periodData]) => {
         const gradesSortedByDate = sortGradesByDate(
             createValidGradesArray(result, periodKey)
         );
         const streak = calculateStreak(gradesSortedByDate, periodKey, result);
         periodData.globalStreakScore = streak.globalStreakScore;
+
         const periodStreakScores = streak.streakScores?.[periodKey] || {};
 
         const periodDisciplines = periodData.groups.flatMap((group) =>
@@ -233,11 +235,11 @@ function streakDataInjectedIntoGrades(userGrades) {
         periodDisciplines.forEach((discipline) => {
             discipline.streakCount = periodStreakScores[discipline.code] || 0;
         });
-
         streak.gradesItered.forEach((gradeData) => {
             const discipline = periodDisciplines.find(
                 ({ code }) => code === gradeData.codes.discipline
             );
+
             if (!discipline) return;
             const gradeToUpdate = discipline.grades.find((g) =>
                 deepEqualExcept(g, gradeData, ["actionOnStreak"])
@@ -252,7 +254,7 @@ function streakDataInjectedIntoGrades(userGrades) {
 }
 
 function badgesDataInjectedIntoGrades(userGrades) {
-    const result = JSON.parse(JSON.stringify(userGrades)); // deep copy
+    const result = deepCopyObject(userGrades);
 
     Object.values(result).forEach((periodData) => {
         const periodDisciplines = periodData.groups.flatMap((group) =>

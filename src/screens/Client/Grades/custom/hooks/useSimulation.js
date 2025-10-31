@@ -12,11 +12,8 @@ export const useSimulation = ({
     setSimulatedDisciplineCodes,
     setRenderDisciplineArray,
     renderDisciplinesArray,
-    setSimulatedGradeDatas,
     displayPeriode,
     setGeneralAverage,
-    displayPeriodeWithSimulations,
-    setDisplayPeriodeWithSimulations,
 }) => {
     const navigation = useNavigation();
 

@@ -56,7 +56,6 @@ export default function GradesContent() {
         state,
         setRenderDisciplineArray,
         renderDisciplinesArray,
-        setSimulatedGradeDatas,
         displayPeriode,
         setGeneralAverage,
     });
@@ -78,7 +77,7 @@ export default function GradesContent() {
             setDisplayPeriode(userGrades[API.DEFAULT_PERIOD_KEY]);
         } catch (err) {
             setError(err.message);
-            console.error("Erreur lors du chargement des notes:", err);
+            console.error("Error while loading grades:", err);
         } finally {
             setLoading(false);
         }
@@ -104,7 +103,7 @@ export default function GradesContent() {
 
             setGlobalStreakScore(displayPeriode.globalStreakScore);
         } catch (error) {
-            console.error("Erreur lors du traitement des périodes:", error);
+            console.error("Error when try to load periods:", error);
         }
     }, [displayPeriode]);
 
@@ -130,7 +129,7 @@ export default function GradesContent() {
             setStrengths(formattedStrengths);
             setWeaknesses(formattedWeaknesses);
         } catch (error) {
-            console.error("Erreur lors du calcul des forces/faiblesses:", error);
+            console.error("Error when calculate strength/weakness:", error);
             setStrengths([]);
             setWeaknesses([]);
         }
@@ -164,7 +163,6 @@ export default function GradesContent() {
                         `${DisciplineClass.code}-${DisciplineClass.libelle}`
                     ),
 
-                navigation: navigation,
                 dispatch: dispatch,
             });
         }
@@ -323,7 +321,6 @@ export default function GradesContent() {
             </View>
             <AddGradeModal
                 visible={state.simulation.modalOpen}
-                onClose={() => dispatch({ type: "CLOSE_SIMULATION_MODAL" })}
                 disciplineCodes={simulatedDisciplineCodes}
             />
         </View>

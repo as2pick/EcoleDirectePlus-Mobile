@@ -156,7 +156,6 @@ export default class Grade {
     RenderSimulatedGrade(idx, dispatch) {
         if (!this.isSimulation)
             console.log("You asked to render a normal grade as simulated grade !");
-
         const gradeItem = (
             <Pressable
                 style={{

@@ -200,8 +200,7 @@ export default class Discipline {
         dataLength,
         isExpanded,
         onPress,
-        navigation,
-        openAddGradeModal,
+
         dispatch,
     }) {
         const averages = [
