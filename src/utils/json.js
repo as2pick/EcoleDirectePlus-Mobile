@@ -60,3 +60,11 @@ export function arraysEqual(arr1, arr2) {
     return [...set1].every((value) => set2.has(value));
 }
 
+export function deepCopyObject(objToCopy) {
+    return _.cloneDeep(objToCopy);
+}
+
+export function recusiveMerge(obj1, obj2) {
+    return _.merge({}, obj1, obj2);
+}
+
