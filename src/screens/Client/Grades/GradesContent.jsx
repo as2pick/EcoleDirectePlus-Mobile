@@ -33,7 +33,9 @@ export default function GradesContent() {
 
     const [periodes, setPeriodes] = useState([]);
     const [displayPeriode, setDisplayPeriode] = useState({});
-    const [displayPeriodeName, setDisplayPeriodeName] = useState(); // DEFAULT A001
+    const [displayPeriodeName, setDisplayPeriodeName] = useState(
+        API.DEFAULT_PERIOD_KEY
+    ); // DEFAULT A001
     const [generalAverage, setGeneralAverage] = useState(0);
     const [globalStreakScore, setGlobalStreakScore] = useState(0);
 
@@ -74,7 +76,6 @@ export default function GradesContent() {
                 }))
             );
             setDisplayPeriode(userGrades[API.DEFAULT_PERIOD_KEY]);
-            setDisplayPeriodeName(API.DEFAULT_PERIOD_KEY); // A001
         } catch (err) {
             setError(err.message);
             console.error("Erreur lors du chargement des notes:", err);

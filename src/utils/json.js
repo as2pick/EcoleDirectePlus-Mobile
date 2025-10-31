@@ -52,12 +52,18 @@ export function objectsEqual(obj1, obj2) {
         }
     });
 }
-
 export function arraysEqual(arr1, arr2) {
     if (arr1.length !== arr2.length) return false;
-    const set1 = new Set(arr1);
-    const set2 = new Set(arr2);
-    return [...set1].every((value) => set2.has(value));
+    return arr1.every((val, index) => {
+        const val2 = arr2[index];
+        if (_.isPlainObject(val) && _.isPlainObject(val2)) {
+            return objectsEqual(val, val2); // Comparaison récursive pour les objets
+        } else if (Array.isArray(val) && Array.isArray(val2)) {
+            return arraysEqual(val, val2); // Comparaison récursive pour les tableaux
+        } else {
+            return val === val2; // Comparaison directe pour les types primitifs
+        }
+    });
 }
 
 export function deepCopyObject(objToCopy) {

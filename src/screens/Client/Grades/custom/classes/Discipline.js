@@ -1,6 +1,7 @@
 import { Text, TouchableOpacity, View } from "react-native";
 import Animated from "react-native-reanimated";
 import { parseNumber } from "../../../../../utils/grades/makeAverage";
+import { objectsEqual } from "../../../../../utils/json";
 import { formatGradeText } from "../helper";
 import Grade from "./Grade";
 
@@ -54,6 +55,7 @@ export default class Discipline {
             userAssessment: this.userAssessment,
             disciplines: this.disciplines,
             disciplineCodes: this.disciplineCodes,
+            simulatedGrades: this.simulatedGrades,
         };
     }
     getTotalCoef() {
@@ -126,6 +128,12 @@ export default class Discipline {
 
     injectGrade(gradeToInject) {
         this.grades = [...this.grades, gradeToInject];
+    }
+
+    removeGrade(gradeToRemove) {
+        this.grades = this.grades.filter(
+            (g) => !objectsEqual(new Grade(g).getGrade(), gradeToRemove)
+        );
     }
 
     RenderDisciplineGroup({ dataLength, index }) {

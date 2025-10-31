@@ -279,8 +279,9 @@ export default function AddGradeModal({
 
                             dispatch({
                                 type: "CREATE_SIMULATED_GRADE",
-                                payload: generateGradeSimulation,
+                                payload: generateGradeSimulation.getGrade(),
                             });
+                            setSimulatedGrade(PLACEHOLDERS);
                         }}
                     >
                         <Text

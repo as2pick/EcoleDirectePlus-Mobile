@@ -40,12 +40,55 @@ export const useSimulation = ({
 
     useEffect(() => {
         if (state.gradeToRemove) {
-            console.log(state.gradeToRemove, "to remove");
+            // get Grade methods
+            const gradeToDelete = new Grade(state.gradeToRemove);
+
+            // find the wanted discipline to calculate new discipline average
+            const disciplineToUpdate = renderDisciplinesArray.find(
+                (discipline) => discipline.code === gradeToDelete.codes.discipline
+            );
+
+            // get Discipline methods
+            const duplicatedDiscipline = new Discipline(disciplineToUpdate);
+            duplicatedDiscipline.removeGrade(gradeToDelete.getGrade());
+            // IMPORTANT getGrade because without is makes confusion with object so use is :)
+
+            // get Period methods
+            const periodToUpdate = new Period(displayPeriode);
+            periodToUpdate.removeGrade(gradeToDelete.getGrade());
+            // IMPORTANT getGrade because without is makes confusion with object so use is :)
+
+            const updatedRenderDisciplines = renderDisciplinesArray.map(
+                (discipline) => {
+                    if (discipline.code === gradeToDelete.codes.discipline) {
+                        return {
+                            ...duplicatedDiscipline.getDiscipline(),
+
+                            averageDatas: {
+                                ...discipline.averageDatas,
+                                userAverage:
+                                    // update new discipline average
+                                    duplicatedDiscipline.getWeightedAverage(), // same :)
+                            },
+                        };
+                    } else {
+                        return discipline;
+                    }
+                }
+            );
+
+            setRenderDisciplineArray(
+                updatedRenderDisciplines /* update in render the discipline average */
+            );
+            setGeneralAverage(
+                periodToUpdate.makeGeneralAverage() /* set new general average */
+            );
+            dispatch({ type: "CLEAR_SIMULATED_GRADE" });
         }
     }, [state.gradeToRemove]);
 
     useEffect(() => {
-        const updateAverages = () => {
+        if (state.simulatedGrade) {
             // get Grade methods
             const simulatedGrade = new Grade(state.simulatedGrade);
             // find the wanted discipline to calculate new discipline average
@@ -54,17 +97,19 @@ export const useSimulation = ({
             );
             // get Discipline methods
             const duplicatedDiscipline = new Discipline(disciplineToUpdate);
-            duplicatedDiscipline.injectGrade(simulatedGrade);
+            duplicatedDiscipline.injectGrade(simulatedGrade.getGrade());
+            // IMPORTANT getGrade because without is makes confusion with object so use is :)
 
             // get Period methods
             const updatedPeriod = new Period(displayPeriode);
-            updatedPeriod.injectGrade(simulatedGrade);
+            updatedPeriod.injectGrade(simulatedGrade.getGrade());
+            // IMPORTANT getGrade because without is makes confusion with object so use is :)
 
             const updatedRenderDisciplines = renderDisciplinesArray.map(
                 (discipline) => {
                     if (discipline.code === simulatedGrade.codes.discipline) {
                         return {
-                            ...discipline,
+                            ...duplicatedDiscipline.getDiscipline(), // same :)
                             averageDatas: {
                                 ...discipline.averageDatas,
                                 userAverage:
@@ -83,9 +128,6 @@ export const useSimulation = ({
             setGeneralAverage(
                 updatedPeriod.makeGeneralAverage() /* set new general average */
             );
-        };
-        if (state.simulatedGrade) {
-            updateAverages();
         }
     }, [state.simulatedGrade]);
 };

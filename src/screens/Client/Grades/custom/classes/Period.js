@@ -138,7 +138,6 @@ export default class Period {
 
         if (!Array.isArray(discipline.grades) || discipline.grades.length === 0) {
             console.warn(`Any grade to delete for ${discipline.code}`);
-            return false;
         }
         const initialLength = discipline.grades.length;
         const gradeObj = grade.getGrade();
@@ -150,11 +149,7 @@ export default class Period {
             console.warn(
                 `Any grades for "${grade.disciplineName}" was found for ${discipline.code}`
             );
-            return false;
         }
-        console.log(
-            `✅ Note "${grade.disciplineName}" supprimée de ${discipline.code}. Nouvelle moyenne : ${discipline.currentAverage}`
-        );
     }
 }
 
