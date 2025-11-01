@@ -35,9 +35,9 @@ export default function GradeDetails({ route }) {
         Dépassé: "hsl(130, 50%, 60%)",
     };
 
-    const renderItem = ({ item, index }) => {
+    const renderItem = ({ item }) => {
         return (
-            <View style={{ marginLeft: 8, minWidth: "90%", marginVertical: 10 }}>
+            <View style={{ minWidth: "90%", marginVertical: 10 }}>
                 <Text
                     style={{
                         fontSize: 16,
@@ -165,7 +165,7 @@ export default function GradeDetails({ route }) {
                         </View>
                     )}
 
-                    <View style={{ alignSelf: "baseline", marginTop: 8 }}>
+                    <View style={{ alignSelf: "flex-start", marginTop: 8 }}>
                         <Text style={{ fontSize: 14 }}>
                             · Type d’évaluation : {grade.homeworkType}
                         </Text>
