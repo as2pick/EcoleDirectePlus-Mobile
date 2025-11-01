@@ -54,7 +54,7 @@ export default function OverLoader({
                     { duration: annimationStartTiming },
                     (finished) => {
                         if (finished) {
-                            scheduleOnRN(setTriggerView)(false);
+                            scheduleOnRN(setTriggerView, false);
                         }
                     }
                 );
