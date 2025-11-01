@@ -92,9 +92,9 @@ const skillColorsCodes = {
     "-3": "not rated",
     "-2": "dispensed",
     "-1": "abscent",
-    1: "Non attein",
-    2: "Partiellement attein",
-    3: "Attein",
+    1: "Non acquis",
+    2: "Partiellement acquis",
+    3: "Acquis",
     4: "Dépassé",
 };
 
