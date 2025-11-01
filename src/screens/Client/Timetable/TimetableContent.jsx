@@ -1,11 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import {
-    SafeAreaView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
-} from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import { useFocusEffect, useNavigation, useTheme } from "@react-navigation/native";
 
@@ -68,12 +62,12 @@ export default function TimetableContent() {
                         setSortedTimetableData(userTimetable);
                         setLoading(false);
                     });
+            } else {
             }
         }, [userAccesToken, sortedTimetableData])
     );
 
     const activeDate = sortedTimetableData?.[currentIndex]?.iSODate || "";
-
     useEffect(() => {
         if (!timetableCoreSuccessLoaded) return;
 
@@ -97,11 +91,8 @@ export default function TimetableContent() {
     }
 
     return (
-        <SafeAreaView
+        <View
             style={{
-                // position: "absolute",
-                width: "100%",
-
                 flex: 1,
             }}
             onLayout={() => setTimetableCoreSuccessLoaded(true)}
@@ -114,7 +105,6 @@ export default function TimetableContent() {
                         overflow: "hidden",
                         flex: 1,
                         height: screenHeight,
-                        borderRadius: 23,
                     },
                 ]}
             >
@@ -195,7 +185,7 @@ export default function TimetableContent() {
                         ))}
                 </VerticalScrollView>
             </Animated.View>
-        </SafeAreaView>
+        </View>
     );
 }
 

@@ -152,13 +152,15 @@ export const SignInProvider = ({ children }) => {
                 storeDatas({ data: accountData, token, ...userSetters });
                 break;
             case 250:
-                authService.startA2fProcess(token).then(({ choices, question }) =>
-                    setMcqDatas({
-                        choices: choices,
-                        question: question,
-                    })
-                );
-                setA2fToken(token);
+                authService
+                    .startA2fProcess(apiLoginData.responseHeaders["2fa-token"])
+                    .then(({ choices, question }) =>
+                        setMcqDatas({
+                            choices: choices,
+                            question: question,
+                        })
+                    );
+                setA2fToken(apiLoginData.responseHeaders["2fa-token"]);
 
                 break;
             default:

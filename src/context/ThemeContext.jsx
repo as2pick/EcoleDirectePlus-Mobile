@@ -1,40 +1,48 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useColorScheme } from "react-native";
-import { THEMES } from "../themes/themes";
+import { SYSTEM_FOLLOW_KEY, THEME_KEY, THEMES_ASSOCIATIONS } from "../themes/themes";
 
 const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
     const systemColorScheme = useColorScheme();
+
     const [colorScheme, setColorScheme] = useState(systemColorScheme || "light");
     const [isFollowingSystem, setIsFollowingSystem] = useState(true);
 
-    const STORAGE_KEY = "@user_theme";
-    const SYSTEM_FOLLOW_KEY = "@follow_system_theme";
-
-    // Charger les préférences stockées
     useEffect(() => {
         const loadTheme = async () => {
             try {
-                const [savedTheme, followSystem] = await Promise.all([
-                    AsyncStorage.getItem(STORAGE_KEY),
+                const [savedThemeStr, followSystemStr] = await Promise.all([
+                    AsyncStorage.getItem(THEME_KEY),
                     AsyncStorage.getItem(SYSTEM_FOLLOW_KEY),
                 ]);
-
                 const shouldFollowSystem =
-                    followSystem !== null ? JSON.parse(followSystem) : true;
+                    followSystemStr !== null ? JSON.parse(followSystemStr) : true;
+
                 setIsFollowingSystem(shouldFollowSystem);
+
+                const savedTheme = savedThemeStr ? JSON.parse(savedThemeStr) : null;
+
+                if (!savedTheme) {
+                    await storeThemeInPersistentStorage(
+                        systemColorScheme,
+                        shouldFollowSystem
+                    );
+                    return;
+                }
 
                 if (shouldFollowSystem) {
                     setColorScheme(systemColorScheme || "light");
                 } else if (savedTheme) {
                     setColorScheme(savedTheme);
+                    setIsFollowingSystem(false);
                 } else {
                     setColorScheme(systemColorScheme || "light");
                 }
             } catch (e) {
-                console.log("Erreur chargement thème :", e);
+                console.log("Error when load theme :", e);
                 setColorScheme(systemColorScheme || "light");
                 setIsFollowingSystem(true);
             }
@@ -42,30 +50,20 @@ export const ThemeProvider = ({ children }) => {
         loadTheme();
     }, []);
 
-    // Suivre les changements du thème système si activé
     useEffect(() => {
         if (isFollowingSystem && systemColorScheme) {
             setColorScheme(systemColorScheme);
         }
     }, [systemColorScheme, isFollowingSystem]);
 
-    const themesOrganisation = {
-        light: THEMES.opulent,
-        dark: THEMES.etheral,
-    };
-
     const toggleTheme = async () => {
         try {
             const newScheme = colorScheme === "light" ? "dark" : "light";
             setColorScheme(newScheme);
             setIsFollowingSystem(false);
-
-            await Promise.all([
-                AsyncStorage.setItem(STORAGE_KEY, newScheme),
-                AsyncStorage.setItem(SYSTEM_FOLLOW_KEY, JSON.stringify(false)),
-            ]);
+            await storeThemeInPersistentStorage(newScheme);
         } catch (e) {
-            console.log("Erreur sauvegarde thème :", e);
+            console.log("Error saving theme :", e);
         }
     };
 
@@ -73,10 +71,9 @@ export const ThemeProvider = ({ children }) => {
         try {
             setIsFollowingSystem(true);
             setColorScheme(systemColorScheme || "light");
-
-            await AsyncStorage.setItem(SYSTEM_FOLLOW_KEY, JSON.stringify(true));
+            await storeThemeInPersistentStorage(systemColorScheme, true);
         } catch (e) {
-            console.log("Erreur activation suivi système :", e);
+            console.log("Error follow system theme", e);
         }
     };
 
@@ -84,20 +81,33 @@ export const ThemeProvider = ({ children }) => {
         try {
             setColorScheme(theme);
             setIsFollowingSystem(false);
-
-            await Promise.all([
-                AsyncStorage.setItem(STORAGE_KEY, theme),
-                AsyncStorage.setItem(SYSTEM_FOLLOW_KEY, JSON.stringify(false)),
-            ]);
+            await storeThemeInPersistentStorage(theme);
         } catch (e) {
-            console.log("Erreur définition thème manuel :", e);
+            console.log("Error set theme manually:", e);
+        }
+    };
+
+    const storeThemeInPersistentStorage = async (
+        themeValue,
+        followSystem = false
+    ) => {
+        try {
+            await Promise.all([
+                AsyncStorage.setItem(THEME_KEY, JSON.stringify(themeValue)),
+                AsyncStorage.setItem(
+                    SYSTEM_FOLLOW_KEY,
+                    JSON.stringify(followSystem)
+                ),
+            ]);
+        } catch (error) {
+            console.log("Error set theme:", error);
         }
     };
 
     const contextValue = useMemo(
         () => ({
             colorScheme,
-            theme: themesOrganisation[colorScheme],
+            theme: THEMES_ASSOCIATIONS[colorScheme],
             isFollowingSystem,
             toggleTheme,
             followSystemTheme,
@@ -115,3 +125,4 @@ export const ThemeProvider = ({ children }) => {
 };
 
 export const useTheme = () => useContext(ThemeContext);
+
