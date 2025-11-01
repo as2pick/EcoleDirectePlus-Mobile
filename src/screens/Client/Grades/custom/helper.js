@@ -73,6 +73,10 @@ export const deepEqualExcept = (obj1, obj2, excludedKeys = []) => {
 };
 
 export const formatGradeText = (gradeInt = 0.0) => {
-    return String(gradeInt).replace(".", ",");
+    try {
+        return gradeInt.toFixed(2).replace(".", ",");
+    } catch (e) {
+        return "N.No";
+    }
 };
 
