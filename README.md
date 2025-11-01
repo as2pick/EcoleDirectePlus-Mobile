@@ -11,7 +11,7 @@ Ecole Directe Plus is basically a better EcoleDirecte.
 The EcoleDirecte platform has been completely redesigned from scratch to offer the best comfort to all students.
 Enjoy the most-requested features and a ton of small but game changer improvements.
 > [!note]
-> Ecole Directe Plus Mobile is for early !
+> Ecole Directe Plus Mobile is coming soon !
 > Thank's to @as2pick for developement.
 > <sub>For more informations, please join the [Ecole Directe Plus' Discord](https://discord.gg/jXezvmQmCU)
 
