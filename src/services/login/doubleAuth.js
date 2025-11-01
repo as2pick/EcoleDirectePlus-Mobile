@@ -21,7 +21,7 @@ const ConvertOutput = (data) => {
 export const getResponseChoices = async (token) => {
     const requestParams = {
         headers: {
-            "X-Token": token,
+            "2FA-Token": token,
         },
         method: "POST",
     };
@@ -55,7 +55,7 @@ export const sendResponseChoice = async (token, choice) => {
             choix: choice,
         },
         headers: {
-            "X-Token": token,
+            "2FA-Token": token,
         },
         method: "POST",
     };
