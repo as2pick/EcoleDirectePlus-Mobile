@@ -72,9 +72,18 @@ export const deepEqualExcept = (obj1, obj2, excludedKeys = []) => {
     return obj1 === obj2;
 };
 
-export const formatGradeText = (gradeInt = 0.0) => {
+export const formatGradeText = (gradeInt = 0.0, extraNumbers = 2) => {
     try {
-        return gradeInt.toFixed(2).replace(".", ",");
+        const grade = parseFloat(gradeInt);
+        if (isNaN(grade)) {
+            return "N.No";
+        }
+
+        if (extraNumbers === "auto") {
+            return String(grade).replace(".", ",");
+        } else {
+            return grade.toFixed(extraNumbers).replace(".", ",");
+        }
     } catch (e) {
         return "N.No";
     }
