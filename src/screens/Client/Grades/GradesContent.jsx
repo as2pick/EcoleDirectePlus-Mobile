@@ -418,7 +418,7 @@ const StrengthsAndWeakness = ({ data, firstColor }) => {
                             minWidth: "18%",
                         }}
                     >
-                        <Text>{average}</Text>
+                        <Text>{formatGradeText(average)}</Text>
                     </View>
                 </View>
             ))}
