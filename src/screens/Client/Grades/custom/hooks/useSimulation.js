@@ -19,8 +19,13 @@ export const useSimulation = ({
 
     useEffect(() => {
         if (state.gradeData) {
+            const discipline = renderDisciplinesArray.find(
+                ({ code }) => code === state.gradeData.codes.discipline
+            );
+
             navigation.navigate(routesNames.client.grades.details, {
                 gradeData: state.gradeData,
+                disciplineData: discipline,
             });
             dispatch({ type: "RESET_GRADE_DETAILS" });
         }
