@@ -92,10 +92,10 @@ const skillColorsCodes = {
     "-3": "not rated",
     "-2": "dispensed",
     "-1": "abscent",
-    1: "hsl(0, 40%, 50%)",
-    2: "hsl(60, 70%, 40%)",
-    3: "hsl(200, 40%, 50%)",
-    4: "hsl(130, 50%, 60%)",
+    1: "Non attein",
+    2: "Partiellement attein",
+    3: "Attein",
+    4: "Dépassé",
 };
 
 function parseDiscipline(discipline) {
