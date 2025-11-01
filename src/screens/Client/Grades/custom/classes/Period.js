@@ -44,7 +44,6 @@ export default class Period {
     makeDisciplineAverage(disciplineCode) {
         let disciplineSearched = null;
 
-        // 1. search discipline
         for (const group of this.groups) {
             const disciplines = group.isDisciplineGroup
                 ? group.disciplines
@@ -57,13 +56,10 @@ export default class Period {
             }
         }
 
-        // 2.check if discipline was founded
         if (!disciplineSearched) {
-            // here there's not discipline found
-            return null; // ou throw Error / return 0 / return 'N/A'
+            return null;
         }
 
-        // 3. calculate weighted average
         const discipline = new Discipline(disciplineSearched);
         return discipline.getWeightedAverage();
     }

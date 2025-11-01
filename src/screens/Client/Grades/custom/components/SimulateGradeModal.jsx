@@ -14,11 +14,12 @@ import { useGrade } from "../context/LocalContext";
 const PLACEHOLDERS = { coef: 1, grade: 15, outOf: 20 };
 
 export default function AddGradeModal({ visible, disciplineCodes }) {
+    const { state, dispatch } = useGrade();
+
     const [simulatedGrade, setSimulatedGrade] = useState(PLACEHOLDERS);
     const [simulationCount, setSimulationCount] = useState(1);
     const translateY = useSharedValue(500);
     const opacity = useSharedValue(0);
-    const { state, dispatch } = useGrade();
 
     useEffect(() => {
         if (visible) {

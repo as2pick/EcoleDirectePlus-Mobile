@@ -19,7 +19,7 @@ export default class Discipline {
         teachers,
         classAssessment = undefined,
         userAssessment = undefined,
-        disciplines = undefined, // beaceause we have disciplinesGroups "Matières Littéraires" or directly disciplines "MATHS"
+        disciplines = undefined, // because we have disciplinesGroups "Matières Littéraires" or directly disciplines "MATHS"
         disciplineCodes = undefined,
         simulatedGrades = [],
     }) {
@@ -239,7 +239,6 @@ export default class Discipline {
                             : { borderRadius: 3 }),
                     }}
                 >
-                    {/* HEADER */}
                     <View
                         style={{
                             flexDirection: "row",
@@ -377,7 +376,6 @@ export default class Discipline {
                                             backgroundColor:
                                                 "hsla(240, 14%, 32%, .25)",
                                             paddingHorizontal: 24,
-                                            // paddingVertical: 2,
                                             borderRadius: 20,
                                         }}
                                     >

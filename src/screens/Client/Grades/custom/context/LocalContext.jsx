@@ -1,4 +1,3 @@
-// context/GradeContext.js
 import { createContext, useContext, useMemo, useReducer } from "react";
 
 const GradeContext = createContext();
@@ -20,7 +19,6 @@ const gradeReducer = (state, action) => {
                 ...state,
                 simulation: { modalOpen: true, disciplineCode: action.payload }, // not passed in SimulateGradeModal
             };
-
         case "CLOSE_SIMULATION_MODAL":
             return {
                 ...state,

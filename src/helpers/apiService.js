@@ -10,7 +10,7 @@ export default async function apiService({ origin, userToken, extra = null }) {
             const resolverFunction = resolvers[origin];
             const data = await resolverFunction({ token: userToken, ...extra });
             const apiDataChecksum = await generateChecksum(data);
-            console.log(apiDataChecksum, "checksum generated");
+            // console.log(apiDataChecksum, "checksum generated");
             await storageServiceStates.setter({
                 originKey: origin,
                 dataToStore: data,

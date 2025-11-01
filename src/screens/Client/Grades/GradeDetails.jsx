@@ -16,6 +16,7 @@ import { formatGradeText } from "./custom/helper";
 
 export default function GradeDetails({ route }) {
     const { gradeData, disciplineData } = route.params;
+
     const grade = new Grade(gradeData);
     const discipline = new Discipline(disciplineData);
 
@@ -33,6 +34,7 @@ export default function GradeDetails({ route }) {
         Acquis: "hsl(200, 40%, 50%)",
         Dépassé: "hsl(130, 50%, 60%)",
     };
+
     const renderItem = ({ item, index }) => {
         return (
             <View style={{ marginLeft: 8, minWidth: "90%", marginVertical: 10 }}>
@@ -81,7 +83,6 @@ export default function GradeDetails({ route }) {
     };
     return (
         <View style={{ flex: 1, backgroundColor: "hsl(240, 28%, 10%)" }}>
-            {/* <SwipeBackWrapper> */}
             <CustomTopHeader headerTitle={grade.libelle} height={33} />
             <View style={{ marginHorizontal: 22, flex: 1 }}>
                 <View
@@ -172,14 +173,6 @@ export default function GradeDetails({ route }) {
                             · Date: {formatFrenchDate(grade.date)}
                         </Text>
                     </View>
-                    {/* <View
-                        style={{
-                            backgroundColor: "hsl(240, 28%, 72%)",
-                            height: 2,
-                            marginTop: 14,
-                            width: "100%",
-                        }}
-                    /> */}
                     <FlatList
                         data={grade.skills}
                         renderItem={renderItem}
@@ -188,7 +181,6 @@ export default function GradeDetails({ route }) {
                     />
                 </View>
             </View>
-            {/* </SwipeBackWrapper> */}
         </View>
     );
 }

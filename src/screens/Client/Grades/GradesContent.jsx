@@ -47,7 +47,6 @@ export default function GradesContent() {
     const [expandedChain, setExpandedChain] = useState(null);
 
     const [simulatedDisciplineCodes, setSimulatedDisciplineCodes] = useState({});
-    const [simulatedGradesDatas, setSimulatedGradeDatas] = useState([]);
 
     useSimulation({
         dispatch,
@@ -134,10 +133,6 @@ export default function GradesContent() {
             setWeaknesses([]);
         }
     }, [displayPeriode]);
-
-    useEffect(() => {
-        if (simulatedGradesDatas.length === 0) return;
-    }, [simulatedGradesDatas]);
 
     const handleItemPress = useCallback((chain) => {
         setExpandedChain((prev) => (prev === chain ? null : chain));

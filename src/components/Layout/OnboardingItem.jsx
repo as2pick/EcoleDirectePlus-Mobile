@@ -5,7 +5,6 @@ import GradeArrow from "../../../assets/svg/GradeArrow";
 
 export default function OnboardingItem({ item }) {
     const { width } = useWindowDimensions();
-    console.log(item);
 
     return (
         <LinearGradient

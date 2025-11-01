@@ -146,23 +146,6 @@ export default function TimetableContent() {
                         </Text>
                     </TouchableOpacity>
                 </View>
-                {/* <TouchableOpacity
-                    style={{
-                        position: "absolute",
-                        width: 60,
-                        height: 60,
-                        backgroundColor: "red",
-                        zIndex: 100,
-                    }}
-                    onPress={() => {
-                        console.log(
-                            sortedTimetableData.findIndex(
-                                (day) => day.date === CONFIG.dateNow
-                            )
-                        );
-                        scrollViewRef.current.scrollToIndex(2, false);
-                    }}
-                /> */}
 
                 <VerticalScrollView
                     arrayLength={sortedTimetableData?.length}

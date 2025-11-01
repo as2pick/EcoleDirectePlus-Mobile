@@ -8,7 +8,7 @@ const NativeStack = createNativeStackNavigator();
 export default function GradesScreen() {
     const {
         client: {
-            grades: { content, details, group },
+            grades: { content, details },
         },
     } = routesNames;
 
