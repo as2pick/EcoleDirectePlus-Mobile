@@ -92,9 +92,6 @@ export default class Grade {
         const gradeItem = (
             <TouchableOpacity
                 onPress={() =>
-                    // navigation.navigate(routesNames.client.grades.details, {
-                    //     gradeData: this.getGrade(),
-                    // })
                     dispatch({
                         type: "SEE_GRADE_DETAILS",
                         payload: this.getGrade(),
@@ -110,9 +107,9 @@ export default class Grade {
                         backgroundColor,
                         paddingHorizontal: 14,
                         paddingVertical: 8,
-                        borderRadius: 13,
+                        borderRadius: 10,
                         borderColor,
-                        borderWidth: 1.4,
+                        borderWidth: 1,
                     }}
                 >
                     <Text
@@ -163,12 +160,12 @@ export default class Grade {
                     marginHorizontal: 20,
                     justifyContent: "space-between",
                     alignItems: "center",
-                    backgroundColor: "hsla(206, 54%, 28%)",
+                    backgroundColor: "hsl(206, 54%, 28%)",
                     paddingHorizontal: 14,
                     paddingVertical: 8,
                     borderRadius: 13,
-                    borderColor: "hsla(206, 54%, 44%)",
-                    borderWidth: 1.4,
+                    borderColor: "hsl(206, 54%, 44%)",
+                    borderWidth: 1,
                 }}
                 onPress={() => {
                     dispatch({

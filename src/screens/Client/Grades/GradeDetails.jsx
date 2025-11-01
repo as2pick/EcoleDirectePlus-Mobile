@@ -121,7 +121,7 @@ export default function GradeDetails({ route }) {
                 <View
                     style={{
                         flexDirection: "row",
-                        gap: 20,
+                        gap: 12,
 
                         marginTop: 14,
                     }}
@@ -139,20 +139,20 @@ export default function GradeDetails({ route }) {
                     }}
                 >
                     <Text style={{ fontSize: 28 }}>Informations</Text>
-                    <View
-                        style={{
-                            flexDirection: "row",
-                            gap: 10,
-                            marginHorizontal: 10,
-                            backgroundColor: "hsla(230, 24%, 50%, .4)",
-                            paddingVertical: 10,
-                            paddingHorizontal: 12,
-                            borderRadius: 8,
-                            marginTop: 8,
-                        }}
-                    >
-                        {grade.badges &&
-                            grade.badges.map((badge, i) => {
+                    {grade.badges.length > 0 && (
+                        <View
+                            style={{
+                                flexDirection: "row",
+                                gap: 10,
+                                marginHorizontal: 10,
+                                backgroundColor: "hsla(230, 24%, 50%, .4)",
+                                paddingVertical: 10,
+                                paddingHorizontal: 12,
+                                borderRadius: 8,
+                                marginTop: 8,
+                            }}
+                        >
+                            {grade.badges.map((badge, i) => {
                                 const BadgeComponent = uiBadges[badge];
                                 return (
                                     <BadgeComponent
@@ -161,7 +161,8 @@ export default function GradeDetails({ route }) {
                                     />
                                 );
                             })}
-                    </View>
+                        </View>
+                    )}
 
                     <View style={{ alignSelf: "baseline", marginTop: 8 }}>
                         <Text style={{ fontSize: 14 }}>

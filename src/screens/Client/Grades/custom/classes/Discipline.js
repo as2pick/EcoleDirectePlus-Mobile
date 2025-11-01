@@ -355,7 +355,6 @@ export default class Discipline {
                                     );
                                 })}
                             <View key={index}>
-                                {/* {gradeItem} */}
                                 <TouchableOpacity
                                     onPress={() =>
                                         dispatch({
@@ -366,24 +365,23 @@ export default class Discipline {
                                             },
                                         })
                                     }
-                                    style={{ marginVertical: 20 }}
+                                    style={{
+                                        marginVertical: 8,
+                                        alignSelf: "center",
+                                    }}
                                 >
                                     <View
                                         style={{
-                                            marginHorizontal: 20,
-                                            justifyContent: "center",
                                             alignItems: "center",
+                                            justifyContent: "center",
                                             backgroundColor:
                                                 "hsla(240, 14%, 32%, .25)",
-                                            paddingHorizontal: 14,
-                                            paddingVertical: 2,
+                                            paddingHorizontal: 24,
+                                            // paddingVertical: 2,
                                             borderRadius: 20,
-                                            // marginTop: 8,
-                                            borderColor: "hsla(240, 14%, 32%, .6)",
-                                            borderWidth: 1,
                                         }}
                                     >
-                                        <Text>+</Text>
+                                        <Text style={{ fontSize: 24 }}>+</Text>
                                     </View>
                                 </TouchableOpacity>
                             </View>

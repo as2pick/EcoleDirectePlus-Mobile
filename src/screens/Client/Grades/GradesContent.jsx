@@ -260,7 +260,7 @@ export default function GradesContent() {
                         style={{
                             alignItems: "center",
                             justifyContent: "center",
-                            marginHorizontal: 20,
+                            marginHorizontal: 14,
                             backgroundColor: "hsl(240, 28%, 26%)",
                             borderRadius: 18,
                             padding: 16,
@@ -304,9 +304,8 @@ export default function GradesContent() {
                     </View>
                     <View
                         style={{
-                            marginHorizontal: 20,
                             flex: 1,
-                            marginVertical: 20,
+                            margin: 14,
                         }}
                     >
                         <FlatList

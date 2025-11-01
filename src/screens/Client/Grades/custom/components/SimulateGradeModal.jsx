@@ -96,7 +96,7 @@ export default function AddGradeModal({ visible, disciplineCodes }) {
 
                 <View style={{ marginBottom: 24 }}>
                     <Text style={{ fontSize: 28, fontWeight: "bold" }}>
-                        Ajouter une note {JSON.stringify(disciplineCodes)}
+                        Ajouter une note
                     </Text>
                     <Text
                         style={{
