@@ -52,7 +52,7 @@ export default async function fetchApi(
             return null;
         }
 
-        return data;
+        return { ...data, responseHeaders: apiResponse.headers.map };
     } catch (error) {
         console.error("Une erreur est survenue lors de l'appel à fetchApi :", error);
         return null;
