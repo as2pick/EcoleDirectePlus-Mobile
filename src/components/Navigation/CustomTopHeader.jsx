@@ -9,6 +9,7 @@ export default function CustomTopHeader({
     backArrow = { color: "white", size: 24 },
     height = 70,
     backgroundColor = "hsla(0,0%, 0%, 0%)",
+    maxWidth = "100%",
 }) {
     const navigation = useNavigation();
 
@@ -21,7 +22,9 @@ export default function CustomTopHeader({
                 >
                     <BackArrow fill={backArrow.color} size={backArrow.size} />
 
-                    <Title customStyle={styles.title}>{headerTitle}</Title>
+                    <Title customStyle={[styles.title, { maxWidth }]}>
+                        {headerTitle}
+                    </Title>
                 </TouchableOpacity>
             </View>
         </SafeAreaView>

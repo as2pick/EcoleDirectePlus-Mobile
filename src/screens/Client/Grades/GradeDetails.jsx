@@ -83,7 +83,11 @@ export default function GradeDetails({ route }) {
     };
     return (
         <View style={{ flex: 1, backgroundColor: "hsl(240, 28%, 10%)" }}>
-            <CustomTopHeader headerTitle={grade.libelle} height={33} />
+            <CustomTopHeader
+                headerTitle={grade.libelle}
+                height={33}
+                maxWidth="85%"
+            />
             <View style={{ marginHorizontal: 22, flex: 1 }}>
                 <View
                     style={{
