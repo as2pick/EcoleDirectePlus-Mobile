@@ -18,7 +18,7 @@ export const THEMES = {
                 bg6: "rgb(100, 0, 0)", // Rouge très foncé
             },
             txt: {
-                txt1: "rgb(255, 255, 255)", // Blanc pour contraste
+                txt1: "rgb(0, 0, 0)", // Blanc pour contraste
                 txt2: "rgb(255, 200, 200)", // Rose clair
                 txt3: "rgb(255, 150, 150)", // Rose moyen
             },

@@ -1,6 +1,6 @@
 import { useTheme } from "@react-navigation/native";
 import { useMemo } from "react";
-import { Text as RNText } from "react-native";
+import { Text as RNText, StyleSheet } from "react-native";
 
 const TEXT_STYLE_CACHE = new Map();
 const MAX_CACHE_SIZE = 100;
@@ -16,48 +16,62 @@ const cleanupCache = () => {
 };
 
 const FONT_WEIGHT_MAP = {
-    thin: "100",
-    "extra-light": "200",
-    light: "300",
-    normal: "400",
-    medium: "500",
-    "semi-bold": "600",
-    bold: "700",
-    "extra-bold": "800",
+    light: "Lexend-Light",
+    normal: "Lexend-Regular",
+    medium: "Lexend-Medium",
+    bold: "Lexend-Bold",
 };
 
+const PRESETS_VARIANTS = StyleSheet.create({
+    label1: {
+        fontSize: 14,
+        fontFamily: FONT_WEIGHT_MAP.light,
+    },
+    label2: {
+        fontSize: 20,
+        fontFamily: FONT_WEIGHT_MAP.normal,
+    },
+    label3: {
+        fontSize: 24,
+        fontFamily: FONT_WEIGHT_MAP.normal,
+    },
+    title1: {
+        fontSize: 16,
+        fontFamily: FONT_WEIGHT_MAP.normal,
+    },
+    body1: {
+        fontSize: 14,
+        fontFamily: FONT_WEIGHT_MAP.light,
+    },
+});
+
 export default function Text({
+    preset = "label1",
+    style: styleProp,
     color: colorProp,
-    size = 14,
+    size,
     decoration,
     oneLine,
     align = "left",
-    collapsable: collapsable,
+    collapsable,
     selectable,
-    weight = "normal",
+    weight,
     children,
-    style: styleProp,
     ...props
 }) {
     const theme = useTheme();
     const { colors } = theme;
-    const color = colorProp || colors.txt.txt1;
 
     const cacheKey = useMemo(() => {
-        const key = [
-            color,
-            size,
-            decoration,
+        return [
+            preset,
+            colorProp || colors.txt.txt1,
+            size || "",
+            weight || "",
             align,
-            oneLine ? "oneLine" : "",
-            collapsable ? "collapsable" : "",
-            selectable ? "selectable" : "",
-            !isNaN(Number(weight)) ? weight : FONT_WEIGHT_MAP[weight],
-        ]
-            .filter(Boolean)
-            .join("-");
-        return key;
-    }, [color, size, decoration, align, oneLine, collapsable, selectable, weight]);
+            decoration || "",
+        ].join("-");
+    }, [preset, colorProp, colors.txt.txt1, size, weight, align, decoration]);
 
     const computedStyle = useMemo(() => {
         const cached = TEXT_STYLE_CACHE.get(cacheKey);
@@ -65,24 +79,44 @@ export default function Text({
             return cached;
         }
 
+        const presetStyle = PRESETS_VARIANTS[preset] || {};
+        const flattenedProp = StyleSheet.flatten(styleProp) || {};
+
         const dynamicStyle = {
-            color,
-            fontSize: size,
-            fontWeight: !isNaN(Number(weight)) ? weight : FONT_WEIGHT_MAP[weight],
+            ...presetStyle,
+            color: colorProp || flattenedProp.color || colors.txt.txt1,
+            ...(size && { fontSize: size }),
+            ...(weight && {
+                fontFamily: !isNaN(Number(weight))
+                    ? weight
+                    : FONT_WEIGHT_MAP[weight],
+            }),
             textAlign: align,
-            textDecorationLine: decoration,
+            ...(decoration && { textDecorationLine: decoration }),
             includeFontPadding: false,
         };
 
-        TEXT_STYLE_CACHE.set(cacheKey, dynamicStyle);
+        const finalStyle = [dynamicStyle, flattenedProp];
+
+        TEXT_STYLE_CACHE.set(cacheKey, finalStyle);
         cleanupCache();
 
-        return dynamicStyle;
-    }, [cacheKey]);
+        return finalStyle;
+    }, [
+        cacheKey,
+        styleProp,
+        colorProp,
+        colors.txt.txt1,
+        size,
+        weight,
+        align,
+        decoration,
+        preset,
+    ]);
 
     return (
         <RNText
-            style={[computedStyle, styleProp]}
+            style={computedStyle}
             numberOfLines={oneLine ? 1 : undefined}
             ellipsizeMode={oneLine ? "tail" : undefined}
             selectable={selectable}
