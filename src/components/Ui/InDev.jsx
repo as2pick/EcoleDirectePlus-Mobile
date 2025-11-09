@@ -7,10 +7,10 @@ import LinkText from "./LinkText";
 export default function InDev({}) {
     const { colors } = useTheme();
 
-    const mainColor = addOpacityToCssRgb(colors.txt.txt3, 0.5);
+    const mainColor = addOpacityToCssRgb(colors.main, 0.5);
     return (
         <View style={[styles.parent]}>
-            <View style={[styles.children, { borderColor: mainColor }]}>
+            <View style={[styles.children, {backgroundColor: colors.case,}]}>
                 <Text
                     style={[
                         styles.text,
@@ -41,14 +41,21 @@ const styles = StyleSheet.create({
         height: "100%",
         alignItems: "center",
         // justifyContent: "center",
-        marginHorizontal: "2%",
+        marginHorizontal: "4%",
+        //backgroundColor: "red",
     },
     children: {
-        borderWidth: 2,
-        borderRadius: 20,
+        //borderWidth: 2,
+        borderRadius: 18,
         height: "27%",
         padding: 20,
         justifyContent: "center",
+        //boxShadow: "5px 5px 9px rgba(0, 0, 0, 0.25)",
+        boxShadow: "2px 2px 15px 3px rgba(0, 0, 0, 0.14)",
+        shadowColor: "black",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 3,
     },
     text: {
         fontSize: 18,
