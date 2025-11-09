@@ -41,7 +41,11 @@ export const THEMES = {
             main: "rgb(119, 119, 247)",
             accent: "rgb(62, 62, 221)",
             contrast: "rgb(0, 0, 0)",
-            case: "white",
+            case: "rgb(255, 255, 255)",
+            edplogo: {
+                c1: "#6691fcff",
+                c2: "#8572ffff",
+            }
         },
         fonts: {
             bold: { fontFamily: "Luciole-Regular", fontWeight: "600" },
@@ -58,7 +62,7 @@ export const THEMES = {
             ...NavigationDefaultTheme.colors,
             // background: "rgb(18, 18, 138)", // default key
             background: {
-                gradient: ["rgb(18, 18, 48)", "rgb(43, 43, 63)"], // +20 or +30
+                gradient: ["rgb(0, 0, 0)", "rgb(0, 0, 0)"], // +20 or +30
                 login: "rgb(19, 19, 34)", // Fond de l'écran de login
             },
             bg: {
@@ -86,10 +90,15 @@ export const THEMES = {
             icons: "rgb(255, 255, 255)",
             fond: "rgb(255, 255, 255)",
             pastel: "rgb(222, 222, 250)",
-            secondary: "rgb(180, 180, 253)",
+            secondary: "rgba(61, 61, 158, 1)",
             main: "rgb(119, 119, 247)",
             accent: "rgb(62, 62, 221)",
-            case: "black",
+            case: "rgb(59, 59, 109)",
+            contrast: "rgb(255, 255, 255)",
+            edplogo: {
+                c1: "#B4C9FF",
+                c2: "#C1B7FF",
+            }
         },
         fonts: {
             bold: { fontFamily: "Luciole-Regular", fontWeight: "600" },

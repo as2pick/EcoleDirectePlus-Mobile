@@ -128,12 +128,12 @@ export default function CourseDetails({ route }) {
     }
     return (
         <SwipeBackWrapper>
-            <View style={{ flex: 1, backgroundColor: colors.bg.bg2 }}>
+            <View style={{ flex: 1, backgroundColor: colors.background}}>
                 <CustomTopHeader
                     headerTitle={"Retour à l'emploi du temps"}
-                    backArrow={{ color: "white", size: 24 }}
+                    backArrow={{ color: colors.contrast, size: 24 }}
                     height={33}
-                    backgroundColor={colors.background}
+                    backgroundColor={colors.background}        
                 />
                 <View
                     style={{
@@ -185,6 +185,7 @@ export default function CourseDetails({ route }) {
                                             fontSize: 17.5,
                                             fontWeight: 600,
                                             marginLeft: 15,
+                                            color: colors.contrast,
                                         }}
                                     >{`${startCourseTiming}`}</Text>
                                 </View>
@@ -202,6 +203,7 @@ export default function CourseDetails({ route }) {
                                             fontSize: 17.5,
                                             fontWeight: 600,
                                             marginLeft: 15,
+                                            color: colors.contrast,
                                         }}
                                     >{`Annulé`}</Text>
                                 </View>
@@ -219,6 +221,7 @@ export default function CourseDetails({ route }) {
                                             fontSize: 17.5,
                                             fontWeight: 600,
                                             marginLeft: 15,
+                                            color: colors.contrast,
                                         }}
                                     >{`Modifié`}</Text>
                                 </View>
@@ -236,6 +239,7 @@ export default function CourseDetails({ route }) {
                                             fontSize: 17.5,
                                             fontWeight: 600,
                                             marginLeft: 15,
+                                            color: colors.contrast,
                                         }}
                                     >{`Dispensé`}</Text>
                                 </View>
@@ -260,6 +264,7 @@ export default function CourseDetails({ route }) {
                                             fontSize: 17.5,
                                             fontWeight: 600,
                                             marginLeft: 30,
+                                            color: colors.contrast,
                                         }}
                                     >{`${timing}`}</Text>
                                 </View>
@@ -288,6 +293,7 @@ export default function CourseDetails({ route }) {
                                             fontSize: 17.5,
                                             fontWeight: 600,
                                             marginLeft: 30,
+                                            color: colors.contrast,
                                         }}
                                     >{`${teacher}`}</Text>
                                 </View>
@@ -305,6 +311,7 @@ export default function CourseDetails({ route }) {
                                             fontSize: 17.5,
                                             fontWeight: 600,
                                             marginLeft: 30,
+                                            color: colors.contrast,
                                         }}
                                     >{`${room}`}</Text>
                                 </View>
@@ -322,6 +329,7 @@ export default function CourseDetails({ route }) {
                                             fontSize: 17.5,
                                             fontWeight: 600,
                                             marginLeft: 30,
+                                            color: colors.contrast,
                                         }}
                                     >{`${group}`}</Text>
                                 </View>

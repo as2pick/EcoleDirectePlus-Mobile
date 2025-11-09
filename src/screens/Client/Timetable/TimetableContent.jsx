@@ -310,7 +310,7 @@ const CourseBox = ({ course, navigation, theme, timetableViewDims }) => {
                                     : timetableConfig.dispensedColor,
                                 borderRadius: 50,
                                 fontSize: 18,
-                                borderColor: theme.colors.txt.txt1,
+                                borderColor: theme.colors.contrast,
                                 borderWidth: 1.2,
                                 elevation: 14,
                             }}
