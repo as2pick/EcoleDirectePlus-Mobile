@@ -1,4 +1,5 @@
 import { useNavigation, useTheme } from "@react-navigation/native";
+import { LinearGradient} from 'expo-linear-gradient';
 import { useCallback, useEffect, useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -17,10 +18,13 @@ import {
 import { getApiMessage } from "../../../constants/api/codes.js";
 import { useSingIn } from "../../../context/SignInContext.jsx";
 import { routesNames } from "../../../router/config/routesNames.js";
+import { addOpacityToCssRgb } from "../../../utils/colorGenerator";
 
 export default function LoginScreen() {
     const navigation = useNavigation();
     const theme = useTheme();
+    const caseColor = addOpacityToCssRgb(theme.colors.case, 0.3);
+    const styles = createStyles(theme, caseColor); //Temporary
     const {
         signIn,
         mcqDatas,
@@ -78,13 +82,13 @@ export default function LoginScreen() {
         <SafeAreaView style={[styles.container]}>
             <SafeAreaView style={styles.logos}>
                 <LinkButton url={"https://discord.gg/AKAqXfTgvE"}>
-                    <DiscordLogo fill={theme.colors.txt.txt3} size={28} />
+                    <DiscordLogo fill={theme.colors.main} size={28} />
                 </LinkButton>
 
                 <LinkButton
                     url={"https://github.com/as2pick/EcoleDirectePlus-Mobile"}
                 >
-                    <GithubLogo fill={theme.colors.txt.txt3} size={28} />
+                    <GithubLogo fill={theme.colors.main} size={28} />
                 </LinkButton>
             </SafeAreaView>
             <OverLoader
@@ -98,9 +102,7 @@ export default function LoginScreen() {
             <View style={styles.form}>
                 <View style={styles.logo.box}>
                     <EDPLogo size={88} />
-                    <Text
-                        style={[styles.logo.text, { color: theme.colors.txt.txt3 }]}
-                    >
+                    <Text style={[styles.logo.text]}>
                         Connexion
                     </Text>
                 </View>
@@ -109,18 +111,13 @@ export default function LoginScreen() {
                         <View style={styles.input.logos}>
                             <TextInput
                                 placeholder="Identifiant"
+                                placeholderTextColor={theme.colors.main}
                                 onChangeText={(data) => {
                                     setApiError(null);
                                     setUsername(data);
                                 }}
                                 value={username}
-                                style={[
-                                    styles.input.case,
-                                    {
-                                        borderColor: theme.colors.border,
-                                        backgroundColor: theme.colors.background,
-                                    },
-                                ]}
+                                style={[styles.input.case]}
                             />
                             <View style={styles.input.icon}>
                                 <AccountIcon />
@@ -129,19 +126,14 @@ export default function LoginScreen() {
                         <View style={styles.input.logos}>
                             <TextInput
                                 placeholder="Mot de passe"
+                                placeholderTextColor={theme.colors.main}
                                 onChangeText={(data) => {
                                     setApiError(null);
                                     setPassword(data);
                                 }}
                                 value={password}
-                                // secureTextEntry
-                                style={[
-                                    styles.input.case,
-                                    {
-                                        borderColor: theme.colors.border,
-                                        backgroundColor: theme.colors.background,
-                                    },
-                                ]}
+                                secureTextEntry
+                                style={[styles.input.case]}
                             />
                             <View style={styles.input.icon}>
                                 <KeyIcon />
@@ -152,6 +144,7 @@ export default function LoginScreen() {
                                 initialValue={keepConnected}
                                 onValueChange={(v) => setKeepConnected(v)}
                                 libelle="Rester connecté"
+
                             />
                         </View>
                     </View>
@@ -167,32 +160,25 @@ export default function LoginScreen() {
                         });
                         setApiError(null);
                     }}
-                    style={{ theme: theme }}
+                    style={styles.buttonWrapper}
                 >
-                    <Text
-                        style={[
-                            {
-                                borderColor: theme.colors.border,
-                                transform: [{ scale: 1.2 }],
-                            },
-                            styles.button,
-                        ]}
+                    <LinearGradient
+                        // Couleurs du dégradé (au moins deux)
+                        colors={[theme.colors.main, theme.colors.accent]} 
+                        // Direction du dégradé (exemple : de gauche à droite)
+                        start={{ x: 0.0, y: 1.0 }} 
+                        end={{ x: 1.0, y: 0.0 }}
+                        // 🔑 Le style du dégradé doit prendre toute la taille du bouton
+                        style={styles.gradientStyle}
                     >
+                    <Text style={styles.button}>
                         {"Se connecter      ➜"}
                     </Text>
+                    </LinearGradient>
                 </TouchableOpacity>
             </View>
             {apiError && (
-                <Text
-                    style={{
-                        color: "rgb(240, 90, 90)",
-                        padding: 12,
-                        backgroundColor: theme.colors.bg.bg2,
-                        borderColor: "rgb(240, 60, 60)",
-                        borderWidth: 0.9,
-                        borderRadius: 12,
-                    }}
-                >
+                <Text style={styles.error}>
                     {apiError}
                 </Text>
             )}
@@ -202,14 +188,7 @@ export default function LoginScreen() {
                         navigation.navigate(routesNames.auth.privacyPolicy);
                     }}
                 >
-                    <Text
-                        style={[
-                            styles.privacyPolicy,
-                            {
-                                color: theme.colors.txt.txt2,
-                            },
-                        ]}
-                    >
+                    <Text style={[styles.privacyPolicy]}>
                         Politique de confidentialité et Conditions d'utilisation
                     </Text>
                 </TouchableOpacity>
@@ -227,10 +206,11 @@ export default function LoginScreen() {
     );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme, caseColor) => StyleSheet.create({ //const styles = StyleSheet.create({ - Temporary
     container: {
         flex: 1,
         alignItems: "center",
+        backgroundColor: theme.colors.background.login,
     },
     logos: {
         flexDirection: "row",
@@ -239,6 +219,7 @@ const styles = StyleSheet.create({
         left: 8,
         marginLeft: 12,
         gap: 16,
+        color: theme.colors.main,
     },
     checkBox: {
         marginLeft: "5%",
@@ -272,6 +253,7 @@ const styles = StyleSheet.create({
         text: {
             fontWeight: 900,
             fontSize: 48,
+            color: theme.colors.accent,
         },
         textOutline: {
             paddingHorizontal: 17,
@@ -290,10 +272,13 @@ const styles = StyleSheet.create({
         case: {
             borderRadius: 14,
             borderWidth: 0.8,
-            paddingHorizontal: 14,
+            paddingHorizontal: 17,
             paddingRight: 42, // 30(logo size)+12(right 12)
             fontSize: 16,
             overflow: "hidden",
+            borderColor: theme.colors.accent,
+            color: theme.colors.main,
+            backgroundColor: caseColor,
         },
         logos: {
             justifyContent: "center",
@@ -305,11 +290,19 @@ const styles = StyleSheet.create({
     },
 
     button: {
-        borderWidth: 1.4,
-
+        //borderWidth: 1,
+        //borderColor: theme.colors.accent,
+        //transform: [{ scale: 1.2 }],
         borderRadius: 12,
         paddingVertical: 7,
         paddingHorizontal: 16,
+        color: theme.colors.case,
+        //backgroundColor: theme.colors.accent,
+    },
+    buttonWrapper: {
+        borderRadius: 12,
+        overflow: 'hidden',
+        transform: [{ scale: 1.2 }],
     },
 
     infos: {
@@ -319,6 +312,21 @@ const styles = StyleSheet.create({
     privacyPolicy: {
         maxWidth: 210,
         textAlign: "center",
+        color: theme.colors.main,
+    },
+    error: {
+        color: theme.colors.error,
+        padding: 12,
+        backgroundColor: theme.colors.bg.bg2,
+        borderColor: theme.colors.error,
+        borderWidth: 0.9,
+        borderRadius: 12,
+    },
+    gradientStyle: {
+        paddingVertical: 0,
+        paddingHorizontal: 0,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 });
 
