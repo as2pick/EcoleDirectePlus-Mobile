@@ -1,6 +1,9 @@
 import Svg, { Circle, Path } from "react-native-svg";
+import { useTheme } from "@react-navigation/native";
 
-export default function CopyLeft({ size = 30, fill = "white", props = {} }) {
+export default function CopyLeft({ size = 30, fill, props = {} }) {
+    const { colors } = useTheme();
+    fill = colors.contrast;
     return (
         <Svg
             // ariaLabel="Copyleft"

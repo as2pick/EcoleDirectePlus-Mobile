@@ -52,10 +52,10 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         //boxShadow: "5px 5px 9px rgba(0, 0, 0, 0.25)",
         boxShadow: "2px 2px 15px 3px rgba(0, 0, 0, 0.14)",
-        shadowColor: "black",
+        /*shadowColor: "black",
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.3,
-        shadowRadius: 3,
+        shadowRadius: 3,*/
     },
     text: {
         fontSize: 18,

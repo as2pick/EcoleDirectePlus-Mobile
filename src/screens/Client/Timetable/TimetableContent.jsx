@@ -140,7 +140,7 @@ export default function TimetableContent() {
                             style={{
                                 fontWeight: 600,
                                 fontSize: 18,
-                                color: "white",
+                                color: theme.colors.theme,
                             }}
                         >
                             {activeDate}
