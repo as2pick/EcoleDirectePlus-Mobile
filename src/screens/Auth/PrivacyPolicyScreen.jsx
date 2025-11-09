@@ -1,7 +1,8 @@
 import { useTheme } from "@react-navigation/native";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import CopyLeft from "../../../assets/svg/CopyLeft";
+import { Text } from "../../components/Ui/core";
 
 import {
     CustomTopHeader,
@@ -33,7 +34,7 @@ const COLABORATORS = {
 const Paragraph = ({ customStyle = {}, children }) => {
     const { colors } = useTheme();
     return (
-        <Text style={[styles.paragraph, customStyle, { color: colors.txt.txt3 }]}>
+        <Text style={[styles.paragraph, customStyle]} color={colors.txt.txt3}>
             {children}
         </Text>
     );
@@ -50,7 +51,12 @@ const Link = ({ href, isPeople = false, children }) => {
               color: colors.txt.txt2,
           };
     return (
-        <LinkText href={String(href)} styles={styles}>
+        <LinkText
+            href={String(href)}
+            styles={styles}
+            color={isPeople ? colors.txt.txt3 : colors.txt.txt2}
+            underline={isPeople}
+        >
             {children}
         </LinkText>
     );
@@ -58,7 +64,7 @@ const Link = ({ href, isPeople = false, children }) => {
 
 export default function PrivacyPolicyScreen() {
     return (
-        <>
+        <View style={{ flex: 1, backgroundColor: "black" }}>
             <CustomTopHeader
                 headerTitle={"Privacy Policy And Terms of Use"}
                 height={38}
@@ -367,7 +373,7 @@ export default function PrivacyPolicyScreen() {
                         {"- Nickro_01290\n"}
                         {"- Cthyllax\n"}
                         {"- EcoleDirecte Neptunium\n"}-{" "}
-                        <Text style={{ fontWeight: 800 }}>Internet</Text>
+                        <Text weight="bold">Internet</Text>
                     </Paragraph>
                     <Paragraph>
                         • Curieux et motivé ? Rejoignez nous et participez au
@@ -419,12 +425,12 @@ export default function PrivacyPolicyScreen() {
                         </Link>
                     </Paragraph>
 
-                    <Text style={[styles.copyleft]}>
+                    <Text style={[styles.copyleft]} align="center">
                         Copyleft 2025 <CopyLeft size={17} /> Ecole Directe Plus
                     </Text>
                 </View>
             </ScrollView>
-        </>
+        </View>
     );
 }
 // •
@@ -461,8 +467,6 @@ const styles = StyleSheet.create({
         position: "relative",
     },
     copyleft: {
-        textAlign: "center",
-        fontSize: 17,
         marginTop: 10,
     },
 });

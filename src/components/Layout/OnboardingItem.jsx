@@ -1,7 +1,8 @@
 import { LinearGradient } from "expo-linear-gradient";
-import { Text, useWindowDimensions, View } from "react-native";
+import { useWindowDimensions, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import GradeArrow from "../../../assets/svg/GradeArrow";
+import Text from "../Ui/core/Text";
 
 export default function OnboardingItem({ item }) {
     const { width } = useWindowDimensions();
@@ -24,7 +25,7 @@ export default function OnboardingItem({ item }) {
                         flex: 1,
                     }}
                 >
-                    <Text style={{ fontSize: 48, fontWeight: "900" }}>
+                    <Text size={48} weight="bold">
                         {item.displayText}
                     </Text>
 
@@ -36,12 +37,7 @@ export default function OnboardingItem({ item }) {
                         }}
                     >
                         <GradeArrow />
-                        <Text
-                            style={{
-                                fontSize: 64,
-                                fontWeight: "900",
-                            }}
-                        >
+                        <Text weight="bold" size={64}>
                             {item.value}
                         </Text>
                     </View>

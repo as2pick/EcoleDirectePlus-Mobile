@@ -1,7 +1,7 @@
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useCallback, useEffect, useState } from "react";
-import { Dimensions, Text, View } from "react-native";
+import { Dimensions, View } from "react-native";
 import GradeArrow from "../../../../assets/svg/GradeArrow";
 import BottomSheet from "../../../components/Layout/BottomSheet";
 
@@ -17,6 +17,7 @@ import Discipline from "./custom/classes/Discipline";
 import Period from "./custom/classes/Period";
 import AddGradeModal from "./custom/components/SimulateGradeModal";
 
+import { Text } from "../../../components/Ui/core";
 import { useGrade } from "./custom/context/LocalContext";
 import { calculateStrengthsWeaknesses, formatGradeText } from "./custom/helper";
 import { useSimulation } from "./custom/hooks/useSimulation";
@@ -333,9 +334,7 @@ const HeaderStatsCarousel = ({ item }) => (
             <View
                 style={{ justifyContent: "center", alignItems: "center", flex: 1 }}
             >
-                <Text
-                    style={{ fontSize: 38, fontWeight: "900", textAlign: "center" }}
-                >
+                <Text size={38} weight="bold" align="center">
                     {item.text}
                 </Text>
                 <View
@@ -347,7 +346,7 @@ const HeaderStatsCarousel = ({ item }) => (
                     {Array.from({ length: 3 }).map((_, i) => (
                         <GradeArrow key={`left-${i}`} />
                     ))}
-                    <Text style={{ fontSize: 64, fontWeight: "900" }}>
+                    <Text size={64} weight="bold">
                         {item.value}
                     </Text>
                     {Array.from({ length: 3 }).map((_, i) => (
@@ -391,12 +390,8 @@ const StrengthsAndWeakness = ({ data, firstColor }) => {
                             marginRight: 8,
                         }}
                     >
-                        <Text>{i + 1} · </Text>
-                        <Text
-                            numberOfLines={1}
-                            ellipsizeMode="tail"
-                            style={{ flexShrink: 1 }}
-                        >
+                        <Text preset="label1">{i + 1} · </Text>
+                        <Text oneLine preset="label2" style={{ flexShrink: 1 }}>
                             {subject}
                         </Text>
                     </View>
@@ -412,7 +407,7 @@ const StrengthsAndWeakness = ({ data, firstColor }) => {
                             minWidth: "18%",
                         }}
                     >
-                        <Text>{formatGradeText(average)}</Text>
+                        <Text preset="label1">{formatGradeText(average)}</Text>
                     </View>
                 </View>
             ))}

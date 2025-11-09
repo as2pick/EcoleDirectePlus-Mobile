@@ -1,5 +1,6 @@
+import { useTheme } from "@react-navigation/native";
 import { useState } from "react";
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import Animated, {
     interpolate,
     useAnimatedStyle,
@@ -7,6 +8,7 @@ import Animated, {
     withTiming,
 } from "react-native-reanimated";
 import SimpleArrow from "../../../assets/svg/SimpleArrow";
+import Text from "../Ui/core/Text";
 
 export default function CustomDropdown({
     options = [
@@ -18,8 +20,8 @@ export default function CustomDropdown({
 }) {
     const [selected, setSelected] = useState(null);
     const [open, setOpen] = useState(false);
-
-    const progress = useSharedValue(0); // 0 = fermé, 1 = ouvert
+    const { colors } = useTheme();
+    const progress = useSharedValue(0);
 
     const toggleDropdown = () => {
         const next = !open;
@@ -36,7 +38,6 @@ export default function CustomDropdown({
 
     const dropdownStyle = useAnimatedStyle(() => ({
         opacity: progress.value,
-        // transform: [{ translateY: interpolate(progress.value, [0, 1], [-20, 0]) }],
         height: Math.min(
             interpolate(progress.value, [0, 1], [0, options.length * 50]),
             150
@@ -68,8 +69,9 @@ export default function CustomDropdown({
                 <TouchableOpacity onPress={toggleDropdown} activeOpacity={0.8}>
                     <View style={styles.buttonContent}>
                         <Animated.View style={arrowStyle}>
-                            <SimpleArrow />
+                            <SimpleArrow fill={colors.txt.txt1} />
                         </Animated.View>
+
                         <Text style={styles.buttonText}>
                             {selected ? selected.label : options[0].label}
                         </Text>
@@ -86,11 +88,7 @@ export default function CustomDropdown({
                             style={styles.option}
                             onPress={() => handleSelect(item)}
                         >
-                            <Text
-                                style={styles.optionText}
-                                numberOfLines={1}
-                                ellipsizeMode="tail"
-                            >
+                            <Text style={styles.optionText} oneLine>
                                 {item.label}
                             </Text>
                         </TouchableOpacity>

@@ -1,4 +1,4 @@
-import { Pressable, Text, TouchableOpacity, View } from "react-native";
+import { Pressable, TouchableOpacity, View } from "react-native";
 import {
     BestGrade,
     EqualToDisciplineAverage,
@@ -7,6 +7,7 @@ import {
     UpperThanDisciplineAverage,
     UpTheStreak,
 } from "../../../../../../assets/svg/badges";
+import { Text } from "../../../../../components/Ui/core";
 import { cssHslaToHsla } from "../../../../../utils/colorGenerator";
 import { formatGradeText } from "../helper";
 
@@ -112,11 +113,7 @@ export default class Grade {
                         borderWidth: 1,
                     }}
                 >
-                    <Text
-                        style={{ flexShrink: 1 }}
-                        numberOfLines={1}
-                        ellipsizeMode="tail"
-                    >
+                    <Text style={{ flexShrink: 1 }} oneLine preset="label2">
                         {this.libelle}
                     </Text>
                     <View
@@ -137,11 +134,13 @@ export default class Grade {
                                 );
                             })}
                     </View>
-                    <Text>
+                    <Text preset="label1">
                         {this.notSignificant
                             ? `(${formatGradeText(this.data.grade)})`
                             : formatGradeText(this.data.grade)}
-                        {this.data.outOf !== 20 && `/${this.data.outOf}`}
+                        <Text preset="label3">
+                            {this.data.outOf !== 20 && `/${this.data.outOf}`}
+                        </Text>
                     </Text>
                 </View>
             </TouchableOpacity>
@@ -174,23 +173,21 @@ export default class Grade {
                     });
                 }}
             >
-                <Text
-                    style={{ flexShrink: 1 }}
-                    numberOfLines={1}
-                    ellipsizeMode="tail"
-                >
+                <Text style={{ flexShrink: 1 }} oneLine preset="label2">
                     {this.libelle}
                 </Text>
-                <View
+                {/* <View
                     style={{
                         flexDirection: "row",
                         gap: 10,
                         marginHorizontal: 10,
                     }}
-                ></View>
-                <Text>
+                ></View> */}
+                <Text preset="label1">
                     {formatGradeText(this.data.grade)}
-                    {this.data.outOf !== 20 && `/${this.data.outOf}`}
+                    <Text preset="label3">
+                        {this.data.outOf !== 20 && `/${this.data.outOf}`}
+                    </Text>
                 </Text>
             </Pressable>
         );

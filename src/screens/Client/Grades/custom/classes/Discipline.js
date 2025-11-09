@@ -1,5 +1,6 @@
-import { Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import Animated from "react-native-reanimated";
+import { Text } from "../../../../../components/Ui/core";
 import { parseNumber } from "../../../../../utils/grades/makeAverage";
 import { objectsEqual } from "../../../../../utils/json";
 import { formatGradeText } from "../helper";
@@ -170,11 +171,7 @@ export default class Discipline {
                         alignItems: "center",
                     }}
                 >
-                    <Text
-                        style={{ fontSize: 20, width: "70%" }}
-                        numberOfLines={1}
-                        ellipsizeMode="tail"
-                    >
+                    <Text style={{ width: "70%" }} oneLine preset="h4">
                         {this.libelle}
                     </Text>
                     <View
@@ -187,7 +184,7 @@ export default class Discipline {
                             justifyContent: "center",
                         }}
                     >
-                        <Text style={{ fontSize: 24 }}>
+                        <Text preset="h3">
                             {formatGradeText(this.averageDatas.userAverage)}
                         </Text>
                     </View>
@@ -275,28 +272,21 @@ export default class Discipline {
                                         justifyContent: "center",
                                     }}
                                 >
-                                    <Text
-                                        style={{ fontSize: 24, textAlign: "center" }}
-                                    >
+                                    <Text align="center" preset="h3">
                                         {this.streakCount}
                                     </Text>
                                 </View>
                             </View>
                             <View style={{ maxWidth: "64%" }}>
-                                <Text
-                                    style={{ fontSize: 14 }}
-                                    numberOfLines={1}
-                                    ellipsizeMode="tail"
-                                >
+                                <Text oneLine preset="label2">
                                     {this.libelle}
                                 </Text>
                                 <Text
                                     style={{
-                                        fontSize: 14,
                                         opacity: 0.72,
                                     }}
-                                    numberOfLines={1}
-                                    ellipsizeMode="tail"
+                                    oneLine
+                                    preset="label2"
                                 >
                                     {Array.isArray(this.teachers)
                                         ? this.teachers.length > 1
@@ -306,7 +296,7 @@ export default class Discipline {
                                 </Text>
                             </View>
                         </View>
-                        <Text style={{ fontSize: 24 }}>
+                        <Text preset="h3">
                             {formatGradeText(this.averageDatas.userAverage)}
                         </Text>
                     </View>
@@ -340,7 +330,9 @@ export default class Discipline {
                                             {label}
                                         </Text>
                                         <View style={boxStyle}>
-                                            <Text>{formatGradeText(value)}</Text>
+                                            <Text preset="label2">
+                                                {formatGradeText(value)}
+                                            </Text>
                                         </View>
                                     </View>
                                 ))}
@@ -353,36 +345,34 @@ export default class Discipline {
                                         dispatch
                                     );
                                 })}
-                            <View key={index}>
-                                <TouchableOpacity
-                                    onPress={() =>
-                                        dispatch({
-                                            type: "OPEN_SIMULATION_MODAL",
-                                            payload: {
-                                                discipline: this.code,
-                                                libelle: this.libelle,
-                                            },
-                                        })
-                                    }
+                            <TouchableOpacity
+                                onPress={() =>
+                                    dispatch({
+                                        type: "OPEN_SIMULATION_MODAL",
+                                        payload: {
+                                            discipline: this.code,
+                                            libelle: this.libelle,
+                                        },
+                                    })
+                                }
+                                style={{
+                                    alignSelf: "center",
+                                }}
+                            >
+                                <View
                                     style={{
-                                        marginVertical: 8,
-                                        alignSelf: "center",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        backgroundColor: "hsla(240, 14%, 32%, .25)",
+                                        paddingHorizontal: 24,
+                                        borderRadius: 20,
                                     }}
                                 >
-                                    <View
-                                        style={{
-                                            alignItems: "center",
-                                            justifyContent: "center",
-                                            backgroundColor:
-                                                "hsla(240, 14%, 32%, .25)",
-                                            paddingHorizontal: 24,
-                                            borderRadius: 20,
-                                        }}
-                                    >
-                                        <Text style={{ fontSize: 24 }}>+</Text>
-                                    </View>
-                                </TouchableOpacity>
-                            </View>
+                                    <Text preset="h3" align="center">
+                                        +
+                                    </Text>
+                                </View>
+                            </TouchableOpacity>
                             {this.grades
                                 .filter(({ isSimulation }) => isSimulation)
                                 .map((grade, idx) => {

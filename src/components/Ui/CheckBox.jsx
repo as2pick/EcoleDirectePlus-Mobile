@@ -1,7 +1,8 @@
 import { useTheme } from "@react-navigation/native";
 import { useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import CheckIcon from "../../../assets/svg/CheckIcon";
+import Text from "./core/Text";
 
 export default function CheckBox({
     initialValue = false,
@@ -24,12 +25,12 @@ export default function CheckBox({
                 <View style={[styles.checkbox, { borderColor: colors.border }]}>
                     {isChecked && (
                         <Text>
-                            <CheckIcon />
+                            <CheckIcon fill={colors.txt.txt1} />
                         </Text>
                     )}
                 </View>
             </TouchableOpacity>
-            <Text style={[styles.text, { color: colors.txt.txt1 }]}>{libelle}</Text>
+            <Text style={[styles.text]}>{libelle}</Text>
         </View>
     );
 }

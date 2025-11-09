@@ -1,7 +1,7 @@
 import { useTheme } from "@react-navigation/native";
-import React from "react";
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet } from "react-native";
 import { UiStyles } from "./UiStyles";
+import Text from "./core/Text";
 
 export default function Subtitle({ children, customStyle = {} }) {
     const { colors } = useTheme();
@@ -9,7 +9,13 @@ export default function Subtitle({ children, customStyle = {} }) {
     const combinedStyles = StyleSheet.flatten([UiStyles.subtitle, customStyle]);
 
     return (
-        <Text style={combinedStyles} accessible={true} accessibilityRole="text">
+        <Text
+            style={combinedStyles}
+            accessible={true}
+            accessibilityRole="text"
+            size={18}
+            weight="normal"
+        >
             {children}
         </Text>
     );

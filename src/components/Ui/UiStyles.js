@@ -10,8 +10,6 @@ export const UiStyles = StyleSheet.create({
         paddingBottom: 32,
     },
     subtitle: {
-        fontWeight: 600,
-        fontSize: 18,
         marginLeft: 20,
     },
     paragraph: {

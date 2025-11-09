@@ -1,8 +1,9 @@
 import { useTheme } from "@react-navigation/native";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { CONFIG } from "../../constants/config";
 import { addOpacityToCssRgb } from "../../utils/colorGenerator";
 import LinkText from "./LinkText";
+import Text from "./core/Text";
 
 export default function InDev({}) {
     const { colors } = useTheme();
@@ -11,22 +12,13 @@ export default function InDev({}) {
     return (
         <View style={[styles.parent]}>
             <View style={[styles.children, { borderColor: mainColor }]}>
-                <Text
-                    style={[
-                        styles.text,
-                        {
-                            color: mainColor,
-                        },
-                    ]}
-                >
+                <Text align="center" preset="label2" color={mainColor}>
                     Fonctionnalité en cours de développement...
                 </Text>
-                <Text style={[styles.text, { color: mainColor }]}>
+
+                <Text align="center" preset="label2" color={mainColor}>
                     Rejoignez le{" "}
-                    <LinkText
-                        href={CONFIG.discordInviteLink}
-                        styles={[styles.link, { color: mainColor }]}
-                    >
+                    <LinkText href={CONFIG.discordInviteLink} color={mainColor}>
                         serveur Discord d'EDP
                     </LinkText>{" "}
                     pour en suivre l'avancée !
@@ -53,9 +45,6 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 18,
         textAlign: "center",
-    },
-    link: {
-        textDecorationLine: "underline",
     },
 });
 

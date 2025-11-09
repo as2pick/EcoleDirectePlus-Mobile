@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { useFocusEffect, useNavigation, useTheme } from "@react-navigation/native";
 
@@ -15,6 +15,7 @@ import { CONFIG } from "../../../constants/config";
 import { GLOBALS_DATAS } from "../../../constants/device/globals";
 import { timetableConfig } from "../../../constants/features/timetableConfig";
 
+import Text from "../../../components/Ui/core/Text";
 import { useUser } from "../../../context/UserContext";
 import { storageServiceStates } from "../../../helpers/storageService";
 import { routesNames } from "../../../router/config/routesNames";
@@ -136,12 +137,7 @@ export default function TimetableContent() {
                             )
                         }
                     >
-                        <Text
-                            style={{
-                                fontWeight: 600,
-                                fontSize: 18,
-                            }}
-                        >
+                        <Text preset="title1" oneLine>
                             {activeDate}
                         </Text>
                     </TouchableOpacity>
@@ -288,11 +284,13 @@ const CourseBox = ({ course, navigation, theme, timetableViewDims }) => {
                                     ? timetableConfig.cancelledColor
                                     : timetableConfig.dispensedColor,
                                 borderRadius: 50,
-                                fontSize: 18,
+
                                 borderColor: theme.colors.txt.txt1,
                                 borderWidth: 1.2,
                                 elevation: 14,
+                                transform: [{ rotate: "-6deg" }],
                             }}
+                            preset="title1"
                         >
                             {isCancelled ? "Annulé" : "Dispensé"}
                         </Text>
@@ -315,26 +313,23 @@ const CourseBox = ({ course, navigation, theme, timetableViewDims }) => {
                     >
                         <Text
                             style={{
-                                fontSize: 13,
-                                color: textColor,
-
                                 backgroundColor: color,
+
                                 borderRadius: 6,
 
                                 paddingHorizontal: 8,
                                 paddingVertical: 2,
                             }}
+                            color={textColor}
+                            preset="label2"
                             onLayout={handleLibelleLayout}
                         >
                             {libelle}
                         </Text>
 
                         <Text
-                            style={{
-                                color: color,
-                                fontWeight: 600,
-                                fontSize: 12,
-                            }}
+                            color={color}
+                            preset="label2"
                             onLayout={handleRoomLayout}
                         >
                             {room}
@@ -346,13 +341,7 @@ const CourseBox = ({ course, navigation, theme, timetableViewDims }) => {
                             justifyContent: "space-between",
                         }}
                     >
-                        <Text
-                            style={{
-                                fontSize: 13,
-                            }}
-                        >
-                            {teacher}
-                        </Text>
+                        <Text preset="label3">{teacher}</Text>
                         <View
                             style={{
                                 flexDirection: "row",
@@ -360,25 +349,11 @@ const CourseBox = ({ course, navigation, theme, timetableViewDims }) => {
                                 alignItems: "center",
                             }}
                         >
-                            <Text
-                                style={{
-                                    fontSize: 14,
-                                    fontWeight: 300,
-                                }}
-                            >
-                                {startCourse.time}
-                            </Text>
+                            <Text preset="label2">{startCourse.time}</Text>
                             {/* <View style={{ position: "absolute" }}> */}
 
                             {/* </View> */}
-                            <Text
-                                style={{
-                                    fontSize: 14,
-                                    fontWeight: 300,
-                                }}
-                            >
-                                {endCourse.time}
-                            </Text>
+                            <Text preset="label2">{endCourse.time}</Text>
                             <RoadFinish size={14} />
                         </View>
                     </View>

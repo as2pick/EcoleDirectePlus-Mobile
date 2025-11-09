@@ -1,6 +1,7 @@
 import { useTheme } from "@react-navigation/native";
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet } from "react-native";
 import { UiStyles } from "./UiStyles";
+import Text from "./core/Text";
 
 export default function Title({ customStyle = {}, children }) {
     const { colors } = useTheme();

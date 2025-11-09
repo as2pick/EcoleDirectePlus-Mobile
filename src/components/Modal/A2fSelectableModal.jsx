@@ -1,14 +1,8 @@
 import { useTheme } from "@react-navigation/native";
-import React, { useState } from "react";
-import {
-    FlatList,
-    Modal,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
-} from "react-native";
+import { useState } from "react";
+import { FlatList, Modal, StyleSheet, TouchableOpacity, View } from "react-native";
 import { addOpacityToCssRgb } from "../../utils/colorGenerator";
+import Text from "../Ui/core/Text";
 
 export default function A2fSelectableModal({
     visible,
@@ -53,9 +47,9 @@ export default function A2fSelectableModal({
             <Text
                 style={[
                     styles.renderItemText,
-                    { color: colors.txt.txt3 },
                     selectedItem === item && [styles.renderItemTextSelected],
                 ]}
+                color={colors.txt.txt3}
             >
                 {item}
             </Text>

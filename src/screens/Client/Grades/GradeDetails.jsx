@@ -1,5 +1,4 @@
-import { Text, View } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
+import { FlatList, View } from "react-native";
 import {
     BestGrade,
     EqualToDisciplineAverage,
@@ -9,10 +8,27 @@ import {
     UpTheStreak,
 } from "../../../../assets/svg/badges";
 import { CustomTopHeader } from "../../../components";
+import { Text } from "../../../components/Ui/core";
 import { formatFrenchDate } from "../../../utils/date";
 import Discipline from "./custom/classes/Discipline";
 import Grade from "./custom/classes/Grade";
 import { formatGradeText } from "./custom/helper";
+
+const UI_BADGES = {
+    max_grade: MaxGrade,
+    best_grade: BestGrade,
+    upper_than_class_average: UpperThanClassAverage,
+    upper_than_discipline_average: UpperThanDisciplineAverage,
+    up_the_streak: UpTheStreak,
+    equal_to_discipline_average: EqualToDisciplineAverage,
+};
+
+const SKILLS_COLORS = {
+    "Non acquis": "hsl(0, 40%, 50%)",
+    "Partiellement acquis": "hsl(60, 70%, 40%)",
+    Acquis: "hsl(200, 40%, 50%)",
+    Dépassé: "hsl(130, 50%, 60%)",
+};
 
 export default function GradeDetails({ route }) {
     const { gradeData, disciplineData } = route.params;
@@ -20,67 +36,45 @@ export default function GradeDetails({ route }) {
     const grade = new Grade(gradeData);
     const discipline = new Discipline(disciplineData);
 
-    const uiBadges = {
-        max_grade: MaxGrade,
-        best_grade: BestGrade,
-        upper_than_class_average: UpperThanClassAverage,
-        upper_than_discipline_average: UpperThanDisciplineAverage,
-        up_the_streak: UpTheStreak,
-        equal_to_discipline_average: EqualToDisciplineAverage,
-    };
-    const skillsCorespondances = {
-        "Non acquis": "hsl(0, 40%, 50%)",
-        "Partiellement acquis": "hsl(60, 70%, 40%)",
-        Acquis: "hsl(200, 40%, 50%)",
-        Dépassé: "hsl(130, 50%, 60%)",
-    };
-
-    const renderItem = ({ item }) => {
-        return (
-            <View style={{ minWidth: "90%", marginVertical: 10 }}>
+    const renderItem = ({ item }) => (
+        <View style={{ minWidth: "90%", marginVertical: 10 }}>
+            <Text
+                style={{
+                    marginBottom: 4,
+                }}
+                decoration="underline"
+                color={"hsl(240, 40%, 75%)"} // EDIT
+                preset="body1"
+            >
+                {item.name}
+            </Text>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Text
                     style={{
-                        fontSize: 16,
-                        color: "hsl(240, 40%, 75%)",
-                        textDecorationStyle: "solid",
-                        textDecorationLine: "underline",
-                        marginBottom: 4,
+                        marginLeft: 16,
+                        flex: 1,
                     }}
+                    color={"hsl(240, 40%, 68%)"} // EDIT
+                    preset="body2"
                 >
-                    {item.name}
+                    {item.description}
                 </Text>
-                <View
+                <Text
                     style={{
-                        flexDirection: "row",
-                        alignItems: "flex-start",
-                        alignItems: "center",
+                        marginLeft: 8,
+                        width: "30%",
+                        flexShrink: 1,
                     }}
+                    align="right"
+                    preset="label2"
+                    color={SKILLS_COLORS[item.value]}
                 >
-                    <Text
-                        style={{
-                            marginLeft: 16,
-                            color: "hsl(240, 40%, 68%)",
-                            flex: 1,
-                            flexShrink: 1,
-                        }}
-                    >
-                        {item.description}
-                    </Text>
-                    <Text
-                        style={{
-                            color: skillsCorespondances[item.value],
-                            marginLeft: 8,
-                            width: "30%",
-                            flexShrink: 1,
-                            textAlign: "right",
-                        }}
-                    >
-                        {item.value}
-                    </Text>
-                </View>
+                    {item.value}
+                </Text>
             </View>
-        );
-    };
+        </View>
+    );
+
     return (
         <View style={{ flex: 1, backgroundColor: "hsl(240, 28%, 10%)" }}>
             <CustomTopHeader
@@ -88,6 +82,7 @@ export default function GradeDetails({ route }) {
                 height={33}
                 maxWidth="85%"
             />
+
             <View style={{ marginHorizontal: 22, flex: 1 }}>
                 <View
                     style={{
@@ -99,16 +94,9 @@ export default function GradeDetails({ route }) {
                         alignItems: "center",
                     }}
                 >
-                    <View
-                        style={{
-                            flexDirection: "column",
-                            maxWidth: "70%",
-                        }}
-                    >
-                        <Text style={{ fontSize: 16 }}>{grade.disciplineName}</Text>
-                        <View style={{}}>
-                            <Teachers teachers={discipline.teachers} />
-                        </View>
+                    <View style={{ flexDirection: "column", maxWidth: "70%" }}>
+                        <Text preset="label1">{grade.disciplineName}</Text>
+                        <Teachers teachers={discipline.teachers} />
                     </View>
                     <View
                         style={{
@@ -118,21 +106,16 @@ export default function GradeDetails({ route }) {
                             paddingVertical: 4,
                         }}
                     >
-                        <Text style={{ fontSize: 24 }}>
+                        <Text preset="h3">
                             {formatGradeText(discipline.averageDatas.userAverage)}
                         </Text>
                     </View>
                 </View>
-                <View
-                    style={{
-                        flexDirection: "row",
-                        gap: 12,
 
-                        marginTop: 14,
-                    }}
-                >
+                <View style={{ flexDirection: "row", gap: 12, marginTop: 14 }}>
                     <Cards datas={grade.data} />
                 </View>
+
                 <View
                     style={{
                         backgroundColor: "hsl(240, 27%, 16%)",
@@ -143,7 +126,8 @@ export default function GradeDetails({ route }) {
                         padding: 14,
                     }}
                 >
-                    <Text style={{ fontSize: 28 }}>Informations</Text>
+                    <Text preset="h2">Informations</Text>
+
                     {grade.badges.length > 0 && (
                         <View
                             style={{
@@ -158,7 +142,7 @@ export default function GradeDetails({ route }) {
                             }}
                         >
                             {grade.badges.map((badge, i) => {
-                                const BadgeComponent = uiBadges[badge];
+                                const BadgeComponent = UI_BADGES[badge];
                                 return (
                                     <BadgeComponent
                                         key={`${badge}-${i}`}
@@ -169,19 +153,34 @@ export default function GradeDetails({ route }) {
                         </View>
                     )}
 
-                    <View style={{ alignSelf: "flex-start", marginTop: 8 }}>
-                        <Text style={{ fontSize: 14 }}>
-                            · Type d’évaluation : {grade.homeworkType}
+                    <View
+                        style={{
+                            alignSelf: "flex-start",
+                            marginTop: 8,
+                            marginBottom: 10,
+                        }}
+                    >
+                        <Text preset="label2">
+                            · Type d'évaluation : {grade.homeworkType}
                         </Text>
-                        <Text style={{ fontSize: 14 }}>
-                            · Date: {formatFrenchDate(grade.date)}
+                        <Text preset="label2">
+                            · Date : {formatFrenchDate(grade.date)}
                         </Text>
                     </View>
+
                     <FlatList
                         data={grade.skills}
                         renderItem={renderItem}
+                        keyExtractor={(_, i) => i.toString()}
                         showsVerticalScrollIndicator={false}
                         showsHorizontalScrollIndicator={false}
+                        style={{ width: "100%" }}
+                        // contentContainerStyle={
+                        //     {
+                        //         paddingBottom: 10,
+                        //         paddingHorizontal: 4,
+                        //     }
+                        // }
                     />
                 </View>
             </View>
@@ -190,44 +189,36 @@ export default function GradeDetails({ route }) {
 }
 
 const Teachers = ({ teachers = [] }) => {
-    const textStyle = {
-        color: "hsl(240, 27%, 76%)",
-        fontSize: 14,
-    };
-
     if (teachers.length > 1) {
         return teachers.map((teacher, i) => (
-            <Text key={i} style={textStyle} numberOfLines={1} ellipsizeMode="tail">
+            <Text
+                key={i}
+                oneLine
+                preset="label2"
+                color={"hsl(240, 27%, 76%)"} /* EDIT */
+            >
                 - {teacher}
             </Text>
         ));
-    } else if (teachers.length === 1) {
+    }
+
+    if (teachers.length === 1) {
         return (
-            <Text style={textStyle} numberOfLines={1} ellipsizeMode="tail">
+            <Text oneLine preset="label2" color={"hsl(240, 27%, 76%)"} /* EDIT */>
                 {teachers[0]}
             </Text>
         );
-    } else {
-        return <Text style={textStyle}>No teachers for this discipline</Text>;
     }
+
+    return (
+        <Text preset="label3" color={"hsl(320, 52%, 55%)"} /* EDIT */>
+            Aucun enseignant pour cette discipline
+        </Text>
+    );
 };
 
 const Cards = ({ datas }) => {
     const { grade, coef, outOf } = datas;
-
-    const cardsStyle = {
-        backgroundColor: "hsl(240, 24%, 29%)",
-        flex: 1,
-        flexShrink: 0,
-        aspectRatio: 1,
-        borderRadius: 12,
-        alignItems: "center",
-        justifyContent: "space-evenly",
-    };
-    const textsStyle = {
-        color: "hsl(240, 27%, 76%)",
-        fontSize: 14,
-    };
 
     const cards = [
         { label: "Note obtenue", value: formatGradeText(grade) },
@@ -238,17 +229,26 @@ const Cards = ({ datas }) => {
     return (
         <>
             {cards.map((card, index) => (
-                <View key={index} style={cardsStyle}>
-                    <Text style={textsStyle} numberOfLines={2}>
+                <View
+                    key={index}
+                    style={{
+                        backgroundColor: "hsl(240, 24%, 29%)",
+                        flex: 1,
+                        flexShrink: 0,
+                        aspectRatio: 1,
+                        borderRadius: 12,
+                        alignItems: "center",
+                        justifyContent: "space-evenly",
+                    }}
+                >
+                    <Text
+                        preset="label2"
+                        numberOfLines={2}
+                        color="hsl(240, 27%, 76%)" // EDIT
+                    >
                         {card.label}
                     </Text>
-                    <Text
-                        style={{
-                            fontSize: 24,
-                        }}
-                    >
-                        {card.value}
-                    </Text>
+                    <Text preset="h3">{card.value}</Text>
                 </View>
             ))}
         </>

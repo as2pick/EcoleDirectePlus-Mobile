@@ -1,6 +1,6 @@
 import { useNavigation, useTheme } from "@react-navigation/native";
-import { useCallback, useEffect, useState } from "react";
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AccountIcon from "../../../../assets/svg/AccountIcon.jsx";
 import DiscordLogo from "../../../../assets/svg/DiscordLogo.jsx";
@@ -14,6 +14,7 @@ import {
     OverLoader,
 } from "../../../components/index.js";
 
+import Text from "../../../components/Ui/core/Text.jsx";
 import { getApiMessage } from "../../../constants/api/codes.js";
 import { useSingIn } from "../../../context/SignInContext.jsx";
 import { routesNames } from "../../../router/config/routesNames.js";
@@ -42,6 +43,18 @@ export default function LoginScreen() {
     });
     const [loading, setLoading] = useState(null);
     const [showLoader, setShowLoader] = useState(false);
+    const usernameInputRef = useRef(null);
+    const passwordInputRef = useRef(null);
+
+    const connect = useCallback(() => {
+        setLoading(true);
+        signIn({
+            username: username,
+            password: password,
+            keepConnected: keepConnected,
+        });
+        setApiError(null);
+    }, [username, password, keepConnected]);
 
     useEffect(() => {
         if (!state || !apiError) return;
@@ -99,7 +112,10 @@ export default function LoginScreen() {
                 <View style={styles.logo.box}>
                     <EDPLogo size={88} />
                     <Text
-                        style={[styles.logo.text, { color: theme.colors.txt.txt3 }]}
+                        style={[styles.logo.text]}
+                        color={theme.colors.txt.txt3}
+                        weight="bold"
+                        size={48}
                     >
                         Connexion
                     </Text>
@@ -108,12 +124,20 @@ export default function LoginScreen() {
                     <View style={styles.input.cases}>
                         <View style={styles.input.logos}>
                             <TextInput
+                                ref={usernameInputRef}
                                 placeholder="Identifiant"
+                                placeholderTextColor={theme.colors.txt.txt1}
                                 onChangeText={(data) => {
                                     setApiError(null);
                                     setUsername(data);
                                 }}
+                                onSubmitEditing={() =>
+                                    passwordInputRef.current?.focus()
+                                }
+                                returnKeyType="next"
                                 value={username}
+                                textAlign="center"
+                                spellCheck={false}
                                 style={[
                                     styles.input.case,
                                     {
@@ -128,12 +152,19 @@ export default function LoginScreen() {
                         </View>
                         <View style={styles.input.logos}>
                             <TextInput
+                                ref={passwordInputRef}
                                 placeholder="Mot de passe"
+                                placeholderTextColor={theme.colors.txt.txt1}
                                 onChangeText={(data) => {
                                     setApiError(null);
                                     setPassword(data);
                                 }}
+                                onSubmitEditing={connect}
                                 value={password}
+                                returnKeyType="done"
+                                spellCheck={false}
+                                textAlign="center"
+                                // keyboardType="visible-password"
                                 // secureTextEntry
                                 style={[
                                     styles.input.case,
@@ -158,28 +189,19 @@ export default function LoginScreen() {
                 </View>
 
                 <TouchableOpacity
-                    onPress={() => {
-                        setLoading(true);
-                        signIn({
-                            username: username,
-                            password: password,
-                            keepConnected: keepConnected,
-                        });
-                        setApiError(null);
+                    onPress={connect}
+                    style={{
+                        theme: theme,
+                        borderWidth: 1.4,
+
+                        borderRadius: 12,
+                        paddingVertical: 7,
+                        paddingHorizontal: 16,
+                        borderColor: theme.colors.border,
+                        transform: [{ scale: 1.2 }],
                     }}
-                    style={{ theme: theme }}
                 >
-                    <Text
-                        style={[
-                            {
-                                borderColor: theme.colors.border,
-                                transform: [{ scale: 1.2 }],
-                            },
-                            styles.button,
-                        ]}
-                    >
-                        {"Se connecter      ➜"}
-                    </Text>
+                    <Text>{"Se connecter      ➜"}</Text>
                 </TouchableOpacity>
             </View>
             {apiError && (
@@ -235,10 +257,11 @@ const styles = StyleSheet.create({
     logos: {
         flexDirection: "row",
         position: "absolute",
-        top: 12,
-        left: 8,
+        left: 4,
+        top: 8,
         marginLeft: 12,
         gap: 16,
+        transform: [{ rotate: "-10deg" }],
     },
     checkBox: {
         marginLeft: "5%",
@@ -269,10 +292,7 @@ const styles = StyleSheet.create({
             padding: 10,
             borderRadius: 10,
         },
-        text: {
-            fontWeight: 900,
-            fontSize: 48,
-        },
+
         textOutline: {
             paddingHorizontal: 17,
             paddingVertical: 4,
@@ -302,14 +322,6 @@ const styles = StyleSheet.create({
             right: 12,
             position: "absolute",
         },
-    },
-
-    button: {
-        borderWidth: 1.4,
-
-        borderRadius: 12,
-        paddingVertical: 7,
-        paddingHorizontal: 16,
     },
 
     infos: {
