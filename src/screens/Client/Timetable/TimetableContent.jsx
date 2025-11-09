@@ -198,6 +198,7 @@ const CourseBox = ({ course, navigation, theme, timetableViewDims }) => {
     const libelleLayoutRef = useRef(false);
     const roomLayoutRef = useRef(false);
     const { colors } = useTheme();
+    const caseColor = addOpacityToCssRgb(colors.case, 0.2);
 
     useEffect(() => {
         if (libelleLayout && roomLayout) {
@@ -241,7 +242,7 @@ const CourseBox = ({ course, navigation, theme, timetableViewDims }) => {
             roomLayoutRef.current = true;
         }
     };
-
+    
     return (
         <>
             <TouchableOpacity
@@ -256,7 +257,7 @@ const CourseBox = ({ course, navigation, theme, timetableViewDims }) => {
                         borderRadius: 16,
                         position: "absolute",
                         paddingHorizontal: 12,
-                        //backgroundColor: "white",
+                        backgroundColor: caseColor,
                         paddingVertical:
                             height <= CONFIG.minCourseSize
                                 ? timetableViewDims.height /
