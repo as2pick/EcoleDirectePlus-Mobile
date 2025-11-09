@@ -15,9 +15,19 @@ const NavigationBottomBar = ({ state, descriptors, navigation }) => {
             style={[
                 styles.container,
                 {
-                    backgroundColor: colors.navbar.background,
-                    borderTopColor: colors.navbar.border,
-                    borderWidth: 1.2,
+                    backgroundColor: "rgba(255, 255, 255, 0.7)",
+                    //borderTopColor: colors.navbar.border,
+                    //borderWidth: 1.2,
+                    borderRadius: 30,
+                    boxShadow: "0px 8px 9px -5px rgba(0, 0, 0, 0.25)",
+                    boxShadow: "0px 15px 22px 2px rgba(0, 0, 0, 0.14)",
+                    //shadowColor: "black",
+                    //shadowOffset: { width: 0, height: -2 },
+                    //shadowOpacity: 0.3,
+                    //shadowRadius: 15,
+                    bottom: 10,
+                    marginHorizontal: 10,
+                    position: "absolute",
                 },
             ]}
         >
@@ -62,14 +72,15 @@ const NavigationBottomBar = ({ state, descriptors, navigation }) => {
                                           styles.iconPadding,
                                           {
                                               backgroundColor:
-                                                  colors.navbar.active_icon_bg,
+                                                  colors.main,
+                                                  //colors.navbar.active_icon_bg,
                                           },
                                       ]
                                     : [
                                           styles.iconPadding,
                                           {
                                               backgroundColor:
-                                                  colors.navbar.icons_bg,
+                                                  colors.secondary,
                                           },
                                       ]
                             }
@@ -94,7 +105,7 @@ const styles = StyleSheet.create({
         height: CONFIG.tabBarHeight, // 79
         justifyContent: "center",
     },
-    iconPadding: { padding: 5, borderRadius: 6 },
+    iconPadding: { padding: 7, borderRadius: 15, },
 });
 
 export default NavigationBottomBar;
