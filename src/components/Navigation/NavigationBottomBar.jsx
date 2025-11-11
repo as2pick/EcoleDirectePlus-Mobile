@@ -17,15 +17,8 @@ const NavigationBottomBar = ({ state, descriptors, navigation }) => {
                 styles.container,
                 {
                     backgroundColor: caseColor,
-                    //borderTopColor: colors.navbar.border,
-                    //borderWidth: 1.2,
                     borderRadius: 30,
-                    //boxShadow: "0px 8px 9px -5px rgb(0, 0, 0)"+shadowColor,
                     boxShadow: "0px 0px 10px 2px rgb(0, 0, 0)"+shadowColor,
-                    //shadowColor: "black",
-                    //shadowOffset: { width: 0, height: -2 },
-                    //shadowOpacity: 0.3,
-                    //shadowRadius: 15,
                 },
             ]}
         >
@@ -69,14 +62,13 @@ const NavigationBottomBar = ({ state, descriptors, navigation }) => {
                                     ? [
                                           styles.iconPadding,
                                           {
-                                              backgroundColor: colors.main,
-                                              //colors.navbar.active_icon_bg,
+                                            backgroundColor:colors.main,
                                           },
                                       ]
                                     : [
                                           styles.iconPadding,
                                           {
-                                              backgroundColor: colors.secondary,
+                                              backgroundColor:colors.secondary,
                                           },
                                       ]
                             }
@@ -102,7 +94,14 @@ const styles = StyleSheet.create({
         justifyContent: "space-around", // or space-between
     },
     tab: {
+        //flex: 1,
         alignItems: "center",
+        //height: CONFIG.tabBarHeight, // 79
+        //justifyContent: "center",
+    },
+    iconPadding: {
+        padding: 6,
+        borderRadius: 12,
     },
     iconPadding: {
         padding: 6,
