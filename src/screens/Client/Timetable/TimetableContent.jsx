@@ -198,7 +198,7 @@ const CourseBox = ({ course, navigation, theme, timetableViewDims }) => {
     const libelleLayoutRef = useRef(false);
     const roomLayoutRef = useRef(false);
     const { colors } = useTheme();
-    const caseColor = addOpacityToCssRgb(colors.case, 0.2);
+    const caseColor = addOpacityToCssRgb(colors.theme, 0.2);
 
     useEffect(() => {
         if (libelleLayout && roomLayout) {
@@ -325,6 +325,7 @@ const CourseBox = ({ course, navigation, theme, timetableViewDims }) => {
                         justifyContent: "space-between",
                         flex: 1,
                         oppacity: 1,
+                        width: "100%",
                     }}>
                     <View
                         style={{
@@ -338,6 +339,7 @@ const CourseBox = ({ course, navigation, theme, timetableViewDims }) => {
                                 justifyContent: "flex-start",
                                 gap: 6,
                                 alignItems: "center",
+                                width: "100%",
                             }}
                         >
                             <Text
@@ -366,22 +368,31 @@ const CourseBox = ({ course, navigation, theme, timetableViewDims }) => {
                             >
                                 {room}
                             </Text>
-                            <RoadFinish size={14} />
                         </View>
                         <View
                         style={{
+                            //width: '100%',
                             flexDirection: "row",
                             justifyContent: "flex-start",
                         }}
-                    >
-                        <Text
-                            style={{
-                                fontSize: 13,
-                            }}
                         >
-                            {teacher}
-                        </Text>
+                            <Text
+                                style={{
+                                    fontSize: 13,
+                                    color: colors.contrast,
+                                }}
+                            >
+                                {teacher}
+                            </Text>
                         </View>
+                    </View>
+                    <View
+                        style={{flexDirection: "column",
+                            justifyContent: "flex-end",
+                            alignItems: "right",
+                            selfAlign: "right",
+                            marginLeft: 'auto',}}>
+                        <RoadFinish size={14} />
                     </View>
                     <View
                         style={{
@@ -395,6 +406,7 @@ const CourseBox = ({ course, navigation, theme, timetableViewDims }) => {
                                 style={{
                                     fontSize: 14,
                                     fontWeight: 300,
+                                    color: colors.contrast,
                                 }}>
                             {startCourse.time}
                         </Text>
