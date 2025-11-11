@@ -242,7 +242,7 @@ const CourseBox = ({ course, navigation, theme, timetableViewDims }) => {
             roomLayoutRef.current = true;
         }
     };
-    
+
     return (
         <>
             <TouchableOpacity
@@ -324,9 +324,10 @@ const CourseBox = ({ course, navigation, theme, timetableViewDims }) => {
                         flexDirection: "row",
                         justifyContent: "space-between",
                         flex: 1,
-                        oppacity: 1,
+                        opacity: 1,
                         width: "100%",
-                    }}>
+                    }}
+                >
                     <View
                         style={{
                             flexDirection: "column",
@@ -370,11 +371,11 @@ const CourseBox = ({ course, navigation, theme, timetableViewDims }) => {
                             </Text>
                         </View>
                         <View
-                        style={{
-                            //width: '100%',
-                            flexDirection: "row",
-                            justifyContent: "flex-start",
-                        }}
+                            style={{
+                                //width: '100%',
+                                flexDirection: "row",
+                                justifyContent: "flex-start",
+                            }}
                         >
                             <Text
                                 style={{
@@ -387,11 +388,14 @@ const CourseBox = ({ course, navigation, theme, timetableViewDims }) => {
                         </View>
                     </View>
                     <View
-                        style={{flexDirection: "column",
+                        style={{
+                            flexDirection: "column",
                             justifyContent: "flex-end",
                             alignItems: "right",
                             selfAlign: "right",
-                            marginLeft: 'auto',}}>
+                            marginLeft: "auto",
+                        }}
+                    >
                         <RoadFinish size={14} />
                     </View>
                     <View
@@ -403,27 +407,31 @@ const CourseBox = ({ course, navigation, theme, timetableViewDims }) => {
                         }}
                     >
                         <Text
-                                style={{
-                                    fontSize: 14,
-                                    fontWeight: 300,
-                                    color: colors.contrast,
-                                }}>
+                            style={{
+                                fontSize: 14,
+                                fontWeight: 300,
+                                color: colors.contrast,
+                            }}
+                        >
                             {startCourse.time}
                         </Text>
-                        <View style={{ 
-                            width: 3,
-                            backgroundColor: color, 
-                            flexDirection: "row", 
-                            flex: 1,
-                            borderRadius: 30,
-                            //marginVertical: 4,
-                            }} />
+                        <View
+                            style={{
+                                width: 3,
+                                backgroundColor: color,
+                                flexDirection: "row",
+                                flex: 1,
+                                borderRadius: 30,
+                                //marginVertical: 4,
+                            }}
+                        />
                         <Text
-                                style={{
-                                    fontSize: 14,
-                                    fontWeight: 300,
-                                    color: colors.contrast,
-                                }}>
+                            style={{
+                                fontSize: 14,
+                                fontWeight: 300,
+                                color: colors.contrast,
+                            }}
+                        >
                             {endCourse.time}
                         </Text>
                     </View>

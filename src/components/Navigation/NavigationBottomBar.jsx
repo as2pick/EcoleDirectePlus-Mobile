@@ -17,8 +17,8 @@ const NavigationBottomBar = ({ state, descriptors, navigation }) => {
                 styles.container,
                 {
                     backgroundColor: caseColor,
-                    borderRadius: 30,
-                    boxShadow: "0px 0px 10px 2px rgb(0, 0, 0)"+shadowColor,
+                    borderRadius: 25,
+                    boxShadow: "0px 0px 10px 2px rgb(0, 0, 0)" + shadowColor,
                 },
             ]}
         >
@@ -62,13 +62,13 @@ const NavigationBottomBar = ({ state, descriptors, navigation }) => {
                                     ? [
                                           styles.iconPadding,
                                           {
-                                            backgroundColor:colors.main,
+                                              backgroundColor: colors.main,
                                           },
                                       ]
                                     : [
                                           styles.iconPadding,
                                           {
-                                              backgroundColor:colors.secondary,
+                                              backgroundColor: colors.secondary,
                                           },
                                       ]
                             }

@@ -1,9 +1,10 @@
 import Svg, { Path } from "react-native-svg";
-import { useTheme } from "@react-navigation/native";
+import { useTheme } from "../../src/context/ThemeContext";
 
 export default function BackArrow({ size = 30, fill, props = {} }) {
-    const { colors } = useTheme();
-    fill = fill || colors.contrast
+    const { theme } = useTheme();
+
+    fill = fill || theme.colors.contrast;
     return (
         <Svg width={size} height={size} viewBox="0 0 24 24" fill={"none"}>
             <Path

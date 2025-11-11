@@ -1,5 +1,5 @@
 import { useNavigation, useTheme } from "@react-navigation/native";
-import { LinearGradient} from 'expo-linear-gradient';
+import { LinearGradient } from "expo-linear-gradient";
 import { useCallback, useEffect, useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -102,9 +102,7 @@ export default function LoginScreen() {
             <View style={styles.form}>
                 <View style={styles.logo.box}>
                     <EDPLogo size={88} />
-                    <Text style={[styles.logo.text]}>
-                        Connexion
-                    </Text>
+                    <Text style={[styles.logo.text]}>Connexion</Text>
                 </View>
                 <View style={[styles.input.box]}>
                     <View style={styles.input.cases}>
@@ -144,7 +142,6 @@ export default function LoginScreen() {
                                 initialValue={keepConnected}
                                 onValueChange={(v) => setKeepConnected(v)}
                                 libelle="Rester connecté"
-
                             />
                         </View>
                     </View>
@@ -163,25 +160,16 @@ export default function LoginScreen() {
                     style={styles.buttonWrapper}
                 >
                     <LinearGradient
-                        // Couleurs du dégradé (au moins deux)
-                        colors={[theme.colors.main, theme.colors.accent]} 
-                        // Direction du dégradé (exemple : de gauche à droite)
-                        start={{ x: 0.0, y: 1.0 }} 
+                        colors={[theme.colors.main, theme.colors.accent]}
+                        start={{ x: 0.0, y: 1.0 }}
                         end={{ x: 1.0, y: 0.0 }}
-                        // 🔑 Le style du dégradé doit prendre toute la taille du bouton
                         style={styles.gradientStyle}
                     >
-                    <Text style={styles.button}>
-                        {"Se connecter      ➜"}
-                    </Text>
+                        <Text style={styles.button}>{"Se connecter      ➜"}</Text>
                     </LinearGradient>
                 </TouchableOpacity>
             </View>
-            {apiError && (
-                <Text style={styles.error}>
-                    {apiError}
-                </Text>
-            )}
+            {apiError && <Text style={styles.error}>{apiError}</Text>}
             <View style={styles.infos}>
                 <TouchableOpacity
                     onPress={() => {
@@ -206,127 +194,129 @@ export default function LoginScreen() {
     );
 }
 
-const createStyles = (theme, caseColor) => StyleSheet.create({ //const styles = StyleSheet.create({ - Temporary
-    container: {
-        flex: 1,
-        alignItems: "center",
-        backgroundColor: theme.colors.background.login,
-    },
-    logos: {
-        flexDirection: "row",
-        position: "absolute",
-        top: 12,
-        left: 8,
-        marginLeft: 12,
-        gap: 16,
-        color: theme.colors.main,
-    },
-    checkBox: {
-        marginLeft: "5%",
-    },
-    loader: {
-        position: "absolute",
-        left: 0,
-        top: 0,
-        right: 0,
-        bottom: 0,
-        zIndex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "rgb(10, 10, 10)",
-    },
-    form: {
-        marginTop: 26,
-        height: "82%",
-        width: "100%",
-        justifyContent: "space-evenly",
-        flexDirection: "column",
-        alignItems: "center",
-    },
-    logo: {
-        box: { alignItems: "center", gap: 26 },
-        logoOutline: {
-            borderWidth: 1,
-            padding: 10,
-            borderRadius: 10,
-        },
-        text: {
-            fontWeight: 900,
-            fontSize: 48,
-            color: theme.colors.accent,
-        },
-        textOutline: {
-            paddingHorizontal: 17,
-            paddingVertical: 4,
-            borderWidth: 1,
-            borderRadius: 10,
-        },
-    },
-    input: {
-        box: {
-            width: "100%",
-            paddingHorizontal: 20,
-            borderRadius: 23,
-        },
-        cases: { gap: 20 },
-        case: {
-            borderRadius: 14,
-            borderWidth: 0.8,
-            paddingHorizontal: 17,
-            paddingRight: 42, // 30(logo size)+12(right 12)
-            fontSize: 16,
-            overflow: "hidden",
-            borderColor: theme.colors.accent,
-            color: theme.colors.main,
-            backgroundColor: caseColor,
+const createStyles = (theme, caseColor) =>
+    StyleSheet.create({
+        //const styles = StyleSheet.create({ - Temporary
+        container: {
+            flex: 1,
+            alignItems: "center",
+            backgroundColor: theme.colors.background.login,
         },
         logos: {
-            justifyContent: "center",
-        },
-        icon: {
-            right: 12,
+            flexDirection: "row",
             position: "absolute",
+            top: 12,
+            left: 8,
+            marginLeft: 12,
+            gap: 16,
+            color: theme.colors.main,
         },
-    },
+        checkBox: {
+            marginLeft: "5%",
+        },
+        loader: {
+            position: "absolute",
+            left: 0,
+            top: 0,
+            right: 0,
+            bottom: 0,
+            zIndex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgb(10, 10, 10)",
+        },
+        form: {
+            marginTop: 26,
+            height: "82%",
+            width: "100%",
+            justifyContent: "space-evenly",
+            flexDirection: "column",
+            alignItems: "center",
+        },
+        logo: {
+            box: { alignItems: "center", gap: 26 },
+            logoOutline: {
+                borderWidth: 1,
+                padding: 10,
+                borderRadius: 10,
+            },
+            text: {
+                fontWeight: 900,
+                fontSize: 48,
+                color: theme.colors.accent,
+            },
+            textOutline: {
+                paddingHorizontal: 17,
+                paddingVertical: 4,
+                borderWidth: 1,
+                borderRadius: 10,
+            },
+        },
+        input: {
+            box: {
+                width: "100%",
+                paddingHorizontal: 20,
+                borderRadius: 23,
+            },
+            cases: { gap: 20 },
+            case: {
+                borderRadius: 14,
+                borderWidth: 0.8,
+                paddingHorizontal: 17,
+                paddingRight: 42, // 30(logo size)+12(right 12)
+                fontSize: 16,
+                overflow: "hidden",
+                borderColor: theme.colors.accent,
+                color: theme.colors.main,
+                backgroundColor: caseColor,
+            },
+            logos: {
+                justifyContent: "center",
+            },
+            icon: {
+                right: 12,
+                position: "absolute",
+            },
+        },
 
-    button: {
-        //borderWidth: 1,
-        //borderColor: theme.colors.accent,
-        //transform: [{ scale: 1.2 }],
-        borderRadius: 12,
-        paddingVertical: 7,
-        paddingHorizontal: 16,
-        color: theme.colors.case,
-        //backgroundColor: theme.colors.accent,
-    },
-    buttonWrapper: {
-        borderRadius: 12,
-        overflow: 'hidden',
-        transform: [{ scale: 1.2 }],
-    },
+        button: {
+            //borderWidth: 1,
+            //borderColor: theme.colors.accent,
+            //transform: [{ scale: 1.2 }],
+            borderRadius: 12,
+            paddingVertical: 7,
+            paddingHorizontal: 16,
+            color: theme.colors.case,
+            //backgroundColor: theme.colors.accent,
+        },
+        buttonWrapper: {
+            borderRadius: 12,
+            overflow: "hidden",
+            transform: [{ scale: 1.2 }],
+        },
 
-    infos: {
-        position: "absolute",
-        bottom: 20,
-    },
-    privacyPolicy: {
-        maxWidth: 210,
-        textAlign: "center",
-        color: theme.colors.main,
-    },
-    error: {
-        color: theme.colors.error,
-        padding: 12,
-        backgroundColor: theme.colors.bg.bg2,
-        borderColor: theme.colors.error,
-        borderWidth: 0.9,
-        borderRadius: 12,
-    },
-    gradientStyle: {
-        paddingVertical: 0,
-        paddingHorizontal: 0,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-});
+        infos: {
+            position: "absolute",
+            bottom: 20,
+        },
+        privacyPolicy: {
+            maxWidth: 210,
+            textAlign: "center",
+            color: theme.colors.main,
+        },
+        error: {
+            color: theme.colors.error,
+            padding: 12,
+            backgroundColor: theme.colors.bg.bg2,
+            borderColor: theme.colors.error,
+            borderWidth: 0.9,
+            borderRadius: 12,
+        },
+        gradientStyle: {
+            paddingVertical: 0,
+            paddingHorizontal: 0,
+            justifyContent: "center",
+            alignItems: "center",
+        },
+    });
 
