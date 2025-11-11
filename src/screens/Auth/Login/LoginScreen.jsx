@@ -286,7 +286,7 @@ const createStyles = (theme, caseColor) =>
             borderRadius: 12,
             paddingVertical: 7,
             paddingHorizontal: 16,
-            color: theme.colors.case,
+            color: theme.colors.theme,
             //backgroundColor: theme.colors.accent,
         },
         buttonWrapper: {
