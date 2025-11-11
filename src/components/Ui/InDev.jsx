@@ -7,7 +7,6 @@ import LinkText from "./LinkText";
 export default function InDev({}) {
     const { colors } = useTheme();
     const { shadow } = useTheme();
-    const styles = createStyle(colors);
     const mainColor = addOpacityToCssRgb(colors.main, 0.7);
     const shadowColor = addOpacityToCssRgb("rgb(0, 0, 0)", shadow.oppacity);
     const caseColor = addOpacityToCssRgb(colors.case, 0.8);
@@ -47,25 +46,24 @@ export default function InDev({}) {
     );
 }
 
-const createStyle = (colors) =>
-    StyleSheet.create({
-        parent: {
-            height: "100%",
-            alignItems: "center",
-            marginHorizontal: "4%",
-        },
-        children: {
-            borderRadius: 18,
-            height: "27%",
-            padding: 20,
-            justifyContent: "center",
-        },
-        text: {
-            fontSize: 18,
-            textAlign: "center",
-        },
-        link: {
-            textDecorationLine: "underline",
-        },
-    });
+const styles = StyleSheet.create({
+    parent: {
+        height: "100%",
+        alignItems: "center",
+        marginHorizontal: "4%",
+    },
+    children: {
+        borderRadius: 18,
+        height: "27%",
+        padding: 20,
+        justifyContent: "center",
+    },
+    text: {
+        fontSize: 18,
+        textAlign: "center",
+    },
+    link: {
+        textDecorationLine: "underline",
+    },
+});
 
