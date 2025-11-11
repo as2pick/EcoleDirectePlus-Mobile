@@ -21,7 +21,7 @@ export default function CheckBox({
     return (
         <View style={styles.checkboxContainer}>
             <TouchableOpacity onPress={toggleCheckbox}>
-                <View style={[styles.checkbox, { borderColor: colors.border }]}>
+                <View style={[styles.checkbox, { borderColor: colors.main }]}>
                     {isChecked && (
                         <Text>
                             <CheckIcon />
@@ -29,7 +29,7 @@ export default function CheckBox({
                     )}
                 </View>
             </TouchableOpacity>
-            <Text style={[styles.text, { color: colors.txt.txt1 }]}>{libelle}</Text>
+            <Text style={[styles.text, { color: colors.main }]}>{libelle}</Text>
         </View>
     );
 }

@@ -1,6 +1,9 @@
 import Svg, { Path } from "react-native-svg";
+import { useTheme } from "../../../src/context/ThemeContext";
 
-export default function HourglassIcon({ size = 30, fill = "white", props = {} }) {
+export default function HourglassIcon({ size = 30, fill, props = {} }) {
+    const { theme } = useTheme();
+    fill = fill || theme.colors.theme
     return (
         <Svg fill={"none"} width={size} height={size} viewBox="0 0 24 24">
             <Path

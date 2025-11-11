@@ -1,18 +1,17 @@
 import { useTheme } from "@react-navigation/native";
-import { LinearGradient } from "expo-linear-gradient";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 export default function GradientBackground({ children }) {
     const { colors } = useTheme();
     return (
-        <LinearGradient
-            colors={colors.background.gradient}
-            start={{ x: 0, y: 0.45 }}
-            end={{ x: 1, y: 0 }}
-            style={styles.gradient}
+        <View
+            style={[
+                styles.gradient,
+                { backgroundColor: colors.background.gradient },
+            ]}
         >
             {children}
-        </LinearGradient>
+        </View>
     );
 }
 

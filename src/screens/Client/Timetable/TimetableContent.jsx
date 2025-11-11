@@ -118,7 +118,7 @@ export default function TimetableContent() {
                 >
                     <TouchableOpacity
                         style={{
-                            backgroundColor: theme.colors.bg.bg4,
+                            backgroundColor: theme.colors.main,
                             width: "70%",
                             position: "absolute",
                             height: "65%",
@@ -140,6 +140,7 @@ export default function TimetableContent() {
                             style={{
                                 fontWeight: 600,
                                 fontSize: 18,
+                                color: theme.colors.theme,
                             }}
                         >
                             {activeDate}
@@ -196,6 +197,8 @@ const CourseBox = ({ course, navigation, theme, timetableViewDims }) => {
 
     const libelleLayoutRef = useRef(false);
     const roomLayoutRef = useRef(false);
+    const { colors } = useTheme();
+    const caseColor = addOpacityToCssRgb(colors.theme, 0.2);
 
     useEffect(() => {
         if (libelleLayout && roomLayout) {
@@ -254,7 +257,7 @@ const CourseBox = ({ course, navigation, theme, timetableViewDims }) => {
                         borderRadius: 16,
                         position: "absolute",
                         paddingHorizontal: 12,
-
+                        backgroundColor: caseColor,
                         paddingVertical:
                             height <= CONFIG.minCourseSize
                                 ? timetableViewDims.height /
@@ -263,6 +266,7 @@ const CourseBox = ({ course, navigation, theme, timetableViewDims }) => {
                                   1
                                 : CONFIG.minCourseSize,
                         overflow: "hidden",
+                        //backgroundColor: "red",
                     },
                 ]}
                 onPress={() => {
@@ -306,7 +310,7 @@ const CourseBox = ({ course, navigation, theme, timetableViewDims }) => {
                                     : timetableConfig.dispensedColor,
                                 borderRadius: 50,
                                 fontSize: 18,
-                                borderColor: theme.colors.txt.txt1,
+                                borderColor: theme.colors.contrast,
                                 borderWidth: 1.2,
                                 elevation: 14,
                             }}
@@ -317,87 +321,119 @@ const CourseBox = ({ course, navigation, theme, timetableViewDims }) => {
                 )}
                 <View
                     style={{
+                        flexDirection: "row",
                         justifyContent: "space-between",
                         flex: 1,
                         opacity: 1,
-                        // backgroundColor: "red",
+                        width: "100%",
                     }}
                 >
                     <View
                         style={{
-                            flexDirection: "row",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                        }}
-                    >
-                        <Text
-                            style={{
-                                fontSize: 13,
-                                color: textColor,
-
-                                backgroundColor: color,
-                                borderRadius: 6,
-
-                                paddingHorizontal: 8,
-                                paddingVertical: 2,
-                            }}
-                            onLayout={handleLibelleLayout}
-                        >
-                            {libelle}
-                        </Text>
-
-                        <Text
-                            style={{
-                                color: color,
-                                fontWeight: 600,
-                                fontSize: 12,
-                            }}
-                            onLayout={handleRoomLayout}
-                        >
-                            {room}
-                        </Text>
-                    </View>
-                    <View
-                        style={{
-                            flexDirection: "row",
+                            flexDirection: "column",
                             justifyContent: "space-between",
                         }}
                     >
-                        <Text
-                            style={{
-                                fontSize: 13,
-                            }}
-                        >
-                            {teacher}
-                        </Text>
                         <View
                             style={{
                                 flexDirection: "row",
-                                gap: height <= 17 ? 4.5 : 2,
+                                justifyContent: "flex-start",
+                                gap: 6,
                                 alignItems: "center",
+                                width: "100%",
                             }}
                         >
                             <Text
                                 style={{
-                                    fontSize: 14,
-                                    fontWeight: 300,
-                                }}
-                            >
-                                {startCourse.time}
-                            </Text>
-                            {/* <View style={{ position: "absolute" }}> */}
+                                    fontSize: 13,
+                                    color: textColor,
 
-                            {/* </View> */}
+                                    backgroundColor: color,
+                                    borderRadius: 6,
+
+                                    paddingHorizontal: 8,
+                                    paddingVertical: 2,
+                                }}
+                                onLayout={handleLibelleLayout}
+                            >
+                                {libelle}
+                            </Text>
+
                             <Text
                                 style={{
-                                    fontSize: 14,
-                                    fontWeight: 300,
+                                    color: color,
+                                    fontWeight: 600,
+                                    fontSize: 12,
+                                }}
+                                onLayout={handleRoomLayout}
+                            >
+                                {room}
+                            </Text>
+                        </View>
+                        <View
+                            style={{
+                                //width: '100%',
+                                flexDirection: "row",
+                                justifyContent: "flex-start",
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    fontSize: 13,
+                                    color: colors.contrast,
                                 }}
                             >
-                                {endCourse.time}
+                                {teacher}
                             </Text>
-                            <RoadFinish size={14} />
                         </View>
+                    </View>
+                    <View
+                        style={{
+                            flexDirection: "column",
+                            justifyContent: "flex-end",
+                            alignItems: "right",
+                            selfAlign: "right",
+                            marginLeft: "auto",
+                        }}
+                    >
+                        <RoadFinish size={14} />
+                    </View>
+                    <View
+                        style={{
+                            flexDirection: "column",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            height: "100%",
+                        }}
+                    >
+                        <Text
+                            style={{
+                                fontSize: 14,
+                                fontWeight: 300,
+                                color: colors.contrast,
+                            }}
+                        >
+                            {startCourse.time}
+                        </Text>
+                        <View
+                            style={{
+                                width: 3,
+                                backgroundColor: color,
+                                flexDirection: "row",
+                                flex: 1,
+                                borderRadius: 30,
+                                //marginVertical: 4,
+                            }}
+                        />
+                        <Text
+                            style={{
+                                fontSize: 14,
+                                fontWeight: 300,
+                                color: colors.contrast,
+                            }}
+                        >
+                            {endCourse.time}
+                        </Text>
                     </View>
                 </View>
             </TouchableOpacity>

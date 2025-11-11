@@ -2,22 +2,23 @@
 import { useTheme } from "@react-navigation/native";
 import { useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
-import { CONFIG } from "../../constants/config";
+import { addOpacityToCssRgb } from "../../utils/colorGenerator";
 
 const NavigationBottomBar = ({ state, descriptors, navigation }) => {
     const [isPressedIn, setIsPressedIn] = useState(false);
     const [isLongPressed, setIsLongPressed] = useState(false);
-
+    const { shadow } = useTheme();
     const { colors } = useTheme();
-
+    const caseColor = addOpacityToCssRgb(colors.case, 0.7);
+    const shadowColor = addOpacityToCssRgb("rgb(0, 0, 0)", shadow.oppacity);
     return (
         <View
             style={[
                 styles.container,
                 {
-                    backgroundColor: colors.navbar.background,
-                    borderTopColor: colors.navbar.border,
-                    borderWidth: 1.2,
+                    backgroundColor: caseColor,
+                    borderRadius: 25,
+                    boxShadow: "0px 0px 10px 2px rgb(0, 0, 0)" + shadowColor,
                 },
             ]}
         >
@@ -61,15 +62,13 @@ const NavigationBottomBar = ({ state, descriptors, navigation }) => {
                                     ? [
                                           styles.iconPadding,
                                           {
-                                              backgroundColor:
-                                                  colors.navbar.active_icon_bg,
+                                              backgroundColor: colors.main,
                                           },
                                       ]
                                     : [
                                           styles.iconPadding,
                                           {
-                                              backgroundColor:
-                                                  colors.navbar.icons_bg,
+                                              backgroundColor: colors.secondary,
                                           },
                                       ]
                             }
@@ -86,15 +85,28 @@ const NavigationBottomBar = ({ state, descriptors, navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
-        paddingHorizontal: 12,
+        alignSelf: "center",
+        padding: 12,
+        borderRadius: 25,
+        bottom: 18,
+        position: "absolute",
+        width: "95%",
+        justifyContent: "space-around", // or space-between
     },
     tab: {
-        flex: 1,
+        //flex: 1,
         alignItems: "center",
-        height: CONFIG.tabBarHeight, // 79
-        justifyContent: "center",
+        //height: CONFIG.tabBarHeight, // 79
+        //justifyContent: "center",
     },
-    iconPadding: { padding: 5, borderRadius: 6 },
+    iconPadding: {
+        padding: 6,
+        borderRadius: 12,
+    },
+    iconPadding: {
+        padding: 6,
+        borderRadius: 12,
+    },
 });
 
 export default NavigationBottomBar;
