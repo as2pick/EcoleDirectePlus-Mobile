@@ -7,9 +7,10 @@ import { addOpacityToCssRgb } from "../../utils/colorGenerator";
 const NavigationBottomBar = ({ state, descriptors, navigation }) => {
     const [isPressedIn, setIsPressedIn] = useState(false);
     const [isLongPressed, setIsLongPressed] = useState(false);
-
+    const { shadow } = useTheme();
     const { colors } = useTheme();
     const caseColor = addOpacityToCssRgb(colors.case, 0.7);
+    const shadowColor = addOpacityToCssRgb("rgb(0, 0, 0)", shadow.oppacity);
     return (
         <View
             style={[
@@ -18,9 +19,9 @@ const NavigationBottomBar = ({ state, descriptors, navigation }) => {
                     backgroundColor: caseColor,
                     //borderTopColor: colors.navbar.border,
                     //borderWidth: 1.2,
-
-                    boxShadow: "0px 8px 9px -5px rgba(0, 0, 0, 0.25)",
-                    boxShadow: "0px 15px 22px 2px rgba(0, 0, 0, 0.14)",
+                    borderRadius: 30,
+                    //boxShadow: "0px 8px 9px -5px rgb(0, 0, 0)"+shadowColor,
+                    boxShadow: "0px 0px 10px 2px rgb(0, 0, 0)"+shadowColor,
                     //shadowColor: "black",
                     //shadowOffset: { width: 0, height: -2 },
                     //shadowOpacity: 0.3,

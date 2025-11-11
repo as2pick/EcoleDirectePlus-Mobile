@@ -3,14 +3,18 @@ import { StyleSheet, Text, View } from "react-native";
 import { CONFIG } from "../../constants/config";
 import { addOpacityToCssRgb } from "../../utils/colorGenerator";
 import LinkText from "./LinkText";
+import { create } from "lodash";
 
 export default function InDev({}) {
     const { colors } = useTheme();
-
-    const mainColor = addOpacityToCssRgb(colors.main, 0.5);
+    const { shadow } = useTheme();
+    const styles = createStyle(colors);
+    const mainColor = addOpacityToCssRgb(colors.main, 0.7);
+    const shadowColor = addOpacityToCssRgb("rgb(0, 0, 0)", shadow.oppacity);
+    const caseColor = addOpacityToCssRgb(colors.case, 0.8);
     return (
         <View style={[styles.parent]}>
-            <View style={[styles.children, {backgroundColor: colors.case,}]}>
+            <View style={[styles.children, {backgroundColor: caseColor, boxShadow: "2px 2px 15px 3px "+shadowColor}]}>
                 <Text
                     style={[
                         styles.text,
@@ -36,7 +40,7 @@ export default function InDev({}) {
     );
 }
 
-const styles = StyleSheet.create({
+const createStyle = (colors) => StyleSheet.create({
     parent: {
         height: "100%",
         alignItems: "center",
@@ -51,7 +55,7 @@ const styles = StyleSheet.create({
         padding: 20,
         justifyContent: "center",
         //boxShadow: "5px 5px 9px rgba(0, 0, 0, 0.25)",
-        boxShadow: "2px 2px 15px 3px rgba(0, 0, 0, 0.14)",
+        
         /*shadowColor: "black",
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.3,

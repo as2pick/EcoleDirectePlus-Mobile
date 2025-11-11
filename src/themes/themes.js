@@ -110,7 +110,7 @@ export const THEMES = {
             regular: { fontFamily: "Lexend-Regular", fontWeight: "normal" },
         },
         shadow: {
-            oppacity: 0.18,
+            oppacity: 0.3,
             //color: "rgb(255, 255, 255)",
         }
     },
