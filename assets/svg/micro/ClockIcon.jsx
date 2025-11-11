@@ -3,7 +3,7 @@ import { useTheme } from "../../../src/context/ThemeContext";
 
 export default function ClockIcon({ size = 30, fill, props = {} }) {
     const { theme } = useTheme();
-    fill = fill || theme.colors.icons
+    fill = fill || theme.colors.theme
     return (
         <Svg fill={fill} width={size} height={size} viewBox="0 0 24 24">
             <Rect width="24" height="24" transform="rotate(180 12 12)" opacity="0" />
