@@ -12,13 +12,13 @@ import {
     Title,
 } from "../../components";
 import { CONFIG } from "../../constants/config";
-
 const COLABORATORS = {
     main: {
         // "Truite Séchée": "https://github.com/truiteseche",
         // "Saumon Brulé": "https://github.com/saumon-brule",
         Lostosword: "https://github.com/Lostosword",
         "As de Pique": "https://github.com/as2pick",
+        Lucilus: "https://github.com/Lucilus78",
     },
     other: {
         // akash02ab: "https://github.com/akash02ab",
@@ -28,27 +28,25 @@ const COLABORATORS = {
         // xav35000: "https://github.com/xav35000",
         Lostosword: "https://github.com/Lostosword",
         "As de Pique": "https://github.com/as2pick",
+        Lucilus: "https://github.com/Lucilus78",
     },
 };
 
 const Paragraph = ({ customStyle = {}, children }) => {
     const { colors } = useTheme();
-    return (
-        <Text style={[styles.paragraph, customStyle]} color={colors.txt.txt3}>
-            {children}
-        </Text>
-    );
+
+    return <Text style={[styles.paragraph, customStyle]}>{children}</Text>;
 };
 
 const Link = ({ href, isPeople = false, children }) => {
     const { colors } = useTheme();
     const styles = isPeople
         ? {
-              color: colors.txt.txt3,
+              color: colors.accent,
               textDecorationLine: "underline",
           }
         : {
-              color: colors.txt.txt2,
+              color: colors.main,
           };
     return (
         <LinkText
@@ -63,11 +61,14 @@ const Link = ({ href, isPeople = false, children }) => {
 };
 
 export default function PrivacyPolicyScreen() {
+    const { colors } = useTheme();
+
     return (
         <View style={{ flex: 1, backgroundColor: "black" }}>
             <CustomTopHeader
                 headerTitle={"Privacy Policy And Terms of Use"}
                 height={38}
+                backgroundColor={colors.background.login}
             />
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.scrollview}>
@@ -75,7 +76,7 @@ export default function PrivacyPolicyScreen() {
                         <Title customStyle={styles.title}>
                             Politique de confidentialité
                         </Title>
-                        <Subtitle>Résumé</Subtitle>
+                        <Subtitle customStyle={styles.subtitle}>Résumé</Subtitle>
                         <Paragraph>
                             ℹ️ Ecole Directe Plus n'est en aucun cas affilié à
                             EcoleDirecte ou Aplim, il s'agit d'un service indépendant
@@ -120,7 +121,9 @@ export default function PrivacyPolicyScreen() {
                         </Paragraph>
                     </View>
                     <Separation />
-                    <Subtitle>Conditions d'utilisations</Subtitle>
+                    <Subtitle customStyle={styles.subtitle}>
+                        Conditions d'utilisations
+                    </Subtitle>
                     <Paragraph>
                         • Les données personnelles sécurisées figurant sur ce site
                         Internet concernent des élèves et les familles, et sont
@@ -215,7 +218,7 @@ export default function PrivacyPolicyScreen() {
                     <Title customStyle={styles.title}>
                         Conditions d'utilisations
                     </Title>
-                    <Subtitle>1. Général</Subtitle>
+                    <Subtitle customStyle={styles.subtitle}>1. Général</Subtitle>
                     <Paragraph>
                         • Les noms et pronoms "Ecole Directe Plus", "EDP", "service",
                         "Nous", "Notre/Nos" renvoient au service Ecole Directe Plus
@@ -226,7 +229,9 @@ export default function PrivacyPolicyScreen() {
                         déclarez avoir lu, compris, et accepté ces présentes mentions
                         légales.
                     </Paragraph>
-                    <Subtitle>2. Description du site et du service</Subtitle>
+                    <Subtitle customStyle={styles.subtitle}>
+                        2. Description du site et du service
+                    </Subtitle>
                     <Paragraph>
                         • Ecole Directe Plus a pour objectif d'offrir à ses
                         utilisateurs un cadre agréable à la consultation des données
@@ -236,7 +241,9 @@ export default function PrivacyPolicyScreen() {
                         interrompre tout aspect du service, temporairement ou
                         définitivement.
                     </Paragraph>
-                    <Subtitle>3. Usages acceptables du service</Subtitle>
+                    <Subtitle customStyle={styles.subtitle}>
+                        3. Usages acceptables du service
+                    </Subtitle>
                     <Paragraph>
                         • Vous êtes responsable de votre usage du service, et des
                         manipulations faite avec votre compte. Notre objectif est de
@@ -254,7 +261,7 @@ export default function PrivacyPolicyScreen() {
                         déconseillé de faire usage exclusivement d'Ecole Directe
                         Plus.
                     </Paragraph>
-                    <Subtitle>4. Connexion</Subtitle>
+                    <Subtitle customStyle={styles.subtitle}>4. Connexion</Subtitle>
                     <Paragraph>
                         • En vous connectant à Ecole Directe Plus avec votre compte
                         EcoleDirecte, vous donnez au site EDP (localement, seulement
@@ -266,7 +273,9 @@ export default function PrivacyPolicyScreen() {
                         (EcoleDirecte). En outre, vous êtes le seul responsable de
                         l'usage qu'il est fait de vos données.
                     </Paragraph>
-                    <Subtitle>5. Retour utilisateur</Subtitle>
+                    <Subtitle customStyle={styles.subtitle}>
+                        5. Retour utilisateur
+                    </Subtitle>
                     <Paragraph>
                         • La page de retour permet aux utilisateurs de signaler des
                         dysfonctionnements, faire des suggestions, partager un retour
@@ -276,7 +285,9 @@ export default function PrivacyPolicyScreen() {
                         vous acceptez de partager une partie de vos informations avec
                         Ecole Directe Plus.
                     </Paragraph>
-                    <Subtitle>6. Liens, sites et services tiers</Subtitle>
+                    <Subtitle customStyle={styles.subtitle}>
+                        6. Liens, sites et services tiers
+                    </Subtitle>
                     <Paragraph>
                         • Le service peut contenir des liens vers des sites Web
                         tiers, des services, ou d'autres événements ou activités qui
@@ -292,7 +303,7 @@ export default function PrivacyPolicyScreen() {
                         résultant de votre utilisation de tout site Web, service ou
                         contenu tiers.
                     </Paragraph>
-                    <Subtitle>7. Résiliation</Subtitle>
+                    <Subtitle customStyle={styles.subtitle}>7. Résiliation</Subtitle>
                     <Paragraph>
                         • Ecole Directe Plus peut résilier votre accès et votre
                         utilisation du service à tout moment, pour quelque raison que
@@ -439,14 +450,17 @@ const styles = StyleSheet.create({
         fontSize: 26,
         fontWeight: 600,
         marginLeft: 20,
+        // color: colors.accent,
     },
     scrollview: {
         paddingBottom: 32,
+        // backgroundColor: colors.background.login,
     },
     paragraph: {
         marginLeft: 30,
         marginRight: 20,
         marginVertical: 4,
+        // color: colors.contrast,
     },
     separationParent: {
         alignItems: "center",
@@ -468,6 +482,10 @@ const styles = StyleSheet.create({
     },
     copyleft: {
         marginTop: 10,
+        // color: colors.contrast,
+    },
+    subtitle: {
+        // color: colors.main,
     },
 });
 

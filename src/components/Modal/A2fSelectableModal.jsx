@@ -38,8 +38,8 @@ export default function A2fSelectableModal({
                         styles.renderItemRadioButton,
                         { borderColor: colors.border },
                         selectedItem === item && {
-                            backgroundColor: colors.txt.txt2,
-                            borderColor: colors.txt.txt2,
+                            backgroundColor: colors.secondary,
+                            borderColor: colors.secondary,
                         },
                     ]}
                 />
@@ -49,7 +49,7 @@ export default function A2fSelectableModal({
                     styles.renderItemText,
                     selectedItem === item && [styles.renderItemTextSelected],
                 ]}
-                color={colors.txt.txt3}
+                color={colors.main}
             >
                 {item}
             </Text>
@@ -89,7 +89,7 @@ export default function A2fSelectableModal({
                         style={[
                             styles.a2fTextInfo,
                             {
-                                color: colors.txt.txt3,
+                                color: colors.main,
                             },
                         ]}
                     >
@@ -129,10 +129,7 @@ export default function A2fSelectableModal({
                             style={styles.button}
                         >
                             <Text
-                                style={[
-                                    styles.buttonText,
-                                    { color: colors.txt.txt3 },
-                                ]}
+                                style={[styles.buttonText, { color: colors.main }]}
                             >
                                 Annuler
                             </Text>

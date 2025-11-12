@@ -1,4 +1,4 @@
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useTheme } from "@react-navigation/native";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import BackArrow from "../../../assets/svg/BackArrow";
@@ -6,12 +6,13 @@ import Title from "../Ui/Title";
 
 export default function CustomTopHeader({
     headerTitle,
-    backArrow = { color: "white", size: 24 },
+    backArrow = { size: 24 },
     height = 70,
     backgroundColor = "hsla(0,0%, 0%, 0%)",
     maxWidth = "100%",
 }) {
     const navigation = useNavigation();
+    const { colors } = useTheme();
 
     return (
         <SafeAreaView style={{ backgroundColor: backgroundColor }}>
@@ -36,6 +37,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 600,
         marginLeft: 20,
+        // color: colors.contrast,
     },
     header: {
         flexDirection: "row",

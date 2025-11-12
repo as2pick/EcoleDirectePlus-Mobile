@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import { useFocusEffect, useNavigation, useTheme } from "@react-navigation/native";
 
@@ -15,7 +15,6 @@ import { CONFIG } from "../../../constants/config";
 import { GLOBALS_DATAS } from "../../../constants/device/globals";
 import { timetableConfig } from "../../../constants/features/timetableConfig";
 
-import Text from "../../../components/Ui/core/Text";
 import { useUser } from "../../../context/UserContext";
 import { storageServiceStates } from "../../../helpers/storageService";
 import { routesNames } from "../../../router/config/routesNames";
@@ -119,7 +118,7 @@ export default function TimetableContent() {
                 >
                     <TouchableOpacity
                         style={{
-                            backgroundColor: theme.colors.bg.bg4,
+                            backgroundColor: theme.colors.main,
                             width: "70%",
                             position: "absolute",
                             height: "65%",
@@ -175,6 +174,8 @@ const CourseBox = ({ course, navigation, theme, timetableViewDims }) => {
 
     const libelleLayoutRef = useRef(false);
     const roomLayoutRef = useRef(false);
+    const { colors } = useTheme();
+    const caseColor = addOpacityToCssRgb(colors.theme, 0.2);
 
     useEffect(() => {
         if (libelleLayout && roomLayout) {
@@ -233,7 +234,7 @@ const CourseBox = ({ course, navigation, theme, timetableViewDims }) => {
                         borderRadius: 16,
                         position: "absolute",
                         paddingHorizontal: 12,
-
+                        backgroundColor: caseColor,
                         paddingVertical:
                             height <= CONFIG.minCourseSize
                                 ? timetableViewDims.height /
@@ -242,6 +243,7 @@ const CourseBox = ({ course, navigation, theme, timetableViewDims }) => {
                                   1
                                 : CONFIG.minCourseSize,
                         overflow: "hidden",
+                        //backgroundColor: "red",
                     },
                 ]}
                 onPress={() => {
@@ -285,7 +287,7 @@ const CourseBox = ({ course, navigation, theme, timetableViewDims }) => {
                                     : timetableConfig.dispensedColor,
                                 borderRadius: 50,
 
-                                borderColor: theme.colors.txt.txt1,
+                                borderColor: theme.colors.contrast,
                                 borderWidth: 1.2,
                                 elevation: 14,
                                 transform: [{ rotate: "-6deg" }],
@@ -298,64 +300,119 @@ const CourseBox = ({ course, navigation, theme, timetableViewDims }) => {
                 )}
                 <View
                     style={{
+                        flexDirection: "row",
                         justifyContent: "space-between",
                         flex: 1,
                         opacity: 1,
-                        // backgroundColor: "red",
+                        width: "100%",
                     }}
                 >
                     <View
                         style={{
-                            flexDirection: "row",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                        }}
-                    >
-                        <Text
-                            style={{
-                                backgroundColor: color,
-
-                                borderRadius: 6,
-
-                                paddingHorizontal: 8,
-                                paddingVertical: 2,
-                            }}
-                            color={textColor}
-                            preset="label2"
-                            onLayout={handleLibelleLayout}
-                        >
-                            {libelle}
-                        </Text>
-
-                        <Text
-                            color={color}
-                            preset="label2"
-                            onLayout={handleRoomLayout}
-                        >
-                            {room}
-                        </Text>
-                    </View>
-                    <View
-                        style={{
-                            flexDirection: "row",
+                            flexDirection: "column",
                             justifyContent: "space-between",
                         }}
                     >
-                        <Text preset="label3">{teacher}</Text>
                         <View
                             style={{
                                 flexDirection: "row",
-                                gap: height <= 17 ? 4.5 : 2,
+                                justifyContent: "flex-start",
+                                gap: 6,
                                 alignItems: "center",
+                                width: "100%",
                             }}
                         >
-                            <Text preset="label2">{startCourse.time}</Text>
-                            {/* <View style={{ position: "absolute" }}> */}
+                            <Text
+                                style={{
+                                    fontSize: 13,
+                                    color: textColor,
 
-                            {/* </View> */}
-                            <Text preset="label2">{endCourse.time}</Text>
-                            <RoadFinish size={14} />
+                                    backgroundColor: color,
+                                    borderRadius: 6,
+
+                                    paddingHorizontal: 8,
+                                    paddingVertical: 2,
+                                }}
+                                onLayout={handleLibelleLayout}
+                            >
+                                {libelle}
+                            </Text>
+
+                            <Text
+                                style={{
+                                    color: color,
+                                    fontWeight: 600,
+                                    fontSize: 12,
+                                }}
+                                onLayout={handleRoomLayout}
+                            >
+                                {room}
+                            </Text>
                         </View>
+                        <View
+                            style={{
+                                //width: '100%',
+                                flexDirection: "row",
+                                justifyContent: "flex-start",
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    fontSize: 13,
+                                    color: colors.contrast,
+                                }}
+                            >
+                                {teacher}
+                            </Text>
+                        </View>
+                    </View>
+                    <View
+                        style={{
+                            flexDirection: "column",
+                            justifyContent: "flex-end",
+                            alignItems: "right",
+                            selfAlign: "right",
+                            marginLeft: "auto",
+                        }}
+                    >
+                        <RoadFinish size={14} />
+                    </View>
+                    <View
+                        style={{
+                            flexDirection: "column",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            height: "100%",
+                        }}
+                    >
+                        <Text
+                            style={{
+                                fontSize: 14,
+                                fontWeight: 300,
+                                color: colors.contrast,
+                            }}
+                        >
+                            {startCourse.time}
+                        </Text>
+                        <View
+                            style={{
+                                width: 3,
+                                backgroundColor: color,
+                                flexDirection: "row",
+                                flex: 1,
+                                borderRadius: 30,
+                                //marginVertical: 4,
+                            }}
+                        />
+                        <Text
+                            style={{
+                                fontSize: 14,
+                                fontWeight: 300,
+                                color: colors.contrast,
+                            }}
+                        >
+                            {endCourse.time}
+                        </Text>
                     </View>
                 </View>
             </TouchableOpacity>

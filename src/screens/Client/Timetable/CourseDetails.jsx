@@ -130,10 +130,10 @@ export default function CourseDetails({ route }) {
     }
     return (
         <SwipeBackWrapper>
-            <View style={{ flex: 1, backgroundColor: colors.bg.bg2 }}>
+            <View style={{ flex: 1, backgroundColor: colors.background }}>
                 <CustomTopHeader
                     headerTitle={"Retour à l'emploi du temps"}
-                    backArrow={{ color: "white", size: 24 }}
+                    backArrow={{ color: colors.contrast, size: 24 }}
                     height={33}
                     backgroundColor={colors.background}
                 />
@@ -180,6 +180,7 @@ export default function CourseDetails({ route }) {
                                     <Text
                                         style={{
                                             marginLeft: 15,
+                                            color: colors.contrast,
                                         }}
                                         preset="title1"
                                     >{`${startCourseTiming}`}</Text>
@@ -196,6 +197,7 @@ export default function CourseDetails({ route }) {
                                     <Text
                                         style={{
                                             marginLeft: 15,
+                                            color: colors.contrast,
                                         }}
                                         preset="h3"
                                     >{`Annulé`}</Text>
@@ -212,6 +214,7 @@ export default function CourseDetails({ route }) {
                                     <Text
                                         style={{
                                             marginLeft: 15,
+                                            color: colors.contrast,
                                         }}
                                         preset="h3"
                                     >{`Modifié`}</Text>
@@ -228,6 +231,7 @@ export default function CourseDetails({ route }) {
                                     <Text
                                         style={{
                                             marginLeft: 15,
+                                            color: colors.contrast,
                                         }}
                                         preset="h3"
                                     >{`Dispensé`}</Text>
@@ -251,6 +255,7 @@ export default function CourseDetails({ route }) {
                                     <Text
                                         style={{
                                             marginLeft: 30,
+                                            color: colors.contrast,
                                         }}
                                         preset="label1"
                                     >{`${timing}`}</Text>
@@ -278,7 +283,7 @@ export default function CourseDetails({ route }) {
                                     <Text
                                         style={{
                                             marginLeft: 30,
-                                            maxWidth: "70%",
+                                            color: colors.contrast,
                                         }}
                                         preset="label1"
                                         oneLine
@@ -296,6 +301,7 @@ export default function CourseDetails({ route }) {
                                     <Text
                                         style={{
                                             marginLeft: 30,
+                                            color: colors.contrast,
                                         }}
                                         preset="label1"
                                     >{`${room}`}</Text>
@@ -312,6 +318,7 @@ export default function CourseDetails({ route }) {
                                     <Text
                                         style={{
                                             marginLeft: 30,
+                                            color: colors.contrast,
                                         }}
                                         preset="label1"
                                     >{`${group}`}</Text>
