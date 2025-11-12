@@ -22,18 +22,11 @@ export default function InDev({}) {
                     },
                 ]}
             >
-                <Text
-                    style={[
-                        styles.text,
-                        {
-                            color: mainColor,
-                        },
-                    ]}
-                >
+                <Text align="center" preset="body1" color={mainColor}>
                     Fonctionnalité en cours de développement...
                 </Text>
 
-                <Text align="center" preset="label2" color={mainColor}>
+                <Text align="center" preset="body1" color={mainColor}>
                     Rejoignez le{" "}
                     <LinkText href={CONFIG.discordInviteLink} color={mainColor}>
                         serveur Discord d'EDP
@@ -56,10 +49,6 @@ const styles = StyleSheet.create({
         height: "27%",
         padding: 20,
         justifyContent: "center",
-    },
-    text: {
-        fontSize: 18,
-        textAlign: "center",
     },
 });
 

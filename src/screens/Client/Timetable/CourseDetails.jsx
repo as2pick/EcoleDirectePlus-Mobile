@@ -180,7 +180,6 @@ export default function CourseDetails({ route }) {
                                     <Text
                                         style={{
                                             marginLeft: 15,
-                                            color: colors.contrast,
                                         }}
                                         preset="title1"
                                     >{`${startCourseTiming}`}</Text>
@@ -197,7 +196,6 @@ export default function CourseDetails({ route }) {
                                     <Text
                                         style={{
                                             marginLeft: 15,
-                                            color: colors.contrast,
                                         }}
                                         preset="h3"
                                     >{`Annulé`}</Text>
@@ -214,7 +212,6 @@ export default function CourseDetails({ route }) {
                                     <Text
                                         style={{
                                             marginLeft: 15,
-                                            color: colors.contrast,
                                         }}
                                         preset="h3"
                                     >{`Modifié`}</Text>
@@ -231,7 +228,6 @@ export default function CourseDetails({ route }) {
                                     <Text
                                         style={{
                                             marginLeft: 15,
-                                            color: colors.contrast,
                                         }}
                                         preset="h3"
                                     >{`Dispensé`}</Text>
@@ -255,7 +251,6 @@ export default function CourseDetails({ route }) {
                                     <Text
                                         style={{
                                             marginLeft: 30,
-                                            color: colors.contrast,
                                         }}
                                         preset="label1"
                                     >{`${timing}`}</Text>
@@ -283,7 +278,6 @@ export default function CourseDetails({ route }) {
                                     <Text
                                         style={{
                                             marginLeft: 30,
-                                            color: colors.contrast,
                                         }}
                                         preset="label1"
                                         oneLine
@@ -301,7 +295,6 @@ export default function CourseDetails({ route }) {
                                     <Text
                                         style={{
                                             marginLeft: 30,
-                                            color: colors.contrast,
                                         }}
                                         preset="label1"
                                     >{`${room}`}</Text>
@@ -318,7 +311,6 @@ export default function CourseDetails({ route }) {
                                     <Text
                                         style={{
                                             marginLeft: 30,
-                                            color: colors.contrast,
                                         }}
                                         preset="label1"
                                     >{`${group}`}</Text>

@@ -14,41 +14,62 @@ export default function CustomTopHeader({
     const navigation = useNavigation();
     const { colors } = useTheme();
 
-    return (
-        <SafeAreaView style={{ backgroundColor: backgroundColor }}>
-            <View style={[styles.header, { height: height }]}>
-                <TouchableOpacity
-                    style={styles.backArrowContainer}
-                    onPress={() => navigation.goBack()}
-                >
-                    <BackArrow fill={backArrow.color} size={backArrow.size} />
+    const handleGoBack = () => {
+        if (navigation.canGoBack()) {
+            navigation.goBack();
+        }
+    };
 
-                    <Title customStyle={[styles.title, { maxWidth }]}>
+    return (
+        <SafeAreaView style={{ backgroundColor }}>
+            <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={handleGoBack}
+                style={[styles.header, { height }]}
+            >
+                <View style={styles.leftContainer}>
+                    <BackArrow fill={backArrow.color} size={backArrow.size} />
+                </View>
+
+                <View style={styles.centerContainer}>
+                    <Title
+                        style={[styles.title, { maxWidth }]}
+                        color={colors.contrast}
+                        preset="h4"
+                    >
                         {headerTitle}
                     </Title>
-                </TouchableOpacity>
-            </View>
+                </View>
+
+                <View style={styles.rightContainer} />
+            </TouchableOpacity>
         </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
-    title: {
-        fontSize: 18,
-        fontWeight: 600,
-        marginLeft: 20,
-        // color: colors.contrast,
-    },
     header: {
         flexDirection: "row",
-        justifyContent: "flex-start",
-
-        paddingHorizontal: 20,
-    },
-
-    backArrowContainer: {
-        flexDirection: "row",
         alignItems: "center",
+        justifyContent: "space-between",
+        paddingHorizontal: "5%",
+        width: "100%",
+    },
+    leftContainer: {
+        justifyContent: "center",
+        alignItems: "flex-start",
+    },
+    centerContainer: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    rightContainer: {
+        justifyContent: "center",
+        alignItems: "flex-end",
+    },
+    title: {
+        textAlign: "center",
     },
 });
 

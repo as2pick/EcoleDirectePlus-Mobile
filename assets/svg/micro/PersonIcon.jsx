@@ -3,7 +3,7 @@ import { useTheme } from "../../../src/context/ThemeContext";
 
 export default function PersonIcon({ size = 30, fill, props = {} }) {
     const { theme } = useTheme();
-    fill = fill || theme.colors.theme
+    fill = fill || theme.colors.contrast;
     return (
         <Svg fill={fill} width={size} height={size} viewBox="0 0 24 24">
             <Rect width="24" height="24" opacity="0" />

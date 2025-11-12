@@ -45,10 +45,8 @@ export default function A2fSelectableModal({
                 />
             </View>
             <Text
-                style={[
-                    styles.renderItemText,
-                    selectedItem === item && [styles.renderItemTextSelected],
-                ]}
+                size={16}
+                weight={selectedItem === item && "bold"}
                 color={colors.main}
             >
                 {item}
@@ -229,9 +227,7 @@ const styles = StyleSheet.create({
     renderItemText: {
         fontSize: 16,
     },
-    renderItemTextSelected: {
-        fontWeight: "bold",
-    },
+
     a2fText: {
         textAlign: "center",
         paddingVertical: 22,

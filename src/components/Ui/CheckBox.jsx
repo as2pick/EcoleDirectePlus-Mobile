@@ -25,12 +25,12 @@ export default function CheckBox({
                 <View style={[styles.checkbox, { borderColor: colors.main }]}>
                     {isChecked && (
                         <Text>
-                            <CheckIcon fill={colors.txt.txt1} />
+                            <CheckIcon fill={colors.contrast} />
                         </Text>
                     )}
                 </View>
             </TouchableOpacity>
-            <Text style={[styles.text]} color={colors.main}>
+            <Text style={styles.text} color={colors.main} preset="body2">
                 {libelle}
             </Text>
         </View>
