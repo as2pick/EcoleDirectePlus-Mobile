@@ -31,7 +31,7 @@ export const THEMES = {
                 background: "rgba(148, 148, 255, 1)", // DON'T USE IT
                 border: "rgba(126, 126, 255, 1)", // DON'T USE IT
             },
-            border: "rgba(26, 26, 151, 1)", // DON'T USE IT
+            border: "rgb(80, 80, 214)", // DON'T USE IT
             error: "rgb(240, 90, 90)",
             fond: ["rgba(222, 222, 250, 1)", "rgba(222, 222, 250, 1)"], // DON'T USE IT
             pastel: "rgb(222, 222, 250)",
@@ -45,6 +45,7 @@ export const THEMES = {
                 c1: "#6691fcff",
                 c2: "#8572ffff",
             },
+            edptext: ["rgb(158, 164, 215)", "rgb(83, 98, 215)"],
         },
         fonts: {
             bold: { fontFamily: "Luciole-Regular", fontWeight: "600" },
@@ -102,6 +103,7 @@ export const THEMES = {
                 c1: "#B4C9FF",
                 c2: "#C1B7FF",
             },
+            edptext: ["rgb(186, 193, 255)", "rgb(77, 85, 149)"],
         },
         fonts: {
             bold: { fontFamily: "Luciole-Regular", fontWeight: "600" },

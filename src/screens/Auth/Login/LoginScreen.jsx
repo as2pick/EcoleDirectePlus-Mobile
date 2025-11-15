@@ -15,6 +15,8 @@ import {
     OverLoader,
 } from "../../../components/index.js";
 
+import MaskedView from "@react-native-masked-view/masked-view";
+import { LinearGradient } from "expo-linear-gradient";
 import Text from "../../../components/Ui/core/Text.jsx";
 import { getApiMessage } from "../../../constants/api/codes.js";
 import { useSingIn } from "../../../context/SignInContext.jsx";
@@ -116,9 +118,19 @@ export default function LoginScreen() {
             <View style={styles.form}>
                 <View style={styles.logo.box}>
                     <EDPLogo size={88} />
-                    <Text color={theme.colors.accent} weight="bold" size={48}>
-                        Connexion
-                    </Text>
+                    <MaskedView
+                        maskElement={<Text preset="h1">Ecole Directe Plus</Text>}
+                    >
+                        <LinearGradient
+                            colors={theme.colors.edptext}
+                            start={{ x: 1, y: 0 }}
+                            end={{ x: 0, y: 0 }}
+                        >
+                            <Text preset="h1" style={{ opacity: 0 }}>
+                                Ecole Directe Plus
+                            </Text>
+                        </LinearGradient>
+                    </MaskedView>
                 </View>
                 <View style={[styles.input.box]}>
                     <View style={styles.input.cases}>
@@ -191,9 +203,7 @@ export default function LoginScreen() {
                 <TouchableOpacity
                     onPress={connect}
                     style={{
-                        theme: theme,
                         borderWidth: 1.4,
-
                         borderRadius: 12,
                         paddingVertical: 7,
                         paddingHorizontal: 16,
