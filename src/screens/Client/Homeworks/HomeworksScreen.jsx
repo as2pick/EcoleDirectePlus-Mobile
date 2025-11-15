@@ -1,6 +1,5 @@
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback, useState } from "react";
-import { Switch, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "../../../context/ThemeContext";
 import { useUser } from "../../../context/UserContext";
@@ -35,21 +34,7 @@ export default function HomeworksScreen() {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             {/* <ScrollView> */}
-            <View
-                style={{
-                    transform: [{ scaleX: 5 }, { scaleY: 5 }],
-                    justifyContent: "center",
-                    alignItems: "center",
-                    flex: 1,
-                }}
-            >
-                {/* <Text>{JSON.stringify(sortedHomeworksData)}</Text> */}
-                <Switch value={colorScheme === "dark"} onValueChange={toggleTheme} />
-                <Switch
-                    value={isFollowingSystem}
-                    onValueChange={followSystemTheme}
-                />
-            </View>
+
             {/* </ScrollView> */}
         </SafeAreaView>
     );
