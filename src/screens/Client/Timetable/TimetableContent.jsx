@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { StyleSheet, TouchableOpacity, View, } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { useFocusEffect, useNavigation, useTheme } from "@react-navigation/native";
 
@@ -32,7 +32,7 @@ const screenHeight = height;
 export default function TimetableContent() {
     const { userAccesToken, sortedTimetableData, setSortedTimetableData } =
         useUser();
-        
+
     const navigation = useNavigation();
     const theme = useTheme();
 
@@ -150,26 +150,34 @@ export default function TimetableContent() {
                     ref={scrollViewRef}
                 >
                     {!loading &&
-                        sortedTimetableData?.map((currentDay, index, courseIndex) => (
-                            <DayShedule
-                                key={index}
-                                currentDay={currentDay}
-                                navigation={navigation}
-                                theme={theme}
-                                timetableViewDims={{
-                                    getter: timetableViewDims,
-                                    setter: setTimetableViewDims,
-                                }}
-                                index={courseIndex}
-                            />
-                        ))}
+                        sortedTimetableData?.map(
+                            (currentDay, index, courseIndex) => (
+                                <DayShedule
+                                    key={index}
+                                    currentDay={currentDay}
+                                    navigation={navigation}
+                                    theme={theme}
+                                    timetableViewDims={{
+                                        getter: timetableViewDims,
+                                        setter: setTimetableViewDims,
+                                    }}
+                                    index={courseIndex}
+                                />
+                            )
+                        )}
                 </VerticalScrollView>
             </Animated.View>
         </View>
     );
 }
 
-const CourseBox = ({ course, navigation, theme, timetableViewDims, courseIndex}) => {
+const CourseBox = ({
+    course,
+    navigation,
+    theme,
+    timetableViewDims,
+    courseIndex,
+}) => {
     const [libelleLayout, setLibelleLayout] = useState(null);
     const [roomLayout, setRoomLayout] = useState(null);
     const [overlap, setOverlap] = useState(false);
@@ -183,35 +191,20 @@ const CourseBox = ({ course, navigation, theme, timetableViewDims, courseIndex})
     const { colors } = useTheme();
     const caseColor = addOpacityToCssRgb(colors.theme, 0.2);
 
-    const animatedOpacity = useSharedValue(0);
-    const animatedTranslateY = useSharedValue(50);
-    const boxAnimatedStyle = useAnimatedStyle(() => {
-        return {
-            opacity: animatedOpacity.value,
-            transform: [{ translateY: animatedTranslateY.value }],
-        };
-    });
-    
-useEffect(() => {
-        // Un petit délai basé sur l'index pour un effet "staggered" (en cascade)
-        // Cela fait apparaître les cases une par une, de haut en bas.
-        const delay = courseIndex * 80; // Chaque case apparaît 80ms après la précédente
-
-        setTimeout(() => {
-            animatedOpacity.value = withSpring(1, { duration: 800 }); // Animation d'opacité
-            animatedTranslateY.value = withSpring(0, { duration: 800 }); // Animation de position
-            // Ou avecTiming(1, { duration: 400 }) et withTiming(0, { duration: 400 })
-        }, delay);
-    }, [courseIndex]);
-
-useEffect(() => {
+    useEffect(() => {
         if (roomLayout && startCourseLayout) {
-            const TOLERANCE = 2; 
+            const TOLERANCE = 2;
 
-            const checkX1 = roomLayout.x < startCourseLayout.x + startCourseLayout.width + TOLERANCE;
-            const checkX2 = roomLayout.x + roomLayout.width > startCourseLayout.x - TOLERANCE;
-            const checkY1 = roomLayout.y < startCourseLayout.y + startCourseLayout.height + TOLERANCE;
-            const checkY2 = roomLayout.y + roomLayout.height > startCourseLayout.y - TOLERANCE;
+            const checkX1 =
+                roomLayout.x <
+                startCourseLayout.x + startCourseLayout.width + TOLERANCE;
+            const checkX2 =
+                roomLayout.x + roomLayout.width > startCourseLayout.x - TOLERANCE;
+            const checkY1 =
+                roomLayout.y <
+                startCourseLayout.y + startCourseLayout.height + TOLERANCE;
+            const checkY2 =
+                roomLayout.y + roomLayout.height > startCourseLayout.y - TOLERANCE;
             const isOverlapping = checkX1 && checkX2 && checkY1 && checkY2;
 
             setOverlap(isOverlapping);
@@ -269,8 +262,8 @@ useEffect(() => {
                     position: "absolute",
                     borderRadius: 16,
                 },
-                boxAnimatedStyle,
-            ]}>
+            ]}
+        >
             <TouchableOpacity
                 //key={webId}
                 style={[
@@ -286,13 +279,12 @@ useEffect(() => {
                                   1
                                 : CONFIG.minCourseSize,
                         overflow: "hidden",
-                        overflow: "hidden",
                         backgroundColor: caseColor,
                         borderRadius: 16,
                         borderColor: color,
                         borderWidth: 1.8,
-                        boxShadow: "1px 2px 5px 0px " + shadowColor,
-                        },
+                        boxShadow: `1px 2px 5px 0px ${shadowColor}`,
+                    },
                 ]}
                 activeOpacity={0.5}
                 onPress={() => {
@@ -389,7 +381,10 @@ useEffect(() => {
                                 preset="label3"
                                 color={color}
                                 onLayout={handleRoomLayout}
-                                style={{fontSize:overlap ? 10:12, fontWeight: "bold",}}
+                                style={{
+                                    fontSize: overlap ? 10 : 12,
+                                    fontWeight: "bold",
+                                }}
                             >
                                 {room}
                             </Text>
@@ -415,7 +410,8 @@ useEffect(() => {
                     >
                         <RoadFinish size={14} />
                     </View>
-                    <View onLayout={handleStartCourseLayout}
+                    <View
+                        onLayout={handleStartCourseLayout}
                         style={{
                             flexDirection: "column",
                             justifyContent: "space-between",
