@@ -54,11 +54,11 @@ export default function PrivacyPolicyScreen() {
     const { colors } = useTheme();
 
     return (
-        <View style={{ flex: 1, backgroundColor: colors.theme }}>
+        <View style={{ flex: 1, backgroundColor: colors.background.login }}>
             <CustomTopHeader
                 headerTitle={"Privacy Policy And Terms of Use"}
                 height={38}
-                backgroundColor={colors.background.login}
+                backgroundColor={colors.background.gradient}
             />
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.scrollview}>
