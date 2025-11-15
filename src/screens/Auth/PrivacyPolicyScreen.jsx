@@ -12,13 +12,13 @@ import {
     Title,
 } from "../../components";
 import { CONFIG } from "../../constants/config";
-
 const COLABORATORS = {
     main: {
         // "Truite Séchée": "https://github.com/truiteseche",
         // "Saumon Brulé": "https://github.com/saumon-brule",
         Lostosword: "https://github.com/Lostosword",
         "As de Pique": "https://github.com/as2pick",
+        Lucilus: "https://github.com/Lucilus78",
     },
     other: {
         // akash02ab: "https://github.com/akash02ab",
@@ -28,33 +28,21 @@ const COLABORATORS = {
         // xav35000: "https://github.com/xav35000",
         Lostosword: "https://github.com/Lostosword",
         "As de Pique": "https://github.com/as2pick",
+        Lucilus: "https://github.com/Lucilus78",
     },
 };
 
-const Paragraph = ({ customStyle = {}, children }) => {
-    const { colors } = useTheme();
-    return (
-        <Text style={[styles.paragraph, customStyle]} color={colors.txt.txt3}>
-            {children}
-        </Text>
-    );
+const Paragraph = ({ children }) => {
+    return <Text style={styles.paragraph}>{children}</Text>;
 };
 
 const Link = ({ href, isPeople = false, children }) => {
     const { colors } = useTheme();
-    const styles = isPeople
-        ? {
-              color: colors.txt.txt3,
-              textDecorationLine: "underline",
-          }
-        : {
-              color: colors.txt.txt2,
-          };
+
     return (
         <LinkText
             href={String(href)}
-            styles={styles}
-            color={isPeople ? colors.txt.txt3 : colors.txt.txt2}
+            color={isPeople ? colors.accent : colors.main}
             underline={isPeople}
         >
             {children}
@@ -63,18 +51,19 @@ const Link = ({ href, isPeople = false, children }) => {
 };
 
 export default function PrivacyPolicyScreen() {
+    const { colors } = useTheme();
+
     return (
-        <View style={{ flex: 1, backgroundColor: "black" }}>
+        <View style={{ flex: 1, backgroundColor: colors.theme }}>
             <CustomTopHeader
                 headerTitle={"Privacy Policy And Terms of Use"}
                 height={38}
+                backgroundColor={colors.background.login}
             />
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.scrollview}>
                     <View>
-                        <Title customStyle={styles.title}>
-                            Politique de confidentialité
-                        </Title>
+                        <Title>Politique de confidentialité</Title>
                         <Subtitle>Résumé</Subtitle>
                         <Paragraph>
                             ℹ️ Ecole Directe Plus n'est en aucun cas affilié à
@@ -212,9 +201,7 @@ export default function PrivacyPolicyScreen() {
                         : Luciole © Laurent Bourcellier & Jonathan Perez
                     </Paragraph>
                     <Separation />
-                    <Title customStyle={styles.title}>
-                        Conditions d'utilisations
-                    </Title>
+                    <Title>Conditions d'utilisations</Title>
                     <Subtitle>1. Général</Subtitle>
                     <Paragraph>
                         • Les noms et pronoms "Ecole Directe Plus", "EDP", "service",
@@ -304,7 +291,7 @@ export default function PrivacyPolicyScreen() {
                     </Paragraph>
 
                     <Separation />
-                    <Title customStyle={styles.title}>Crédits</Title>
+                    <Title>Crédits</Title>
                     <Paragraph>
                         • Ecole Directe Plus est l'initiative du groupuscule
                         Magic-Fish :
@@ -393,7 +380,7 @@ export default function PrivacyPolicyScreen() {
                         <Link href={CONFIG.discordInviteLink}>serveur Discord.</Link>
                     </Paragraph>
                     <Separation />
-                    <Title customStyle={styles.title}>License (MIT)</Title>
+                    <Title>License (MIT)</Title>
                     <Paragraph>
                         • Permission is hereby granted, free of charge, to any person
                         obtaining a copy of this software and associated
@@ -435,13 +422,8 @@ export default function PrivacyPolicyScreen() {
 }
 // •
 const styles = StyleSheet.create({
-    title: {
-        fontSize: 26,
-        fontWeight: 600,
-        marginLeft: 20,
-    },
     scrollview: {
-        paddingBottom: 32,
+        paddingVertical: 18,
     },
     paragraph: {
         marginLeft: 30,

@@ -130,10 +130,10 @@ export default function CourseDetails({ route }) {
     }
     return (
         <SwipeBackWrapper>
-            <View style={{ flex: 1, backgroundColor: colors.bg.bg2 }}>
+            <View style={{ flex: 1, backgroundColor: colors.background }}>
                 <CustomTopHeader
                     headerTitle={"Retour à l'emploi du temps"}
-                    backArrow={{ color: "white", size: 24 }}
+                    backArrow={{ color: colors.contrast, size: 24 }}
                     height={33}
                     backgroundColor={colors.background}
                 />
@@ -278,7 +278,6 @@ export default function CourseDetails({ route }) {
                                     <Text
                                         style={{
                                             marginLeft: 30,
-                                            maxWidth: "70%",
                                         }}
                                         preset="label1"
                                         oneLine

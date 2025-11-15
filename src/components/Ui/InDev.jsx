@@ -7,16 +7,26 @@ import Text from "./core/Text";
 
 export default function InDev({}) {
     const { colors } = useTheme();
-
-    const mainColor = addOpacityToCssRgb(colors.txt.txt3, 0.5);
+    const { shadow } = useTheme();
+    const mainColor = addOpacityToCssRgb(colors.main, 0.7);
+    const shadowColor = addOpacityToCssRgb("rgb(0, 0, 0)", shadow.oppacity);
+    const caseColor = addOpacityToCssRgb(colors.case, 0.8);
     return (
         <View style={[styles.parent]}>
-            <View style={[styles.children, { borderColor: mainColor }]}>
-                <Text align="center" preset="label2" color={mainColor}>
+            <View
+                style={[
+                    styles.children,
+                    {
+                        backgroundColor: caseColor,
+                        boxShadow: "2px 2px 15px 3px " + shadowColor,
+                    },
+                ]}
+            >
+                <Text align="center" preset="body1" color={mainColor}>
                     Fonctionnalité en cours de développement...
                 </Text>
 
-                <Text align="center" preset="label2" color={mainColor}>
+                <Text align="center" preset="body1" color={mainColor}>
                     Rejoignez le{" "}
                     <LinkText href={CONFIG.discordInviteLink} color={mainColor}>
                         serveur Discord d'EDP
@@ -32,19 +42,13 @@ const styles = StyleSheet.create({
     parent: {
         height: "100%",
         alignItems: "center",
-        // justifyContent: "center",
-        marginHorizontal: "2%",
+        marginHorizontal: "4%",
     },
     children: {
-        borderWidth: 2,
-        borderRadius: 20,
+        borderRadius: 18,
         height: "27%",
         padding: 20,
         justifyContent: "center",
-    },
-    text: {
-        fontSize: 18,
-        textAlign: "center",
     },
 });
 

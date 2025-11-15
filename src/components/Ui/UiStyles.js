@@ -2,8 +2,6 @@ import { StyleSheet } from "react-native";
 
 export const UiStyles = StyleSheet.create({
     title: {
-        fontSize: 26,
-        fontWeight: 600,
         marginLeft: 20,
     },
     scrollview: {

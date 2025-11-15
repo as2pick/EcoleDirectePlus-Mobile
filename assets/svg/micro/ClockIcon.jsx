@@ -1,6 +1,9 @@
 import Svg, { Path, Rect } from "react-native-svg";
+import { useTheme } from "../../../src/context/ThemeContext";
 
-export default function ClockIcon({ size = 30, fill = "white", props = {} }) {
+export default function ClockIcon({ size = 30, fill, props = {} }) {
+    const { theme } = useTheme();
+    fill = fill || theme.colors.contrast;
     return (
         <Svg fill={fill} width={size} height={size} viewBox="0 0 24 24">
             <Rect width="24" height="24" transform="rotate(180 12 12)" opacity="0" />
