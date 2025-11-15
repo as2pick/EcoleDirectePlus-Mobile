@@ -153,12 +153,11 @@ export default function CourseDetails({ route }) {
                             style={{
                                 backgroundColor: color,
                                 borderRadius: 6,
-
                                 paddingHorizontal: 8,
                                 paddingVertical: 2,
                             }}
                         >
-                            <Text preset="h2" color={textColor}>
+                            <Text preset="h2" color={textColor} align="center">
                                 {libelle}
                             </Text>
                         </View>
