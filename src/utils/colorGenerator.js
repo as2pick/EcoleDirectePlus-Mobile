@@ -134,3 +134,32 @@ export const addOpacityToCssRgb = (text, a) => {
     return `rgba(${r}, ${g}, ${b}, ${a})`;
 };
 
+export const adjustLightness = (hslString, amount) => {
+    const match = hslString.match(/hsl\((\d+),\s*(\d+)%,\s*(\d+)%\)/);
+    if (!match) {
+        throw new Error("Invalid HSL string format");
+    }
+
+    const h = parseInt(match[1]);
+    const s = parseInt(match[2]);
+    const l = parseInt(match[3]);
+
+    const newL = Math.max(0, Math.min(100, l + amount));
+
+    return `hsl(${h}, ${s}%, ${newL}%)`;
+};
+
+export const adjustSaturation = (hslString, amount) => {
+    const match = hslString.match(/hsl\((\d+),\s*(\d+)%,\s*(\d+)%\)/);
+    if (!match) {
+        throw new Error("Invalid HSL string format");
+    }
+
+    const h = parseInt(match[1]);
+    const s = parseInt(match[2]);
+    const l = parseInt(match[3]);
+
+    const newS = Math.max(0, Math.min(100, s + amount));
+
+    return `hsl(${h}, ${newS}%, ${l}%)`;
+};
