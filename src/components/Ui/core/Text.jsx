@@ -105,6 +105,15 @@ const PRESETS_VARIANTS = StyleSheet.create({
         fontFamily: FONT_WEIGHT_MAP.medium,
         textTransform: "uppercase",
     },
+    /* ──────────────────────────────
+   CUSTOMS — 
+  ────────────────────────────── */
+
+    custom1: {
+        fontSize: 15,
+        lineHeight: 22,
+        fontFamily: FONT_WEIGHT_MAP.light,
+    },
 });
 
 const ALIGNMENT_STYLES = StyleSheet.create({
