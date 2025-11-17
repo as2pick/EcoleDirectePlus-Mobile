@@ -114,6 +114,11 @@ const PRESETS_VARIANTS = StyleSheet.create({
         lineHeight: 22,
         fontFamily: FONT_WEIGHT_MAP.light,
     },
+    custom2: {
+        fontSize: 24,
+        lineHeight: 32,
+        fontFamily: FONT_WEIGHT_MAP.light,
+    },
 });
 
 const ALIGNMENT_STYLES = StyleSheet.create({
