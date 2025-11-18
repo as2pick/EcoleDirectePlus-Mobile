@@ -28,3 +28,8 @@ export function getTodayDateString() {
     return date.toISOString().split("T")[0];
 }
 
+export const formatShortDate = (date) => {
+    const [year, month, day] = date.split("-");
+    return `${day}/${month}/${year}`;
+};
+
