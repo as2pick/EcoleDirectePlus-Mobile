@@ -1,6 +1,6 @@
 import resolvers, { originName } from "../resolver/resolver";
 import { generateChecksum } from "../utils/crypto";
-import { storageServiceStates } from "./storageService";
+import { storageManager } from "./StorageManager";
 
 export default async function apiService({ origin, userToken, extra = null }) {
     if (origin !== "all" && !originName.includes(origin)) return;
@@ -11,11 +11,11 @@ export default async function apiService({ origin, userToken, extra = null }) {
             const data = await resolverFunction({ token: userToken, ...extra });
             const apiDataChecksum = await generateChecksum(data);
             // console.log(apiDataChecksum, "checksum generated");
-            await storageServiceStates.setter({
+            await storageManager.setter({
                 originKey: origin,
                 dataToStore: data,
             });
-            await storageServiceStates.setter({
+            await storageManager.setter({
                 originKey: `checksum_${origin}`,
                 dataToStore: apiDataChecksum,
             });
@@ -28,11 +28,11 @@ export default async function apiService({ origin, userToken, extra = null }) {
         const result = await resolverFunction({ token: userToken, ...extra });
         const apiDataChecksum = await generateChecksum(result);
 
-        await storageServiceStates.setter({
+        await storageManager.setter({
             originKey: origin,
             dataToStore: result,
         });
-        await storageServiceStates.setter({
+        await storageManager.setter({
             originKey: `checksum_${origin}`,
             dataToStore: apiDataChecksum,
         });
@@ -47,7 +47,7 @@ export async function dataUpdater(userToken) {
             const resolverFunction = resolvers[origin];
             const data = await resolverFunction({ token: userToken });
             const apiChecksum = await generateChecksum(data);
-            const storedApiChecksum = await storageServiceStates.getter({
+            const storedApiChecksum = await storageManager.getter({
                 originKey: `checksum_${origin}`,
             });
             if (apiChecksum !== storedApiChecksum) {

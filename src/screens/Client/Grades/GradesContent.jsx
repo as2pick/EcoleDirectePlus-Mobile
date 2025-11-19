@@ -10,7 +10,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { DropDown, ScrollableStack } from "../../../components";
 import { API } from "../../../constants/api/api";
 import { useUser } from "../../../context/UserContext";
-import { storageServiceStates } from "../../../helpers/storageService";
 import { cssHslaToHsla } from "../../../utils/colorGenerator";
 import { parseNumber } from "../../../utils/grades/makeAverage";
 import Discipline from "./custom/classes/Discipline";
@@ -18,6 +17,7 @@ import Period from "./custom/classes/Period";
 import AddGradeModal from "./custom/components/SimulateGradeModal";
 
 import { Text } from "../../../components/Ui/core";
+import { storageManager } from "../../../helpers/StorageManager";
 import { useGrade } from "./custom/context/LocalContext";
 import { calculateStrengthsWeaknesses, formatGradeText } from "./custom/helper";
 import { useSimulation } from "./custom/hooks/useSimulation";
@@ -64,7 +64,7 @@ export default function GradesContent() {
         try {
             setLoading(true);
             setError(null);
-            const userGrades = await storageServiceStates.getter({
+            const userGrades = await storageManager.getter({
                 originKey: "grades",
             });
             setSortedGradesData(userGrades);

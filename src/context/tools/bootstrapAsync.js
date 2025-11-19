@@ -1,6 +1,6 @@
 import moment from "moment";
 import { payloadHelper } from "../../helpers/cryptoHelper";
-import { storageServiceStates } from "../../helpers/storageService";
+import { storageManager } from "../../helpers/StorageManager";
 import authService from "../../services/login/authService";
 import storeDatas from "./storeLoginDatas";
 
@@ -23,7 +23,7 @@ export async function tryLoginWithStoredCreds({
 
         if (now.isBefore(expiration)) {
             dispatch({ type: "SIGN_IN", userToken: payload.superSecretUserToken });
-            const getDataFromStorage = await storageServiceStates.getter({
+            const getDataFromStorage = await storageManager.getter({
                 originKey: "userData",
             });
 
