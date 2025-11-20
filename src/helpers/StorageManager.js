@@ -20,7 +20,8 @@ class StorageManager {
                         key,
                         JSON.stringify(this.pendingData)
                     );
-                    console.log(`Scheduled data saved for ${key}`);
+
+                    /// REGENERATE CHECKSUM !
                 } catch (e) {
                     console.log(`Error on schedule data for ${key}`);
                 }
@@ -49,3 +50,4 @@ class StorageManager {
 }
 
 export const storageManager = new StorageManager();
+

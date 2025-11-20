@@ -19,12 +19,14 @@ import { useUser } from "../../../context/UserContext";
 import { storageManager } from "../../../helpers/StorageManager";
 import { adjustLightness } from "../../../utils/colorGenerator";
 import { formatShortDate } from "../../../utils/date";
+import { useHomeworkUpdate } from "./custom/helpers/useHomeworkUpdate";
 
 export default function HomeworksScreen() {
     const { sortedHomeworksData, setSortedHomeworksData, userAccesToken } =
         useUser();
     const { toggleTheme, colorScheme, isFollowingSystem, followSystemTheme } =
         useTheme();
+    const { updateHomework } = useHomeworkUpdate();
 
     const [loading, setLoading] = useState(true);
     const [homeworksDates, setHomeworksDates] = useState();
@@ -35,7 +37,14 @@ export default function HomeworksScreen() {
     const [encouragementSentence, setEncouragemementSentence] = useState("");
     const [completedTasks, setCompletedTasks] = useState([]);
 
-    const validateTask = () => {};
+    const animatedWidth = useSharedValue(0);
+
+    const handleToggleHomework = useCallback(
+        (homeworkId, isDone) => {
+            updateHomework(homeworkId, { isDone: !isDone });
+        },
+        [updateHomework]
+    );
 
     const pickSentence = useCallback(
         (progression) => {
@@ -56,31 +65,26 @@ export default function HomeworksScreen() {
         },
         [progression]
     );
-
     useFocusEffect(
         useCallback(() => {
-            try {
-                if (
-                    !sortedHomeworksData ||
-                    Object.keys(sortedHomeworksData).length === 0
-                ) {
-                    setLoading(true);
-                    storageManager
-                        .getter({ originKey: "homeworks" })
-                        .then((userHomeworks) => {
-                            setSortedHomeworksData(userHomeworks);
-                            setFormatedDates(userHomeworks.formatedDates);
-                            setActiveDate(
-                                Object.keys(userHomeworks.formatedDates)[0]
-                            );
-                        });
+            const loadHomeworks = async () => {
+                try {
+                    const storedHomeworks = await storageManager.getter({
+                        originKey: "homeworks",
+                    });
+
+                    if (storedHomeworks) {
+                        setSortedHomeworksData(storedHomeworks);
+                        setFormatedDates(storedHomeworks.formatedDates);
+                        setActiveDate(Object.keys(storedHomeworks.formatedDates)[0]);
+                    }
+                } catch (error) {
+                    console.error("Error while loading hw:", error);
                 }
-            } catch (error) {
-                console.log("Error while loading homeworks:", error);
-            } finally {
-                setLoading(false);
-            }
-        }, [setSortedHomeworksData])
+            };
+
+            loadHomeworks();
+        }, [])
     );
 
     useEffect(() => {
@@ -89,6 +93,19 @@ export default function HomeworksScreen() {
 
         setHomeworksDates(sortedHomeworksData.formatedDates);
     }, [sortedHomeworksData]);
+
+    useEffect(() => {
+        if (!activeDate) return;
+
+        const datas = sortedHomeworksData[activeDate];
+        setDisplayTasks(datas);
+        const completed = datas.filter(({ isDone }) => isDone);
+        setCompletedTasks(completed);
+        const progression =
+            Math.round((completed.length / datas.length) * 100) / 100;
+        setProgression(progression);
+        pickSentence(progression);
+    }, [activeDate, sortedHomeworksData]);
 
     const renderDateItem = useCallback(
         ({ item }) => {
@@ -107,7 +124,15 @@ export default function HomeworksScreen() {
         [activeDate]
     );
     const renderHomework = useCallback(({ item }) => {
-        const { discipline, givenOn, id, isDone, isEvaluation, returnOnline } = item;
+        const {
+            discipline,
+            givenOn,
+            id,
+            isDone,
+            isEvaluation,
+            returnOnline,
+            homeworksContent,
+        } = item;
 
         return (
             <Homework
@@ -116,22 +141,11 @@ export default function HomeworksScreen() {
                 id={id}
                 isDone={isDone}
                 isEvaluation={isEvaluation}
+                homeworksContent={homeworksContent}
+                onToggle={() => handleToggleHomework(id, isDone)}
             />
         );
     }, []);
-
-    useEffect(() => {
-        if (!activeDate) return;
-
-        const datas = sortedHomeworksData[activeDate];
-        setDisplayTasks(datas);
-        const completed = datas.filter(({ isDone }) => isDone);
-        setCompletedTasks(completed);
-        const progression =
-            Math.round((completed.length / datas.length) * 100) / 100;
-        setProgression(progression);
-        pickSentence(progression);
-    }, [activeDate, sortedHomeworksData]);
 
     return (
         <View style={{ flex: 1 }}>
@@ -155,7 +169,10 @@ export default function HomeworksScreen() {
                         {completedTasks.length}/{displayTasks.length}
                     </Text>
                 </View>
-                <TasksProgression progression={progression} />
+                <TasksProgression
+                    progression={progression}
+                    animatedWidth={animatedWidth}
+                />
 
                 <Text preset="custom1" align="center" color="hsl(240, 34%, 77%)">
                     {encouragementSentence}
@@ -200,25 +217,8 @@ export default function HomeworksScreen() {
                                 formatedDates &&
                                 formatedDates[activeDate].long}
                         </Text>
-                        {/* <Pressable
-                            style={{
-                                paddingVertical: 3,
-                                paddingHorizontal: 12,
-                                alignItems: "center",
-                                justifyContent: "center",
-                                borderRadius: 15,
-                                backgroundColor: "hsl(240, 21%, 27%)",
-                                }}
-                                >
-                                <PlusIcon size={24} />
-                                </Pressable> */}
                     </View>
-                    {/* <View style={{ flexDirection: "column" }}> */}
-                    {/* <View style={{ gap: 8 }}>
-                        <Homework />
-                        <Homework />
-                        <Homework />
-                    </View> */}
+
                     <FlatList
                         data={displayTasks}
                         renderItem={renderHomework}
@@ -228,8 +228,6 @@ export default function HomeworksScreen() {
                             gap: 10,
                         }}
                     />
-
-                    {/* </View> */}
                 </View>
             </View>
         </View>
@@ -237,10 +235,19 @@ export default function HomeworksScreen() {
 }
 
 const Homework = memo(
-    ({ discipline, givenOn, isDone, documents = null, isEvaluation, id }) => {
+    ({
+        discipline,
+        givenOn,
+        isDone,
+        isEvaluation,
+        id,
+        homeworksContent,
+        onToggle,
+    }) => {
         const gradientColors = isEvaluation
             ? ["hsl(2, 63%, 43%)", "hsl(2, 54%, 23%)"]
             : ["hsl(240, 19%, 38%)", "hsl(240, 20%, 23%)"];
+
         return (
             <LinearGradient
                 colors={gradientColors}
@@ -284,7 +291,7 @@ const Homework = memo(
                             }}
                         >
                             <Text preset="label3" align="center">
-                                3
+                                {homeworksContent.joinedDocuments.length || 0}
                             </Text>
                         </View>
                     </View>
@@ -294,23 +301,22 @@ const Homework = memo(
                     </Text>
                 </View>
 
-                <View
+                <TouchableOpacity // DEBUG
                     style={{
                         aspectRatio: 1,
                         width: 40,
-                        backgroundColor: "red",
+                        backgroundColor: isDone ? "green" : "red",
                         marginLeft: 12,
                         borderRadius: "50%",
                     }}
+                    onPress={onToggle}
                 />
             </LinearGradient>
         );
     }
 );
 
-const TasksProgression = ({ progression }) => {
-    const animatedWidth = useSharedValue(0);
-
+const TasksProgression = ({ progression, animatedWidth }) => {
     useEffect(() => {
         animatedWidth.value = withDelay(
             100,

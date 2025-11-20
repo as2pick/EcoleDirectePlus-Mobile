@@ -2,22 +2,21 @@ import fetchApi from "../services/fetchApi";
 import { formatFrenchDate } from "../utils/date";
 
 export default async function homeworksResolver({ token }) {
-    // return "homeworks";
     const homeworksResponse = await fetchApi(
         "https://api.ecoledirecte.com/v3/Eleves/{USER_ID}/cahierdetexte.awp?verbe=get&{API_VERSION}",
         { headers: { "X-Token": token }, method: "POST" }
     );
     const homeworks = homeworksResponse.data;
 
+    const entries = await Promise.all(
+        Object.entries(homeworks).map(async ([date, value]) => {
+            const details = await homeworksDetails({ date, token });
+            return [date, details.disciplines];
+        })
+    );
+
     return {
-        ...Object.fromEntries(
-            Object.entries(homeworks).map(([key, value]) => {
-                return [
-                    key,
-                    value.map((homework) => formatHomeworkDiscipline(homework)),
-                ];
-            })
-        ),
+        ...Object.fromEntries(entries),
         formatedDates: extractEvaluationDays(homeworks),
     };
 }
@@ -79,6 +78,7 @@ function formatHomeworkDiscipline({
         id: idDevoir,
     };
 }
+// POST //api.ecoledirecte.com/v3/telechargement.awp?verbe=get&fichierId=3507&leTypeDeFichier=FICHIER_CDT&v=4.89.2
 
 export async function homeworksDetails({ token, date }) {
     const homeworksDetailsResponse = await fetchApi(
@@ -89,26 +89,38 @@ export async function homeworksDetails({ token, date }) {
 
     return {
         date: homeworks.date,
-        disciplines: homeworks.matieres.map((homework) =>
-            formatHomeworksDetails(homework)
-        ),
+        disciplines: homeworks.matieres
+            .filter((m) => m.aFaire !== undefined)
+            .map((homework) => formatHomeworksDetails(homework, date)),
     };
 }
 
-function formatHomeworksDetails({
-    entityCode,
-    entityLibelle,
-    entityType,
-    matiere,
-    codeMatiere,
-    nomProf,
-    id,
-    interrogation,
-    blogActif,
-    nbJourMaxRenduDevoir,
-    aFaire,
-    contenuDeSeance,
-}) {
+function formatHomeworksDetails(
+    {
+        entityCode,
+        entityLibelle,
+        entityType,
+        matiere,
+        codeMatiere,
+        nomProf,
+        id,
+        interrogation,
+        blogActif,
+        nbJourMaxRenduDevoir,
+        aFaire,
+        contenuDeSeance,
+    },
+    date
+) {
+    let courseContent = "";
+    if (
+        contenuDeSeance !== undefined &&
+        contenuDeSeance.contenu !== aFaire.contenu
+    ) {
+        courseContent = contenuDeSeance.contenu;
+    } else {
+        courseContent = aFaire.contenu;
+    }
     return {
         discipline: {
             name: matiere,
@@ -122,20 +134,23 @@ function formatHomeworksDetails({
         },
         id,
         isEvaluation: interrogation,
-        isDone: aFaire.effectue,
-        returnOnline: aFaire.rendreEnLigne,
-        givenOn: aFaire.donneLe,
-        homeworksContent: aFaire.contenu,
-        courseContent: contenuDeSeance.contenu,
+        isDone: aFaire?.effectue,
+        returnOnline: aFaire?.rendreEnLigne,
+        givenOn: aFaire?.donneLe,
+        homeworksContent: {
+            HTMLcontent: aFaire?.contenu,
+            joinedDocuments: aFaire?.documents,
+        },
+        courseContent: courseContent,
     };
 }
 
-export async function setHomeworkDone({ token, id, done = true }) {
+export async function toggleHomework({ token, id, state }) {
     const body = {
-        ...(done && {
+        ...(state && {
             idDevoirsEffectues: [id],
         }),
-        ...(!done && { idDevoirsNonEffectues: [id] }),
+        ...(!state && { idDevoirsNonEffectues: [id] }),
     };
     fetchApi(
         `https://api.ecoledirecte.com/v3/Eleves/{USER_ID}/cahierdetexte.awp?verbe=put&{API_VERSION}`,
@@ -144,6 +159,6 @@ export async function setHomeworkDone({ token, id, done = true }) {
             headers: { "X-Token": token },
             method: "POST",
         }
-    ).catch((e) => console.log("An error expected in setHomeworkDone, ", e));
+    ).catch((e) => console.log("An error expected in toggleHomework, ", e));
 }
 
