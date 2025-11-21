@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { generateChecksum } from "../utils/crypto";
 import { isJsonObject, isParsableJson } from "../utils/json";
 
 class StorageManager {
@@ -16,14 +17,17 @@ class StorageManager {
         this.saveTimeout = setTimeout(() => {
             setImmediate(async () => {
                 try {
-                    await AsyncStorage.setItem(
-                        key,
-                        JSON.stringify(this.pendingData)
-                    );
-
-                    /// REGENERATE CHECKSUM !
+                    await this.setter({
+                        originKey: key,
+                        dataToStore: JSON.stringify(this.pendingData),
+                    });
+                    const apiDataChecksum = await generateChecksum(data);
+                    await storageManager.setter({
+                        originKey: `checksum_${key}`,
+                        dataToStore: apiDataChecksum,
+                    });
                 } catch (e) {
-                    console.log(`Error on schedule data for ${key}`);
+                    console.log(`Error on schedule data for ${key}`, e);
                 }
                 this.pendingData = null;
             });
