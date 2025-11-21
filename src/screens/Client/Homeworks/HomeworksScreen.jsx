@@ -10,7 +10,6 @@ import Animated, {
 } from "react-native-reanimated";
 
 import { useFocusEffect } from "@react-navigation/native";
-import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Text } from "../../../components/Ui/core";
 import { motivationSentences } from "../../../constants/features/homeworksConfig";
@@ -18,7 +17,7 @@ import { useTheme } from "../../../context/ThemeContext";
 import { useUser } from "../../../context/UserContext";
 import { storageManager } from "../../../helpers/StorageManager";
 import { adjustLightness } from "../../../utils/colorGenerator";
-import { formatShortDate } from "../../../utils/date";
+import Homework from "./custom/classes/Homework";
 import { useHomeworkUpdate } from "./custom/helpers/useHomeworkUpdate";
 
 export default function HomeworksScreen() {
@@ -38,13 +37,6 @@ export default function HomeworksScreen() {
     const [completedTasks, setCompletedTasks] = useState([]);
 
     const animatedWidth = useSharedValue(0);
-
-    const handleToggleHomework = useCallback(
-        (homeworkId, isDone) => {
-            updateHomework(homeworkId, { isDone: !isDone });
-        },
-        [updateHomework]
-    );
 
     const pickSentence = useCallback(
         (progression) => {
@@ -72,7 +64,7 @@ export default function HomeworksScreen() {
                     const storedHomeworks = await storageManager.getter({
                         originKey: "homeworks",
                     });
-
+                    console.log(storedHomeworks);
                     if (storedHomeworks) {
                         setSortedHomeworksData(storedHomeworks);
                         setFormatedDates(storedHomeworks.formatedDates);
@@ -123,29 +115,17 @@ export default function HomeworksScreen() {
         },
         [activeDate]
     );
-    const renderHomework = useCallback(({ item }) => {
-        const {
-            discipline,
-            givenOn,
-            id,
-            isDone,
-            isEvaluation,
-            returnOnline,
-            homeworksContent,
-        } = item;
+    const renderHomework = useCallback(
+        ({ item }) => {
+            const HomeworkClass = new Homework({
+                ...item,
+                updateHomework,
+            });
 
-        return (
-            <Homework
-                discipline={discipline}
-                givenOn={givenOn}
-                id={id}
-                isDone={isDone}
-                isEvaluation={isEvaluation}
-                homeworksContent={homeworksContent}
-                onToggle={() => handleToggleHomework(id, isDone)}
-            />
-        );
-    }, []);
+            return HomeworkClass.RenderHomework();
+        },
+        [updateHomework]
+    );
 
     return (
         <View style={{ flex: 1 }}>
@@ -234,87 +214,87 @@ export default function HomeworksScreen() {
     );
 }
 
-const Homework = memo(
-    ({
-        discipline,
-        givenOn,
-        isDone,
-        isEvaluation,
-        id,
-        homeworksContent,
-        onToggle,
-    }) => {
-        const gradientColors = isEvaluation
-            ? ["hsl(2, 63%, 43%)", "hsl(2, 54%, 23%)"]
-            : ["hsl(240, 19%, 38%)", "hsl(240, 20%, 23%)"];
+// const Homework = memo(
+//     ({
+//         discipline,
+//         givenOn,
+//         isDone,
+//         isEvaluation,
+//         id,
+//         homeworksContent,
+//         onToggle,
+//     }) => {
+//         const gradientColors = isEvaluation
+//             ? ["hsl(2, 63%, 43%)", "hsl(2, 54%, 23%)"]
+//             : ["hsl(240, 19%, 38%)", "hsl(240, 20%, 23%)"];
 
-        return (
-            <LinearGradient
-                colors={gradientColors}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                locations={[0.17, 1]}
-                style={{
-                    height: 100,
-                    borderRadius: 20,
-                    overflow: "hidden",
-                    padding: 14,
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                }}
-            >
-                <View
-                    style={{
-                        justifyContent: "space-between",
-                        height: "100%",
-                    }}
-                >
-                    <View
-                        style={{
-                            flexDirection: "row",
-                            gap: 8,
-                            alignItems: "center",
-                        }}
-                    >
-                        <Text preset="label1" oneLine>
-                            {discipline.name}
-                        </Text>
-                        <View
-                            style={{
-                                backgroundColor: "hsl(240, 30%, 71%)",
-                                width: 24,
-                                height: 24,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                borderRadius: 12,
-                            }}
-                        >
-                            <Text preset="label3" align="center">
-                                {homeworksContent.joinedDocuments.length || 0}
-                            </Text>
-                        </View>
-                    </View>
+//         return (
+//             <LinearGradient
+//                 colors={gradientColors}
+//                 start={{ x: 0, y: 0 }}
+//                 end={{ x: 1, y: 1 }}
+//                 locations={[0.17, 1]}
+//                 style={{
+//                     height: 100,
+//                     borderRadius: 20,
+//                     overflow: "hidden",
+//                     padding: 14,
+//                     flexDirection: "row",
+//                     justifyContent: "space-between",
+//                     alignItems: "center",
+//                 }}
+//             >
+//                 <View
+//                     style={{
+//                         justifyContent: "space-between",
+//                         height: "100%",
+//                     }}
+//                 >
+//                     <View
+//                         style={{
+//                             flexDirection: "row",
+//                             gap: 8,
+//                             alignItems: "center",
+//                         }}
+//                     >
+//                         <Text preset="label1" oneLine>
+//                             {discipline.name}
+//                         </Text>
+//                         <View
+//                             style={{
+//                                 backgroundColor: "hsl(240, 30%, 71%)",
+//                                 width: 24,
+//                                 height: 24,
+//                                 justifyContent: "center",
+//                                 alignItems: "center",
+//                                 borderRadius: 12,
+//                             }}
+//                         >
+//                             <Text preset="label3" align="center">
+//                                 {homeworksContent.joinedDocuments.length || 0}
+//                             </Text>
+//                         </View>
+//                     </View>
 
-                    <Text preset="label3" color="hsl(240, 19%, 68%)">
-                        Mis en ligne le {formatShortDate(givenOn)}
-                    </Text>
-                </View>
+//                     <Text preset="label3" color="hsl(240, 19%, 68%)">
+//                         Mis en ligne le {formatShortDate(givenOn)}
+//                     </Text>
+//                 </View>
 
-                <TouchableOpacity // DEBUG
-                    style={{
-                        aspectRatio: 1,
-                        width: 40,
-                        backgroundColor: isDone ? "green" : "red",
-                        marginLeft: 12,
-                        borderRadius: "50%",
-                    }}
-                    onPress={onToggle}
-                />
-            </LinearGradient>
-        );
-    }
-);
+//                 <TouchableOpacity // DEBUG
+//                     style={{
+//                         aspectRatio: 1,
+//                         width: 40,
+//                         backgroundColor: isDone ? "green" : "red",
+//                         marginLeft: 12,
+//                         borderRadius: "50%",
+//                     }}
+//                     onPress={onToggle}
+//                 />
+//             </LinearGradient>
+//         );
+//     }
+// );
 
 const TasksProgression = ({ progression, animatedWidth }) => {
     useEffect(() => {
