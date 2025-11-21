@@ -138,7 +138,7 @@ function formatHomeworksDetails(
         returnOnline: aFaire?.rendreEnLigne,
         givenOn: aFaire?.donneLe,
         homeworksContent: {
-            HTMLcontent: aFaire?.contenu,
+            content: aFaire?.contenu,
             joinedDocuments: aFaire?.documents,
         },
         courseContent: courseContent,
