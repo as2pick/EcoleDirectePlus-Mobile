@@ -21,7 +21,7 @@ const tabClientScreens = [
         inNavbar: true,
         icon: GradesIcon,
     }),
-    createScreen(homeworks, HomeworksScreen, {
+    createScreen(homeworks.group, HomeworksScreen, {
         inNavbar: true,
         icon: HomeworksIcon,
     }),

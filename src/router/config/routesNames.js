@@ -10,7 +10,11 @@ export const routesNames = {
             content: "client_grades_content",
             details: "client_grades_details",
         },
-        homeworks: "client_homeworks",
+        homeworks: {
+            group: "client_homeworks",
+            content: "client_homeworks_content",
+            details: "client_homeworks_details",
+        },
         home: "client_home",
         timetable: {
             group: "client_timetable",
