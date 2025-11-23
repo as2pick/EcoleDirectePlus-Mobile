@@ -18,7 +18,7 @@ const NavigationBottomBar = ({ state, descriptors, navigation }) => {
                 {
                     backgroundColor: caseColor,
                     borderRadius: 25,
-                    boxShadow: "0px 0px 10px 2px rgb(0, 0, 0)" + shadowColor,
+                    boxShadow: "0px 0px 10px 2px" + shadowColor,
                 },
             ]}
         >
@@ -60,20 +60,20 @@ const NavigationBottomBar = ({ state, descriptors, navigation }) => {
                             style={
                                 isFocused
                                     ? [
-                                          styles.iconPadding,
-                                          {
-                                              backgroundColor: colors.main,
-                                          },
-                                      ]
+                                        styles.iconPadding,
+                                        {
+                                            backgroundColor: colors.main,
+                                        },
+                                    ]
                                     : [
-                                          styles.iconPadding,
-                                          {
-                                              backgroundColor: colors.secondary,
-                                          },
-                                      ]
+                                        styles.iconPadding,
+                                        {
+                                            backgroundColor: colors.secondary,
+                                        },
+                                    ]
                             }
                         >
-                            <IconComponent width={36} height={36} />
+                            <IconComponent width={isFocused ? [42] : [36]} height={isFocused ? [42] : [36]} />
                         </View>
                     </TouchableOpacity>
                 );
@@ -86,6 +86,7 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
         alignSelf: "center",
+        alignItems: "center",
         padding: 12,
         borderRadius: 25,
         bottom: 18,
@@ -94,10 +95,10 @@ const styles = StyleSheet.create({
         justifyContent: "space-around", // or space-between
     },
     tab: {
-        //flex: 1,
+        flexDirection: "row",
         alignItems: "center",
         //height: CONFIG.tabBarHeight, // 79
-        //justifyContent: "center",
+        justifyContent: "center",
     },
     iconPadding: {
         padding: 6,
