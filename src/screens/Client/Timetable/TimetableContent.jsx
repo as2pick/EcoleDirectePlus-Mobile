@@ -189,7 +189,7 @@ const CourseBox = ({
     const startCourseLayoutRef = useRef(false);
 
     const { colors } = useTheme();
-    const caseColor = addOpacityToCssRgb(colors.theme, 0.2);
+    const caseColor = addOpacityToCssRgb(colors.theme, 0.3);
 
     useEffect(() => {
         if (roomLayout && startCourseLayout) {
@@ -274,16 +274,16 @@ const CourseBox = ({
                         paddingVertical:
                             height <= CONFIG.minCourseSize
                                 ? timetableViewDims.height /
-                                      CONFIG.minCourseSize /
-                                      height +
-                                  1
+                                CONFIG.minCourseSize /
+                                height +
+                                1
                                 : CONFIG.minCourseSize,
                         overflow: "hidden",
                         backgroundColor: caseColor,
                         borderRadius: 16,
                         borderColor: color,
                         borderWidth: 1.8,
-                        boxShadow: `1px 2px 5px 0px ${shadowColor}`,
+                        boxShadow: `1px 2px ${shadow.caseSize}px 0px ${shadowColor}`,
                     },
                 ]}
                 activeOpacity={0.5}
@@ -310,13 +310,13 @@ const CourseBox = ({
 
                             backgroundColor: isCancelled
                                 ? addOpacityToCssRgb(
-                                      timetableConfig.cancelledColor,
-                                      0.43
-                                  )
+                                    timetableConfig.cancelledColor,
+                                    0.43
+                                )
                                 : addOpacityToCssRgb(
-                                      timetableConfig.dispensedColor,
-                                      0.43
-                                  ),
+                                    timetableConfig.dispensedColor,
+                                    0.43
+                                ),
                         }}
                     >
                         <Text
