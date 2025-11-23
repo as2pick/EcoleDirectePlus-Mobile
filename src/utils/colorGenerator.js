@@ -96,6 +96,7 @@ export function rgbToHsl(r, g, b) {
     return [Math.round(h), Math.round(s * 100), Math.round(l * 100)];
 }
 export const cssRgbToRgb = (text) => {
+    "worklet";
     let [x, y, z] = text.match(/\d+/g);
 
     return [x, y, z];
@@ -128,6 +129,7 @@ export const isDarkColor = (hsl) => {
 };
 
 export const addOpacityToCssRgb = (text, a) => {
+    "worklet";
     if (a > 1) return "rgb(255, 100, 20)";
 
     const [r, g, b] = cssRgbToRgb(text);

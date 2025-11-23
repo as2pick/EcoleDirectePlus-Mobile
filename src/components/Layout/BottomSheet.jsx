@@ -1,11 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, } from "react";
 import { StyleSheet, View } from "react-native";
+import { useTheme } from "@react-navigation/native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
+    ColorSpace,
     Easing,
     useAnimatedStyle,
     useSharedValue,
     withTiming,
+    useAnimatedReaction,
 } from "react-native-reanimated";
 import { scheduleOnRN } from "react-native-worklets";
 
@@ -16,13 +19,23 @@ export default function BottomSheet({
     debateSpacing = "30%",
     opened,
     style = {},
+    animatedPosition,
 }) {
     debateSpacing = Number(debateSpacing.replace("%", ""));
-
+    const { colors } = useTheme();
     const [isUp, setIsUp] = useState(false);
     const [usableHeight, setUsableHeight] = useState(0);
     const translateY = useSharedValue(debateSpacing);
     const previousY = useSharedValue({ y: 0 });
+
+    useAnimatedReaction(
+        () => translateY.value,
+        (curr) => {
+            if (animatedPosition) {
+                animatedPosition.value = (debateSpacing - curr) / debateSpacing;
+            }
+        }
+    );
 
     useEffect(() => opened(isUp), [isUp]);
     const togglePosition = () => {
@@ -94,7 +107,7 @@ export default function BottomSheet({
                                     width: 35,
                                     height: 6,
                                     borderRadius: 10,
-                                    backgroundColor: "white",
+                                    backgroundColor: colors.contrast,
                                 }}
                             />
                         </View>

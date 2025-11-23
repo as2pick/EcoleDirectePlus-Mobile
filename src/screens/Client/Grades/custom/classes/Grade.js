@@ -75,13 +75,13 @@ export default class Grade {
         let backgroundColor = null;
         switch (this.actionOnStreak) {
             case "nothing":
-                backgroundColor = "hsla(240, 24%, 28%, 1)";
+                backgroundColor = "hsla(240, 40%, 28%, .35)";
                 break;
             case "up":
                 backgroundColor = "hsla(36, 100%, 34%, .3)";
                 break;
             case "previous up":
-                backgroundColor = "hsla(240, 10%, 41%, .3)";
+                backgroundColor = "hsla(36, 10%, 41%, .3)";
                 break;
             default:
                 backgroundColor = "red";

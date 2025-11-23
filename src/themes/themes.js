@@ -34,7 +34,7 @@ export const THEMES = {
             border: "rgba(26, 26, 151, 1)", // DON'T USE IT
             error: "rgb(240, 90, 90)",
             fond: ["rgba(222, 222, 250, 1)", "rgba(222, 222, 250, 1)"], // DON'T USE IT
-            pastel: "rgb(222, 222, 250)",
+            pastel: "rgba(200, 200, 252, 1)",
             secondary: "rgb(180, 180, 253)",
             main: "rgb(119, 119, 247)",
             accent: "rgb(62, 62, 221)",
@@ -54,7 +54,8 @@ export const THEMES = {
         },
         shadow: {
             oppacity: 0.14,
-            //color: "rgb(0, 0, 0)",
+            color: "rgb(0, 0, 0)",
+            caseSize: 5,
         },
     },
     etheral: {
@@ -110,8 +111,9 @@ export const THEMES = {
             regular: { fontFamily: "Lexend-Regular", fontWeight: "normal" },
         },
         shadow: {
-            oppacity: 0.3,
-            //color: "rgb(255, 255, 255)",
+            oppacity: 0.4,
+            color: "rgb(255, 255, 255)",
+            caseSize: 9,
         },
     },
 };

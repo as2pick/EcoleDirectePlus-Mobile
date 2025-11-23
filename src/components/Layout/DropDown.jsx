@@ -1,6 +1,6 @@
 import { useTheme } from "@react-navigation/native";
 import { useState } from "react";
-import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
+import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import Animated, {
     interpolate,
     useAnimatedStyle,
@@ -9,6 +9,7 @@ import Animated, {
 } from "react-native-reanimated";
 import SimpleArrow from "../../../assets/svg/SimpleArrow";
 import Text from "../Ui/core/Text";
+import { addOpacityToCssRgb } from "../../utils/colorGenerator";
 
 export default function CustomDropdown({
     options = [
@@ -16,11 +17,12 @@ export default function CustomDropdown({
         { label: "Trimestre 2", value: "A002" },
         { label: "Trimestre 3", value: "A003" },
     ],
-    onSelect = () => {},
+    onSelect = () => { },
 }) {
     const [selected, setSelected] = useState(null);
     const [open, setOpen] = useState(false);
     const { colors } = useTheme();
+    const styles = createStyles(colors)
     const progress = useSharedValue(0);
 
     const toggleDropdown = () => {
@@ -54,13 +56,12 @@ export default function CustomDropdown({
     const buttonAnimatedStyle = useAnimatedStyle(() => ({
         borderBottomLeftRadius: interpolate(progress.value, [0, 1], [20, 0]),
         borderBottomRightRadius: interpolate(progress.value, [0, 1], [20, 0]),
-        borderTopLeftRadius: 10,
-        borderTopRightRadius: 10,
+        borderTopLeftRadius: interpolate(progress.value, [0, 1], [10, 20]),
+        borderTopRightRadius: interpolate(progress.value, [0, 1], [10, 20]),
+        paddingTop: interpolate(progress.value, [0, 1], [8, 10]),
         borderColor: "hsla(240, 14%, 18%, .98)",
-
-        borderTopWidth: interpolate(progress.value, [0, 1], [0, 1.6]),
-        borderLeftWidth: interpolate(progress.value, [0, 1], [0, 1.6]),
-        borderRightWidth: interpolate(progress.value, [0, 1], [0, 1.6]),
+        //backgroundColor: `rgba(0, 0, 0, ${interpolate(progress.value, [0, 1], [0.3, 0.6])})`,
+        backgroundColor: addOpacityToCssRgb(colors.background.gradient, interpolate(progress.value, [0, 1], [0.4, 0.8])),
     }));
 
     return (
@@ -69,7 +70,7 @@ export default function CustomDropdown({
                 <TouchableOpacity onPress={toggleDropdown} activeOpacity={0.8}>
                     <View style={styles.buttonContent}>
                         <Animated.View style={arrowStyle}>
-                            <SimpleArrow fill={colors.txt.txt1} />
+                            <SimpleArrow fill={colors.contrast} />
                         </Animated.View>
 
                         <Text style={styles.buttonText}>
@@ -80,11 +81,10 @@ export default function CustomDropdown({
             </Animated.View>
 
             <Animated.View style={[styles.dropdown, dropdownStyle]}>
-                <FlatList
-                    data={options}
-                    keyExtractor={(item) => item.value}
-                    renderItem={({ item }) => (
+                <ScrollView nestedScrollEnabled>
+                    {options.map((item) => (
                         <TouchableOpacity
+                            key={item.value}
                             style={styles.option}
                             onPress={() => handleSelect(item)}
                         >
@@ -92,30 +92,29 @@ export default function CustomDropdown({
                                 {item.label}
                             </Text>
                         </TouchableOpacity>
-                    )}
-                />
+                    ))}
+                </ScrollView>
             </Animated.View>
         </View>
     );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (colors) => StyleSheet.create({
     container: { width: "58%", maxHeight: 170, alignItems: "center" },
     button: {
         paddingVertical: 8,
         paddingHorizontal: 18,
-        backgroundColor: "hsla(0, 0%, 0%, .3)",
     },
     buttonContent: {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
     },
-    buttonText: { marginLeft: 8 },
+    buttonText: { marginLeft: 8, color: colors.contrast },
     dropdown: {
         overflow: "hidden",
         width: "100%",
-        backgroundColor: "hsla(240, 14%, 18%, .98)",
+        backgroundColor: colors.background.gradient,
         paddingVertical: 10,
     },
     option: {
@@ -124,7 +123,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         marginHorizontal: 12,
         paddingVertical: 5,
-        backgroundColor: "hsl(240, 25%, 30%)",
+        backgroundColor: colors.secondary,
     },
     optionText: { flexShrink: 1 },
 });

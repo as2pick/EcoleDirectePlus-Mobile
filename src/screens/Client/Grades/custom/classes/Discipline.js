@@ -1,6 +1,8 @@
 import { TouchableOpacity, View } from "react-native";
-import Animated from "react-native-reanimated";
+import { useTheme } from "@react-navigation/native";
+import Animated, { FadeIn, FadeOut, Layout } from "react-native-reanimated";
 import { Text } from "../../../../../components/Ui/core";
+import { addOpacityToCssRgb } from "../../../../../utils/colorGenerator";
 import { parseNumber } from "../../../../../utils/grades/makeAverage";
 import { objectsEqual } from "../../../../../utils/json";
 import { formatGradeText } from "../helper";
@@ -137,28 +139,28 @@ export default class Discipline {
         );
     }
 
-    RenderDisciplineGroup({ dataLength, index }) {
+    RenderDisciplineGroup({ dataLength, index, colors }) {
         return (
             <View
                 style={{
-                    backgroundColor: "hsl(240, 24%, 29%)",
+                    backgroundColor: colors.main,
                     overflow: "hidden",
 
                     ...(index === 0
                         ? {
-                              borderTopLeftRadius: 12,
-                              borderTopRightRadius: 12,
-                              borderBottomLeftRadius: 3,
-                              borderBottomRightRadius: 3,
-                          }
+                            borderTopLeftRadius: 12,
+                            borderTopRightRadius: 12,
+                            borderBottomLeftRadius: 3,
+                            borderBottomRightRadius: 3,
+                        }
                         : { borderRadius: 3 }),
                     ...(dataLength - 1 === index
                         ? {
-                              borderTopLeftRadius: 3,
-                              borderTopRightRadius: 3,
-                              borderBottomLeftRadius: 12,
-                              borderBottomRightRadius: 12,
-                          }
+                            borderTopLeftRadius: 3,
+                            borderTopRightRadius: 3,
+                            borderBottomLeftRadius: 12,
+                            borderBottomRightRadius: 12,
+                        }
                         : { borderRadius: 3 }),
                 }}
                 key={index}
@@ -197,8 +199,10 @@ export default class Discipline {
         dataLength,
         isExpanded,
         onPress,
-
+        colors,
         dispatch,
+        shadowColor,
+        shadow,
     }) {
         const averages = [
             { label: "Classe", value: this.averageDatas.classAverage },
@@ -206,7 +210,7 @@ export default class Discipline {
             { label: "Min", value: this.averageDatas.minAverage },
         ];
         const boxStyle = {
-            backgroundColor: "hsl(240, 33%, 50%)",
+            backgroundColor: "hsla(240, 26%, 13%, .35)",
             paddingHorizontal: 20,
             paddingVertical: 8,
             borderRadius: 8,
@@ -215,26 +219,27 @@ export default class Discipline {
             <TouchableOpacity activeOpacity={0.7} onPress={onPress}>
                 <Animated.View
                     style={{
-                        backgroundColor: "hsl(240, 27%, 16%)",
+                        backgroundColor: colors.secondary,
                         overflow: "hidden",
 
                         ...(index === 0
                             ? {
-                                  borderTopLeftRadius: 12,
-                                  borderTopRightRadius: 12,
-                                  borderBottomLeftRadius: 3,
-                                  borderBottomRightRadius: 3,
-                              }
+                                borderTopLeftRadius: 12,
+                                borderTopRightRadius: 12,
+                                borderBottomLeftRadius: 3,
+                                borderBottomRightRadius: 3,
+                            }
                             : { borderRadius: 3 }),
                         ...(dataLength - 1 === index
                             ? {
-                                  borderTopLeftRadius: 3,
-                                  borderTopRightRadius: 3,
-                                  borderBottomLeftRadius: 12,
-                                  borderBottomRightRadius: 12,
-                              }
+                                borderTopLeftRadius: 3,
+                                borderTopRightRadius: 3,
+                                borderBottomLeftRadius: 12,
+                                borderBottomRightRadius: 12,
+                            }
                             : { borderRadius: 3 }),
                     }}
+                    layout={Layout.springify()}
                 >
                     <View
                         style={{
@@ -243,6 +248,7 @@ export default class Discipline {
                             padding: 18,
                             height: 80,
                             alignItems: "center",
+
                         }}
                     >
                         <View style={{ flexDirection: "row", gap: 18 }}>
@@ -255,7 +261,7 @@ export default class Discipline {
                                     height: 42,
                                     borderWidth: 2,
                                     borderColor: "white",
-                                    backgroundColor: "hsl(240, 27%, 16%)",
+                                    backgroundColor: "hsla(240, 27%, 16%, .35)",
                                 }}
                             >
                                 <View
@@ -302,10 +308,14 @@ export default class Discipline {
                     </View>
 
                     {isExpanded && (
-                        <Animated.View style={{ gap: 8, paddingBottom: 18 }}>
+                        <Animated.View
+                            entering={FadeIn}
+                            exiting={FadeOut}
+                            style={{ gap: 8, paddingBottom: 18 }}
+                        >
                             <View
                                 style={{
-                                    backgroundColor: "hsl(240, 27%, 60%)",
+                                    backgroundColor: colors.main,
                                     height: 1,
                                     borderRadius: 5,
                                     marginHorizontal: 18,

@@ -1,17 +1,22 @@
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation, useTheme } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import { useCallback, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { Dimensions, View } from "react-native";
+import Animated, {
+    Extrapolation,
+    interpolate,
+    useAnimatedScrollHandler,
+    useAnimatedStyle,
+    useSharedValue,
+} from "react-native-reanimated";
 import GradeArrow from "../../../../assets/svg/GradeArrow";
-import BottomSheet from "../../../components/Layout/BottomSheet";
 
-import { FlatList } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { DropDown, ScrollableStack } from "../../../components";
 import { API } from "../../../constants/api/api";
 import { useUser } from "../../../context/UserContext";
 import { storageServiceStates } from "../../../helpers/storageService";
-import { cssHslaToHsla } from "../../../utils/colorGenerator";
+import { cssHslaToHsla, addOpacityToCssRgb } from "../../../utils/colorGenerator";
 import { parseNumber } from "../../../utils/grades/makeAverage";
 import Discipline from "./custom/classes/Discipline";
 import Period from "./custom/classes/Period";
@@ -22,9 +27,11 @@ import { useGrade } from "./custom/context/LocalContext";
 import { calculateStrengthsWeaknesses, formatGradeText } from "./custom/helper";
 import { useSimulation } from "./custom/hooks/useSimulation";
 
-const { width } = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
 
 export default function GradesContent() {
+    const { colors, shadow } = useTheme();
+    const shadowColor = addOpacityToCssRgb("rgb(0, 0, 0)", shadow.oppacity);
     const { sortedGradesData, setSortedGradesData, userAccesToken } = useUser();
     const { state, dispatch } = useGrade();
     const navigation = useNavigation();
@@ -43,9 +50,64 @@ export default function GradesContent() {
     const [strengths, setStrengths] = useState([]);
     const [weaknesses, setWeaknesses] = useState([]);
 
-    const [bottomSheetOpened, setBottomSheetOpened] = useState(false);
     const [renderDisciplinesArray, setRenderDisciplineArray] = useState([]);
     const [expandedChain, setExpandedChain] = useState(null);
+
+    const scrollY = useSharedValue(0);
+
+    const scrollHandler = useAnimatedScrollHandler((event) => {
+        scrollY.value = event.contentOffset.y;
+    });
+
+    const containerStyle = useAnimatedStyle(() => {
+        const progress = interpolate(scrollY.value, [0, 250], [0, 1], Extrapolation.CLAMP);
+        const translateY = interpolate(scrollY.value, [0, 250], [0, 225], Extrapolation.CLAMP);
+
+        return {
+            marginHorizontal: interpolate(progress, [0, 1], [0, 14]),
+            borderRadius: interpolate(progress, [0, 1], [0, 18]),
+            marginTop: interpolate(progress, [0, 1], [0, 50]),
+            marginBottom: interpolate(progress, [0, 1], [0, 24]),
+            height: interpolate(progress, [0, 1], [height * 0.4, height * 0.3]),
+            transform: [{ translateY }],
+            overflow: "hidden",
+        };
+    });
+
+    const sheetStyle = useAnimatedStyle(() => {
+        const translateY = interpolate(scrollY.value, [0, 250], [0, 225], Extrapolation.CLAMP);
+        return {
+            transform: [{ translateY }],
+        };
+    });
+
+    const handleStyle = useAnimatedStyle(() => {
+        const progress = interpolate(scrollY.value, [0, 250], [0, 1], Extrapolation.CLAMP);
+        return {
+            opacity: interpolate(progress, [0, 1], [1, 0]),
+            height: interpolate(progress, [0, 1], [6, 0]),
+            transform: [{ scale: interpolate(progress, [0, 1], [1, 0]) }],
+        };
+    });
+
+    const handleContainerStyle = useAnimatedStyle(() => {
+        const progress = interpolate(scrollY.value, [0, 250], [0, 1], Extrapolation.CLAMP);
+        return {
+            marginBottom: interpolate(progress, [0, 1], [24, 0]),
+            height: interpolate(progress, [0, 1], [30, 0]), // 6 (height) + 24 (marginBottom) approx
+        };
+    });
+
+    const itemWidthStyle = useAnimatedStyle(() => {
+        const progress = interpolate(scrollY.value, [0, 250], [0, 1], Extrapolation.CLAMP);
+        return {
+            width: interpolate(
+                progress,
+                [0, 1],
+                [width, width - 28]
+            ),
+        };
+    });
 
     const [simulatedDisciplineCodes, setSimulatedDisciplineCodes] = useState({});
 
@@ -146,11 +208,13 @@ export default function GradesContent() {
             return DisciplineClass.RenderDisciplineGroup({
                 dataLength: renderDisciplinesArray.length,
                 index: index,
+                colors: colors,
             });
         } else {
             return DisciplineClass.RenderDiscipline({
                 dataLength: renderDisciplinesArray.length,
                 index,
+                colors: colors,
                 isExpanded:
                     expandedChain ===
                     `${DisciplineClass.code}-${DisciplineClass.libelle}`,
@@ -160,6 +224,8 @@ export default function GradesContent() {
                     ),
 
                 dispatch: dispatch,
+                shadowColor: shadowColor,
+                shadow: shadow,
             });
         }
     };
@@ -169,98 +235,118 @@ export default function GradesContent() {
         []
     );
 
+    const streakItem = useMemo(() => ({
+        key: "streak",
+        text: "Ta streak",
+        value: globalStreakScore,
+        gradient: {
+            colors: ["rgb(255, 15, 0)", "rgba(255, 150, 0, .7)"],
+            locations: [0.24, 0.68],
+            start: { x: 0, y: 0 },
+            end: { x: 0, y: 1 },
+        },
+    }), [globalStreakScore]);
+
+    const averageItem = useMemo(() => ({
+        key: "average",
+        text: "Moyenne Générale",
+        value: formatGradeText(generalAverage),
+        gradient: {
+            colors: ["rgb(68, 55, 149)", "rgb(119, 29, 124)"],
+            locations: [0.21, 0.66],
+            start: { x: 0, y: 0 },
+            end: { x: 0, y: 1 },
+        },
+    }), [generalAverage]);
+
     return (
         <View style={{ flex: 1 }}>
-            <View
-                style={{
-                    flex: 0.4,
-                    pointerEvents: bottomSheetOpened ? "none" : "auto",
-                }}
+            <Animated.ScrollView
+                style={{ flex: 1 }}
+                onScroll={scrollHandler}
+                scrollEventThrottle={16}
+                contentContainerStyle={{ paddingBottom: 110 }}
+                showsVerticalScrollIndicator={false}
             >
-                <SafeAreaView
-                    style={{
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        alignItems: "center",
-                        justifyContent: "flex-start",
-                        marginTop: 3,
-                        zIndex: 1,
-                    }}
+                <Animated.View
+                    renderToHardwareTextureAndroid={true}
+                    shouldRasterizeIOS={true}
+                    style={[
+                        {
+                            zIndex: 1000,
+                            boxShadow: `1px 2px ${shadow.caseSize}px 0px ${shadowColor}`,
+                        },
+                        containerStyle,
+                    ]}
                 >
-                    {periodes.length > 0 && (
-                        <DropDown
-                            onSelect={(value) => {
-                                const changedPeriod = sortedGradesData[value];
-                                setDisplayPeriode(changedPeriod);
 
-                                setDisplayPeriodeName(value);
-                            }}
-                            options={periodes}
+                    <ScrollableStack
+                        horizontal
+                        paging
+                        contentContainerStyle={{ alignItems: "center" }}
+                        gap={0}
+
+                    >
+                        <HeaderStatsCarousel
+                            style={itemWidthStyle}
+                            item={streakItem}
                         />
-                    )}
-                </SafeAreaView>
-                <ScrollableStack
-                    horizontal
-                    paging
-                    contentContainerStyle={{ alignItems: "center" }}
-                    gap={0}
+                        <HeaderStatsCarousel
+                            style={itemWidthStyle}
+                            item={averageItem}
+                        />
+                    </ScrollableStack>
+                </Animated.View>
+
+                <Animated.View
+                    style={[
+                        {
+                            backgroundColor: colors.background.gradient,
+                            borderTopLeftRadius: 30,
+                            borderTopRightRadius: 30,
+                            minHeight: Dimensions.get("window").height * 0.6,
+                            paddingTop: 24,
+                            marginTop: -20,
+                            zIndex: 2000,
+                            marginBottom: 110,
+                        },
+                        sheetStyle,
+                    ]}
                 >
-                    <HeaderStatsCarousel
-                        item={{
-                            key: "streak",
-                            text: "Ta streak",
-                            value: globalStreakScore,
-                            gradient: {
-                                colors: ["rgb(255, 15, 0)", "rgba(255, 150, 0, .7)"],
-                                locations: [0.24, 0.68],
-                                start: { x: 0, y: 0 },
-                                end: { x: 0, y: 1 },
+                    <Animated.View
+                        style={[
+                            {
+                                alignItems: "center",
+                                // marginBottom: 24, // Moved to animated style
                             },
-                        }}
-                    />
-                    <HeaderStatsCarousel
-                        item={{
-                            key: "average",
-                            text: "Moyenne Générale",
-                            value: formatGradeText(generalAverage),
-                            gradient: {
-                                colors: ["rgb(68, 55, 149)", "rgb(119, 29, 124)"],
-                                locations: [0.21, 0.66],
-                                start: { x: 0, y: 0 },
-                                end: { x: 0, y: 1 },
-                            },
-                        }}
-                    />
-                </ScrollableStack>
-            </View>
-            <View
-                style={{
-                    position: "absolute",
-                    width: "100%",
-                    height: "100%",
-                }}
-            >
-                <BottomSheet
-                    style={{
-                        backgroundColor: "hsl(240, 35%, 11%)",
-                        borderTopLeftRadius: 42,
-                        borderTopRightRadius: 42,
-                        zIndex: 1000,
-                    }}
-                    displayLine
-                    opened={(state) => setBottomSheetOpened(state)}
-                >
+                            handleContainerStyle,
+                        ]}
+                    >
+                        <Animated.View
+                            style={[
+                                {
+                                    width: 35,
+                                    // height: 6, // Moved to animated style
+                                    borderRadius: 10,
+                                    backgroundColor: colors.contrast,
+                                    marginTop: 5
+                                },
+                                handleStyle,
+                            ]}
+                        />
+                    </Animated.View>
+
                     <View
                         style={{
                             alignItems: "center",
                             justifyContent: "center",
                             marginHorizontal: 14,
-                            backgroundColor: "hsl(240, 28%, 26%)",
+                            backgroundColor: colors.pastel,
                             borderRadius: 18,
                             padding: 16,
-                            marginTop: 24,
+                            marginBottom: 24,
+                            marginTop: -5,
+                            boxShadow: `1px 2px ${shadow.caseSize}px 0px ${shadowColor}`,
                         }}
                     >
                         <ScrollableStack
@@ -298,38 +384,58 @@ export default function GradesContent() {
                             </View>
                         </ScrollableStack>
                     </View>
-                    <View
-                        style={{
-                            flex: 1,
-                            margin: 14,
-                        }}
-                    >
-                        <FlatList
-                            data={renderDisciplinesArray}
-                            renderItem={renderItem}
-                            keyExtractor={keyExtractor}
-                            contentContainerStyle={{ gap: 3 }}
-                            showsVerticalScrollIndicator={false}
-                        />
+
+                    <View style={{ marginHorizontal: 14, gap: 3, paddingBottom: 110 }}>
+                        {renderDisciplinesArray.map((item, index) => (
+                            <View key={keyExtractor(item, index)}>
+                                {renderItem({ item, index })}
+                            </View>
+                        ))}
                     </View>
-                </BottomSheet>
-            </View>
+                </Animated.View>
+            </Animated.ScrollView>
             <AddGradeModal
                 visible={state.simulation.modalOpen}
                 disciplineCodes={simulatedDisciplineCodes}
             />
-        </View>
+            <SafeAreaView
+                style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    alignItems: "center",
+                    justifyContent: "flex-start",
+                    marginTop: 3,
+                    zIndex: 3000,
+                    pointerEvents: "box-none",
+                }}
+            >
+                {periodes.length > 0 && (
+                    <DropDown
+                        onSelect={(value) => {
+                            const changedPeriod = sortedGradesData[value];
+                            setDisplayPeriode(changedPeriod);
+
+                            setDisplayPeriodeName(value);
+                        }}
+                        options={periodes}
+                    />
+                )}
+            </SafeAreaView>
+        </View >
     );
 }
-
-const HeaderStatsCarousel = ({ item }) => (
-    <View style={{ width, height: "100%", flex: 1 }}>
+// const { shadow } = useTheme();
+// const shadowColor = addOpacityToCssRgb("rgb(0, 0, 0)", shadow.oppacity);
+const HeaderStatsCarousel = memo(({ item, style }) => (
+    <Animated.View style={[style, { height: "100%", flex: 1 }]}>
         <LinearGradient
             colors={item.gradient.colors}
             start={item.gradient.start}
             end={item.gradient.end}
             locations={item.gradient.locations}
-            style={{ width, height: "100%", flex: 1 }}
+            style={{ width: "100%", height: "100%", flex: 1 }}
         >
             <View
                 style={{ justifyContent: "center", alignItems: "center", flex: 1 }}
@@ -355,8 +461,8 @@ const HeaderStatsCarousel = ({ item }) => (
                 </View>
             </View>
         </LinearGradient>
-    </View>
-);
+    </Animated.View>
+));
 
 const StrengthsAndWeakness = ({ data, firstColor }) => {
     const [tint, saturation, lightness, opacity] = cssHslaToHsla(firstColor);
