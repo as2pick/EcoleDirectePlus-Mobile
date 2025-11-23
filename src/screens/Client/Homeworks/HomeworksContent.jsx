@@ -11,6 +11,7 @@ import Animated, {
 
 import { useFocusEffect } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import MenuIcon from "../../../../assets/svg/MenuIcon";
 import LoadingWrapper from "../../../components/Layout/LoadingWrapper";
 import { Text } from "../../../components/Ui/core";
 import { motivationSentences } from "../../../constants/features/homeworksConfig";
@@ -62,8 +63,10 @@ export default function HomeworksContent() {
     );
     useFocusEffect(
         useCallback(() => {
-            if (sortedHomeworksData && Object.keys(sortedHomeworksData).length > 0)
+            if (sortedHomeworksData && Object.keys(sortedHomeworksData).length > 0) {
+                setLoading(false);
                 return;
+            }
 
             const loadHomeworks = async () => {
                 try {
@@ -134,6 +137,22 @@ export default function HomeworksContent() {
     return (
         <LoadingWrapper loading={loading} setLoading={setLoading}>
             <View style={{ flex: 1 }}>
+                <View
+                    style={{
+                        position: "absolute",
+                        top: 0,
+                        right: 0,
+                        zIndex: 1000,
+                        paddingTop: 28,
+                        paddingRight: 12,
+                        gap: 2,
+                    }}
+                >
+                    <TouchableOpacity style={{ padding: 10 }}>
+                        <MenuIcon size={37} />
+                    </TouchableOpacity>
+                </View>
+
                 <SafeAreaView
                     style={{
                         height: "25%",
@@ -219,88 +238,6 @@ export default function HomeworksContent() {
         </LoadingWrapper>
     );
 }
-
-// const Homework = memo(
-//     ({
-//         discipline,
-//         givenOn,
-//         isDone,
-//         isEvaluation,
-//         id,
-//         homeworksContent,
-//         onToggle,
-//     }) => {
-//         const gradientColors = isEvaluation
-//             ? ["hsl(2, 63%, 43%)", "hsl(2, 54%, 23%)"]
-//             : ["hsl(240, 19%, 38%)", "hsl(240, 20%, 23%)"];
-
-//         return (
-//             <LinearGradient
-//                 colors={gradientColors}
-//                 start={{ x: 0, y: 0 }}
-//                 end={{ x: 1, y: 1 }}
-//                 locations={[0.17, 1]}
-//                 style={{
-//                     height: 100,
-//                     borderRadius: 20,
-//                     overflow: "hidden",
-//                     padding: 14,
-//                     flexDirection: "row",
-//                     justifyContent: "space-between",
-//                     alignItems: "center",
-//                 }}
-//             >
-//                 <View
-//                     style={{
-//                         justifyContent: "space-between",
-//                         height: "100%",
-//                     }}
-//                 >
-//                     <View
-//                         style={{
-//                             flexDirection: "row",
-//                             gap: 8,
-//                             alignItems: "center",
-//                         }}
-//                     >
-//                         <Text preset="label1" oneLine>
-//                             {discipline.name}
-//                         </Text>
-//                         <View
-//                             style={{
-//                                 backgroundColor: "hsl(240, 30%, 71%)",
-//                                 width: 24,
-//                                 height: 24,
-//                                 justifyContent: "center",
-//                                 alignItems: "center",
-//                                 borderRadius: 12,
-//                             }}
-//                         >
-//                             <Text preset="label3" align="center">
-//                                 {homeworksContent.joinedDocuments.length || 0}
-//                             </Text>
-//                         </View>
-//                     </View>
-
-//                     <Text preset="label3" color="hsl(240, 19%, 68%)">
-//                         Mis en ligne le {formatShortDate(givenOn)}
-//                     </Text>
-//                 </View>
-
-//                 <TouchableOpacity // DEBUG
-//                     style={{
-//                         aspectRatio: 1,
-//                         width: 40,
-//                         backgroundColor: isDone ? "green" : "red",
-//                         marginLeft: 12,
-//                         borderRadius: "50%",
-//                     }}
-//                     onPress={onToggle}
-//                 />
-//             </LinearGradient>
-//         );
-//     }
-// );
 
 const TasksProgression = ({ progression, animatedWidth }) => {
     useEffect(() => {
