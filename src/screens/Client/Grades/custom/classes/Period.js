@@ -25,7 +25,7 @@ export default class Period {
                 const disciplineObj = new Discipline(discipline);
                 const average = disciplineObj.getWeightedAverage();
                 const coef = discipline.coef;
-                if (!isNaN(average) && !isNaN(coef) && coef > 0) {
+                if (!isNaN(average) && average !== null && !isNaN(coef) && coef > 0) {
                     acc.total += average * coef;
                     acc.totalCoef += coef;
                 }
