@@ -15,6 +15,10 @@ const homeworksReducer = (state, action) => {
             return { ...state, homeworksData: null };
         case "TOGGLE_HOMEWORK":
             return { ...state, toggle: action.payload };
+        case "OPEN_NEW_HOMEWORK_MODAL":
+            return { ...state, new: { modalOpen: true } };
+        case "CLOSE_NEW_HOMEWORK_MODAL":
+            return { ...state, new: { modalOpen: false } };
         default:
             return state;
     }

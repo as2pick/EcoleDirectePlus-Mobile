@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { routesNames } from "../../../../../router/config/routesNames";
 import { useHomeworkUpdate } from "./useHomeworkUpdate";
 
-export const useHomeworksHandler = ({ state, dispatch }) => {
+export const useHomeworksHandler = ({ state, dispatch, setModalOpen }) => {
     const navigation = useNavigation();
     const { updateHomework } = useHomeworkUpdate();
 
@@ -21,5 +21,11 @@ export const useHomeworksHandler = ({ state, dispatch }) => {
             updateHomework(state.toggle.id, state.toggle.updates);
         }
     }, [state.toggle, updateHomework]);
+    useEffect(() => {
+        if (state.new) {
+            console.log("new");
+            setModalOpen(state.new.modalOpen);
+        }
+    }, [setModalOpen, state.new]);
 };
 

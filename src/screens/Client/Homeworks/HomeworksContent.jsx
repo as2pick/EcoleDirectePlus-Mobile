@@ -11,7 +11,7 @@ import Animated, {
 
 import { useFocusEffect } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import MenuIcon from "../../../../assets/svg/MenuIcon";
+import PlusIcon from "../../../../assets/svg/micro/PlusIcon";
 import LoadingWrapper from "../../../components/Layout/LoadingWrapper";
 import { Text } from "../../../components/Ui/core";
 import { motivationSentences } from "../../../constants/features/homeworksConfig";
@@ -20,6 +20,7 @@ import { useUser } from "../../../context/UserContext";
 import { storageManager } from "../../../helpers/StorageManager";
 import { adjustLightness } from "../../../utils/colorGenerator";
 import Homeworks from "./custom/classes/Homeworks";
+import NewHomeworkModal from "./custom/components/NewHomeworkModal";
 import { useHomework } from "./custom/context/LocalContext";
 import { useHomeworksHandler } from "./custom/hooks/useHomeworksHandler";
 
@@ -39,7 +40,9 @@ export default function HomeworksContent() {
     const [encouragementSentence, setEncouragemementSentence] = useState("");
     const [completedTasks, setCompletedTasks] = useState([]);
 
-    useHomeworksHandler({ state, dispatch });
+    const [modalOpen, setModalOpen] = useState(false);
+
+    useHomeworksHandler({ state, dispatch, setModalOpen });
     const animatedWidth = useSharedValue(0);
 
     const pickSentence = useCallback(
@@ -136,20 +139,26 @@ export default function HomeworksContent() {
 
     return (
         <LoadingWrapper loading={loading} setLoading={setLoading}>
+            <NewHomeworkModal visible={modalOpen} />
             <View style={{ flex: 1 }}>
                 <View
                     style={{
                         position: "absolute",
-                        top: 0,
-                        right: 0,
+                        top: "5%",
+                        right: "5%",
                         zIndex: 1000,
-                        paddingTop: 28,
-                        paddingRight: 12,
                         gap: 2,
                     }}
                 >
-                    <TouchableOpacity style={{ padding: 10 }}>
-                        <MenuIcon size={37} />
+                    <TouchableOpacity
+                        style={{
+                            paddingHorizontal: 6,
+                            backgroundColor: "hsl(240, 56%, 60%)",
+                            borderRadius: 12,
+                        }}
+                        onPress={() => dispatch({ type: "OPEN_NEW_HOMEWORK_MODAL" })}
+                    >
+                        <PlusIcon size={36} />
                     </TouchableOpacity>
                 </View>
 
