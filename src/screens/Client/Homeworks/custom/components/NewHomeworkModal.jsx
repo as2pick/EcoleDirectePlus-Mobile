@@ -1,5 +1,12 @@
+import DateTimePicker from "@react-native-community/datetimepicker";
 import { useEffect, useState } from "react";
-import { ScrollView, TextInput, TouchableOpacity, View } from "react-native";
+import {
+    Platform,
+    ScrollView,
+    TextInput,
+    TouchableOpacity,
+    View,
+} from "react-native";
 import Animated, {
     useAnimatedStyle,
     useSharedValue,
@@ -7,8 +14,8 @@ import Animated, {
 } from "react-native-reanimated";
 import { scheduleOnRN } from "react-native-worklets";
 import { Text } from "../../../../../components/Ui/core";
+import { formatDate } from "../../../../../utils/date";
 import { useHomework } from "../context/LocalContext";
-
 const PLACEHOLDERS = { coef: 1, grade: 15, outOf: 20 };
 
 export default function NewHomeworkModal({ visible }) {
@@ -16,6 +23,15 @@ export default function NewHomeworkModal({ visible }) {
     const [isRendered, setIsRendered] = useState(false);
     const translateY = useSharedValue(500);
     const opacity = useSharedValue(0);
+
+    const [date, setDate] = useState(new Date());
+    const [showDatePicker, setShowDatePicker] = useState(false);
+
+    const onChange = (event, selectedDate) => {
+        const currenDate = selectedDate || date;
+        setShowDatePicker(Platform.OS === "ios");
+        setDate(currenDate);
+    };
 
     useEffect(() => {
         if (visible) {
@@ -116,7 +132,6 @@ export default function NewHomeworkModal({ visible }) {
                     </Text>
                 </View>
 
-                {/* ScrollView avec flexGrow: 1 et paddingBottom */}
                 <ScrollView
                     showsVerticalScrollIndicator={false}
                     style={{ flex: 1 }}
@@ -155,26 +170,38 @@ export default function NewHomeworkModal({ visible }) {
                         >
                             Date
                         </Text>
-                        <View
+                        <TouchableOpacity
                             style={{
-                                flex: 1,
                                 backgroundColor: "hsla(240, 30%, 20%, 0.8)",
                                 borderRadius: 13,
                                 paddingHorizontal: 16,
+                                paddingVertical: 12,
                                 borderWidth: 1,
                                 borderColor: "hsla(240, 20%, 40%, 0.3)",
                                 width: "40%",
                                 justifyContent: "center",
                             }}
+                            onPress={() => setShowDatePicker((prev) => !prev)}
                         >
-                            <TextInput
-                                placeholder="12/12/12"
-                                textAlign="center"
-                                placeholderTextColor={"hsla(0, 100%, 100%, .25)"}
-                                keyboardType="default"
-                                style={{ fontSize: 16 }}
-                            />
-                        </View>
+                            <Text align="center">{formatDate(date)}</Text>
+
+                            {showDatePicker && (
+                                <DateTimePicker
+                                    value={date}
+                                    mode="date"
+                                    display="calendar"
+                                    onChange={onChange}
+                                    minimumDate={new Date()}
+                                    maximumDate={
+                                        new Date(
+                                            new Date().setFullYear(
+                                                new Date().getFullYear() + 2
+                                            )
+                                        )
+                                    }
+                                />
+                            )}
+                        </TouchableOpacity>
                     </View>
 
                     <View style={{}}>

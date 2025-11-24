@@ -148,6 +148,7 @@ export default function HomeworksContent() {
                         right: "5%",
                         zIndex: 1000,
                         gap: 2,
+                        zIndex: 1,
                     }}
                 >
                     <TouchableOpacity
