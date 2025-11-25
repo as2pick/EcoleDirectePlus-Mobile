@@ -1,5 +1,5 @@
 import { useFocusEffect, useTheme } from "@react-navigation/native";
-import moment from "moment";
+import dayjs from "dayjs";
 import { useCallback, useEffect, useState } from "react";
 import { View } from "react-native";
 
@@ -19,7 +19,7 @@ export default function CourseDetails({ route }) {
     const { courseData } = route.params;
     const { colors } = useTheme();
 
-    const [now, setNow] = useState(moment());
+    const [now, setNow] = useState(dayjs());
     const [startCourseTiming, setStartCourseTiming] = useState("");
 
     const {
@@ -43,7 +43,7 @@ export default function CourseDetails({ route }) {
     const courseTiming =
         toMilliseconds(endCourse.time) - toMilliseconds(startCourse.time);
     const [hours, minutes] = toHoursMinutes(courseTiming);
-    const startCourseDateTime = moment(`${startCourse.date} ${startCourse.time}`);
+    const startCourseDateTime = dayjs(`${startCourse.date} ${startCourse.time}`);
 
     const [intervalDays, intervalHours, intervalMinutes] = [
         startCourseDateTime.diff(now, "days"),
@@ -88,7 +88,7 @@ export default function CourseDetails({ route }) {
 
     useEffect(() => {
         const interval = setInterval(() => {
-            setNow(moment());
+            setNow(dayjs());
         }, 1000);
 
         return () => clearInterval(interval);
