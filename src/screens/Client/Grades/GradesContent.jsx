@@ -70,7 +70,15 @@ export default function GradesContent() {
             marginBottom: interpolate(progress, [0, 1], [0, 24]),
             height: interpolate(progress, [0, 1], [height * 0.4, height * 0.3]),
             transform: [{ translateY }],
+        };
+    });
+
+    const innerContainerStyle = useAnimatedStyle(() => {
+        const progress = interpolate(scrollY.value, [0, 250], [0, 1], Extrapolation.CLAMP);
+        return {
+            borderRadius: interpolate(progress, [0, 1], [0, 18]),
             overflow: "hidden",
+            flex: 1,
         };
     });
 
@@ -240,7 +248,7 @@ export default function GradesContent() {
         text: "Ta streak",
         value: globalStreakScore,
         gradient: {
-            colors: ["rgb(255, 15, 0)", "rgba(255, 150, 0, .7)"],
+            colors: ["rgb(255, 15, 0)", "rgb(253, 170, 53)"],
             locations: [0.24, 0.68],
             start: { x: 0, y: 0 },
             end: { x: 0, y: 1 },
@@ -269,8 +277,6 @@ export default function GradesContent() {
                 showsVerticalScrollIndicator={false}
             >
                 <Animated.View
-                    renderToHardwareTextureAndroid={true}
-                    shouldRasterizeIOS={true}
                     style={[
                         {
                             zIndex: 1000,
@@ -279,23 +285,24 @@ export default function GradesContent() {
                         containerStyle,
                     ]}
                 >
+                    <Animated.View style={innerContainerStyle}>
+                        <ScrollableStack
+                            horizontal
+                            paging
+                            contentContainerStyle={{ alignItems: "center" }}
+                            gap={0}
 
-                    <ScrollableStack
-                        horizontal
-                        paging
-                        contentContainerStyle={{ alignItems: "center" }}
-                        gap={0}
-
-                    >
-                        <HeaderStatsCarousel
-                            style={itemWidthStyle}
-                            item={streakItem}
-                        />
-                        <HeaderStatsCarousel
-                            style={itemWidthStyle}
-                            item={averageItem}
-                        />
-                    </ScrollableStack>
+                        >
+                            <HeaderStatsCarousel
+                                style={itemWidthStyle}
+                                item={streakItem}
+                            />
+                            <HeaderStatsCarousel
+                                style={itemWidthStyle}
+                                item={averageItem}
+                            />
+                        </ScrollableStack>
+                    </Animated.View>
                 </Animated.View>
 
                 <Animated.View
@@ -341,7 +348,7 @@ export default function GradesContent() {
                             alignItems: "center",
                             justifyContent: "center",
                             marginHorizontal: 14,
-                            backgroundColor: colors.pastel,
+                            backgroundColor: colors.secondary,
                             borderRadius: 18,
                             padding: 16,
                             marginBottom: 24,
@@ -385,7 +392,7 @@ export default function GradesContent() {
                         </ScrollableStack>
                     </View>
 
-                    <View style={{ marginHorizontal: 14, gap: 3, paddingBottom: 110 }}>
+                    <View style={{ marginHorizontal: 14, gap: 4, paddingBottom: 110 }}>
                         {renderDisciplinesArray.map((item, index) => (
                             <View key={keyExtractor(item, index)}>
                                 {renderItem({ item, index })}

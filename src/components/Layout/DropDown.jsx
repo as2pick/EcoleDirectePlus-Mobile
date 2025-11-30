@@ -54,10 +54,11 @@ export default function CustomDropdown({
     }));
 
     const buttonAnimatedStyle = useAnimatedStyle(() => ({
-        borderBottomLeftRadius: interpolate(progress.value, [0, 1], [20, 0]),
+        /*borderBottomLeftRadius: interpolate(progress.value, [0, 1], [20, 0]),
         borderBottomRightRadius: interpolate(progress.value, [0, 1], [20, 0]),
         borderTopLeftRadius: interpolate(progress.value, [0, 1], [10, 20]),
-        borderTopRightRadius: interpolate(progress.value, [0, 1], [10, 20]),
+        borderTopRightRadius: interpolate(progress.value, [0, 1], [10, 20]),*/
+        borderRadius: interpolate(progress.value, [0, 1], [20, 10]),
         paddingTop: interpolate(progress.value, [0, 1], [8, 10]),
         borderColor: "hsla(240, 14%, 18%, .98)",
         //backgroundColor: `rgba(0, 0, 0, ${interpolate(progress.value, [0, 1], [0.3, 0.6])})`,

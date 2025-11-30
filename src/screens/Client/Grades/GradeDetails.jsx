@@ -1,4 +1,5 @@
 import { FlatList, View } from "react-native";
+import { useTheme } from "@react-navigation/native";
 import {
     BestGrade,
     EqualToDisciplineAverage,
@@ -32,7 +33,7 @@ const SKILLS_COLORS = {
 
 export default function GradeDetails({ route }) {
     const { gradeData, disciplineData } = route.params;
-
+    const { colors } = useTheme();
     const grade = new Grade(gradeData);
     const discipline = new Discipline(disciplineData);
 
@@ -43,7 +44,7 @@ export default function GradeDetails({ route }) {
                     marginBottom: 4,
                 }}
                 decoration="underline"
-                color={"hsl(240, 40%, 75%)"} // EDIT
+                color={colors.main} // EDIT
                 preset="body1"
             >
                 {item.name}
@@ -54,7 +55,7 @@ export default function GradeDetails({ route }) {
                         marginLeft: 16,
                         flex: 1,
                     }}
-                    color={"hsl(240, 40%, 68%)"} // EDIT
+                    color="hsl(240, 40%, 68%)" // EDIT
                     preset="body2"
                 >
                     {item.description}
@@ -175,12 +176,12 @@ export default function GradeDetails({ route }) {
                         showsVerticalScrollIndicator={false}
                         showsHorizontalScrollIndicator={false}
                         style={{ width: "100%" }}
-                        // contentContainerStyle={
-                        //     {
-                        //         paddingBottom: 10,
-                        //         paddingHorizontal: 4,
-                        //     }
-                        // }
+                    // contentContainerStyle={
+                    //     {
+                    //         paddingBottom: 10,
+                    //         paddingHorizontal: 4,
+                    //     }
+                    // }
                     />
                 </View>
             </View>
