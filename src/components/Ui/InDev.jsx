@@ -5,10 +5,10 @@ import { addOpacityToCssRgb } from "../../utils/colorGenerator";
 import LinkText from "./LinkText";
 import Text from "./core/Text";
 
-export default function InDev({}) {
+export default function InDev({ }) {
     const { colors } = useTheme();
     const { shadow } = useTheme();
-    const mainColor = addOpacityToCssRgb(colors.main, 0.7);
+    const mainColor = addOpacityToCssRgb(colors.accent, 0.5);
     const shadowColor = addOpacityToCssRgb("rgb(0, 0, 0)", shadow.oppacity);
     const caseColor = addOpacityToCssRgb(colors.case, 0.8);
     return (
