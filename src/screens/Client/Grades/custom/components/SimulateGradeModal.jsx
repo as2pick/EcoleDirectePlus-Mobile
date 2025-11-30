@@ -34,7 +34,7 @@ export default function AddGradeModal({ visible, disciplineCodes }) {
             opacity.value = withTiming(1, { duration: 250 });
         } else {
             translateY.value = withTiming(
-                500,
+                1000,
                 {
                     duration: 350,
                 },
@@ -96,7 +96,7 @@ export default function AddGradeModal({ visible, disciplineCodes }) {
                         borderTopRightRadius: 42,
                         paddingHorizontal: 24,
                         paddingTop: 16,
-                        paddingBottom: 40,
+                        paddingBottom: 110,
                         minHeight: 400,
                         maxHeight: "85%",
                     },
