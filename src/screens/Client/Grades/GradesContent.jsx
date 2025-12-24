@@ -1,16 +1,22 @@
 import { useFocusEffect, useNavigation, useTheme } from "@react-navigation/native";
+import { useActionBar } from "../../../context/ActionBarContext";
+import GradesIcon from "../../../../assets/svg/navigation/GradesIcon"; // Pour test ou exemple
 import { LinearGradient } from "expo-linear-gradient";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
-import { Dimensions, View } from "react-native";
+import { Dimensions, View, TouchableOpacity } from "react-native";
 import Animated, {
     Extrapolation,
     interpolate,
+    interpolateColor,
     useAnimatedScrollHandler,
     useAnimatedStyle,
     useSharedValue,
+    withTiming,
+    useAnimatedProps,
 } from "react-native-reanimated";
 import GradeArrow from "../../../../assets/svg/GradeArrow";
-
+import LottieView from "lottie-react-native";
+const AnimatedLottieView = Animated.createAnimatedComponent(LottieView);
 import { SafeAreaView } from "react-native-safe-area-context";
 import { DropDown, ScrollableStack } from "../../../components";
 import { API } from "../../../constants/api/api";
@@ -35,6 +41,7 @@ export default function GradesContent() {
     const { sortedGradesData, setSortedGradesData, userAccesToken } = useUser();
     const { state, dispatch } = useGrade();
     const navigation = useNavigation();
+    const { updateActions } = useActionBar();
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -59,6 +66,11 @@ export default function GradesContent() {
         scrollY.value = event.contentOffset.y;
     });
 
+    const scrollXStrengths = useSharedValue(0);
+    const strengthsScrollHandler = useAnimatedScrollHandler((event) => {
+        scrollXStrengths.value = event.contentOffset.x;
+    });
+
     const containerStyle = useAnimatedStyle(() => {
         const progress = interpolate(scrollY.value, [0, 250], [0, 1], Extrapolation.CLAMP);
         const translateY = interpolate(scrollY.value, [0, 250], [0, 225], Extrapolation.CLAMP);
@@ -68,7 +80,7 @@ export default function GradesContent() {
             borderRadius: interpolate(progress, [0, 1], [0, 18]),
             marginTop: interpolate(progress, [0, 1], [0, 50]),
             marginBottom: interpolate(progress, [0, 1], [0, 24]),
-            height: interpolate(progress, [0, 1], [height * 0.4, height * 0.3]),
+            height: interpolate(progress, [0, 1], [height * 0.4 + 6, height * 0.3]),
             transform: [{ translateY }],
         };
     });
@@ -83,9 +95,15 @@ export default function GradesContent() {
     });
 
     const sheetStyle = useAnimatedStyle(() => {
+        const progress = interpolate(scrollY.value, [0, 250], [0, 1], Extrapolation.CLAMP);
         const translateY = interpolate(scrollY.value, [0, 250], [0, 225], Extrapolation.CLAMP);
         return {
             transform: [{ translateY }],
+            /*backgroundColor: interpolateColor(progress, [0, 0.7], [
+                colors.background.modal,
+                addOpacityToCssRgb(colors.background.gradient, interpolate(progress, [0.9, 1], [1, 0], Extrapolation.CLAMP))
+            ]),*/
+            backgroundColor: addOpacityToCssRgb(colors.background.gradient, interpolate(progress, [0.9, 1], [1, 0], Extrapolation.CLAMP)),
         };
     });
 
@@ -102,7 +120,7 @@ export default function GradesContent() {
         const progress = interpolate(scrollY.value, [0, 250], [0, 1], Extrapolation.CLAMP);
         return {
             marginBottom: interpolate(progress, [0, 1], [24, 0]),
-            height: interpolate(progress, [0, 1], [30, 0]), // 6 (height) + 24 (marginBottom) approx
+            height: interpolate(progress, [0, 1], [30, 0]),
         };
     });
 
@@ -129,6 +147,27 @@ export default function GradesContent() {
         displayPeriode,
         setGeneralAverage,
     });
+
+    useFocusEffect(
+        useCallback(() => {
+            updateActions([
+                {
+                    icon: GradesIcon,
+                    onPress: () => console.log("Action 1"),
+                },
+                {
+                    icon: GradesIcon,
+                    onPress: () => console.log("Action 2"),
+                },
+                {
+                    icon: GradesIcon,
+                    onPress: () => dispatch({ type: "SET_MODAL_OPEN", payload: true }),
+                },
+            ]);
+
+            return () => updateActions([]);
+        }, [updateActions, dispatch])
+    );
 
     const fetchAndProcessGrades = useCallback(async () => {
         try {
@@ -257,7 +296,7 @@ export default function GradesContent() {
 
     const averageItem = useMemo(() => ({
         key: "average",
-        text: "Moyenne Générale",
+        text: "Moyenne G.",
         value: formatGradeText(generalAverage),
         gradient: {
             colors: ["rgb(68, 55, 149)", "rgb(119, 29, 124)"],
@@ -266,6 +305,30 @@ export default function GradesContent() {
             end: { x: 0, y: 1 },
         },
     }), [generalAverage]);
+
+    const [showStreak, setShowStreak] = useState(true);
+    const transition = useSharedValue(0);
+
+    const streakStyle = useAnimatedStyle(() => ({
+        opacity: interpolate(transition.value, [0.65, 0.75], [1, 0]),
+    }));
+
+    const averageStyle = useAnimatedStyle(() => ({
+        opacity: interpolate(transition.value, [0.65, 0.75], [0, 1]),
+    }));
+
+    const toggleStats = () => {
+        const next = !showStreak;
+        setShowStreak(next);
+        transition.value = withTiming(next ? 0 : 1, { duration: 600 });
+    };
+
+    const lottieProps = useAnimatedProps(() => {
+        const pageWidth = width - 60;
+        return {
+            progress: interpolate(scrollXStrengths.value, [0, pageWidth], [0, 1], Extrapolation.CLAMP),
+        };
+    });
 
     return (
         <View style={{ flex: 1 }}>
@@ -286,45 +349,42 @@ export default function GradesContent() {
                     ]}
                 >
                     <Animated.View style={innerContainerStyle}>
-                        <ScrollableStack
-                            horizontal
-                            paging
-                            contentContainerStyle={{ alignItems: "center" }}
-                            gap={0}
-
-                        >
+                        <TouchableOpacity onPress={toggleStats} activeOpacity={0.9} style={{ flex: 1 }}>
                             <HeaderStatsCarousel
-                                style={itemWidthStyle}
+                                style={[itemWidthStyle, streakStyle]}
                                 item={streakItem}
+                                transition={transition}
                             />
                             <HeaderStatsCarousel
-                                style={itemWidthStyle}
+                                style={[
+                                    { position: "absolute", width: "100%", height: "100%" },
+                                    averageStyle,
+                                ]}
                                 item={averageItem}
+                                transition={transition}
                             />
-                        </ScrollableStack>
+                        </TouchableOpacity>
                     </Animated.View>
                 </Animated.View>
-
                 <Animated.View
                     style={[
                         {
                             backgroundColor: colors.background.gradient,
-                            borderTopLeftRadius: 30,
-                            borderTopRightRadius: 30,
+                            borderTopLeftRadius: 25,
+                            borderTopRightRadius: 25,
                             minHeight: Dimensions.get("window").height * 0.6,
-                            paddingTop: 24,
-                            marginTop: -20,
+                            paddingTop: 30,
+                            marginTop: -26,
                             zIndex: 2000,
                             marginBottom: 110,
                         },
                         sheetStyle,
                     ]}
                 >
-                    <Animated.View
+                    {/*<Animated.View
                         style={[
                             {
                                 alignItems: "center",
-                                // marginBottom: 24, // Moved to animated style
                             },
                             handleContainerStyle,
                         ]}
@@ -333,7 +393,6 @@ export default function GradesContent() {
                             style={[
                                 {
                                     width: 35,
-                                    // height: 6, // Moved to animated style
                                     borderRadius: 10,
                                     backgroundColor: colors.contrast,
                                     marginTop: 5
@@ -341,19 +400,20 @@ export default function GradesContent() {
                                 handleStyle,
                             ]}
                         />
-                    </Animated.View>
+                    </Animated.View>*/}
 
                     <View
                         style={{
                             alignItems: "center",
                             justifyContent: "center",
                             marginHorizontal: 14,
-                            backgroundColor: colors.secondary,
+                            //backgroundColor: colors.secondary,
+                            //borderWidth: 1,
+                            //borderColor: colors.secondary,
                             borderRadius: 18,
                             padding: 16,
                             marginBottom: 24,
-                            marginTop: -5,
-                            boxShadow: `1px 2px ${shadow.caseSize}px 0px ${shadowColor}`,
+                            //boxShadow: `1px 2px ${shadow.caseSize}px 0px ${shadowColor}`,
                         }}
                     >
                         <ScrollableStack
@@ -362,6 +422,7 @@ export default function GradesContent() {
                             contentContainerStyle={{
                                 width: "200%",
                             }}
+                            onScroll={strengthsScrollHandler}
                         >
                             <View
                                 style={{
@@ -390,6 +451,21 @@ export default function GradesContent() {
                                 />
                             </View>
                         </ScrollableStack>
+                        <AnimatedLottieView
+                            source={require("../../../../assets/json/lottie/slider.json")}
+                            animatedProps={lottieProps}
+                            style={{ top: 9, height: 13, width: 80, margin: 2 }}
+                            colorFilters={[
+                                {
+                                    keypath: "Shape Layer 1",
+                                    color: colors.main,
+                                },
+                                {
+                                    keypath: "Shape Layer 2",
+                                    color: colors.main,
+                                },
+                            ]}
+                        />
                     </View>
 
                     <View style={{ marginHorizontal: 14, gap: 4, paddingBottom: 110 }}>
@@ -433,43 +509,67 @@ export default function GradesContent() {
         </View >
     );
 }
-// const { shadow } = useTheme();
-// const shadowColor = addOpacityToCssRgb("rgb(0, 0, 0)", shadow.oppacity);
-const HeaderStatsCarousel = memo(({ item, style }) => (
-    <Animated.View style={[style, { height: "100%", flex: 1 }]}>
-        <LinearGradient
-            colors={item.gradient.colors}
-            start={item.gradient.start}
-            end={item.gradient.end}
-            locations={item.gradient.locations}
-            style={{ width: "100%", height: "100%", flex: 1 }}
-        >
-            <View
-                style={{ justifyContent: "center", alignItems: "center", flex: 1 }}
+
+const HeaderStatsCarousel = memo(({ item, style, transition }) => {
+    const animatedGapStyle = useAnimatedStyle(() => {
+        // Si transition n'est pas fourni (ex: premier rendu ou autre usage), on met 0
+        if (!transition) return { gap: 0 };
+
+        return {
+            gap: interpolate(transition.value, [0, 0.7, 1], [2, 8, 2], Extrapolation.CLAMP),
+        };
+    });
+
+    const animatedEcartStyle = useAnimatedStyle(() => {
+        // Si transition n'est pas fourni (ex: premier rendu ou autre usage), on met 0
+        if (!transition) return { marginHorizontal: 0 };
+
+        return {
+            marginHorizontal: interpolate(transition.value, [0, 0.65, 1], [2, 12, 2], Extrapolation.CLAMP),
+        };
+    });
+
+    return (
+        <Animated.View style={[style, { height: "100%", flex: 1 }]}>
+            <LinearGradient
+                colors={item.gradient.colors}
+                start={item.gradient.start}
+                end={item.gradient.end}
+                locations={item.gradient.locations}
+                style={{ width: "100%", height: "100%", flex: 1 }}
             >
-                <Text size={38} weight="bold" align="center">
-                    {item.text}
-                </Text>
                 <View
-                    style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                    }}
+                    style={{ justifyContent: "center", alignItems: "center", flex: 1 }}
                 >
-                    {Array.from({ length: 3 }).map((_, i) => (
-                        <GradeArrow key={`left-${i}`} />
-                    ))}
-                    <Text size={64} weight="bold">
-                        {item.value}
+                    <Text size={38} weight="bold" align="center">
+                        {item.text}
                     </Text>
-                    {Array.from({ length: 3 }).map((_, i) => (
-                        <GradeArrow key={`right-${i}`} miroired />
-                    ))}
+                    <Animated.View
+                        style={[
+                            {
+                                flexDirection: "row",
+                                alignItems: "center",
+                            },
+                            animatedGapStyle,
+                        ]}
+                    >
+                        {Array.from({ length: 3 }).map((_, i) => (
+                            <GradeArrow key={`left-${i}`} />
+                        ))}
+                        <Animated.View style={animatedEcartStyle} />
+                        <Text size={64} weight="bold">
+                            {item.value}
+                        </Text>
+                        <Animated.View style={animatedEcartStyle} />
+                        {Array.from({ length: 3 }).map((_, i) => (
+                            <GradeArrow key={`right-${i}`} miroired />
+                        ))}
+                    </Animated.View>
                 </View>
-            </View>
-        </LinearGradient>
-    </Animated.View>
-));
+            </LinearGradient>
+        </Animated.View>
+    );
+});
 
 const StrengthsAndWeakness = ({ data, firstColor }) => {
     const [tint, saturation, lightness, opacity] = cssHslaToHsla(firstColor);
