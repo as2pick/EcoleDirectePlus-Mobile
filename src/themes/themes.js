@@ -8,8 +8,9 @@ export const THEMES = {
             ...NavigationDefaultTheme.colors,
             background: {
                 //gradient: ["rgba(169, 169, 255, 1)", "rgba(230, 230, 255, 1)"], // App backround gradient
-                gradient: "rgba(222, 222, 250, 1)",
+                gradient: "rgba(229, 229, 250, 1)",
                 login: "rgba(230, 230, 255, 1)", // Login screen background
+                modal: "rgb(240, 240, 253)",
             },
             bg: {
                 bg1: "rgba(35, 35, 207, 1)", // DON'T USE IT
@@ -39,11 +40,13 @@ export const THEMES = {
             main: "rgb(119, 119, 247)",
             accent: "rgb(62, 62, 221)",
             contrast: "rgb(0, 0, 0)",
+            oppose: "rgba(42, 42, 49, 1)",
             case: "rgb(255, 255, 255)",
             theme: "rgb(255, 255, 255)",
+            navbar: "rgb(255, 255, 255)",
             edplogo: {
-                c1: "#6691fcff",
-                c2: "#8572ffff",
+                c1: "rgb(102, 145, 252)",
+                c2: "rgb(133, 114, 255)",
             },
         },
         fonts: {
@@ -66,8 +69,9 @@ export const THEMES = {
             ...NavigationDefaultTheme.colors,
             // background: "rgb(18, 18, 138)", // default key
             background: {
-                gradient: "rgb(43, 43, 63)", // +20 or +30
+                gradient: "rgba(33, 33, 34, 1)", //"rgb(27, 27, 33)", // +20 or +30
                 login: "rgb(19, 19, 34)",
+                modal: "rgb(18, 18, 37)",
             },
             bg: {
                 bg1: "rgb(25, 25, 56)", // DON'T USE IT
@@ -93,15 +97,17 @@ export const THEMES = {
             error: "rgb(240, 90, 90)",
             fond: "rgb(0, 0, 0)",
             pastel: "rgb(21, 25, 69)",
-            secondary: "rgba(110, 108, 179, 1)",
-            main: "rgba(79, 79, 165, 1)",
-            accent: "rgb(197, 197, 247)",
-            case: "rgb(94, 94, 136)",
+            secondary: "rgba(51, 51, 88, 1)",
+            main: "rgba(129, 129, 189, 1)",
+            accent: "rgba(156, 156, 209, 1)",
+            case: "rgb(72, 72, 102)",
+            oppose: "rgba(255, 255, 255, 1)",
             contrast: "rgb(255, 255, 255)",
+            navbar: "rgba(63, 63, 73, 1)",
             theme: "rgba(0, 0, 0, 1)",
             edplogo: {
-                c1: "#B4C9FF",
-                c2: "#C1B7FF",
+                c1: "rgb(180, 201, 255)",
+                c2: "rgb(193, 183, 255)",
             },
         },
         fonts: {
@@ -113,7 +119,7 @@ export const THEMES = {
         shadow: {
             oppacity: 0.4,
             color: "rgb(255, 255, 255)",
-            caseSize: 9,
+            caseSize: 8,
         },
     },
 };
