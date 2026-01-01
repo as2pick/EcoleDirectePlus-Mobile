@@ -1,5 +1,8 @@
 import { Button } from "@react-navigation/elements";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import { useCallback } from "react";
+import { useActionBar } from "../../../context/ActionBarContext";
+import DashboardIcon from "../../../../assets/svg/navigation/DashboardIcon";
 import { SafeAreaView } from "react-native-safe-area-context";
 import InDev from "../../../components/Ui/InDev";
 import { useUser } from "../../../context/UserContext";
@@ -9,6 +12,18 @@ import authService from "../../../services/login/authService";
 export default function HomeScreen() {
     const { setIsConnected } = useUser();
     const navigation = useNavigation();
+    const { updateActions } = useActionBar();
+
+    useFocusEffect(
+        useCallback(() => {
+            updateActions([
+                {
+                    icon: DashboardIcon,
+                    onPress: () => console.log("Dashboard Action"),
+                },
+            ]);
+        }, [updateActions])
+    );
     return (
         <SafeAreaView>
             {/* <EDPLogo /> */}

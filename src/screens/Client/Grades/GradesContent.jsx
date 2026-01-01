@@ -164,8 +164,6 @@ export default function GradesContent() {
                     onPress: () => dispatch({ type: "SET_MODAL_OPEN", payload: true }),
                 },
             ]);
-
-            return () => updateActions([]);
         }, [updateActions, dispatch])
     );
 
