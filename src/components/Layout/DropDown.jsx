@@ -53,7 +53,7 @@ export default function CustomDropdown({
             width: contentWidth.value === 0
                 ? undefined
                 : interpolate(progress.value, [0, 1], [minWidth, maxWidth]),
-            backgroundColor: addOpacityToCssRgb(colors.background.gradient, interpolate(progress.value, [0, 1], [0.4, 0.8])),
+            backgroundColor: addOpacityToCssRgb(colors.background.gradient, interpolate(progress.value, [0, 1], [0.45, 0.8])),
             borderRadius: 20, // Keep rounded corners
             borderColor: "hsla(240, 14%, 18%, .98)",
             //borderWidth: 1, // Optional: if you want a border
@@ -113,7 +113,7 @@ const createStyles = (colors, shadow) => StyleSheet.create({
     },
     headerButton: {
         width: "100%",
-        height: 50, // Fixed height for the header part
+        height: 50,
         justifyContent: "center",
         alignItems: "center",
         paddingHorizontal: 18,
@@ -130,10 +130,10 @@ const createStyles = (colors, shadow) => StyleSheet.create({
     option: {
         alignItems: "center",
         marginVertical: 4,
-        borderRadius: 5,
+        borderRadius: 7,
         marginHorizontal: 12,
         paddingVertical: 5,
-        backgroundColor: colors.secondary,
+        backgroundColor: addOpacityToCssRgb(colors.theme, 0.8),
     },
     optionText: { flexShrink: 1 },
 });
