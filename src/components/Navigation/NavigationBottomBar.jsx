@@ -9,61 +9,65 @@ const NavigationBottomBar = ({ state, descriptors, navigation }) => {
     const [isLongPressed, setIsLongPressed] = useState(false);
     const { shadow, colors } = useTheme();
     return (
-        <View
-            style={[
-                styles.container,
-                {
-                    backgroundColor: addOpacityToCssRgb(colors.navbar, .95),
-                    boxShadow: "0px 0px 10px 2px" + addOpacityToCssRgb("rgb(0, 0, 0)", shadow.oppacity),
-                },
-            ]}
-        >
-            {state.routes.map((route, index) => {
-                const { options } = descriptors[route.key];
-                if (!options.inNavbar) return;
-                const isFocused = state.index === index;
-                const isHome = index === 2;
+        <View>
+            <View
+                style={[
+                    styles.container,
+                    {
+                        backgroundColor: addOpacityToCssRgb(colors.background.gradient, 1),
+                        //boxShadow: "-5px 0px 10px 2px" + addOpacityToCssRgb("rgb(0, 0, 0)", shadow.oppacity),
+                    },
+                ]}
+            >
+                {state.routes.map((route, index) => {
+                    const { options } = descriptors[route.key];
+                    if (!options.inNavbar) return;
+                    const isFocused = state.index === index;
+                    const isHome = index === 2;
 
-                const onPress = () => {
-                    const event = navigation.emit({
-                        type: "tabPress",
-                        target: route.key,
-                        canPreventDefault: true,
-                    });
+                    const onPress = () => {
+                        const event = navigation.emit({
+                            type: "tabPress",
+                            target: route.key,
+                            canPreventDefault: true,
+                        });
 
-                    if (!isFocused && !event.defaultPrevented) {
-                        navigation.navigate(route.name);
-                    }
-                };
-                const IconComponent = options.icon;
+                        if (!isFocused && !event.defaultPrevented) {
+                            navigation.navigate(route.name);
+                        }
+                    };
+                    const IconComponent = options.icon;
 
-                return (
-                    <TouchableOpacity
-                        key={index}
-                        accessibilityRole="button"
-                        accessibilityState={isFocused ? { selected: true } : {}}
-                        onPress={onPress}
-                        onPressIn={() => setIsPressedIn(true)}
-                        onPressOut={() => {
-                            setIsPressedIn(false);
-                            setIsLongPressed(false);
-                        }}
-                        onLongPress={() => setIsLongPressed(true)}
-                        style={styles.tab}
-                    >
-                        <View
-                            style={[
-                                styles.iconContainer,
-                                isHome && isFocused && styles.homeIcon,
-                                isFocused && { backgroundColor: colors.main },
-                                !isHome && isFocused && styles.activeTab,
-                            ]}
+                    return (
+                        <TouchableOpacity
+                            key={index}
+                            accessibilityRole="button"
+                            accessibilityState={isFocused ? { selected: true } : {}}
+                            onPress={onPress}
+                            onPressIn={() => setIsPressedIn(true)}
+                            onPressOut={() => {
+                                setIsPressedIn(false);
+                                setIsLongPressed(false);
+                            }}
+                            onLongPress={() => setIsLongPressed(true)}
+                            style={styles.tab}
                         >
-                            <IconComponent width={isHome && isFocused ? 47 : 40} height={isHome && isFocused ? 47 : 40} />
-                        </View>
-                    </TouchableOpacity>
-                );
-            })}
+                            <View
+                                style={[
+                                    styles.iconContainer,
+                                    isHome && isFocused && styles.homeIcon,
+                                    isFocused && { backgroundColor: colors.main },
+                                    !isHome && isFocused && styles.activeTab,
+                                ]}
+                            >
+                                <IconComponent width={isHome && isFocused ? 47 : 40} height={isHome && isFocused ? 47 : 40} />
+                            </View>
+                        </TouchableOpacity>
+                    );
+                })}
+            </View>
+            <View style={[styles.boxShadowTop, { boxShadow: "0px -5px 40px 10px" + addOpacityToCssRgb("rgb(0, 0, 0)", shadow.oppacity) }]}>
+            </View>
         </View>
     );
 };
@@ -75,11 +79,21 @@ const styles = StyleSheet.create({
         alignItems: "center",
         padding: 14,
         paddingBottom: 20,
-        borderRadius: 10,
-        bottom: 0,
+        //borderRadius: 20,
+        bottom: -1,
         position: "absolute",
         width: "100%",
         justifyContent: "space-around",
+        //borderColor: "gray",
+        //borderTopWidth: 1,
+        zIndex: 1000,
+    },
+    boxShadowTop: {
+        position: "absolute",
+        bottom: 0,
+        width: "82%",
+        height: 85,
+        left: "9%",
     },
     tab: {
         alignItems: "center",
