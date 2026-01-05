@@ -1,6 +1,8 @@
 import { useNavigation } from "@react-navigation/native";
 import { useEffect } from "react";
 import { routesNames } from "../../../../../router/config/routesNames";
+import { formatDate } from "../../../../../utils/date";
+import Homeworks from "../classes/Homeworks";
 import { useHomeworkUpdate } from "./useHomeworkUpdate";
 
 export const useHomeworksHandler = ({ state, dispatch, setModalOpen }) => {
@@ -22,10 +24,22 @@ export const useHomeworksHandler = ({ state, dispatch, setModalOpen }) => {
         }
     }, [state.toggle, updateHomework]);
     useEffect(() => {
-        if (state.new) {
-            console.log("new");
+        if (state.new.modalOpen !== undefined) {
             setModalOpen(state.new.modalOpen);
         }
-    }, [setModalOpen, state.new]);
+    }, [setModalOpen, state.new.modalOpen]);
+    useEffect(() => {
+        const { discipline, date, content } = state.new;
+        if (discipline && date && content) {
+            const homework = new Homeworks({
+                discipline,
+                givenOn: formatDate(new Date(), "ed"),
+                homeworksContent: content,
+                isEvaluation: false,
+            });
+            // write in storage
+            lazySaveCustomUserData("#custom_homeworks", homework.getHomework()); // test this !!
+        }
+    }, [state.new.discipline, state.new.date, state.new.content]);
 };
 

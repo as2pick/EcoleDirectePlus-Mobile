@@ -21,17 +21,31 @@ const PLACEHOLDERS = { coef: 1, grade: 15, outOf: 20 };
 export default function NewHomeworkModal({ visible }) {
     const { state, dispatch } = useHomework();
     const [isRendered, setIsRendered] = useState(false);
+    const [error, setError] = useState(null);
     const translateY = useSharedValue(500);
     const opacity = useSharedValue(0);
 
     const [date, setDate] = useState(new Date());
+
     const [showDatePicker, setShowDatePicker] = useState(false);
+    const [homeworkDatas, setHomeworkDatas] = useState({
+        discipline: "Mathématique",
+        date: formatDate(new Date(), "ed"),
+        content: null,
+        id: 1,
+    });
 
     const onChange = (event, selectedDate) => {
         const currenDate = selectedDate || date;
         setShowDatePicker(Platform.OS === "ios");
         setDate(currenDate);
+        setHomeworkDatas((prev) => ({
+            ...prev,
+            date: formatDate(currenDate, "ed"),
+        }));
     };
+
+    // useEffect(() => console.log(homeworkDatas, " datas"), [homeworkDatas]);
 
     useEffect(() => {
         if (visible) {
@@ -65,6 +79,25 @@ export default function NewHomeworkModal({ visible }) {
     const handleClose = () => {
         dispatch({ type: "CLOSE_NEW_HOMEWORK_MODAL" });
     };
+    const handleCreate = () => {
+        if (
+            !homeworkDatas.content ||
+            !homeworkDatas.date ||
+            !homeworkDatas.discipline ||
+            !homeworkDatas.id
+        )
+            return setError("Veuillez remplir tout les champs !");
+
+        setHomeworkDatas((prev) => ({ ...prev, id: `created_${prev.id + 1}` }));
+        dispatch({ type: "CREATE_NEW_HOMEWORK", payload: homeworkDatas });
+    };
+
+    useEffect(() => {
+        if (!error) return;
+        setTimeout(() => {
+            setError("");
+        }, 3000);
+    }, [error]);
 
     if (!isRendered) return null;
 
@@ -120,6 +153,23 @@ export default function NewHomeworkModal({ visible }) {
                         marginBottom: 24,
                     }}
                 />
+                {error && (
+                    <View
+                        style={{
+                            backgroundColor: "hsla(0, 70%, 50%, 0.2)",
+                            marginHorizontal: 60,
+                            paddingVertical: 12,
+                            borderRadius: 10,
+                            justifyContent: "center",
+                            alignItems: "center",
+                            borderWidth: 1,
+                            borderColor: "hsla(0, 70%, 50%, 0.5)",
+                            marginBottom: 10,
+                        }}
+                    >
+                        <Text align="center">⚠️ {error}</Text>
+                    </View>
+                )}
                 <View style={{ marginBottom: 24 }}>
                     <Text preset="h2">Ajouter un devoir</Text>
                     <Text
@@ -159,6 +209,12 @@ export default function NewHomeworkModal({ visible }) {
                                 placeholderTextColor={"hsla(0, 100%, 100%, .25)"}
                                 keyboardType="default"
                                 style={{ fontSize: 16 }}
+                                onChangeText={(text) =>
+                                    setHomeworkDatas((prev) => ({
+                                        ...prev,
+                                        discipline: text,
+                                    }))
+                                }
                             />
                         </View>
                     </View>
@@ -225,6 +281,12 @@ export default function NewHomeworkModal({ visible }) {
                                 keyboardType="default"
                                 style={{ fontSize: 16 }}
                                 multiline={true}
+                                onChangeText={(text) =>
+                                    setHomeworkDatas((prev) => ({
+                                        ...prev,
+                                        content: text,
+                                    }))
+                                }
                             />
                         </View>
                     </View>
@@ -251,7 +313,7 @@ export default function NewHomeworkModal({ visible }) {
                             borderRadius: 13,
                             alignItems: "center",
                         }}
-                        onPress={handleClose}
+                        onPress={handleCreate}
                     >
                         <Text preset="label1">Ajouter</Text>
                     </TouchableOpacity>

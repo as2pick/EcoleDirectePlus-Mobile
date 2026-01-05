@@ -67,6 +67,8 @@ export default function HomeworksContent() {
     useFocusEffect(
         useCallback(() => {
             if (sortedHomeworksData && Object.keys(sortedHomeworksData).length > 0) {
+                setFormatedDates(sortedHomeworksData.formatedDates);
+                setActiveDate(Object.keys(sortedHomeworksData.formatedDates)[0]);
                 setLoading(false);
                 return;
             }

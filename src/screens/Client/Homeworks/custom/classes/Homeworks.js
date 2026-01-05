@@ -10,11 +10,11 @@ export default class Homeworks {
         discipline,
         givenOn,
         homeworksContent,
-        id,
+        id = null,
         isDone,
         isEvaluation,
-        returnOnline,
-        student,
+        returnOnline = null,
+        student = null,
     }) {
         this.courseContent = courseContent;
         this.discipline = discipline;

@@ -5,6 +5,7 @@ const HomeworksContext = createContext();
 const defaultState = {
     homeworksData: null,
     toggle: null,
+    new: { modalOpen: null, discipline: null, id: null, date: null, content: null },
 };
 
 const homeworksReducer = (state, action) => {
@@ -16,9 +17,14 @@ const homeworksReducer = (state, action) => {
         case "TOGGLE_HOMEWORK":
             return { ...state, toggle: action.payload };
         case "OPEN_NEW_HOMEWORK_MODAL":
-            return { ...state, new: { modalOpen: true } };
+            return {
+                ...state,
+                new: { modalOpen: true },
+            };
         case "CLOSE_NEW_HOMEWORK_MODAL":
             return { ...state, new: { modalOpen: false } };
+        case "CREATE_NEW_HOMEWORK":
+            return { ...state, new: { ...action.payload, modalOpen: false } }; // discipline (int), date (YYYY-MM-DD), content (int)
         default:
             return state;
     }
