@@ -68,7 +68,9 @@ export default function HomeworksContent() {
         useCallback(() => {
             if (sortedHomeworksData && Object.keys(sortedHomeworksData).length > 0) {
                 setFormatedDates(sortedHomeworksData.formatedDates);
-                setActiveDate(Object.keys(sortedHomeworksData.formatedDates)[0]);
+                if (!activeDate || !sortedHomeworksData.formatedDates[activeDate]) {
+                    setActiveDate(Object.keys(sortedHomeworksData.formatedDates)[0]);
+                }
                 setLoading(false);
                 return;
             }
@@ -92,7 +94,7 @@ export default function HomeworksContent() {
 
             setLoading(true);
             loadHomeworks();
-        }, [sortedHomeworksData])
+        }, [sortedHomeworksData, activeDate])
     );
 
     useEffect(() => {
