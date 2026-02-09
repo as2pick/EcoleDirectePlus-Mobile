@@ -181,7 +181,6 @@ export default function HomeworksContent() {
                 )
             );
         }
-        console.log(merged);
         setSortedHomeworksData(merged);
     }, [customHomeworksData]);
 
