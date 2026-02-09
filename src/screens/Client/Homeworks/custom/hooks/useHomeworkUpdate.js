@@ -2,12 +2,12 @@
 import { useCallback } from "react";
 import { useUser } from "../../../../../context/UserContext";
 import { storageManager } from "../../../../../helpers/StorageManager";
-import { toggleHomework } from "../../../../../resolver/homeworks";
+import { toggleHomeworkInApi } from "../../../../../resolver/homeworks";
 
 export const useHomeworkUpdate = () => {
     const { setSortedHomeworksData, userAccesToken } = useUser();
 
-    const updateHomework = useCallback(
+    const updateHomeworkStatusDone = useCallback(
         (homeworkId, updates) => {
             setSortedHomeworksData((prev) => {
                 const { isDone } = updates;
@@ -24,7 +24,7 @@ export const useHomeworkUpdate = () => {
                 storageManager.scheduleUpdateData("homeworks", updated);
 
                 if (updated != null) {
-                    toggleHomework({
+                    toggleHomeworkInApi({
                         token: userAccesToken,
                         id: homeworkId,
                         state: isDone,
@@ -36,6 +36,6 @@ export const useHomeworkUpdate = () => {
         [setSortedHomeworksData, userAccesToken]
     );
 
-    return { updateHomework };
+    return { updateHomeworkStatusDone };
 };
 

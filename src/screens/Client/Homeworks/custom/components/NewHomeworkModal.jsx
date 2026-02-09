@@ -1,4 +1,5 @@
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { MD5 } from "crypto-js";
 import { useEffect, useState } from "react";
 import {
     Platform,
@@ -36,12 +37,12 @@ export default function NewHomeworkModal({ visible }) {
     });
 
     const onChange = (event, selectedDate) => {
-        const currenDate = selectedDate || date;
+        const currentDate = selectedDate || date;
         setShowDatePicker(Platform.OS === "ios");
-        setDate(currenDate);
+        setDate(currentDate);
         setHomeworkDatas((prev) => ({
             ...prev,
-            date: formatDate(currenDate, "ed"),
+            date: formatDate(currentDate, "ed"),
         }));
     };
 
@@ -88,8 +89,13 @@ export default function NewHomeworkModal({ visible }) {
         )
             return setError("Veuillez remplir tout les champs !");
 
-        setHomeworkDatas((prev) => ({ ...prev, id: `created_${prev.id + 1}` }));
-        dispatch({ type: "CREATE_NEW_HOMEWORK", payload: homeworkDatas });
+        const updatedHomework = {
+            ...homeworkDatas,
+            discipline: { name: homeworkDatas.discipline },
+        };
+        updatedHomework["md5Key"] = MD5(JSON.stringify(updatedHomework)).toString();
+
+        dispatch({ type: "CREATE_NEW_HOMEWORK", payload: updatedHomework });
     };
 
     useEffect(() => {

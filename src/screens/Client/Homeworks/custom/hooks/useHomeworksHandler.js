@@ -1,13 +1,17 @@
 import { useNavigation } from "@react-navigation/native";
 import { useEffect } from "react";
 import { routesNames } from "../../../../../router/config/routesNames";
-import { formatDate } from "../../../../../utils/date";
 import Homeworks from "../classes/Homeworks";
 import { useHomeworkUpdate } from "./useHomeworkUpdate";
 
-export const useHomeworksHandler = ({ state, dispatch, setModalOpen }) => {
+export const useHomeworksHandler = ({
+    state,
+    dispatch,
+    setModalOpen,
+    setCustomHomeworksData,
+}) => {
     const navigation = useNavigation();
-    const { updateHomework } = useHomeworkUpdate();
+    const { updateHomeworkStatusDone } = useHomeworkUpdate();
 
     useEffect(() => {
         if (state.homeworksData) {
@@ -20,26 +24,34 @@ export const useHomeworksHandler = ({ state, dispatch, setModalOpen }) => {
 
     useEffect(() => {
         if (state.toggle) {
-            updateHomework(state.toggle.id, state.toggle.updates);
+            updateHomeworkStatusDone(state.toggle.id, state.toggle.updates);
         }
-    }, [state.toggle, updateHomework]);
+    }, [state.toggle, updateHomeworkStatusDone]);
     useEffect(() => {
         if (state.new.modalOpen !== undefined) {
             setModalOpen(state.new.modalOpen);
         }
     }, [setModalOpen, state.new.modalOpen]);
     useEffect(() => {
-        const { discipline, date, content } = state.new;
+        const { discipline, date, content, md5Key } = state.new;
         if (discipline && date && content) {
             const homework = new Homeworks({
                 discipline,
-                givenOn: formatDate(new Date(), "ed"),
-                homeworksContent: content,
+                date: date,
+                homeworksContent: { content: content },
                 isEvaluation: false,
+                customHomeworkMd5Key: md5Key,
+                id: hashToNumberInRange(14000, 19998, md5Key),
             });
-            // write in storage
-            lazySaveCustomUserData("#custom_homeworks", homework.getHomework()); // test this !!
+
+            setCustomHomeworksData((prev) => [...prev, homework.getHomework()]);
         }
     }, [state.new.discipline, state.new.date, state.new.content]);
+};
+
+const hashToNumberInRange = (min, max, hash) => {
+    const hashInt = parseInt(hash.substring(0, 8), 16);
+
+    return min + (hashInt % (max - min + 1));
 };
 

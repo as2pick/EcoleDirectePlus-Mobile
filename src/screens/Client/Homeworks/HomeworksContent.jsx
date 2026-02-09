@@ -19,14 +19,20 @@ import { useTheme } from "../../../context/ThemeContext";
 import { useUser } from "../../../context/UserContext";
 import { storageManager } from "../../../helpers/StorageManager";
 import { adjustLightness } from "../../../utils/colorGenerator";
+import { formatFrenchDate } from "../../../utils/date";
 import Homeworks from "./custom/classes/Homeworks";
 import NewHomeworkModal from "./custom/components/NewHomeworkModal";
 import { useHomework } from "./custom/context/LocalContext";
 import { useHomeworksHandler } from "./custom/hooks/useHomeworksHandler";
 
 export default function HomeworksContent() {
-    const { sortedHomeworksData, setSortedHomeworksData, userAccesToken } =
-        useUser();
+    const {
+        sortedHomeworksData,
+        setSortedHomeworksData,
+        customHomeworksData,
+        setCustomHomeworksData,
+        userAccesToken,
+    } = useUser();
     const { toggleTheme, colorScheme, isFollowingSystem, followSystemTheme } =
         useTheme();
     const { state, dispatch } = useHomework();
@@ -41,8 +47,15 @@ export default function HomeworksContent() {
     const [completedTasks, setCompletedTasks] = useState([]);
 
     const [modalOpen, setModalOpen] = useState(false);
+    const [customHomeworks, setCustomHomeworks] = useState([]);
 
-    useHomeworksHandler({ state, dispatch, setModalOpen });
+    useHomeworksHandler({
+        state,
+        dispatch,
+        setModalOpen,
+        setCustomHomeworksData,
+    });
+
     const animatedWidth = useSharedValue(0);
 
     const pickSentence = useCallback(
@@ -75,6 +88,12 @@ export default function HomeworksContent() {
                 return;
             }
 
+            if (customHomeworksData && customHomeworksData.length > 0) {
+                // do something here...
+                // setLoading(false);
+                // return;
+            }
+
             const loadHomeworks = async () => {
                 try {
                     const storedHomeworks = await storageManager.getter({
@@ -91,11 +110,104 @@ export default function HomeworksContent() {
                     setLoading(false);
                 }
             };
+            const loadCustomHomeworks = async () => {
+                try {
+                    const storedCustomHomeworks = await storageManager.getter({
+                        originKey: "custom_homeworks",
+                    });
+                    if (storedCustomHomeworks && storedCustomHomeworks.length > 0) {
+                        setCustomHomeworksData(storedCustomHomeworks);
+                    }
+                } catch (error) {
+                    console.error("Error while loading custom hw:", error);
+                } finally {
+                    setLoading(false);
+                }
+            };
 
             setLoading(true);
             loadHomeworks();
-        }, [sortedHomeworksData, activeDate])
+            loadCustomHomeworks();
+        }, [sortedHomeworksData, customHomeworksData, activeDate])
     );
+    useEffect(() => {
+        if (
+            !sortedHomeworksData ||
+            !customHomeworksData ||
+            customHomeworksData.length === 0
+        )
+            return;
+
+        const merged = JSON.parse(JSON.stringify(sortedHomeworksData));
+        let hasChanged = false;
+
+        customHomeworksData.forEach((custom) => {
+            if (!merged[custom.date]) {
+                merged[custom.date] = [];
+
+                const frenchDate = formatFrenchDate(custom.date);
+                const contractedDate = [
+                    frenchDate.charAt(0).toLowerCase() + frenchDate.slice(1, 3),
+                    frenchDate.split(" ")[1],
+                ];
+
+                merged.formatedDates[custom.date] = {
+                    long: frenchDate,
+                    contracted: contractedDate,
+                    isEvaluation: false,
+                    //totalEvaluations
+                }; // faire ca mieux wsh
+                hasChanged = true;
+                // storageManager.setter()
+            }
+            // console.log(formatedDates);
+            // setFormatedDates(merged.formatedDates);
+
+            const exists = merged[custom.date].some((hw) => hw.id === custom.id);
+            if (!exists) {
+                merged[custom.date].push(custom);
+            }
+        });
+        Object.fromEntries(
+            Object.entries(merged.formatedDates).sort(
+                ([dateA], [dateB]) => new Date(dateB) - new Date(dateA)
+            )
+        );
+
+        if (hasChanged) {
+            merged.formatedDates = Object.fromEntries(
+                Object.entries(merged.formatedDates).sort(
+                    ([a], [b]) => new Date(a) - new Date(b)
+                )
+            );
+        }
+        console.log(merged);
+        setSortedHomeworksData(merged);
+    }, [customHomeworksData]);
+
+    useEffect(() => {
+        if (customHomeworksData.length == 0) return;
+
+        const mergeCustomHomeworks = async () => {
+            const existingCustomHomeworks =
+                (await storageManager.getter({ originKey: "custom_homeworks" })) ||
+                [];
+
+            const mergedCustomHomeworks = [
+                ...existingCustomHomeworks,
+                ...customHomeworksData,
+            ];
+
+            await storageManager.setter({
+                originKey: "custom_homeworks",
+                dataToStore: mergedCustomHomeworks,
+            });
+        };
+
+        mergeCustomHomeworks().catch((e) => {
+            console.error("Error when try save custom homeworks", e);
+        });
+    }, [customHomeworksData]);
 
     useEffect(() => {
         if (!sortedHomeworksData || Object.keys(sortedHomeworksData).length === 0)

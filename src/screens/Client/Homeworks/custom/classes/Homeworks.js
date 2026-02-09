@@ -1,7 +1,7 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { TouchableOpacity, View } from "react-native";
 import { Text } from "../../../../../components/Ui/core";
-import { formatShortDate } from "../../../../../utils/date";
+import { formatDate, formatShortDate } from "../../../../../utils/date";
 import base64Handler from "../../../../../utils/handleBase64";
 
 export default class Homeworks {
@@ -15,10 +15,13 @@ export default class Homeworks {
         isEvaluation,
         returnOnline = null,
         student = null,
+        customHomeworkMd5Key = null,
+        isCustom = false,
+        date = null,
     }) {
         this.courseContent = courseContent;
         this.discipline = discipline;
-        this.givenOn = givenOn;
+        this.givenOn = givenOn || formatDate(new Date(), "ed");
         this.homeworksContent = homeworksContent;
         this.id = id;
         this.isDone = isDone;
@@ -27,6 +30,9 @@ export default class Homeworks {
         this.student = student;
         this.decodedHTMLCourseContent = "";
         this.decodedHTMLHomework = "";
+        this.customHomeworkMd5Key = customHomeworkMd5Key;
+        this.isCustom = isCustom;
+        this.date = date;
     }
     getHomework() {
         return {
@@ -41,6 +47,9 @@ export default class Homeworks {
             student: this.student,
             decodedHTMLCourseContent: this.decodedHTMLCourseContent,
             decodedHTMLHomework: this.decodedHTMLHomework,
+            customHomeworkMd5Key: this.customHomeworkMd5Key,
+            isCustom: this.isCustom,
+            date: this.date,
         };
     }
     decodeContent() {
@@ -109,8 +118,8 @@ export default class Homeworks {
                                 }}
                             >
                                 <Text preset="label3" align="center">
-                                    {this.homeworksContent.joinedDocuments.length ||
-                                        0}
+                                    {this.homeworksContent?.joinedDocuments
+                                        ?.length || 0}
                                 </Text>
                             </View>
                         </View>

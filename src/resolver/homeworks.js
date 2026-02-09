@@ -17,11 +17,11 @@ export default async function homeworksResolver({ token }) {
 
     return {
         ...Object.fromEntries(entries),
-        formatedDates: extractEvaluationDays(homeworks),
+        formatedDates: extractDates(homeworks),
     };
 }
 
-function extractEvaluationDays(homeworks) {
+function extractDates(homeworks) {
     const evaluationsDates = [];
     Object.entries(homeworks).map(([date, value]) => {
         value.forEach(({ interrogation }) => {
@@ -145,7 +145,7 @@ function formatHomeworksDetails(
     };
 }
 
-export async function toggleHomework({ token, id, state }) {
+export async function toggleHomeworkInApi({ token, id, state }) {
     const body = {
         ...(state && {
             idDevoirsEffectues: [id],
