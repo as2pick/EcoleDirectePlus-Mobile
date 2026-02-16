@@ -35,11 +35,22 @@ export default class Homeworks {
         this.date = date;
     }
     getHomework() {
+        let homeworksContent;
+
+        if (this.isCustom) {
+            // we have 0 joined docs
+            homeworksContent = {
+                content: this.homeworksContent.content,
+                joinedDocuments: [],
+            };
+        } else {
+            homeworksContent = this.homeworksContent;
+        }
         return {
             courseContent: this.courseContent,
             discipline: this.discipline,
             givenOn: this.givenOn,
-            homeworksContent: this.homeworksContent,
+            homeworksContent: homeworksContent,
             id: this.id,
             isDone: this.isDone,
             isEvaluation: this.isEvaluation,
