@@ -74,7 +74,7 @@ export default class Homeworks {
         }
     }
 
-    RenderHomework({ dispatch }) {
+    RenderHomework({ dispatch, enabled = true }) {
         const gradientColors = this.isEvaluation
             ? ["hsl(2, 63%, 43%)", "hsl(2, 54%, 23%)"]
             : ["hsl(240, 19%, 38%)", "hsl(240, 20%, 23%)"];
@@ -86,6 +86,7 @@ export default class Homeworks {
                         payload: this.getHomework(),
                     });
                 }}
+                disabled={!enabled}
             >
                 <LinearGradient
                     colors={gradientColors}

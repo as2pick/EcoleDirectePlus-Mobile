@@ -35,7 +35,7 @@ export default function HomeworkDetails({ route }) {
                     backgroundColor={colors.background.gradient}
                 />
                 <View style={{ flex: 1, gap: 18 }}>
-                    {homework.RenderHomework({ dispatch })}
+                    {homework.RenderHomework({ dispatch, enabled: false })}
                     <View
                         style={{
                             backgroundColor: colors.bg.bg4,
@@ -44,18 +44,19 @@ export default function HomeworkDetails({ route }) {
                             borderRadius: 21,
                         }}
                     >
-                        {!homework.isCustom ? (
-                            <ScrollView style={{ flex: 1 }}>
+                        <ScrollView style={{ flex: 1 }}>
+                            {homework.isCustom ? (
+                                <Text>{homeworkContent}</Text>
+                            ) : (
                                 <RenderHTML
                                     contentWidth={width}
                                     source={{ html: homeworkContent }}
+                                    baseStyle={{
+                                        color: colors.contrast,
+                                    }}
                                 />
-                            </ScrollView>
-                        ) : (
-                            <ScrollView style={{ flex: 1 }}>
-                                <Text>{homeworkContent}</Text>
-                            </ScrollView>
-                        )}
+                            )}
+                        </ScrollView>
                     </View>
                     {homework.homeworksContent.joinedDocuments.length > 0 && (
                         <View
