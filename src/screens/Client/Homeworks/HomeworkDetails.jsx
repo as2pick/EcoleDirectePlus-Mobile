@@ -18,7 +18,6 @@ export default function HomeworkDetails({ route }) {
     const homeworkContent = homework.isCustom
         ? homework.homeworksContent.content
         : homework.getHomework().decodedHTMLHomework;
-    console.log(homeworkContent);
     return (
         <SwipeBackWrapper>
             <View
