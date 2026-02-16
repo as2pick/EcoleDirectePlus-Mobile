@@ -153,6 +153,7 @@ export default class Homeworks {
                                 type: "TOGGLE_HOMEWORK",
                                 payload: {
                                     id: this.id,
+                                    isCustom: this.isCustom,
                                     updates: { isDone: !this.isDone },
                                 },
                             })

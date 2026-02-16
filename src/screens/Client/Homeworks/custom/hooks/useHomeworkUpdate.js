@@ -1,14 +1,14 @@
-// Dans ton hook useHomeworkUpdate.js
 import { useCallback } from "react";
 import { useUser } from "../../../../../context/UserContext";
 import { storageManager } from "../../../../../helpers/StorageManager";
 import { toggleHomeworkInApi } from "../../../../../resolver/homeworks";
 
 export const useHomeworkUpdate = () => {
-    const { setSortedHomeworksData, userAccesToken } = useUser();
+    const { setSortedHomeworksData, setCustomHomeworksData, userAccesToken } =
+        useUser();
 
     const updateHomeworkStatusDone = useCallback(
-        (homeworkId, updates) => {
+        (homeworkId, isCustom, updates) => {
             setSortedHomeworksData((prev) => {
                 const { isDone } = updates;
                 const updated = { ...prev };
@@ -21,19 +21,33 @@ export const useHomeworkUpdate = () => {
                     );
                 });
 
-                storageManager.scheduleUpdateData("homeworks", updated);
+                if (isCustom) {
+                    setCustomHomeworksData((prev) => {
+                        const updated = prev.map((customHk) =>
+                            customHk.id === homeworkId
+                                ? { ...customHk, ...updates }
+                                : customHk
+                        );
 
-                if (updated != null) {
+                        storageManager.scheduleUpdateData(
+                            "custom_homeworks",
+                            updated
+                        );
+
+                        return updated;
+                    });
+                } else if (updated != null && !isCustom) {
                     toggleHomeworkInApi({
                         token: userAccesToken,
                         id: homeworkId,
                         state: isDone,
                     });
                 }
+                storageManager.scheduleUpdateData("homeworks", updated);
                 return updated;
             });
         },
-        [setSortedHomeworksData, userAccesToken]
+        [setSortedHomeworksData, setCustomHomeworksData, userAccesToken]
     );
 
     return { updateHomeworkStatusDone };

@@ -23,7 +23,11 @@ export const useHomeworksHandler = ({
 
     useEffect(() => {
         if (state.toggle) {
-            updateHomeworkStatusDone(state.toggle.id, state.toggle.updates);
+            updateHomeworkStatusDone(
+                state.toggle.id,
+                state.toggle.isCustom,
+                state.toggle.updates
+            );
         }
     }, [state.toggle, updateHomeworkStatusDone]);
     useEffect(() => {
