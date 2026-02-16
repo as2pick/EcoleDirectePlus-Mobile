@@ -2,16 +2,19 @@ import { useNavigation } from "@react-navigation/native";
 import { useEffect } from "react";
 import { routesNames } from "../../../../../router/config/routesNames";
 import Homeworks from "../classes/Homeworks";
+import { useHomework } from "../context/LocalContext";
 import { useHomeworkUpdate } from "./useHomeworkUpdate";
 
 export const useHomeworksHandler = ({
     state,
+
     setModalOpen,
     setCustomHomeworksData,
 }) => {
     const navigation = useNavigation();
     const { updateHomeworkStatusDone } = useHomeworkUpdate();
 
+    const { dispatch } = useHomework();
     useEffect(() => {
         if (state.homeworksData) {
             navigation.navigate(routesNames.client.homeworks.details, {
@@ -28,6 +31,7 @@ export const useHomeworksHandler = ({
                 state.toggle.isCustom,
                 state.toggle.updates
             );
+            dispatch({ type: "RESET" });
         }
     }, [state.toggle, updateHomeworkStatusDone]);
     useEffect(() => {
@@ -49,6 +53,7 @@ export const useHomeworksHandler = ({
             });
 
             setCustomHomeworksData((prev) => [...prev, homework.getHomework()]);
+            dispatch({ type: "RESET" });
         }
     }, [state.new.discipline, state.new.date, state.new.content]);
 };

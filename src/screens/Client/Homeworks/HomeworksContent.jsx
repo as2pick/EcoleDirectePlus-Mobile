@@ -184,25 +184,14 @@ export default function HomeworksContent() {
     }, [customHomeworksData]);
 
     useEffect(() => {
-        if (customHomeworksData.length == 0) return;
-
-        const mergeCustomHomeworks = async () => {
-            const existingCustomHomeworks =
-                (await storageManager.getter({ originKey: "custom_homeworks" })) ||
-                [];
-
-            const mergedCustomHomeworks = [
-                ...existingCustomHomeworks,
-                ...customHomeworksData,
-            ];
-
+        const saveCustomHomeworks = async () => {
             await storageManager.setter({
                 originKey: "custom_homeworks",
-                dataToStore: mergedCustomHomeworks,
+                dataToStore: customHomeworksData,
             });
         };
 
-        mergeCustomHomeworks().catch((e) => {
+        saveCustomHomeworks().catch((e) => {
             console.error("Error when try save custom homeworks", e);
         });
     }, [customHomeworksData]);
