@@ -51,7 +51,6 @@ export default function HomeworksContent() {
 
     useHomeworksHandler({
         state,
-        dispatch,
         setModalOpen,
         setCustomHomeworksData,
     });

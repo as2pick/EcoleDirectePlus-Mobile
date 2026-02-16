@@ -6,7 +6,6 @@ import { useHomeworkUpdate } from "./useHomeworkUpdate";
 
 export const useHomeworksHandler = ({
     state,
-    dispatch,
     setModalOpen,
     setCustomHomeworksData,
 }) => {
@@ -20,7 +19,7 @@ export const useHomeworksHandler = ({
             });
             // dispatch({ type: "RESET_HOMEWORK_DETAILS" });
         }
-    }, [state.homeworksData, navigation, dispatch]);
+    }, [state.homeworksData, navigation]);
 
     useEffect(() => {
         if (state.toggle) {
@@ -42,6 +41,7 @@ export const useHomeworksHandler = ({
                 isEvaluation: false,
                 customHomeworkMd5Key: md5Key,
                 id: hashToNumberInRange(14000, 19998, md5Key),
+                isCustom: true,
             });
 
             setCustomHomeworksData((prev) => [...prev, homework.getHomework()]);
