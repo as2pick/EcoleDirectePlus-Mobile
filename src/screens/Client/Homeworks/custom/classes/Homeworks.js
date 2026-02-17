@@ -17,7 +17,7 @@ export default class Homeworks {
         student = null,
         customHomeworkMd5Key = null,
         isCustom = false,
-        date = null,
+        date,
     }) {
         this.courseContent = courseContent;
         this.discipline = discipline;
@@ -101,6 +101,16 @@ export default class Homeworks {
                         flexDirection: "row",
                         justifyContent: "space-between",
                         alignItems: "center",
+
+                        boxShadow: [
+                            {
+                                offsetX: 0,
+                                offsetY: 0,
+                                blurRadius: 7.5,
+                                spreadDistance: 3,
+                                color: "hsla(0, 0%, 0%, 0.2)",
+                            },
+                        ],
                     }}
                 >
                     <View

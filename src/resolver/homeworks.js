@@ -1,3 +1,4 @@
+import Homeworks from "../screens/Client/Homeworks/custom/classes/Homeworks";
 import fetchApi from "../services/fetchApi";
 import { formatFrenchDate } from "../utils/date";
 
@@ -11,7 +12,11 @@ export default async function homeworksResolver({ token }) {
     const entries = await Promise.all(
         Object.entries(homeworks).map(async ([date, value]) => {
             const details = await homeworksDetails({ date, token });
-            return [date, details.disciplines];
+            const homework = details.disciplines.map((hk) =>
+                new Homeworks({ ...hk, date: date }).getHomework()
+            );
+
+            return [date, homework];
         })
     );
 
