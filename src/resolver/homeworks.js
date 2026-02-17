@@ -117,15 +117,20 @@ function formatHomeworksDetails(
     },
     date
 ) {
-    let courseContent = "";
-    if (
-        contenuDeSeance !== undefined &&
-        contenuDeSeance.contenu !== aFaire.contenu
-    ) {
-        courseContent = contenuDeSeance.contenu;
-    } else {
-        courseContent = aFaire.contenu;
+    const DEFAULT_BASE64_MESSAGE =
+        "PHA+Vm91cyBuJ2F2ZXogcGFzIGRlIGNvbnRlbnUgZGUgc8OpYW5jZTwvcD4=";
+
+    const hkContent = aFaire?.contenuDeSeance?.contenu;
+    const seanceContent = contenuDeSeance?.contenu;
+
+    let courseContent = DEFAULT_BASE64_MESSAGE;
+
+    if (typeof hkContent === "string" && hkContent.trim() !== "") {
+        courseContent = hkContent;
+    } else if (typeof seanceContent === "string" && seanceContent.trim() !== "") {
+        courseContent = seanceContent;
     }
+
     return {
         discipline: {
             name: matiere,
@@ -166,4 +171,7 @@ export async function toggleHomeworkInApi({ token, id, state }) {
         }
     ).catch((e) => console.log("An error expected in toggleHomework, ", e));
 }
+
+const isEmptyValue = (value) =>
+    value == null || (typeof value === "string" && value.trim() === "");
 
