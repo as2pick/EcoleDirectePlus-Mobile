@@ -1,20 +1,16 @@
 import { useNavigation } from "@react-navigation/native";
 import { useEffect } from "react";
+import { useUser } from "../../../../../context/UserContext";
 import { routesNames } from "../../../../../router/config/routesNames";
 import Homeworks from "../classes/Homeworks";
 import { useHomework } from "../context/LocalContext";
 import { useHomeworkUpdate } from "./useHomeworkUpdate";
 
-export const useHomeworksHandler = ({
-    state,
-
-    setModalOpen,
-    setCustomHomeworksData,
-}) => {
+export const useHomeworksHandler = ({ setModalOpen }) => {
     const navigation = useNavigation();
     const { updateHomeworkStatusDone } = useHomeworkUpdate();
-
-    const { dispatch } = useHomework();
+    const { setSortedHomeworksData, setCustomHomeworksData } = useUser();
+    const { state, dispatch } = useHomework();
     useEffect(() => {
         if (state.homeworksData) {
             navigation.navigate(routesNames.client.homeworks.details, {
@@ -56,6 +52,31 @@ export const useHomeworksHandler = ({
             dispatch({ type: "RESET" });
         }
     }, [state.new.discipline, state.new.date, state.new.content]);
+
+    useEffect(() => {
+        if (state.homeworkToRemove) {
+            const homework = new Homeworks(state.homeworkToRemove);
+
+            setSortedHomeworksData((prev) => {
+                const updated = { ...prev };
+                updated[homework.date] = prev[homework.date].filter(
+                    ({ id }) => id !== homework.id
+                );
+                if (updated[homework.date].length === 0) {
+                    delete updated.formatedDates[homework.date];
+                }
+                return updated;
+            });
+
+            setCustomHomeworksData((prev) =>
+                prev.filter(
+                    ({ customHomeworkMd5Key }) =>
+                        customHomeworkMd5Key !== homework.customHomeworkMd5Key
+                )
+            );
+            dispatch({ type: "RESET" });
+        }
+    }, [state.homeworkToRemove]);
 };
 
 const hashToNumberInRange = (min, max, hash) => {

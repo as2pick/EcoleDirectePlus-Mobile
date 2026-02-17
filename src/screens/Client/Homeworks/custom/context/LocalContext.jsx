@@ -25,6 +25,8 @@ const homeworksReducer = (state, action) => {
             return { ...state, new: { modalOpen: false } };
         case "CREATE_NEW_HOMEWORK":
             return { ...state, new: { ...action.payload, modalOpen: false } }; // discipline (int), date (YYYY-MM-DD), content (int)
+        case "REMOVE_CUSTOM_HOMEWORK":
+            return { ...state, homeworkToRemove: action.payload };
         case "RESET":
             return defaultState;
         default:

@@ -50,9 +50,7 @@ export default function HomeworksContent() {
     const [customHomeworks, setCustomHomeworks] = useState([]);
 
     useHomeworksHandler({
-        state,
         setModalOpen,
-        setCustomHomeworksData,
     });
 
     const animatedWidth = useSharedValue(0);
@@ -78,9 +76,15 @@ export default function HomeworksContent() {
     );
     useFocusEffect(
         useCallback(() => {
-            if (sortedHomeworksData && Object.keys(sortedHomeworksData).length > 0) {
+            if (
+                sortedHomeworksData?.formatedDates &&
+                Object.keys(sortedHomeworksData).length > 0
+            ) {
                 setFormatedDates(sortedHomeworksData.formatedDates);
-                if (!activeDate || !sortedHomeworksData.formatedDates[activeDate]) {
+                if (
+                    !activeDate ||
+                    !sortedHomeworksData?.formatedDates?.[activeDate]
+                ) {
                     setActiveDate(Object.keys(sortedHomeworksData.formatedDates)[0]);
                 }
                 setLoading(false);
