@@ -1,7 +1,7 @@
 import { useNavigation, useTheme } from "@react-navigation/native";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
-
+import LottieView from "lottie-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AccountIcon from "../../../../assets/svg/AccountIcon.jsx";
 import DiscordLogo from "../../../../assets/svg/DiscordLogo.jsx";
@@ -26,7 +26,7 @@ export default function LoginScreen() {
     const theme = useTheme();
     const caseColor = addOpacityToCssRgb(theme.colors.case, 0.3);
 
-    const styles = createStyles(theme, caseColor); //Temporary
+    const styles = createStyles(theme, caseColor);
     const {
         signIn,
         mcqDatas,
@@ -165,7 +165,7 @@ export default function LoginScreen() {
                                 spellCheck={false}
                                 textAlign="center"
                                 // keyboardType="visible-password"
-                                // secureTextEntry
+                                secureTextEntry
                                 style={[
                                     styles.input.case,
                                     {
@@ -191,9 +191,7 @@ export default function LoginScreen() {
                 <TouchableOpacity
                     onPress={connect}
                     style={{
-                        theme: theme,
                         borderWidth: 1.4,
-
                         borderRadius: 12,
                         paddingVertical: 7,
                         paddingHorizontal: 16,
@@ -209,6 +207,14 @@ export default function LoginScreen() {
                     {apiError}
                 </Text>
             )}
+            <View style={styles.canardman}>
+                <LottieView
+                    style={styles.canardman}
+                    source={require("../../../../assets/json/lottie/canardman_walking.json")}
+                    autoPlay
+                    loop
+                />
+            </View>
             <View style={styles.infos}>
                 <TouchableOpacity
                     onPress={() => {
@@ -240,7 +246,6 @@ export default function LoginScreen() {
 
 const createStyles = (theme, caseColor) =>
     StyleSheet.create({
-        //const styles = StyleSheet.create({ - Temporary
         container: {
             flex: 1,
             alignItems: "center",
@@ -270,8 +275,8 @@ const createStyles = (theme, caseColor) =>
             backgroundColor: "rgb(10, 10, 10)",
         },
         form: {
-            marginTop: 26,
-            height: "82%",
+            marginTop: 15,
+            height: "75%",
             width: "100%",
             justifyContent: "space-evenly",
             flexDirection: "column",
@@ -354,6 +359,13 @@ const createStyles = (theme, caseColor) =>
             paddingHorizontal: 0,
             justifyContent: "center",
             alignItems: "center",
+        },
+        canardman: {
+            position: "absolute",
+            bottom: 40,
+            right: "50%" - 25,
+            width: 120,
+            height: 120,
         },
     });
 
