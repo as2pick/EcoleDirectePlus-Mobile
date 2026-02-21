@@ -31,7 +31,10 @@ export default async function gradesResolver({ token }) {
             const groups = [];
             let currentGroup = null;
 
-            for (const disciplineRaw of period.ensembleMatieres.disciplines) {
+            const disciplinesList = period.ensembleMatieres.disciplines;
+            const standaloneSubjects = [];
+
+            for (const disciplineRaw of disciplinesList) {
                 const discipline = parseDiscipline(disciplineRaw);
 
                 if (discipline.isDisciplineGroup) {
@@ -49,8 +52,23 @@ export default async function gradesResolver({ token }) {
                     currentGroup.disciplines.push(discipline);
                     currentGroup.disciplineCodes.push(discipline.code);
                 } else {
-                    groups.push(discipline);
+                    standaloneSubjects.push(discipline);
                 }
+            }
+
+            if (standaloneSubjects.length > 0) {
+                groups.push({
+                    libelle: "Matières",
+                    isDisciplineGroup: true,
+                    averageDatas: {
+                        classAverage: null,
+                        minAverage: null,
+                        maxAverage: null,
+                        userAverage: null,
+                    },
+                    disciplines: standaloneSubjects,
+                    disciplineCodes: standaloneSubjects.map((s) => s.code),
+                });
             }
 
             acc[period.codePeriode] = {
@@ -60,7 +78,6 @@ export default async function gradesResolver({ token }) {
 
             return acc;
         }, {});
-        // Enrich disciplines with grades, averages, streaks
         for (const [periodCode, periodData] of Object.entries(periodsObj)) {
             periodData.groups = periodData.groups.map((group) => {
                 if (group.isDisciplineGroup) {
@@ -99,8 +116,6 @@ const skillColorsCodes = {
 };
 
 function parseDiscipline(discipline) {
-    // if (!discipline) return undefined;
-
     const teachersWithoutId =
         discipline.professeurs?.map(({ nom }) => [nom]) || undefined;
 
@@ -110,7 +125,7 @@ function parseDiscipline(discipline) {
     let decodedUserAssessment =
         discipline?.appreciations?.map((chain) =>
             base64Handler.decode(chain)
-        )[0] /* atention if too many users report less appreciations ! */ ||
+        )[0] ||
         undefined;
 
     const obj = {
@@ -124,6 +139,7 @@ function parseDiscipline(discipline) {
         },
         coef: discipline.coef,
         isDisciplineGroup: discipline.groupeMatiere,
+        isSubDisciplines: discipline.sousMatiere,
         workforce: discipline.effectif,
         rank: discipline.rang,
         teachers: teachersWithoutId,

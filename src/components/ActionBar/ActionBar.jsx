@@ -32,7 +32,7 @@ const ActionBar = () => {
     };
 
     const animatedStyle = useAnimatedStyle(() => {
-        const expandedHeight = actions.length > 0 ? (actions.length * 45) + 55 : 50;
+        const expandedHeight = actions.length > 0 ? (actions.length * 41) + 60 : 50;
         return {
             height: interpolate(progress.value, [0, 1], [50, expandedHeight]),
             borderRadius: interpolate(progress.value, [0, 1], [25, 23]),
@@ -108,7 +108,7 @@ const createStyles = (colors, shadow) => StyleSheet.create({
         paddingBottom: 10,
         justifyContent: "flex-start",
         alignItems: "center",
-        gap: 10,
+        gap: 4,
     },
     actionButton: {
         width: 40,

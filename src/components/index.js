@@ -17,4 +17,5 @@ export { default as OverLoader } from "./Ui/LoadingSpinner/OverLoader";
 export { default as Separation } from "./Ui/Separation";
 export { default as Subtitle } from "./Ui/Subtitle";
 export { default as Title } from "./Ui/Title";
+export { default as ActionBar } from "./ActionBar/ActionBar";
 
