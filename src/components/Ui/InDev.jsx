@@ -7,18 +7,14 @@ import Text from "./core/Text";
 
 export default function InDev({ }) {
     const { colors } = useTheme();
-    const { shadow } = useTheme();
-    const mainColor = addOpacityToCssRgb(colors.accent, 0.5);
-    const shadowColor = addOpacityToCssRgb("rgb(0, 0, 0)", shadow.oppacity);
-    const caseColor = addOpacityToCssRgb(colors.case, 0.8);
+    const mainColor = addOpacityToCssRgb(colors.contrast, 0.8);
     return (
         <View style={[styles.parent]}>
             <View
                 style={[
                     styles.children,
                     {
-                        backgroundColor: caseColor,
-                        boxShadow: "2px 2px 15px 3px " + shadowColor,
+                        backgroundColor: colors.secondary,
                     },
                 ]}
             >
