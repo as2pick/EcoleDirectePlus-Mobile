@@ -5,6 +5,7 @@ export { default as Onboarding } from "./Layout/Onboarding";
 export { default as ScrollableStack } from "./Layout/ScrollableStack";
 export { default as Stack } from "./Layout/Stack";
 export { default as A2fSelectableModal } from "./Modal/A2fSelectableModal";
+export { default as Modal } from "./Modal/Modal";
 export { default as CustomTopHeader } from "./Navigation/CustomTopHeader";
 export { default as NavigationBottomBar } from "./Navigation/NavigationBottomBar";
 export { default as SwipeBackWrapper } from "./Navigation/SwipeBackWrapper";
