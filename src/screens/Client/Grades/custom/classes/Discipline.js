@@ -1,6 +1,15 @@
+import { useEffect } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { useTheme } from "@react-navigation/native";
-import Animated, { FadeIn, FadeOut, Layout } from "react-native-reanimated";
+import Animated, {
+    FadeIn,
+    FadeOut,
+    Layout,
+    useSharedValue,
+    useAnimatedStyle,
+    withTiming,
+    interpolate,
+} from "react-native-reanimated";
 import { Text } from "../../../../../components/Ui/core";
 import { addOpacityToCssRgb } from "../../../../../utils/colorGenerator";
 import { parseNumber } from "../../../../../utils/grades/makeAverage";
@@ -141,27 +150,29 @@ export default class Discipline {
 
     RenderDisciplineGroup({ dataLength, index, colors }) {
         return (
-            <View
+            /*<View
                 style={{
                     backgroundColor: colors.main,
                     overflow: "hidden",
 
                     ...(index === 0
                         ? {
-                            borderTopLeftRadius: 12,
-                            borderTopRightRadius: 12,
-                            borderBottomLeftRadius: 3,
-                            borderBottomRightRadius: 3,
+                            borderTopLeftRadius: 14,
+                            borderTopRightRadius: 14,
+                            borderBottomLeftRadius: 5,
+                            borderBottomRightRadius: 5,
+                            borderTopWidth: 1,
+                            borderColor: colors.main,
                         }
-                        : { borderRadius: 3 }),
+                        : { borderRadius: 5 }),
                     ...(dataLength - 1 === index
                         ? {
-                            borderTopLeftRadius: 3,
-                            borderTopRightRadius: 3,
-                            borderBottomLeftRadius: 12,
-                            borderBottomRightRadius: 12,
+                            borderTopLeftRadius: 5,
+                            borderTopRightRadius: 5,
+                            borderBottomLeftRadius: 14,
+                            borderBottomRightRadius: 14,
                         }
-                        : { borderRadius: 3 }),
+                        : { borderRadius: 5 }),
                 }}
                 key={index}
             >
@@ -191,211 +202,215 @@ export default class Discipline {
                         </Text>
                     </View>
                 </View>
+            </View>*/
+            <View
+                style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "flex-end",
+                    overflow: "hidden",
+                    paddingHorizontal: 2,
+                    marginTop: 8,
+                    padding: 5,
+                }}
+            >
+                <Text preset="h4">{this.libelle}</Text>
+                <Text preset="h4" style={{ fontWeight: "bold" }}>{this.averageDatas.userAverage}</Text>
             </View>
         );
     }
-    RenderDiscipline({
-        index,
-        dataLength,
-        isExpanded,
-        onPress,
-        colors,
-        dispatch,
-        shadowColor,
-        shadow,
-    }) {
-        const averages = [
-            { label: "Classe", value: this.averageDatas.classAverage },
-            { label: "Max.", value: this.averageDatas.maxAverage },
-            { label: "Min", value: this.averageDatas.minAverage },
-        ];
-        const boxStyle = {
-            backgroundColor: "hsla(240, 26%, 13%, .35)",
-            paddingHorizontal: 20,
-            paddingVertical: 8,
-            borderRadius: 8,
-        };
-        return (
-            <TouchableOpacity activeOpacity={0.7} onPress={onPress}>
-                <Animated.View
-                    style={{
+    RenderDiscipline(props) {
+        return <DisciplineCard {...props} discipline={this} />;
+    }
+}
+
+function DisciplineCard({ isFirst, isLast, isExpanded, onPress, colors, dispatch, shadowColor, shadow, discipline }) {
+    const expandProgress = useSharedValue(isExpanded ? 1 : 0);
+
+    useEffect(() => {
+        expandProgress.value = withTiming(isExpanded ? 1 : 0, { duration: 300 });
+    }, [isExpanded]);
+
+    const topRadiusClosed = isFirst ? 14 : 5;
+    const bottomRadiusClosed = isLast ? 14 : 5;
+
+    const containerAnimatedStyle = useAnimatedStyle(() => ({
+        borderTopLeftRadius: interpolate(expandProgress.value, [0, 0.5, 1], [topRadiusClosed, 11, 14]),
+        borderTopRightRadius: interpolate(expandProgress.value, [0, 0.5, 1], [topRadiusClosed, 11, 14]),
+        borderBottomLeftRadius: interpolate(expandProgress.value, [0, 0.5, 1], [bottomRadiusClosed, 11, 14]),
+        borderBottomRightRadius: interpolate(expandProgress.value, [0, 0.5, 1], [bottomRadiusClosed, 11, 14]),
+    }));
+
+    const contentAnimatedStyle = useAnimatedStyle(() => ({
+        maxHeight: interpolate(expandProgress.value, [0, 1], [0, 500]),
+        opacity: interpolate(expandProgress.value, [0, 0.3, 1], [0, 0, 1]),
+        paddingBottom: interpolate(expandProgress.value, [0, 1], [0, 18]),
+        overflow: "hidden",
+    }));
+
+    const averages = [
+        { label: "Classe", value: discipline.averageDatas.classAverage },
+        { label: "Max.", value: discipline.averageDatas.maxAverage },
+        { label: "Min", value: discipline.averageDatas.minAverage },
+    ];
+    const boxStyle = {
+        backgroundColor: "hsla(240, 26%, 13%, .35)",
+        paddingHorizontal: 20,
+        paddingVertical: 8,
+        borderRadius: 8,
+    };
+
+    return (
+        <TouchableOpacity activeOpacity={0.7} onPress={onPress}>
+            <Animated.View
+                style={[
+                    {
                         backgroundColor: colors.secondary,
                         overflow: "hidden",
-
-                        ...(index === 0
-                            ? {
-                                borderTopLeftRadius: 12,
-                                borderTopRightRadius: 12,
-                                borderBottomLeftRadius: 3,
-                                borderBottomRightRadius: 3,
-                            }
-                            : { borderRadius: 3 }),
-                        ...(dataLength - 1 === index
-                            ? {
-                                borderTopLeftRadius: 3,
-                                borderTopRightRadius: 3,
-                                borderBottomLeftRadius: 12,
-                                borderBottomRightRadius: 12,
-                            }
-                            : { borderRadius: 3 }),
+                    },
+                    containerAnimatedStyle,
+                ]}
+            >
+                <View
+                    style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        padding: 18,
+                        height: 80,
+                        alignItems: "center",
                     }}
-                    layout={Layout.springify()}
+                >
+                    <View style={{ flexDirection: "row", gap: 18 }}>
+                        <View
+                            style={{
+                                alignItems: "center",
+                                justifyContent: "center",
+                                borderRadius: 500,
+                                width: 42,
+                                height: 42,
+                                borderWidth: 2,
+                                borderColor: "white",
+                                backgroundColor: "hsla(240, 27%, 16%, .35)",
+                            }}
+                        >
+                            <View
+                                style={{
+                                    width: 34,
+                                    height: 34,
+                                    borderRadius: "50%",
+                                    overflow: "hidden",
+                                    backgroundColor:
+                                        discipline.streakCount === 0
+                                            ? "transparent"
+                                            : "hsl(35, 100%, 50%)",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                }}
+                            >
+                                <Text align="center" preset="h3">
+                                    {discipline.streakCount}
+                                </Text>
+                            </View>
+                        </View>
+                        <View style={{ maxWidth: "64%" }}>
+                            <Text oneLine preset="label2">
+                                {discipline.libelle}
+                            </Text>
+                            <Text
+                                style={{ opacity: 0.72 }}
+                                oneLine
+                                preset="label2"
+                            >
+                                {Array.isArray(discipline.teachers)
+                                    ? discipline.teachers.length > 1
+                                        ? `${discipline.teachers[0]}...`
+                                        : discipline.teachers[0]
+                                    : discipline.teachers}
+                            </Text>
+                        </View>
+                    </View>
+                    <Text preset="h3">
+                        {formatGradeText(discipline.averageDatas.userAverage)}
+                    </Text>
+                </View>
+
+                <Animated.View
+                    style={[{ gap: 8 }, contentAnimatedStyle]}
                 >
                     <View
                         style={{
+                            backgroundColor: colors.main,
+                            height: 1,
+                            borderRadius: 5,
+                            marginHorizontal: 18,
+                        }}
+                    />
+                    <View
+                        style={{
                             flexDirection: "row",
-                            justifyContent: "space-between",
-                            padding: 18,
-                            height: 80,
+                            justifyContent: "space-around",
                             alignItems: "center",
-
                         }}
                     >
-                        <View style={{ flexDirection: "row", gap: 18 }}>
+                        {averages.map(({ label, value }, idx) => (
+                            <View
+                                key={idx}
+                                style={{
+                                    alignItems: "center",
+                                    marginBottom: 10,
+                                }}
+                            >
+                                <Text style={{ marginBottom: 8 }}>
+                                    {label}
+                                </Text>
+                                <View style={boxStyle}>
+                                    <Text preset="label2">
+                                        {formatGradeText(value)}
+                                    </Text>
+                                </View>
+                            </View>
+                        ))}
+                    </View>
+                    {isExpanded && discipline.grades
+                        .filter(({ isSimulation }) => !isSimulation)
+                        .map((grade, idx) => {
+                            return new Grade(grade).RenderGrade(idx, dispatch);
+                        })}
+                    {isExpanded && (
+                        <TouchableOpacity
+                            onPress={() =>
+                                dispatch({
+                                    type: "OPEN_SIMULATION_MODAL",
+                                    payload: {
+                                        discipline: discipline.code,
+                                        libelle: discipline.libelle,
+                                    },
+                                })
+                            }
+                            style={{ alignSelf: "center" }}
+                        >
                             <View
                                 style={{
                                     alignItems: "center",
                                     justifyContent: "center",
-                                    borderRadius: 500,
-                                    width: 42,
-                                    height: 42,
-                                    borderWidth: 2,
-                                    borderColor: "white",
-                                    backgroundColor: "hsla(240, 27%, 16%, .35)",
+                                    backgroundColor: "hsla(240, 14%, 32%, .25)",
+                                    paddingHorizontal: 24,
+                                    borderRadius: 20,
                                 }}
                             >
-                                <View
-                                    style={{
-                                        width: 34,
-                                        height: 34,
-                                        borderRadius: "50%",
-                                        overflow: "hidden",
-                                        backgroundColor:
-                                            this.streakCount === 0
-                                                ? "transparent"
-                                                : "hsl(35, 100%, 50%)",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                    }}
-                                >
-                                    <Text align="center" preset="h3">
-                                        {this.streakCount}
-                                    </Text>
-                                </View>
-                            </View>
-                            <View style={{ maxWidth: "64%" }}>
-                                <Text oneLine preset="label2">
-                                    {this.libelle}
-                                </Text>
-                                <Text
-                                    style={{
-                                        opacity: 0.72,
-                                    }}
-                                    oneLine
-                                    preset="label2"
-                                >
-                                    {Array.isArray(this.teachers)
-                                        ? this.teachers.length > 1
-                                            ? `${this.teachers[0]}...`
-                                            : this.teachers[0]
-                                        : this.teachers}
+                                <Text preset="h3" align="center">
+                                    +
                                 </Text>
                             </View>
-                        </View>
-                        <Text preset="h3">
-                            {formatGradeText(this.averageDatas.userAverage)}
-                        </Text>
-                    </View>
-
-                    {isExpanded && (
-                        <Animated.View
-                            entering={FadeIn}
-                            exiting={FadeOut}
-                            style={{ gap: 8, paddingBottom: 18 }}
-                        >
-                            <View
-                                style={{
-                                    backgroundColor: colors.main,
-                                    height: 1,
-                                    borderRadius: 5,
-                                    marginHorizontal: 18,
-                                }}
-                            />
-                            <View
-                                style={{
-                                    flexDirection: "row",
-                                    justifyContent: "space-around",
-                                    alignItems: "center",
-                                }}
-                            >
-                                {averages.map(({ label, value }, idx) => (
-                                    <View
-                                        key={idx}
-                                        style={{
-                                            alignItems: "center",
-                                            marginBottom: 10,
-                                        }}
-                                    >
-                                        <Text style={{ marginBottom: 8 }}>
-                                            {label}
-                                        </Text>
-                                        <View style={boxStyle}>
-                                            <Text preset="label2">
-                                                {formatGradeText(value)}
-                                            </Text>
-                                        </View>
-                                    </View>
-                                ))}
-                            </View>
-                            {this.grades
-                                .filter(({ isSimulation }) => !isSimulation)
-                                .map((grade, idx) => {
-                                    return new Grade(grade).RenderGrade(
-                                        idx,
-                                        dispatch
-                                    );
-                                })}
-                            <TouchableOpacity
-                                onPress={() =>
-                                    dispatch({
-                                        type: "OPEN_SIMULATION_MODAL",
-                                        payload: {
-                                            discipline: this.code,
-                                            libelle: this.libelle,
-                                        },
-                                    })
-                                }
-                                style={{
-                                    alignSelf: "center",
-                                }}
-                            >
-                                <View
-                                    style={{
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                        backgroundColor: "hsla(240, 14%, 32%, .25)",
-                                        paddingHorizontal: 24,
-                                        borderRadius: 20,
-                                    }}
-                                >
-                                    <Text preset="h3" align="center">
-                                        +
-                                    </Text>
-                                </View>
-                            </TouchableOpacity>
-                            {this.grades
-                                .filter(({ isSimulation }) => isSimulation)
-                                .map((grade, idx) => {
-                                    return new Grade(grade).RenderSimulatedGrade(
-                                        idx,
-                                        dispatch
-                                    );
-                                })}
-                        </Animated.View>
+                        </TouchableOpacity>
                     )}
+                    {isExpanded && discipline.grades
+                        .filter(({ isSimulation }) => isSimulation)
+                        .map((grade, idx) => {
+                            return new Grade(grade).RenderSimulatedGrade(idx, dispatch);
+                        })}
                 </Animated.View>
-            </TouchableOpacity>
-        );
-    }
+            </Animated.View>
+        </TouchableOpacity>
+    );
 }
-

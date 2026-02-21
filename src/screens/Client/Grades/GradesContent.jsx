@@ -2,7 +2,7 @@ import { useFocusEffect, useNavigation, useTheme } from "@react-navigation/nativ
 import { useActionBar } from "../../../context/ActionBarContext";
 import GradesIcon from "../../../../assets/svg/navigation/GradesIcon"; // Pour test ou exemple
 import { LinearGradient } from "expo-linear-gradient";
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Dimensions, View, TouchableOpacity } from "react-native";
 import Animated, {
     Extrapolation,
@@ -27,6 +27,7 @@ import { parseNumber } from "../../../utils/grades/makeAverage";
 import Discipline from "./custom/classes/Discipline";
 import Period from "./custom/classes/Period";
 import AddGradeModal from "./custom/components/SimulateGradeModal";
+import InDev from "../../../components/Ui/InDev";
 
 import { Text } from "../../../components/Ui/core";
 import { useGrade } from "./custom/context/LocalContext";
@@ -38,6 +39,7 @@ const { width, height } = Dimensions.get("window");
 export default function GradesContent() {
     const { colors, shadow } = useTheme();
     const shadowColor = addOpacityToCssRgb("rgb(0, 0, 0)", shadow.oppacity);
+    const [currentPage, setCurrentPage] = useState(0);
     const { sortedGradesData, setSortedGradesData, userAccesToken } = useUser();
     const { state, dispatch } = useGrade();
     const navigation = useNavigation();
@@ -62,6 +64,33 @@ export default function GradesContent() {
 
     const scrollY = useSharedValue(0);
 
+    const HIDE_THRESHOLD = 90;
+    const SHOW_THRESHOLD = 100;
+    const SNAP_LOWER = 0;
+    const SNAP_UPPER = 235;
+    const SNAP_MIDPOINT = 80;
+
+    const scrollRef = useRef(null);
+
+    const snapIfNeeded = useCallback((y) => {
+        if (y > 1 && y < SNAP_UPPER) {
+            const target = y < SNAP_MIDPOINT ? SNAP_LOWER : SNAP_UPPER;
+            scrollRef.current?.scrollTo({ y: target, animated: true });
+        }
+    }, []);
+
+    const handleDragEnd = useCallback((e) => {
+        const y = e.nativeEvent.contentOffset.y;
+        const velocityY = e.nativeEvent.velocity?.y ?? 0;
+        if (Math.abs(velocityY) < 0.3) {
+            snapIfNeeded(y);
+        }
+    }, [snapIfNeeded]);
+
+    const handleMomentumEnd = useCallback((e) => {
+        snapIfNeeded(e.nativeEvent.contentOffset.y);
+    }, [snapIfNeeded]);
+
     const scrollHandler = useAnimatedScrollHandler((event) => {
         scrollY.value = event.contentOffset.y;
     });
@@ -72,68 +101,30 @@ export default function GradesContent() {
     });
 
     const containerStyle = useAnimatedStyle(() => {
-        const progress = interpolate(scrollY.value, [0, 250], [0, 1], Extrapolation.CLAMP);
-        const translateY = interpolate(scrollY.value, [0, 250], [0, 225], Extrapolation.CLAMP);
-
+        const translateY = interpolate(scrollY.value, [0, 200], [0, -(height * 0.2)], Extrapolation.CLAMP);
+        const opacity = interpolate(scrollY.value, [0, 120, 200], [1, 0.4, 0], Extrapolation.CLAMP);
         return {
-            marginHorizontal: interpolate(progress, [0, 1], [0, 14]),
-            borderRadius: interpolate(progress, [0, 1], [0, 18]),
-            marginTop: interpolate(progress, [0, 1], [0, 50]),
-            marginBottom: interpolate(progress, [0, 1], [0, 24]),
-            height: interpolate(progress, [0, 1], [height * 0.4 + 6, height * 0.3]),
+            marginHorizontal: 0,
+            marginTop: 0,
+            marginBottom: 0,
+            height: height * 0.39,
+            paddingTop: 0,
             transform: [{ translateY }],
+            opacity,
         };
     });
 
-    const innerContainerStyle = useAnimatedStyle(() => {
-        const progress = interpolate(scrollY.value, [0, 250], [0, 1], Extrapolation.CLAMP);
-        return {
-            borderRadius: interpolate(progress, [0, 1], [0, 18]),
-            overflow: "hidden",
-            flex: 1,
-        };
-    });
+    const innerContainerStyle = {
+        borderRadius: 0,
+        overflow: "hidden",
+        flex: 1,
+    };
 
-    const sheetStyle = useAnimatedStyle(() => {
-        const progress = interpolate(scrollY.value, [0, 250], [0, 1], Extrapolation.CLAMP);
-        const translateY = interpolate(scrollY.value, [0, 250], [0, 225], Extrapolation.CLAMP);
-        return {
-            transform: [{ translateY }],
-            /*backgroundColor: interpolateColor(progress, [0, 0.7], [
-                colors.background.modal,
-                addOpacityToCssRgb(colors.background.gradient, interpolate(progress, [0.9, 1], [1, 0], Extrapolation.CLAMP))
-            ]),*/
-            backgroundColor: addOpacityToCssRgb(colors.background.gradient, interpolate(progress, [0.9, 1], [1, 0], Extrapolation.CLAMP)),
-        };
-    });
 
-    const handleStyle = useAnimatedStyle(() => {
-        const progress = interpolate(scrollY.value, [0, 250], [0, 1], Extrapolation.CLAMP);
-        return {
-            opacity: interpolate(progress, [0, 1], [1, 0]),
-            height: interpolate(progress, [0, 1], [6, 0]),
-            transform: [{ scale: interpolate(progress, [0, 1], [1, 0]) }],
-        };
-    });
 
-    const handleContainerStyle = useAnimatedStyle(() => {
-        const progress = interpolate(scrollY.value, [0, 250], [0, 1], Extrapolation.CLAMP);
-        return {
-            marginBottom: interpolate(progress, [0, 1], [24, 0]),
-            height: interpolate(progress, [0, 1], [30, 0]),
-        };
-    });
-
-    const itemWidthStyle = useAnimatedStyle(() => {
-        const progress = interpolate(scrollY.value, [0, 250], [0, 1], Extrapolation.CLAMP);
-        return {
-            width: interpolate(
-                progress,
-                [0, 1],
-                [width, width - 28]
-            ),
-        };
-    });
+    const itemWidthStyle = {
+        width: width,
+    };
 
     const [simulatedDisciplineCodes, setSimulatedDisciplineCodes] = useState({});
 
@@ -153,18 +144,18 @@ export default function GradesContent() {
             updateActions([
                 {
                     icon: GradesIcon,
-                    onPress: () => console.log("Action 1"),
+                    onPress: () => setCurrentPage(0),
                 },
                 {
                     icon: GradesIcon,
-                    onPress: () => console.log("Action 2"),
+                    onPress: () => setCurrentPage(1),
                 },
                 {
                     icon: GradesIcon,
-                    onPress: () => dispatch({ type: "SET_MODAL_OPEN", payload: true }),
+                    onPress: () => setCurrentPage(2),
                 },
             ]);
-        }, [updateActions, dispatch])
+        }, [updateActions])
     );
 
     const fetchAndProcessGrades = useCallback(async () => {
@@ -220,7 +211,7 @@ export default function GradesContent() {
         try {
             const { strengths, weaknesses } = calculateStrengthsWeaknesses(
                 displayPeriode,
-                3
+                10
             );
 
             const formattedStrengths = strengths.map((item) => ({
@@ -246,34 +237,7 @@ export default function GradesContent() {
         setExpandedChain((prev) => (prev === chain ? null : chain));
     }, []);
 
-    const renderItem = ({ item, index }) => {
-        const DisciplineClass = new Discipline(item);
 
-        if (DisciplineClass.isDisciplineGroup) {
-            return DisciplineClass.RenderDisciplineGroup({
-                dataLength: renderDisciplinesArray.length,
-                index: index,
-                colors: colors,
-            });
-        } else {
-            return DisciplineClass.RenderDiscipline({
-                dataLength: renderDisciplinesArray.length,
-                index,
-                colors: colors,
-                isExpanded:
-                    expandedChain ===
-                    `${DisciplineClass.code}-${DisciplineClass.libelle}`,
-                onPress: () =>
-                    handleItemPress(
-                        `${DisciplineClass.code}-${DisciplineClass.libelle}`
-                    ),
-
-                dispatch: dispatch,
-                shadowColor: shadowColor,
-                shadow: shadow,
-            });
-        }
-    };
 
     const keyExtractor = useCallback(
         (item, index) => item.id?.toString() || `${item.libelle}-${index}`,
@@ -286,7 +250,7 @@ export default function GradesContent() {
         value: globalStreakScore,
         gradient: {
             colors: ["rgb(255, 15, 0)", "rgb(253, 170, 53)"],
-            locations: [0.24, 0.68],
+            locations: [0.34, 0.78],
             start: { x: 0, y: 0 },
             end: { x: 0, y: 1 },
         },
@@ -331,23 +295,28 @@ export default function GradesContent() {
     return (
         <View style={{ flex: 1 }}>
             <Animated.ScrollView
+                ref={scrollRef}
                 style={{ flex: 1 }}
                 onScroll={scrollHandler}
                 scrollEventThrottle={16}
+                onScrollEndDrag={handleDragEnd}
+                onMomentumScrollEnd={handleMomentumEnd}
                 contentContainerStyle={{ paddingBottom: 110 }}
                 showsVerticalScrollIndicator={false}
             >
                 <Animated.View
                     style={[
                         {
-                            zIndex: 1000,
-                            boxShadow: `1px 2px ${shadow.caseSize}px 0px ${shadowColor}`,
+                            zIndex: 3000,
+                            boxShadow: `0px 2px 10px 5px ${shadowColor}`,
+                            borderRadius: 30,
+                            width: "100%",
                         },
                         containerStyle,
                     ]}
                 >
-                    <Animated.View style={innerContainerStyle}>
-                        <TouchableOpacity onPress={toggleStats} activeOpacity={0.9} style={{ flex: 1 }}>
+                    <View style={innerContainerStyle}>
+                        <TouchableOpacity onPress={toggleStats} activeOpacity={0.9} style={{ flex: 1, borderRadius: 30, overflow: "hidden" }}>
                             <HeaderStatsCarousel
                                 style={[itemWidthStyle, streakStyle]}
                                 item={streakItem}
@@ -362,118 +331,124 @@ export default function GradesContent() {
                                 transition={transition}
                             />
                         </TouchableOpacity>
-                    </Animated.View>
+                    </View>
                 </Animated.View>
-                <Animated.View
-                    style={[
-                        {
-                            backgroundColor: colors.background.gradient,
-                            borderTopLeftRadius: 25,
-                            borderTopRightRadius: 25,
-                            minHeight: Dimensions.get("window").height * 0.6,
-                            paddingTop: 30,
-                            marginTop: -26,
-                            zIndex: 2000,
-                            marginBottom: 110,
-                        },
-                        sheetStyle,
-                    ]}
+                <View
+                    style={{
+                        backgroundColor: colors.background.gradient,
+                        borderTopLeftRadius: 45,
+                        borderTopRightRadius: 45,
+                        minHeight: Dimensions.get("window").height * 0.6,
+                        paddingTop: 10,
+                        zIndex: 2000,
+                        marginBottom: -110
+                    }}
                 >
-                    {/*<Animated.View
-                        style={[
-                            {
+
+                    {currentPage === 0 && (
+                        <View style={{ marginHorizontal: 14, paddingBottom: 110, gap: 12 }}>
+                            {groupForRendering(renderDisciplinesArray).map((group, gIndex) => {
+                                const GroupClass = new Discipline(group.header);
+                                return (
+                                    <View key={keyExtractor(group.header, gIndex)}>
+                                        {GroupClass.RenderDisciplineGroup({
+                                            dataLength: group.disciplines.length,
+                                            index: gIndex,
+                                            colors,
+                                        })}
+                                        <View style={{ gap: 4 }}>
+                                            {group.disciplines.map((item, dIndex) => {
+                                                const DisciplineClass = new Discipline(item);
+                                                return (
+                                                    <View key={keyExtractor(item, dIndex)}>
+                                                        {DisciplineClass.RenderDiscipline({
+                                                            isFirst: dIndex === 0,
+                                                            isLast: dIndex === group.disciplines.length - 1,
+                                                            colors,
+                                                            isExpanded: expandedChain === `${DisciplineClass.code}-${DisciplineClass.libelle}`,
+                                                            onPress: () => handleItemPress(`${DisciplineClass.code}-${DisciplineClass.libelle}`),
+                                                            dispatch,
+                                                            shadowColor,
+                                                            shadow,
+                                                        })}
+                                                    </View>
+                                                );
+                                            })}
+                                        </View>
+                                    </View>
+                                );
+                            })}
+                        </View>
+                    )}
+
+                    {currentPage === 1 && (
+                        <View
+                            style={{
                                 alignItems: "center",
-                            },
-                            handleContainerStyle,
-                        ]}
-                    >
-                        <Animated.View
-                            style={[
-                                {
-                                    width: 35,
-                                    borderRadius: 10,
-                                    backgroundColor: colors.contrast,
-                                    marginTop: 5
-                                },
-                                handleStyle,
-                            ]}
-                        />
-                    </Animated.View>*/}
-
-                    <View
-                        style={{
-                            alignItems: "center",
-                            justifyContent: "center",
-                            marginHorizontal: 14,
-                            //backgroundColor: colors.secondary,
-                            //borderWidth: 1,
-                            //borderColor: colors.secondary,
-                            borderRadius: 18,
-                            padding: 16,
-                            marginBottom: 24,
-                            //boxShadow: `1px 2px ${shadow.caseSize}px 0px ${shadowColor}`,
-                        }}
-                    >
-                        <ScrollableStack
-                            horizontal
-                            paging
-                            contentContainerStyle={{
-                                width: "200%",
+                                justifyContent: "center",
+                                marginHorizontal: 14,
+                                borderRadius: 18,
+                                padding: 16,
+                                marginBottom: 170,
                             }}
-                            onScroll={strengthsScrollHandler}
                         >
-                            <View
-                                style={{
-                                    flexDirection: "column",
-                                    flex: 1,
-                                    gap: 8,
-                                    width: "100%",
+                            <ScrollableStack
+                                horizontal
+                                paging
+                                contentContainerStyle={{
+                                    width: "200%",
                                 }}
+                                onScroll={strengthsScrollHandler}
                             >
-                                <StrengthsAndWeakness
-                                    firstColor={"hsla(115, 79%, 41%, 0.8)"}
-                                    data={strengths}
-                                />
-                            </View>
-                            <View
-                                style={{
-                                    flexDirection: "column",
-                                    flex: 1,
-                                    gap: 8,
-                                    width: "100%",
-                                }}
-                            >
-                                <StrengthsAndWeakness
-                                    firstColor={"hsla(5, 79%, 41%, 0.8)"}
-                                    data={weaknesses}
-                                />
-                            </View>
-                        </ScrollableStack>
-                        <AnimatedLottieView
-                            source={require("../../../../assets/json/lottie/slider.json")}
-                            animatedProps={lottieProps}
-                            style={{ top: 9, height: 13, width: 80, margin: 2 }}
-                            colorFilters={[
-                                {
-                                    keypath: "Shape Layer 1",
-                                    color: colors.main,
-                                },
-                                {
-                                    keypath: "Shape Layer 2",
-                                    color: colors.main,
-                                },
-                            ]}
-                        />
-                    </View>
+                                <View
+                                    style={{
+                                        flexDirection: "column",
+                                        flex: 1,
+                                        gap: 8,
+                                        width: "100%",
+                                    }}
+                                >
+                                    <StrengthsAndWeakness
+                                        firstColor={"hsla(115, 79%, 41%, 0.8)"}
+                                        data={strengths}
+                                    />
+                                </View>
+                                <View
+                                    style={{
+                                        flexDirection: "column",
+                                        flex: 1,
+                                        gap: 8,
+                                        width: "100%",
+                                    }}
+                                >
+                                    <StrengthsAndWeakness
+                                        firstColor={"hsla(5, 79%, 41%, 0.8)"}
+                                        data={weaknesses}
+                                    />
+                                </View>
+                            </ScrollableStack>
+                            <AnimatedLottieView
+                                source={require("../../../../assets/json/lottie/slider.json")}
+                                animatedProps={lottieProps}
+                                style={{ top: 9, height: 13, width: 80, margin: 2 }}
+                                colorFilters={[
+                                    {
+                                        keypath: "Shape Layer 1",
+                                        color: colors.main,
+                                    },
+                                    {
+                                        keypath: "Shape Layer 2",
+                                        color: colors.main,
+                                    },
+                                ]}
+                            />
+                        </View>
+                    )}
 
-                    <View style={{ marginHorizontal: 14, gap: 4, paddingBottom: 110 }}>
-                        {renderDisciplinesArray.map((item, index) => (
-                            <View key={keyExtractor(item, index)}>
-                                {renderItem({ item, index })}
-                            </View>
-                        ))}
-                    </View>
-                </Animated.View>
+                    {currentPage === 2 && (
+                        <InDev />
+                    )}
+                </View>
             </Animated.ScrollView>
             <AddGradeModal
                 visible={state.simulation.modalOpen}
@@ -539,7 +514,7 @@ const HeaderStatsCarousel = memo(({ item, style, transition }) => {
                 <View
                     style={{ justifyContent: "center", alignItems: "center", flex: 1 }}
                 >
-                    <Text size={38} weight="bold" align="center">
+                    <Text size={38} weight="bold" align="center" paddingTop={55}>
                         {item.text}
                     </Text>
                     <Animated.View
@@ -565,17 +540,17 @@ const HeaderStatsCarousel = memo(({ item, style, transition }) => {
                     </Animated.View>
                 </View>
             </LinearGradient>
-        </Animated.View>
+        </Animated.View >
     );
 });
 
 const StrengthsAndWeakness = ({ data, firstColor }) => {
     const [tint, saturation, lightness, opacity] = cssHslaToHsla(firstColor);
-    const colors = [
-        firstColor,
-        `hsla(${tint + 3}, ${saturation - 4}%, ${lightness - 6}%, ${opacity})`,
-        `hsla(${tint + 7}, ${saturation - 3}%, ${lightness - 14}%, ${opacity})`,
-    ];
+    const colors = data.map((_, i) =>
+        i === 0
+            ? firstColor
+            : `hsla(${tint + i * 3}, ${saturation - i * 2}%, ${lightness - i * 4}%, ${opacity})`
+    );
 
     return (
         <>
@@ -640,5 +615,22 @@ function flattenDisciplines(groups) {
     });
 
     return result;
+}
+
+// Regroupe le tableau aplati en { header, disciplines[] } pour le rendu hiérarchique
+function groupForRendering(flatArray) {
+    const groups = [];
+    let currentGroup = null;
+
+    flatArray.forEach((item) => {
+        if (item.isDisciplineGroup) {
+            currentGroup = { header: item, disciplines: [] };
+            groups.push(currentGroup);
+        } else if (currentGroup) {
+            currentGroup.disciplines.push(item);
+        }
+    });
+
+    return groups;
 }
 
