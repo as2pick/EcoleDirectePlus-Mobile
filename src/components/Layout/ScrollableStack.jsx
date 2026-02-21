@@ -10,17 +10,19 @@ export default function ScrollableStack({
     showsScrollIndicator = false,
     paging = false,
     contentContainerStyle,
+    onScroll: externalOnScroll,
     ...props
 }) {
     const scrollX = useSharedValue(0);
-
-    const onScroll = useAnimatedScrollHandler({
+    const internalOnScroll = useAnimatedScrollHandler({
         onScroll: (event) => {
             scrollX.value = horizontal
                 ? event.contentOffset.x
                 : event.contentOffset.y;
         },
     });
+
+    const finalOnScroll = externalOnScroll || internalOnScroll;
 
     return (
         <Animated.ScrollView
@@ -29,7 +31,7 @@ export default function ScrollableStack({
             showsVerticalScrollIndicator={showsScrollIndicator}
             showsHorizontalScrollIndicator={showsScrollIndicator}
             pagingEnabled={paging}
-            onScroll={onScroll}
+            onScroll={finalOnScroll}
             // scrollEnabled={false}
             scrollEventThrottle={16}
         >
