@@ -8,7 +8,7 @@ export const THEMES = {
             ...NavigationDefaultTheme.colors,
             background: {
                 //gradient: ["rgba(169, 169, 255, 1)", "rgba(230, 230, 255, 1)"], // App backround gradient
-                gradient: "rgba(229, 229, 250, 1)",
+                gradient: "rgba(240, 240, 240, 1)",
                 login: "rgba(230, 230, 255, 1)", // Login screen background
                 modal: "rgb(240, 240, 253)",
             },
@@ -34,9 +34,9 @@ export const THEMES = {
             },
             border: "rgba(26, 26, 151, 1)", // DON'T USE IT
             error: "rgb(240, 90, 90)",
-            fond: ["rgba(222, 222, 250, 1)", "rgba(222, 222, 250, 1)"], // DON'T USE IT
+            fond: ["rgba(150, 150, 172, 1)", "rgba(222, 222, 250, 1)"], // DON'T USE IT
             pastel: "rgba(200, 200, 252, 1)",
-            secondary: "rgb(180, 180, 253)",
+            secondary: "rgba(255, 255, 255, 1)",
             main: "rgb(119, 119, 247)",
             accent: "rgb(62, 62, 221)",
             contrast: "rgb(0, 0, 0)",
@@ -69,7 +69,7 @@ export const THEMES = {
             ...NavigationDefaultTheme.colors,
             // background: "rgb(18, 18, 138)", // default key
             background: {
-                gradient: "rgba(33, 33, 34, 1)", //"rgb(27, 27, 33)", // +20 or +30
+                gradient: "rgba(38, 39, 46, 1)", //"rgba(33, 33, 34, 1)", //"rgb(27, 27, 33)", // +20 or +30
                 login: "rgb(19, 19, 34)",
                 modal: "rgb(18, 18, 37)",
             },
@@ -95,19 +95,23 @@ export const THEMES = {
 
             border: "rgb(92, 113, 250)", // DON'T USE IT
             error: "rgb(240, 90, 90)",
-            fond: "rgb(0, 0, 0)",
-            pastel: "rgb(21, 25, 69)",
-            secondary: "rgba(51, 51, 88, 1)",
+            cases: "rgb(25, 25, 56)", // DON'T USE IT
+            secondary: "rgba(24, 24, 24, 1)", //A CHANGER
             main: "rgba(129, 129, 189, 1)",
-            accent: "rgba(156, 156, 209, 1)",
-            case: "rgb(72, 72, 102)",
-            oppose: "rgba(255, 255, 255, 1)",
-            contrast: "rgb(255, 255, 255)",
-            navbar: "rgba(63, 63, 73, 1)",
-            theme: "rgba(0, 0, 0, 1)",
+            accent: "rgba(156, 156, 209, 1)", //A SUPPRIMER POUR JUSTE MAIN
+            case: "rgb(72, 72, 102)", // DON'T USE IT A SUPPRIMER
+            oppose: "rgba(255, 255, 255, 1)", //A SUPPRIMER
+            contrast: "rgb(255, 255, 255)", //A PASSER EN TEXTE
+            navbar: "rgba(63, 63, 73, 1)", //A SUPPRIMER
+            theme: "rgba(0, 0, 0, 1)", //A VOIR
+            txt: {
+                txt1: "rgb(255, 255, 255)", //A CHANGER
+                txt2: "rgba(187, 187, 187, 1)", //A CHANGER
+                txt3: "rgb(180, 180, 240)", //A CHANGER
+            },
             edplogo: {
-                c1: "rgb(180, 201, 255)",
-                c2: "rgb(193, 183, 255)",
+                c1: "rgb(180, 201, 255)",//A CLARIFIER (+ de saturation ???)
+                c2: "rgb(193, 183, 255)",// A CLARIFIER (+ de saturation ???)
             },
         },
         fonts: {
