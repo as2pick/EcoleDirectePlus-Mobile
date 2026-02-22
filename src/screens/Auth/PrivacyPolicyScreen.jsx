@@ -345,7 +345,7 @@ export default function PrivacyPolicyScreen() {
                         {"- Base64\n"}
                         {"- JS-SHA256\n"}
                         {"- Set-cookie-parser\n"}
-                        {"- Moment\n"}
+                        {"- Day JS\n"}
                         {"- Lottie\n"}
                     </Paragraph>
                     <Paragraph>

@@ -2,7 +2,7 @@ import CryptoJS from "crypto-js";
 import Constants from "expo-constants";
 import * as Crypto from "expo-crypto";
 import * as SecureStore from "expo-secure-store";
-import moment from "moment";
+import dayjs from "dayjs";
 import { CONFIG } from "../constants/config";
 
 const { localSecretKeyStoreName, totalTokenExpirationTime } =
@@ -48,7 +48,7 @@ export const payloadHelper = {
                 userId: userId,
                 superSecretUserToken: connectionToken,
                 creationDate: CONFIG.preciseDateNow,
-                expirationDate: moment(CONFIG.preciseDateNow, "YYYY-MM-DD_HH:mm")
+                expirationDate: dayjs(CONFIG.preciseDateNow, "YYYY-MM-DD_HH:mm")
                     .add(totalTokenExpirationTime / 60, "minutes")
                     .format("YYYY-MM-DD_HH:mm"),
             });
