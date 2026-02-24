@@ -2,21 +2,22 @@ import { useNavigation } from "@react-navigation/native";
 import { useEffect } from "react";
 import { useUser } from "../../../../../context/UserContext";
 import { routesNames } from "../../../../../router/config/routesNames";
-import Homeworks from "../classes/Homeworks";
+import { createHomework } from "../../utils";
 import { useHomework } from "../context/LocalContext";
 import { useHomeworkUpdate } from "./useHomeworkUpdate";
 
 export const useHomeworksHandler = ({ setModalOpen }) => {
     const navigation = useNavigation();
-    const { updateHomeworkStatusDone } = useHomeworkUpdate();
     const { setSortedHomeworksData, setCustomHomeworksData } = useUser();
     const { state, dispatch } = useHomework();
+    const { updateHomeworkStatusDone } = useHomeworkUpdate();
+
     useEffect(() => {
         if (state.homeworksData) {
             navigation.navigate(routesNames.client.homeworks.details, {
                 homeworksData: state.homeworksData,
             });
-            // dispatch({ type: "RESET_HOMEWORK_DETAILS" });
+            dispatch({ type: "RESET" });
         }
     }, [state.homeworksData, navigation]);
 
@@ -30,58 +31,55 @@ export const useHomeworksHandler = ({ setModalOpen }) => {
             dispatch({ type: "RESET" });
         }
     }, [state.toggle, updateHomeworkStatusDone]);
+
     useEffect(() => {
         if (state.new.modalOpen !== undefined) {
             setModalOpen(state.new.modalOpen);
         }
     }, [setModalOpen, state.new.modalOpen]);
+
     useEffect(() => {
         const { discipline, date, content, md5Key } = state.new;
-        if (discipline && date && content) {
-            const homework = new Homeworks({
-                discipline,
-                date: date,
-                homeworksContent: { content: content },
-                isEvaluation: false,
-                customHomeworkMd5Key: md5Key,
-                id: hashToNumberInRange(14000, 19998, md5Key),
-                isCustom: true,
-            });
+        if (!discipline || !date || !content) return;
 
-            setCustomHomeworksData((prev) => [...prev, homework.getHomework()]);
-            dispatch({ type: "RESET" });
-        }
+        const homework = createHomework({
+            discipline,
+            date,
+            homeworksContent: { content },
+            isEvaluation: false,
+            customHomeworkMd5Key: md5Key,
+            id: hashToNumberInRange(14000, 19998, md5Key),
+            isCustom: true,
+        });
+
+        setCustomHomeworksData((prev) => [...prev, homework]);
+        dispatch({ type: "RESET" });
     }, [state.new.discipline, state.new.date, state.new.content]);
 
     useEffect(() => {
-        if (state.homeworkToRemove) {
-            const homework = new Homeworks(state.homeworkToRemove);
+        if (!state.homeworkToRemove) return;
 
-            setSortedHomeworksData((prev) => {
-                const updated = { ...prev };
-                updated[homework.date] = prev[homework.date].filter(
-                    ({ id }) => id !== homework.id
-                );
-                if (updated[homework.date].length === 0) {
-                    delete updated.formatedDates[homework.date];
-                }
-                return updated;
-            });
+        const { date, id, customHomeworkMd5Key } = state.homeworkToRemove;
 
-            setCustomHomeworksData((prev) =>
-                prev.filter(
-                    ({ customHomeworkMd5Key }) =>
-                        customHomeworkMd5Key !== homework.customHomeworkMd5Key
-                )
-            );
-            dispatch({ type: "RESET" });
-        }
+        setSortedHomeworksData((prev) => {
+            const updated = { ...prev };
+            updated[date] = prev[date].filter((hw) => hw.id !== id);
+            if (updated[date].length === 0) {
+                delete updated.formatedDates[date];
+            }
+            return updated;
+        });
+
+        setCustomHomeworksData((prev) =>
+            prev.filter((hw) => hw.customHomeworkMd5Key !== customHomeworkMd5Key)
+        );
+
+        dispatch({ type: "RESET" });
     }, [state.homeworkToRemove]);
 };
 
 const hashToNumberInRange = (min, max, hash) => {
     const hashInt = parseInt(hash.substring(0, 8), 16);
-
     return min + (hashInt % (max - min + 1));
 };
 

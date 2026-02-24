@@ -12,15 +12,14 @@ import Animated, {
 import { useFocusEffect } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import PlusIcon from "../../../../assets/svg/micro/PlusIcon";
+import { HomeworkCard } from "../../../components";
 import LoadingWrapper from "../../../components/Layout/LoadingWrapper";
 import { Text } from "../../../components/Ui/core";
 import { motivationSentences } from "../../../constants/features/homeworksConfig";
-import { useTheme } from "../../../context/ThemeContext";
 import { useUser } from "../../../context/UserContext";
 import { storageManager } from "../../../helpers/StorageManager";
 import { adjustLightness } from "../../../utils/colorGenerator";
 import { formatFrenchDate } from "../../../utils/date";
-import Homeworks from "./custom/classes/Homeworks";
 import NewHomeworkModal from "./custom/components/NewHomeworkModal";
 import { useHomework } from "./custom/context/LocalContext";
 import { useHomeworksHandler } from "./custom/hooks/useHomeworksHandler";
@@ -31,11 +30,8 @@ export default function HomeworksContent() {
         setSortedHomeworksData,
         customHomeworksData,
         setCustomHomeworksData,
-        userAccesToken,
     } = useUser();
-    const { toggleTheme, colorScheme, isFollowingSystem, followSystemTheme } =
-        useTheme();
-    const { state, dispatch } = useHomework();
+    const { dispatch } = useHomework();
 
     const [loading, setLoading] = useState(true);
     const [homeworksDates, setHomeworksDates] = useState();
@@ -47,7 +43,6 @@ export default function HomeworksContent() {
     const [completedTasks, setCompletedTasks] = useState([]);
 
     const [modalOpen, setModalOpen] = useState(false);
-    const [customHomeworks, setCustomHomeworks] = useState([]);
 
     useHomeworksHandler({
         setModalOpen,
@@ -91,12 +86,6 @@ export default function HomeworksContent() {
                 return;
             }
 
-            if (customHomeworksData && customHomeworksData.length > 0) {
-                // do something here...
-                // setLoading(false);
-                // return;
-            }
-
             const loadHomeworks = async () => {
                 try {
                     const storedHomeworks = await storageManager.getter({
@@ -109,8 +98,6 @@ export default function HomeworksContent() {
                     }
                 } catch (error) {
                     console.error("Error while loading hw:", error);
-                } finally {
-                    setLoading(false);
                 }
             };
             const loadCustomHomeworks = async () => {
@@ -123,14 +110,13 @@ export default function HomeworksContent() {
                     }
                 } catch (error) {
                     console.error("Error while loading custom hw:", error);
-                } finally {
-                    setLoading(false);
                 }
             };
 
             setLoading(true);
             loadHomeworks();
             loadCustomHomeworks();
+            setLoading(false);
         }, [sortedHomeworksData, customHomeworksData, activeDate])
     );
     useEffect(() => {
@@ -158,13 +144,9 @@ export default function HomeworksContent() {
                     long: frenchDate,
                     contracted: contractedDate,
                     isEvaluation: false,
-                    //totalEvaluations
-                }; // faire ca mieux wsh
+                };
                 hasChanged = true;
-                // storageManager.setter()
             }
-            // console.log(formatedDates);
-            // setFormatedDates(merged.formatedDates);
 
             const exists = merged[custom.date].some((hw) => hw.id === custom.id);
             if (!exists) {
@@ -236,14 +218,10 @@ export default function HomeworksContent() {
         },
         [activeDate]
     );
-    const renderHomework = useCallback(({ item }) => {
-        const HomeworkClass = new Homeworks({
-            ...item,
-        });
-
-        return HomeworkClass.RenderHomework({ dispatch });
-    }, []);
-
+    const renderHomework = useCallback(
+        ({ item }) => <HomeworkCard dispatch={dispatch} homework={item} />,
+        [dispatch]
+    );
     return (
         <LoadingWrapper loading={loading} setLoading={setLoading}>
             <NewHomeworkModal visible={modalOpen} />
@@ -319,7 +297,6 @@ export default function HomeworksContent() {
                     <View
                         style={{
                             flex: 1,
-                            // alignItems: "center",
                             backgroundColor: "hsl(240, 29%, 11%)",
                             borderTopLeftRadius: 30,
                             borderTopRightRadius: 30,

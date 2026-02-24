@@ -6,10 +6,8 @@ import Animated, {
     withTiming,
 } from "react-native-reanimated";
 import { scheduleOnRN } from "react-native-worklets";
-import { useHomework } from "../../screens/Client/Homeworks/custom/context/LocalContext";
 
 export default function Modal({ children, visible, handleClose }) {
-    const { dispatch } = useHomework();
     const [isRendered, setIsRendered] = useState(false);
     const translateY = useSharedValue(500);
     const opacity = useSharedValue(0);

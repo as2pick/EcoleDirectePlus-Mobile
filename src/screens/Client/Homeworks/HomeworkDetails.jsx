@@ -9,18 +9,23 @@ import {
 import { FlatList } from "react-native-gesture-handler";
 import RenderHTML from "react-native-render-html";
 import FileIcon from "../../../../assets/svg/FileIcon";
-import { CustomTopHeader, Modal } from "../../../components";
+import { CustomTopHeader, HomeworkCard, Modal } from "../../../components";
 import { Text } from "../../../components/Ui/core";
 import { useUser } from "../../../context/UserContext";
 import { formatFrenchDate } from "../../../utils/date";
-import Homeworks from "./custom/classes/Homeworks";
 import { useHomework } from "./custom/context/LocalContext";
 import { downloadDocument, openDocument } from "./custom/handler/handleDocuments";
-import { assignUnit } from "./custom/helper";
+import {
+    assignUnit,
+    createHomework,
+    decodeHomeworkContent,
+    serializeHomework,
+} from "./utils";
 
 export default function HomeworkDetails({ route }) {
     const { width } = useWindowDimensions();
-    const { dispatch, state } = useHomework();
+    const { dispatch } = useHomework();
+    const { sortedHomeworksData } = useUser();
     const { homeworksData } = route.params;
     const { colors } = useTheme();
     const navigation = useNavigation();
@@ -31,12 +36,19 @@ export default function HomeworkDetails({ route }) {
         courseContent: useState(false),
     };
 
-    const homework = new Homeworks(homeworksData);
-    if (!homework.isCustom) homework.decodeContent();
+    const homework = useMemo(() => {
+        const current =
+            sortedHomeworksData?.[homeworksData.date]?.find(
+                (hw) => hw.id === homeworksData.id
+            ) ?? homeworksData;
+
+        const hw = createHomework(current);
+        return hw.isCustom ? serializeHomework(hw) : decodeHomeworkContent(hw);
+    }, [sortedHomeworksData, homeworksData]);
 
     const homeworkContent = homework.isCustom
         ? homework.homeworksContent.content
-        : homework.getHomework().decodedHTMLHomework;
+        : homework.decodedHTMLHomework;
 
     const [downloadProgress, setDownloadProgress] = useState({});
 
@@ -185,13 +197,17 @@ export default function HomeworkDetails({ route }) {
                             if (homework.isCustom) {
                                 dispatch({
                                     type: "REMOVE_CUSTOM_HOMEWORK",
-                                    payload: homework.getHomework(),
+                                    payload: serializeHomework(homework),
                                 });
                                 navigation.goBack();
                             }
                         }}
                     >
-                        {homework.RenderHomework({ dispatch, enabled: false })}
+                        <HomeworkCard
+                            dispatch={dispatch}
+                            enabled={false}
+                            homework={homework}
+                        />
                     </TouchableOpacity>
 
                     <View

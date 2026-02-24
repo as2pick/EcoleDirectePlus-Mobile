@@ -17,10 +17,9 @@ import { scheduleOnRN } from "react-native-worklets";
 import { Text } from "../../../../../components/Ui/core";
 import { formatDate } from "../../../../../utils/date";
 import { useHomework } from "../context/LocalContext";
-const PLACEHOLDERS = { coef: 1, grade: 15, outOf: 20 };
 
 export default function NewHomeworkModal({ visible }) {
-    const { state, dispatch } = useHomework();
+    const { dispatch } = useHomework();
     const [isRendered, setIsRendered] = useState(false);
     const [error, setError] = useState(null);
     const translateY = useSharedValue(500);
@@ -45,8 +44,6 @@ export default function NewHomeworkModal({ visible }) {
             date: formatDate(currentDate, "ed"),
         }));
     };
-
-    // useEffect(() => console.log(homeworkDatas, " datas"), [homeworkDatas]);
 
     useEffect(() => {
         if (visible) {
