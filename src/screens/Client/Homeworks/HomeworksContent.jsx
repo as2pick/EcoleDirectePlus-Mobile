@@ -167,13 +167,10 @@ export default function HomeworksContent() {
             );
         }
         setSortedHomeworksData(merged);
-    }, [customHomeworksData]);
-
-    useEffect(() => {
         const saveCustomHomeworks = async () => {
             await storageManager.setter({
                 originKey: "custom_homeworks",
-                dataToStore: customHomeworksData,
+                dataToStore: merged,
             });
         };
 
@@ -202,9 +199,21 @@ export default function HomeworksContent() {
         pickSentence(progression);
     }, [activeDate, sortedHomeworksData]);
 
+    useEffect(() => {
+        if (!homeworksDates) return;
+        setHomeworksDates((prev) => {
+            prev[activeDate].allTasksCompleted = progression === 1;
+            return { ...prev };
+        });
+    }, [progression, activeDate]);
+
     const renderDateItem = useCallback(
         ({ item }) => {
             const [date, { contracted, isEvaluation }] = item;
+
+            const tasks = sortedHomeworksData[date] ?? [];
+            const allTasksCompleted =
+                tasks.length > 0 && tasks.every(({ isDone }) => isDone);
 
             return (
                 <DateItem
@@ -212,11 +221,12 @@ export default function HomeworksContent() {
                     contracted={contracted}
                     isEvaluation={isEvaluation}
                     isActive={date === activeDate}
+                    allTasksCompleted={allTasksCompleted}
                     onPress={() => setActiveDate(date)}
                 />
             );
         },
-        [activeDate]
+        [activeDate, sortedHomeworksData]
     );
     const renderHomework = useCallback(
         ({ item }) => <HomeworkCard dispatch={dispatch} homework={item} />,
@@ -377,45 +387,56 @@ const TasksProgression = ({ progression, animatedWidth }) => {
     );
 };
 
-const DateItem = memo(({ contracted, isEvaluation, isActive, onPress }) => {
-    const color = isEvaluation ? "hsl(2, 63%, 43%)" : "hsl(240, 19%, 36%)";
-    return (
-        <TouchableOpacity
-            style={{
-                width: 58,
-                height: 58,
-                alignItems: "center",
-                justifyContent: "center",
-                padding: 4,
-            }}
-            onPress={onPress}
-            activeOpacity={0.7}
-        >
-            <View
+const DateItem = memo(
+    ({ contracted, isEvaluation, isActive, allTasksCompleted, onPress }) => {
+        let dateBackgroundColor;
+        if (isEvaluation && allTasksCompleted) {
+            dateBackgroundColor = "hsl(28, 48%, 33%)"; //temp color
+        } else if (isEvaluation) {
+            dateBackgroundColor = "hsl(2, 63%, 43%)"; // temp color
+        } else if (allTasksCompleted) {
+            dateBackgroundColor = "hsl(115, 33%, 38%)"; // maybe good ?
+        } else {
+            dateBackgroundColor = "hsl(240, 19%, 36%)"; // keep this
+        }
+        return (
+            <TouchableOpacity
                 style={{
-                    width: 50,
-                    height: 50,
+                    width: 58,
+                    height: 58,
                     alignItems: "center",
                     justifyContent: "center",
-                    backgroundColor: color,
-                    borderRadius: 10,
-                    ...(isActive && {
-                        boxShadow: [
-                            {
-                                offsetX: 0,
-                                offsetY: 0,
-                                blurRadius: 6,
-                                spreadDistance: 3,
-                                color: adjustLightness(color, 30),
-                            },
-                        ],
-                    }),
+                    padding: 4,
                 }}
+                onPress={onPress}
+                activeOpacity={0.7}
             >
-                <Text preset="label1">{contracted[1]}</Text>
-                <Text preset="label2">{contracted[0]}</Text>
-            </View>
-        </TouchableOpacity>
-    );
-});
+                <View
+                    style={{
+                        width: 50,
+                        height: 50,
+                        alignItems: "center",
+                        justifyContent: "center",
+                        backgroundColor: dateBackgroundColor,
+                        borderRadius: 10,
+                        ...(isActive && {
+                            boxShadow: [
+                                {
+                                    offsetX: 0,
+                                    offsetY: 0,
+                                    blurRadius: 6,
+                                    spreadDistance: 3,
+                                    color: adjustLightness(dateBackgroundColor, 30),
+                                },
+                            ],
+                        }),
+                    }}
+                >
+                    <Text preset="label1">{contracted[1]}</Text>
+                    <Text preset="label2">{contracted[0]}</Text>
+                </View>
+            </TouchableOpacity>
+        );
+    }
+);
 

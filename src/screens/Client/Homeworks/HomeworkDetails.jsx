@@ -23,12 +23,14 @@ import {
 } from "./utils";
 
 export default function HomeworkDetails({ route }) {
+    const { homeworksData } = route.params;
+
     const { width } = useWindowDimensions();
+    const navigation = useNavigation();
+
     const { dispatch } = useHomework();
     const { sortedHomeworksData } = useUser();
-    const { homeworksData } = route.params;
     const { colors } = useTheme();
-    const navigation = useNavigation();
     const { userAccesToken } = useUser();
 
     const modalsHander = {
@@ -256,47 +258,68 @@ export default function HomeworkDetails({ route }) {
                             minHeight: "6%",
                         }}
                     >
-                        {homework.homeworksContent.joinedDocuments.length > 0 && (
-                            <TouchableOpacity
+                        {homeworksData.isCustom ? (
+                            <View
                                 style={{
-                                    flex: 1,
-                                    backgroundColor: colors.bg.bg3,
-                                    borderRadius: 12,
+                                    alignItems: "center",
                                     justifyContent: "center",
+                                    flex: 1,
                                 }}
-                                onPress={() => modalsHander.document[1](true)}
                             >
-                                <Text
-                                    align="center"
-                                    preset="label2"
-                                    color={colors.bg.bg5}
-                                >
-                                    Documents (
-                                    {
-                                        homework.homeworksContent.joinedDocuments
-                                            .length
-                                    }
-                                    )
+                                <Text preset="label2">
+                                    Vous êtes dans un devoir personnalisé
                                 </Text>
-                            </TouchableOpacity>
+                            </View>
+                        ) : (
+                            <>
+                                {homework.homeworksContent.joinedDocuments.length >
+                                    0 && (
+                                    <TouchableOpacity
+                                        style={{
+                                            flex: 1,
+                                            backgroundColor: colors.bg.bg3,
+                                            borderRadius: 12,
+                                            justifyContent: "center",
+                                        }}
+                                        onPress={() =>
+                                            modalsHander.document[1](true)
+                                        }
+                                    >
+                                        <Text
+                                            align="center"
+                                            preset="label2"
+                                            color={colors.bg.bg5}
+                                        >
+                                            Documents (
+                                            {
+                                                homework.homeworksContent
+                                                    .joinedDocuments.length
+                                            }
+                                            )
+                                        </Text>
+                                    </TouchableOpacity>
+                                )}
+                                <TouchableOpacity
+                                    style={{
+                                        flex: 1,
+                                        backgroundColor: colors.bg.bg3,
+                                        borderRadius: 12,
+                                        justifyContent: "center",
+                                    }}
+                                    onPress={() =>
+                                        modalsHander.courseContent[1](true)
+                                    }
+                                >
+                                    <Text
+                                        align="center"
+                                        preset="label2"
+                                        color={colors.bg.bg5}
+                                    >
+                                        Contenu séance
+                                    </Text>
+                                </TouchableOpacity>
+                            </>
                         )}
-                        <TouchableOpacity
-                            style={{
-                                flex: 1,
-                                backgroundColor: colors.bg.bg3,
-                                borderRadius: 12,
-                                justifyContent: "center",
-                            }}
-                            onPress={() => modalsHander.courseContent[1](true)}
-                        >
-                            <Text
-                                align="center"
-                                preset="label2"
-                                color={colors.bg.bg5}
-                            >
-                                Contenu séance
-                            </Text>
-                        </TouchableOpacity>
                     </View>
                 </View>
             </View>

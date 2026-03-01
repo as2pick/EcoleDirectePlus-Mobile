@@ -226,12 +226,12 @@ export default function NewHomeworkModal({ visible }) {
                         <TouchableOpacity
                             style={{
                                 backgroundColor: homeworkDatas.isEvaluation
-                                    ? "hsl(299, 73%, 52%)"
+                                    ? "hsl(0, 54%, 57%)"
                                     : "hsla(240, 30%, 20%, 0.8)",
                                 alignSelf: "center",
                                 paddingHorizontal: 14,
                                 paddingVertical: 9,
-                                borderRadius: 6,
+                                borderRadius: 13,
                             }}
                             onPress={() =>
                                 setHomeworkDatas((prev) => ({

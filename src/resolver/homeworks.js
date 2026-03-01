@@ -53,6 +53,7 @@ function extractDates(homeworks) {
                     contracted: contractedDate,
                     isEvaluation: evaluationsDates.includes(date),
                     totalEvaluations: countMap.get(date),
+                    allTasksCompleted: false,
                 },
             ];
         })
