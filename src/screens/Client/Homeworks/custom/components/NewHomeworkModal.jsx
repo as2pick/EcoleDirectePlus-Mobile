@@ -33,6 +33,7 @@ export default function NewHomeworkModal({ visible }) {
         date: formatDate(new Date(), "ed"),
         content: null,
         id: 1,
+        isEvaluation: false,
     });
 
     const onChange = (event, selectedDate) => {
@@ -91,7 +92,6 @@ export default function NewHomeworkModal({ visible }) {
             discipline: { name: homeworkDatas.discipline },
         };
         updatedHomework["md5Key"] = MD5(JSON.stringify(updatedHomework)).toString();
-
         dispatch({ type: "CREATE_NEW_HOMEWORK", payload: updatedHomework });
     };
 
@@ -173,7 +173,7 @@ export default function NewHomeworkModal({ visible }) {
                         <Text align="center">⚠️ {error}</Text>
                     </View>
                 )}
-                <View style={{ marginBottom: 24 }}>
+                <View style={{ marginBottom: 12 }}>
                     <Text preset="h2">Ajouter un devoir</Text>
                     <Text
                         style={{
@@ -183,6 +183,66 @@ export default function NewHomeworkModal({ visible }) {
                     >
                         Ajouter un devoir pour s'épargner l'agenda !
                     </Text>
+                </View>
+                <View
+                    style={{
+                        marginBottom: 20,
+                        alignItems: "center",
+                    }}
+                >
+                    <View style={{ flexDirection: "row", gap: 20 }}>
+                        <TouchableOpacity
+                            style={{
+                                backgroundColor: "hsla(240, 30%, 20%, 0.8)",
+                                borderRadius: 13,
+                                paddingHorizontal: 16,
+                                paddingVertical: 12,
+                                borderWidth: 1,
+                                borderColor: "hsla(240, 20%, 40%, 0.3)",
+                                width: "40%",
+                                justifyContent: "center",
+                            }}
+                            onPress={() => setShowDatePicker((prev) => !prev)}
+                        >
+                            <Text align="center">{formatDate(date)}</Text>
+
+                            {showDatePicker && (
+                                <DateTimePicker
+                                    value={date}
+                                    mode="date"
+                                    display="calendar"
+                                    onChange={onChange}
+                                    minimumDate={new Date()}
+                                    maximumDate={
+                                        new Date(
+                                            new Date().setFullYear(
+                                                new Date().getFullYear() + 2
+                                            )
+                                        )
+                                    }
+                                />
+                            )}
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={{
+                                backgroundColor: homeworkDatas.isEvaluation
+                                    ? "hsl(299, 73%, 52%)"
+                                    : "hsla(240, 30%, 20%, 0.8)",
+                                alignSelf: "center",
+                                paddingHorizontal: 14,
+                                paddingVertical: 9,
+                                borderRadius: 6,
+                            }}
+                            onPress={() =>
+                                setHomeworkDatas((prev) => ({
+                                    ...prev,
+                                    isEvaluation: !prev.isEvaluation,
+                                }))
+                            }
+                        >
+                            <Text preset="label1">Contrôle</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
 
                 <ScrollView
@@ -220,47 +280,6 @@ export default function NewHomeworkModal({ visible }) {
                                 }
                             />
                         </View>
-                    </View>
-                    <View style={{ marginBottom: 20, alignItems: "center" }}>
-                        <Text
-                            style={{ marginBottom: 8 }}
-                            preset="label1"
-                            align="center"
-                        >
-                            Date
-                        </Text>
-                        <TouchableOpacity
-                            style={{
-                                backgroundColor: "hsla(240, 30%, 20%, 0.8)",
-                                borderRadius: 13,
-                                paddingHorizontal: 16,
-                                paddingVertical: 12,
-                                borderWidth: 1,
-                                borderColor: "hsla(240, 20%, 40%, 0.3)",
-                                width: "40%",
-                                justifyContent: "center",
-                            }}
-                            onPress={() => setShowDatePicker((prev) => !prev)}
-                        >
-                            <Text align="center">{formatDate(date)}</Text>
-
-                            {showDatePicker && (
-                                <DateTimePicker
-                                    value={date}
-                                    mode="date"
-                                    display="calendar"
-                                    onChange={onChange}
-                                    minimumDate={new Date()}
-                                    maximumDate={
-                                        new Date(
-                                            new Date().setFullYear(
-                                                new Date().getFullYear() + 2
-                                            )
-                                        )
-                                    }
-                                />
-                            )}
-                        </TouchableOpacity>
                     </View>
 
                     <View style={{}}>

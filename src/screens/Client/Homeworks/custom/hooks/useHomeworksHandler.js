@@ -39,14 +39,14 @@ export const useHomeworksHandler = ({ setModalOpen }) => {
     }, [setModalOpen, state.new.modalOpen]);
 
     useEffect(() => {
-        const { discipline, date, content, md5Key } = state.new;
+        const { discipline, date, content, md5Key, isEvaluation } = state.new;
         if (!discipline || !date || !content) return;
 
         const homework = createHomework({
             discipline,
             date,
+            isEvaluation,
             homeworksContent: { content },
-            isEvaluation: false,
             customHomeworkMd5Key: md5Key,
             id: hashToNumberInRange(14000, 19998, md5Key),
             isCustom: true,
@@ -54,7 +54,12 @@ export const useHomeworksHandler = ({ setModalOpen }) => {
 
         setCustomHomeworksData((prev) => [...prev, homework]);
         dispatch({ type: "RESET" });
-    }, [state.new.discipline, state.new.date, state.new.content]);
+    }, [
+        state.new.discipline,
+        state.new.date,
+        state.new.content,
+        state.new.isEvaluation,
+    ]);
 
     useEffect(() => {
         if (!state.homeworkToRemove) return;
