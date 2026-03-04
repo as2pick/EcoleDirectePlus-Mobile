@@ -36,7 +36,7 @@ export const THEMES = {
             error: "rgb(240, 90, 90)",
             fond: ["rgba(150, 150, 172, 1)", "rgba(222, 222, 250, 1)"], // DON'T USE IT
             pastel: "rgba(200, 200, 252, 1)",
-            secondary: "rgba(255, 255, 255, 1)",
+            secondary: "rgba(255, 255, 255)",
             main: "rgb(119, 119, 247)",
             accent: "rgb(62, 62, 221)",
             contrast: "rgb(0, 0, 0)",

@@ -8,6 +8,7 @@ import Animated, {
     Extrapolation,
     interpolate,
     interpolateColor,
+    runOnJS,
     useAnimatedScrollHandler,
     useAnimatedStyle,
     useSharedValue,
@@ -61,6 +62,7 @@ export default function GradesContent() {
 
     const [renderDisciplinesArray, setRenderDisciplineArray] = useState([]);
     const [expandedChain, setExpandedChain] = useState(null);
+    const [expandedSW, setExpandedSW] = useState(null);
 
     const scrollY = useSharedValue(0);
 
@@ -98,7 +100,12 @@ export default function GradesContent() {
     const scrollXStrengths = useSharedValue(0);
     const strengthsScrollHandler = useAnimatedScrollHandler((event) => {
         scrollXStrengths.value = event.contentOffset.x;
+        runOnJS(setCarouselPage)(event.contentOffset.x > width / 2 ? 1 : 0);
     });
+    const handleCarouselScroll = (event) => {
+        scrollXStrengths.value = event.nativeEvent.contentOffset.x;
+        setCarouselPage(event.nativeEvent.contentOffset.x > width / 2 ? 1 : 0);
+    };
 
     const containerStyle = useAnimatedStyle(() => {
         const translateY = interpolate(scrollY.value, [0, 200], [0, -(height * 0.2)], Extrapolation.CLAMP);
@@ -144,15 +151,12 @@ export default function GradesContent() {
             updateActions([
                 {
                     icon: GradesIcon,
-                    onPress: () => setCurrentPage(0),
+                    onPress: () => { setCurrentPage(0), console.log("Notes") },
+
                 },
                 {
                     icon: GradesIcon,
-                    onPress: () => setCurrentPage(1),
-                },
-                {
-                    icon: GradesIcon,
-                    onPress: () => setCurrentPage(2),
+                    onPress: () => { setCurrentPage(1), console.log("Statistiques") },
                 },
             ]);
         }, [updateActions])
@@ -211,17 +215,21 @@ export default function GradesContent() {
         try {
             const { strengths, weaknesses } = calculateStrengthsWeaknesses(
                 displayPeriode,
-                10
+                3
             );
 
             const formattedStrengths = strengths.map((item) => ({
                 subject: item.subject.libelle || item.subject.code,
                 average: parseNumber(item.subject.averageDatas?.userAverage),
+                classAverage: parseNumber(item.subject.averageDatas?.classAverage),
+                diff: parseNumber(item.algebricDiff),
             }));
 
             const formattedWeaknesses = weaknesses.map((item) => ({
                 subject: item.subject.libelle || item.subject.code,
                 average: parseNumber(item.subject.averageDatas?.userAverage),
+                classAverage: parseNumber(item.subject.averageDatas?.classAverage),
+                diff: parseNumber(item.algebricDiff),
             }));
 
             setStrengths(formattedStrengths);
@@ -235,6 +243,10 @@ export default function GradesContent() {
 
     const handleItemPress = useCallback((chain) => {
         setExpandedChain((prev) => (prev === chain ? null : chain));
+    }, []);
+
+    const handleSWPress = useCallback((key) => {
+        setExpandedSW((prev) => (prev === key ? null : key));
     }, []);
 
 
@@ -291,6 +303,10 @@ export default function GradesContent() {
             progress: interpolate(scrollXStrengths.value, [0, pageWidth], [0, 1], Extrapolation.CLAMP),
         };
     });
+
+    const [carouselPage, setCarouselPage] = useState(0);
+    const carouselRef = useRef(null);
+    const [isStreghts, setIsStrenghts] = useState(true)
 
     return (
         <View style={{ flex: 1 }}>
@@ -382,66 +398,134 @@ export default function GradesContent() {
                     )}
 
                     {currentPage === 1 && (
-                        <View
-                            style={{
-                                alignItems: "center",
-                                justifyContent: "center",
-                                marginHorizontal: 14,
-                                borderRadius: 18,
-                                padding: 16,
-                                marginBottom: 170,
-                            }}
-                        >
-                            <ScrollableStack
-                                horizontal
-                                paging
-                                contentContainerStyle={{
-                                    width: "200%",
+                        <View style={{ flex: 1, marginBottom: 180 }}>
+                            {/*<View
+                                style={{
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    marginHorizontal: 14,
+                                    borderRadius: 18,
+                                    padding: 16,
                                 }}
-                                onScroll={strengthsScrollHandler}
                             >
                                 <View
                                     style={{
-                                        flexDirection: "column",
                                         flex: 1,
-                                        gap: 8,
+                                        flexDirection: "row",
+                                        justifyContent: "space-between",
+                                        alignItems: "flex-end",
                                         width: "100%",
-                                    }}
-                                >
-                                    <StrengthsAndWeakness
-                                        firstColor={"hsla(115, 79%, 41%, 0.8)"}
-                                        data={strengths}
-                                    />
+                                        height: 30,
+                                    }}>
+                                    <Text>Strengths</Text>
+                                    <Text>Weaknesses</Text>
+                                    <TouchableOpacity style={{ backgroundColor: "red", borderRadius: 18, height: 30, width: 30, }} onPress={() => {
+                                        const nextPage = carouselPage === 0 ? 1 : 0;
+                                        carouselRef.current?.scrollTo({ x: width * nextPage, y: 0, animated: true });
+                                    }}>
+                                    </TouchableOpacity>
                                 </View>
+                                <ScrollView
+                                    ref={carouselRef}
+                                    horizontal
+                                    pagingEnabled
+                                    contentContainerStyle={{ width: width * 1.65 }}
+                                    onScroll={handleCarouselScroll}
+                                    scrollEventThrottle={16}
+                                    showsHorizontalScrollIndicator={true}
+                                >
+                                    <View
+                                        style={{
+                                            flexDirection: "column",
+                                            flex: 1,
+                                            gap: 10,
+                                            width: width,
+                                            padding: 8,
+                                        }}
+                                    >
+                                        <StrengthsAndWeakness
+                                            firstColor={"hsla(115, 79%, 41%, 0.8)"}
+                                            data={strengths}
+                                            expandedKey={expandedSW}
+                                            onItemPress={(key) => handleSWPress(key)}
+                                            section="strengths"
+                                        />
+                                    </View>
+                                    <View
+                                        style={{
+                                            flexDirection: "column",
+                                            flex: 1,
+                                            gap: 10,
+                                            width: width,
+                                            padding: 8,
+                                        }}
+                                    >
+                                        <StrengthsAndWeakness
+                                            firstColor={"hsla(5, 79%, 41%, 0.8)"}
+                                            data={weaknesses}
+                                            expandedKey={expandedSW}
+                                            onItemPress={(key) => handleSWPress(key)}
+                                            section="weaknesses"
+                                        />
+                                    </View>
+                                </ScrollView>
+                                <AnimatedLottieView
+                                    source={require("../../../../assets/json/lottie/slider.json")}
+                                    animatedProps={lottieProps}
+                                    style={{ top: 9, height: 13, width: 80, margin: 2 }}
+                                    colorFilters={[
+                                        {
+                                            keypath: "Shape Layer 1",
+                                            color: colors.main,
+                                        },
+                                        {
+                                            keypath: "Shape Layer 2",
+                                            color: colors.main,
+                                        },
+                                    ]}
+                                />
+                            </View>*/}
+                            <View
+                                style={{
+                                    flexDirection: "column",
+                                    flex: 1,
+                                    gap: 10,
+                                    padding: 8,
+                                    marginHorizontal: 8,
+                                    marginBottom: 200,
+                                }}
+                            >
                                 <View
                                     style={{
-                                        flexDirection: "column",
-                                        flex: 1,
-                                        gap: 8,
-                                        width: "100%",
+                                        borderRadius: 18,
+                                        backgroundColor: colors.secondary,
+                                        padding: 16
                                     }}
                                 >
-                                    <StrengthsAndWeakness
-                                        firstColor={"hsla(5, 79%, 41%, 0.8)"}
-                                        data={weaknesses}
-                                    />
+                                    <View style={{ flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 4 }}>
+                                        <Text preset="h4" style={{ fontWeight: "bold" }}>{isStreghts ? "Forces" : "Faiblesses"}</Text>
+                                        <TouchableOpacity style={{ backgroundColor: "red", borderRadius: 18, height: 30, width: 30, }} onPress={() => setIsStrenghts(prev => !prev)}>
+                                        </TouchableOpacity>
+                                    </View>
+                                    {isStreghts ?
+                                        <StrengthsAndWeakness
+                                            firstColor={"hsla(115, 79%, 41%, 0.8)"}
+                                            data={strengths}
+                                            expandedKey={expandedSW}
+                                            onItemPress={(key) => handleSWPress(key)}
+                                            section="strengths"
+                                        />
+                                        :
+                                        <StrengthsAndWeakness
+                                            firstColor={"hsla(5, 79%, 41%, 0.8)"}
+                                            data={weaknesses}
+                                            expandedKey={expandedSW}
+                                            onItemPress={(key) => handleSWPress(key)}
+                                            section="weaknesses"
+                                        />}
                                 </View>
-                            </ScrollableStack>
-                            <AnimatedLottieView
-                                source={require("../../../../assets/json/lottie/slider.json")}
-                                animatedProps={lottieProps}
-                                style={{ top: 9, height: 13, width: 80, margin: 2 }}
-                                colorFilters={[
-                                    {
-                                        keypath: "Shape Layer 1",
-                                        color: colors.main,
-                                    },
-                                    {
-                                        keypath: "Shape Layer 2",
-                                        color: colors.main,
-                                    },
-                                ]}
-                            />
+                                <InDev />
+                            </View>
                         </View>
                     )}
 
@@ -485,7 +569,6 @@ export default function GradesContent() {
 
 const HeaderStatsCarousel = memo(({ item, style, transition }) => {
     const animatedGapStyle = useAnimatedStyle(() => {
-        // Si transition n'est pas fourni (ex: premier rendu ou autre usage), on met 0
         if (!transition) return { gap: 0 };
 
         return {
@@ -494,7 +577,6 @@ const HeaderStatsCarousel = memo(({ item, style, transition }) => {
     });
 
     const animatedEcartStyle = useAnimatedStyle(() => {
-        // Si transition n'est pas fourni (ex: premier rendu ou autre usage), on met 0
         if (!transition) return { marginHorizontal: 0 };
 
         return {
@@ -544,7 +626,136 @@ const HeaderStatsCarousel = memo(({ item, style, transition }) => {
     );
 });
 
-const StrengthsAndWeakness = ({ data, firstColor }) => {
+function StrengthsAndWeakness({ expandedKey, onItemPress, section, firstColor, data }) {
+    const [tint, saturation, lightness, opacity] = cssHslaToHsla(firstColor);
+    const colors = data.map((_, i) =>
+        i === 0
+            ? firstColor
+            : `hsla(${tint + i * 3}, ${saturation - i * 2}%, ${lightness - i * 4}%, ${opacity})`
+    );
+
+    return (
+        <View style={{ gap: 10 }}>
+            {data.map(({ subject, average, classAverage, diff }, i) => {
+                const key = `${section}-${i}`;
+                return (
+                    <StrengthItem
+                        key={key}
+                        index={i}
+                        subject={subject}
+                        average={average}
+                        classAverage={classAverage}
+                        diff={diff}
+                        color={colors[i]}
+                        isExpanded={expandedKey === key}
+                        onPress={() => onItemPress(key)}
+                    />
+                );
+            })}
+        </View>
+    );
+}
+
+function StrengthItem({ index, subject, average, classAverage, diff, color, isExpanded, onPress }) {
+    const expandProgress = useSharedValue(isExpanded ? 1 : 0);
+
+    useEffect(() => {
+        expandProgress.value = withTiming(isExpanded ? 1 : 0, { duration: 300 });
+    }, [isExpanded]);
+
+    const animatedHeight = useAnimatedStyle(() => ({
+        height: interpolate(expandProgress.value, [0, 1], [50, 150], Extrapolation.CLAMP),
+    }));
+
+    return (
+        <TouchableOpacity onPress={onPress} activeOpacity={0.7}>
+            <Animated.View
+                style={[{
+                    backgroundColor: color,
+                    borderRadius: 30,
+                    flexDirection: "column",
+                    width: "100%",
+                    overflow: "hidden",
+                    alignItems: "center"
+                }, animatedHeight]}
+            >
+                <View
+                    style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        padding: 10,
+                        top: 0,
+                        height: 50,
+                    }}
+                >
+                    <View
+                        style={{
+                            flex: 1,
+                            flexDirection: "row",
+                            marginLeft: 6,
+                            marginRight: 8,
+                        }}
+                    >
+                        <Text preset="label1">{index + 1} · </Text>
+                        <Text oneLine preset="label2" style={{ flexShrink: 1 }}>
+                            {subject}
+                        </Text>
+                    </View>
+                    <View
+                        style={{
+                            paddingHorizontal: 9,
+                            paddingVertical: 4,
+                            backgroundColor: "hsla(240, 26%, 13%, 0.35)",
+                            borderRadius: 50,
+                            justifyContent: "center",
+                            alignItems: "center",
+                            minWidth: "18%",
+                            height: 30,
+                        }}
+                    >
+                        <Text preset="label1">{diff >= 0 ? `+${formatGradeText(diff)}` : formatGradeText(diff)}</Text>
+                    </View>
+                </View>
+                <View
+                    style={{
+                        height: 1,
+                        borderRadius: 5,
+                        backgroundColor: "rgba(63, 63, 63, 1)",
+                        width: "90%",
+                    }}
+                />
+                <View
+                    style={{
+                        width: "100%",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        padding: 12,
+
+                    }}
+                >
+                    <Text>Ta moyenne</Text>
+                    <Text>{formatGradeText(average)}</Text>
+                </View>
+                <View
+                    style={{
+                        width: "100%",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        padding: 12,
+
+                    }}
+                >
+                    <Text>Moyenne de la classe</Text>
+                    <Text>{formatGradeText(classAverage)}</Text>
+                </View>
+            </Animated.View>
+        </TouchableOpacity>
+    );
+}
+
+const StrengthsAndWeakness2 = ({ data, firstColor }) => {
     const [tint, saturation, lightness, opacity] = cssHslaToHsla(firstColor);
     const colors = data.map((_, i) =>
         i === 0
@@ -617,7 +828,6 @@ function flattenDisciplines(groups) {
     return result;
 }
 
-// Regroupe le tableau aplati en { header, disciplines[] } pour le rendu hiérarchique
 function groupForRendering(flatArray) {
     const groups = [];
     let currentGroup = null;

@@ -12,11 +12,13 @@ import { getTodayDateString } from "../../../../../utils/date";
 import { parseNumber } from "../../../../../utils/grades/makeAverage";
 import Grade from "../classes/Grade";
 import { useGrade } from "../context/LocalContext";
+import { useTheme } from "../../../../../context/ThemeContext";
 
 const PLACEHOLDERS = { coef: 1, grade: 15, outOf: 20 };
 
 export default function AddGradeModal({ visible, disciplineCodes }) {
     const { state, dispatch } = useGrade();
+    const { theme } = useTheme();
 
     const [simulatedGrade, setSimulatedGrade] = useState(PLACEHOLDERS);
     const [simulationCount, setSimulationCount] = useState(1);
@@ -91,7 +93,7 @@ export default function AddGradeModal({ visible, disciplineCodes }) {
                         position: "absolute",
                         bottom: 0,
                         width: "100%",
-                        backgroundColor: "hsl(240, 35%, 11%)",
+                        backgroundColor: theme.colors.background.gradient,
                         borderTopLeftRadius: 42,
                         borderTopRightRadius: 42,
                         paddingHorizontal: 24,
@@ -135,7 +137,7 @@ export default function AddGradeModal({ visible, disciplineCodes }) {
                             <View
                                 style={{
                                     flex: 1,
-                                    backgroundColor: "hsla(240, 30%, 20%, 0.8)",
+                                    backgroundColor: theme.colors.secondary,
                                     borderRadius: 13,
                                     paddingHorizontal: 16,
                                     paddingVertical: 14,
@@ -145,7 +147,7 @@ export default function AddGradeModal({ visible, disciplineCodes }) {
                             >
                                 <TextInput
                                     placeholder={String(PLACEHOLDERS.grade)}
-                                    placeholderTextColor={"hsla(0, 100%, 100%, .25)"} // EDIT
+                                    placeholderTextColor={theme.colors.contrast} // EDIT TO TXT2
                                     onChangeText={(text) =>
                                         setSimulatedGrade((prev) => ({
                                             ...prev,
@@ -168,7 +170,7 @@ export default function AddGradeModal({ visible, disciplineCodes }) {
                             <View
                                 style={{
                                     flex: 1,
-                                    backgroundColor: "hsla(240, 30%, 20%, 0.8)",
+                                    backgroundColor: theme.colors.secondary,
                                     borderRadius: 13,
                                     paddingHorizontal: 16,
                                     paddingVertical: 14,
@@ -178,7 +180,7 @@ export default function AddGradeModal({ visible, disciplineCodes }) {
                             >
                                 <TextInput
                                     placeholder={String(PLACEHOLDERS.outOf)}
-                                    placeholderTextColor={"hsla(0, 100%, 100%, .25)"} // EDIT
+                                    placeholderTextColor={theme.colors.contrast} // EDIT
                                     onChangeText={(text) =>
                                         setSimulatedGrade((prev) => ({
                                             ...prev,
@@ -198,7 +200,7 @@ export default function AddGradeModal({ visible, disciplineCodes }) {
                         </Text>
                         <View
                             style={{
-                                backgroundColor: "hsla(240, 30%, 20%, 0.8)",
+                                backgroundColor: theme.colors.secondary,
                                 borderRadius: 13,
                                 paddingHorizontal: 16,
                                 paddingVertical: 14,
@@ -208,7 +210,7 @@ export default function AddGradeModal({ visible, disciplineCodes }) {
                         >
                             <TextInput
                                 placeholder={String(PLACEHOLDERS.coef)}
-                                placeholderTextColor={"hsla(0, 100%, 100%, .25)"} // EDIT
+                                placeholderTextColor={theme.colors.contrast} // EDIT
                                 onChangeText={(text) =>
                                     setSimulatedGrade((prev) => ({
                                         ...prev,

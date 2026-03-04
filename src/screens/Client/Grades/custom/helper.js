@@ -1,4 +1,4 @@
-export const calculateStrengthsWeaknesses = (currentPeriod = {}, topCount = 3) => {
+export const calculateStrengthsWeaknesses = (currentPeriod = {}, topCount = 6) => {
     const strengths = Array.from({ length: topCount }, () => undefined);
     const weaknesses = Array.from({ length: topCount }, () => undefined);
 

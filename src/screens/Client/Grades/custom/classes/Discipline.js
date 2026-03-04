@@ -371,40 +371,38 @@ function DisciplineCard({ isFirst, isLast, isExpanded, onPress, colors, dispatch
                             </View>
                         ))}
                     </View>
-                    {isExpanded && discipline.grades
+                    {discipline.grades
                         .filter(({ isSimulation }) => !isSimulation)
                         .map((grade, idx) => {
                             return new Grade(grade).RenderGrade(idx, dispatch);
                         })}
-                    {isExpanded && (
-                        <TouchableOpacity
-                            onPress={() =>
-                                dispatch({
-                                    type: "OPEN_SIMULATION_MODAL",
-                                    payload: {
-                                        discipline: discipline.code,
-                                        libelle: discipline.libelle,
-                                    },
-                                })
-                            }
-                            style={{ alignSelf: "center" }}
+                    <TouchableOpacity
+                        onPress={() =>
+                            dispatch({
+                                type: "OPEN_SIMULATION_MODAL",
+                                payload: {
+                                    discipline: discipline.code,
+                                    libelle: discipline.libelle,
+                                },
+                            })
+                        }
+                        style={{ alignSelf: "center" }}
+                    >
+                        <View
+                            style={{
+                                alignItems: "center",
+                                justifyContent: "center",
+                                backgroundColor: "hsla(240, 14%, 32%, .25)",
+                                paddingHorizontal: 24,
+                                borderRadius: 20,
+                            }}
                         >
-                            <View
-                                style={{
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    backgroundColor: "hsla(240, 14%, 32%, .25)",
-                                    paddingHorizontal: 24,
-                                    borderRadius: 20,
-                                }}
-                            >
-                                <Text preset="h3" align="center">
-                                    +
-                                </Text>
-                            </View>
-                        </TouchableOpacity>
-                    )}
-                    {isExpanded && discipline.grades
+                            <Text preset="h3" align="center">
+                                +
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+                    {discipline.grades
                         .filter(({ isSimulation }) => isSimulation)
                         .map((grade, idx) => {
                             return new Grade(grade).RenderSimulatedGrade(idx, dispatch);
