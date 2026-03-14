@@ -355,7 +355,7 @@ export default function GradesContent() {
                         borderTopLeftRadius: 45,
                         borderTopRightRadius: 45,
                         minHeight: Dimensions.get("window").height * 0.6,
-                        paddingTop: 10,
+                        paddingTop: 15,
                         zIndex: 2000,
                         marginBottom: -110
                     }}
@@ -363,6 +363,10 @@ export default function GradesContent() {
 
                     {currentPage === 0 && (
                         <View style={{ marginHorizontal: 14, paddingBottom: 110, gap: 12 }}>
+                            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: -10 }}>
+                                <Text preset="h3" style={{ fontWeight: "bold" }} >Notes</Text>
+                                <TouchableOpacity style={{ borderRadius: 10, backgroundColor: "red", width: 30, height: 30 }} onPress={() => console.log("/20")} />
+                            </View>
                             {groupForRendering(renderDisciplinesArray).map((group, gIndex) => {
                                 const GroupClass = new Discipline(group.header);
                                 return (
@@ -398,112 +402,26 @@ export default function GradesContent() {
                     )}
 
                     {currentPage === 1 && (
-                        <View style={{ flex: 1, marginBottom: 180 }}>
-                            {/*<View
-                                style={{
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    marginHorizontal: 14,
-                                    borderRadius: 18,
-                                    padding: 16,
-                                }}
-                            >
-                                <View
-                                    style={{
-                                        flex: 1,
-                                        flexDirection: "row",
-                                        justifyContent: "space-between",
-                                        alignItems: "flex-end",
-                                        width: "100%",
-                                        height: 30,
-                                    }}>
-                                    <Text>Strengths</Text>
-                                    <Text>Weaknesses</Text>
-                                    <TouchableOpacity style={{ backgroundColor: "red", borderRadius: 18, height: 30, width: 30, }} onPress={() => {
-                                        const nextPage = carouselPage === 0 ? 1 : 0;
-                                        carouselRef.current?.scrollTo({ x: width * nextPage, y: 0, animated: true });
-                                    }}>
-                                    </TouchableOpacity>
-                                </View>
-                                <ScrollView
-                                    ref={carouselRef}
-                                    horizontal
-                                    pagingEnabled
-                                    contentContainerStyle={{ width: width * 1.65 }}
-                                    onScroll={handleCarouselScroll}
-                                    scrollEventThrottle={16}
-                                    showsHorizontalScrollIndicator={true}
-                                >
-                                    <View
-                                        style={{
-                                            flexDirection: "column",
-                                            flex: 1,
-                                            gap: 10,
-                                            width: width,
-                                            padding: 8,
-                                        }}
-                                    >
-                                        <StrengthsAndWeakness
-                                            firstColor={"hsla(115, 79%, 41%, 0.8)"}
-                                            data={strengths}
-                                            expandedKey={expandedSW}
-                                            onItemPress={(key) => handleSWPress(key)}
-                                            section="strengths"
-                                        />
-                                    </View>
-                                    <View
-                                        style={{
-                                            flexDirection: "column",
-                                            flex: 1,
-                                            gap: 10,
-                                            width: width,
-                                            padding: 8,
-                                        }}
-                                    >
-                                        <StrengthsAndWeakness
-                                            firstColor={"hsla(5, 79%, 41%, 0.8)"}
-                                            data={weaknesses}
-                                            expandedKey={expandedSW}
-                                            onItemPress={(key) => handleSWPress(key)}
-                                            section="weaknesses"
-                                        />
-                                    </View>
-                                </ScrollView>
-                                <AnimatedLottieView
-                                    source={require("../../../../assets/json/lottie/slider.json")}
-                                    animatedProps={lottieProps}
-                                    style={{ top: 9, height: 13, width: 80, margin: 2 }}
-                                    colorFilters={[
-                                        {
-                                            keypath: "Shape Layer 1",
-                                            color: colors.main,
-                                        },
-                                        {
-                                            keypath: "Shape Layer 2",
-                                            color: colors.main,
-                                        },
-                                    ]}
-                                />
-                            </View>*/}
+                        <View style={{ flex: 1, marginBottom: 180, marginHorizontal: 14 }}>
+                            <Text preset="h3" style={{ fontWeight: "bold" }} >Statistiques</Text>
                             <View
                                 style={{
                                     flexDirection: "column",
                                     flex: 1,
                                     gap: 10,
-                                    padding: 8,
-                                    marginHorizontal: 8,
                                     marginBottom: 200,
                                 }}
                             >
                                 <View
                                     style={{
+                                        marginTop: 8,
                                         borderRadius: 18,
                                         backgroundColor: colors.secondary,
-                                        padding: 16
+                                        padding: 13,
                                     }}
                                 >
-                                    <View style={{ flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 4 }}>
-                                        <Text preset="h4" style={{ fontWeight: "bold" }}>{isStreghts ? "Forces" : "Faiblesses"}</Text>
+                                    <View style={{ flex: 1, flexDirection: "row", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 7 }}>
+                                        <Text preset="h4">{isStreghts ? "Forces" : "Faiblesses"}</Text>
                                         <TouchableOpacity style={{ backgroundColor: "red", borderRadius: 18, height: 30, width: 30, }} onPress={() => setIsStrenghts(prev => !prev)}>
                                         </TouchableOpacity>
                                     </View>

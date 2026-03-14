@@ -44,7 +44,7 @@ export default function GradeDetails({ route }) {
                     marginBottom: 4,
                 }}
                 decoration="underline"
-                color={colors.main} // EDIT
+                color={colors.txt.txt1}
                 preset="body1"
             >
                 {item.name}
@@ -55,7 +55,7 @@ export default function GradeDetails({ route }) {
                         marginLeft: 16,
                         flex: 1,
                     }}
-                    color="hsl(240, 40%, 68%)" // EDIT
+                    color={colors.txt.txt2}
                     preset="body2"
                 >
                     {item.description}
@@ -77,7 +77,7 @@ export default function GradeDetails({ route }) {
     );
 
     return (
-        <View style={{ flex: 1, backgroundColor: "hsl(240, 28%, 10%)" }}>
+        <View style={{ flex: 1, backgroundColor: colors.background.gradient, marginBottom: 90 }}>
             <CustomTopHeader
                 headerTitle={grade.libelle}
                 height={33}
@@ -87,7 +87,7 @@ export default function GradeDetails({ route }) {
             <View style={{ marginHorizontal: 22, flex: 1 }}>
                 <View
                     style={{
-                        backgroundColor: "hsl(240, 27%, 16%)",
+                        backgroundColor: colors.secondary,
                         flexDirection: "row",
                         padding: 24,
                         borderRadius: 10,
@@ -119,7 +119,7 @@ export default function GradeDetails({ route }) {
 
                 <View
                     style={{
-                        backgroundColor: "hsl(240, 27%, 16%)",
+                        backgroundColor: colors.secondary,
                         borderRadius: 22,
                         flex: 1,
                         marginVertical: 14,
@@ -190,13 +190,14 @@ export default function GradeDetails({ route }) {
 }
 
 const Teachers = ({ teachers = [] }) => {
+    const { colors } = useTheme();
     if (teachers.length > 1) {
         return teachers.map((teacher, i) => (
             <Text
                 key={i}
                 oneLine
                 preset="label2"
-                color={"hsl(240, 27%, 76%)"} /* EDIT */
+                color={colors.txt.txt2}
             >
                 - {teacher}
             </Text>
@@ -205,14 +206,14 @@ const Teachers = ({ teachers = [] }) => {
 
     if (teachers.length === 1) {
         return (
-            <Text oneLine preset="label2" color={"hsl(240, 27%, 76%)"} /* EDIT */>
+            <Text oneLine preset="label2" color={colors.txt.txt2} /* EDIT */>
                 {teachers[0]}
             </Text>
         );
     }
 
     return (
-        <Text preset="label3" color={"hsl(320, 52%, 55%)"} /* EDIT */>
+        <Text preset="label3" color={colors.txt.txt2} /* EDIT */>
             Aucun enseignant pour cette discipline
         </Text>
     );
@@ -220,7 +221,7 @@ const Teachers = ({ teachers = [] }) => {
 
 const Cards = ({ datas }) => {
     const { grade, coef, outOf } = datas;
-
+    const { colors } = useTheme();
     const cards = [
         { label: "Note obtenue", value: formatGradeText(grade) },
         { label: "Coefficient", value: formatGradeText(coef, "auto") },
@@ -233,7 +234,7 @@ const Cards = ({ datas }) => {
                 <View
                     key={index}
                     style={{
-                        backgroundColor: "hsl(240, 24%, 29%)",
+                        backgroundColor: colors.main2,
                         flex: 1,
                         flexShrink: 0,
                         aspectRatio: 1,
@@ -245,11 +246,11 @@ const Cards = ({ datas }) => {
                     <Text
                         preset="label2"
                         numberOfLines={2}
-                        color="hsl(240, 27%, 76%)" // EDIT
+                        color={colors.txt.txt1}
                     >
                         {card.label}
                     </Text>
-                    <Text preset="h3">{card.value}</Text>
+                    <Text preset="h3" color={colors.txt.txt1}>{card.value}</Text>
                 </View>
             ))}
         </>

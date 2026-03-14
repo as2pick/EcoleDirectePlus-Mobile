@@ -1,10 +1,11 @@
+import { forwardRef } from "react";
 import Animated, {
     useAnimatedScrollHandler,
     useSharedValue,
 } from "react-native-reanimated";
 import Stack from "./Stack";
 
-export default function ScrollableStack({
+const ScrollableStack = forwardRef(function ScrollableStack({
     children,
     horizontal = false,
     showsScrollIndicator = false,
@@ -12,7 +13,7 @@ export default function ScrollableStack({
     contentContainerStyle,
     onScroll: externalOnScroll,
     ...props
-}) {
+}, ref) {
     const scrollX = useSharedValue(0);
     const internalOnScroll = useAnimatedScrollHandler({
         onScroll: (event) => {
@@ -26,13 +27,13 @@ export default function ScrollableStack({
 
     return (
         <Animated.ScrollView
+            ref={ref}
             horizontal={horizontal}
             contentContainerStyle={[{}, contentContainerStyle]}
             showsVerticalScrollIndicator={showsScrollIndicator}
             showsHorizontalScrollIndicator={showsScrollIndicator}
             pagingEnabled={paging}
             onScroll={finalOnScroll}
-            // scrollEnabled={false}
             scrollEventThrottle={16}
         >
             <Stack direction={horizontal ? "horizontal" : "vertical"} {...props}>
@@ -40,5 +41,6 @@ export default function ScrollableStack({
             </Stack>
         </Animated.ScrollView>
     );
-}
+});
 
+export default ScrollableStack;

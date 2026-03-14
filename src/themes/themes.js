@@ -22,7 +22,7 @@ export const THEMES = {
             },
             txt: {
                 txt1: "rgb(0, 0, 0)", // DON'T USE IT
-                txt2: "rgba(26, 26, 151, 1)", // DON'T USE IT
+                txt2: "rgba(43, 43, 43, 0.8)", // DON'T USE IT
                 txt3: "rgba(35, 35, 207, 1)", // DON'T USE IT
             },
             navbar: {
@@ -37,7 +37,8 @@ export const THEMES = {
             fond: ["rgba(150, 150, 172, 1)", "rgba(222, 222, 250, 1)"], // DON'T USE IT
             pastel: "rgba(200, 200, 252, 1)",
             secondary: "rgba(255, 255, 255)",
-            main: "rgb(119, 119, 247)",
+            main: "rgba(93, 93, 255, 1)",
+            main2: "rgba(123, 123, 226, 1)",
             accent: "rgb(62, 62, 221)",
             contrast: "rgb(0, 0, 0)",
             oppose: "rgba(42, 42, 49, 1)",
@@ -81,11 +82,6 @@ export const THEMES = {
                 bg5: "rgb(197, 197, 247)", // DON'T USE IT
                 bg6: "rgb(64, 64, 130)", // DON'T USE IT
             },
-            txt: {
-                txt1: "rgb(255, 255, 255)", // DON'T USE IT
-                txt2: "rgb(109, 106, 251)", // DON'T USE IT
-                txt3: "rgb(180, 180, 240)", // DON'T USE IT
-            },
             navbar: {
                 active_icon_bg: "rgb(34, 34, 52)", // DON'T USE IT
                 icons_bg: "rgb(17, 17, 38)", // DON'T USE IT
@@ -97,7 +93,8 @@ export const THEMES = {
             error: "rgb(240, 90, 90)",
             cases: "rgb(25, 25, 56)", // DON'T USE IT
             secondary: "rgba(24, 24, 24, 1)", //A CHANGER
-            main: "rgba(129, 129, 189, 1)",
+            main: "rgba(84, 84, 136, 1)",
+            main2: "rgba(68, 68, 141, 1)",
             accent: "rgba(156, 156, 209, 1)", //A SUPPRIMER POUR JUSTE MAIN
             case: "rgb(72, 72, 102)", // DON'T USE IT A SUPPRIMER
             oppose: "rgba(255, 255, 255, 1)", //A SUPPRIMER
@@ -106,7 +103,7 @@ export const THEMES = {
             theme: "rgba(0, 0, 0, 1)", //A VOIR
             txt: {
                 txt1: "rgb(255, 255, 255)", //A CHANGER
-                txt2: "rgba(187, 187, 187, 1)", //A CHANGER
+                txt2: "rgba(184, 184, 184, 0.8)", //A CHANGER
                 txt3: "rgb(180, 180, 240)", //A CHANGER
             },
             edplogo: {
