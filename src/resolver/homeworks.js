@@ -60,32 +60,6 @@ function extractDates(homeworks) {
     );
 }
 
-function formatHomeworkDiscipline({
-    matiere,
-    codeMatiere,
-    aFaire,
-    idDevoir,
-    documentsAFaire,
-    donneLe,
-    effectue,
-    interrogation,
-    rendreEnLigne,
-    tags,
-}) {
-    return {
-        discipline: {
-            name: matiere,
-            code: codeMatiere,
-        },
-        isDone: effectue,
-        isEvaluation: interrogation,
-        returnOnline: rendreEnLigne,
-        givenOn: donneLe,
-        id: idDevoir,
-    };
-}
-// POST //api.ecoledirecte.com/v3/telechargement.awp?verbe=get&fichierId=3507&leTypeDeFichier=FICHIER_CDT&v=4.89.2
-
 export async function homeworksDetails({ token, date }) {
     const homeworksDetailsResponse = await fetchApi(
         `https://api.ecoledirecte.com/v3/Eleves/{USER_ID}/cahierdetexte/${date}.awp?verbe=get&{API_VERSION}`,

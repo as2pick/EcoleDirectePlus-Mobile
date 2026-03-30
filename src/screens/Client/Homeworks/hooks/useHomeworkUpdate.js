@@ -1,7 +1,7 @@
 import { useCallback } from "react";
-import { useUser } from "../../../../../context/UserContext";
-import { storageManager } from "../../../../../helpers/StorageManager";
-import { toggleHomeworkInApi } from "../../../../../resolver/homeworks";
+import { useUser } from "../../../../context/UserContext";
+import { storageManager } from "../../../../helpers/StorageManager";
+import { toggleHomeworkInApi } from "../../../../resolver/homeworks";
 
 export const useHomeworkUpdate = () => {
     const { setSortedHomeworksData, setCustomHomeworksData, userAccesToken } =

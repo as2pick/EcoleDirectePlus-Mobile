@@ -20,9 +20,9 @@ import { useUser } from "../../../context/UserContext";
 import { storageManager } from "../../../helpers/StorageManager";
 import { adjustLightness } from "../../../utils/colorGenerator";
 import { formatFrenchDate } from "../../../utils/date";
-import NewHomeworkModal from "./custom/components/NewHomeworkModal";
-import { useHomework } from "./custom/context/LocalContext";
-import { useHomeworksHandler } from "./custom/hooks/useHomeworksHandler";
+import NewHomeworkModal from "./components/NewHomeworkModal";
+import { useHomework } from "./context/LocalContext";
+import { useHomeworksHandler } from "./hooks/useHomeworksHandler";
 
 export default function HomeworksContent() {
     const {

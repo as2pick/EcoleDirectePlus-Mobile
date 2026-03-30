@@ -14,8 +14,8 @@ import Animated, {
     withTiming,
 } from "react-native-reanimated";
 import { scheduleOnRN } from "react-native-worklets";
-import { Text } from "../../../../../components/Ui/core";
-import { formatDate } from "../../../../../utils/date";
+import { Text } from "../../../../components/Ui/core";
+import { formatDate } from "../../../../utils/date";
 import { useHomework } from "../context/LocalContext";
 
 export default function NewHomeworkModal({ visible }) {

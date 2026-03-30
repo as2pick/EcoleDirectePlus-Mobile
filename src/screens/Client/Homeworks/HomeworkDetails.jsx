@@ -13,8 +13,8 @@ import { CustomTopHeader, HomeworkCard, Modal } from "../../../components";
 import { Text } from "../../../components/Ui/core";
 import { useUser } from "../../../context/UserContext";
 import { formatFrenchDate } from "../../../utils/date";
-import { useHomework } from "./custom/context/LocalContext";
-import { downloadDocument, openDocument } from "./custom/handler/handleDocuments";
+import { useHomework } from "./context/LocalContext";
+import { downloadDocument, openDocument } from "./handler/handleDocuments";
 import {
     assignUnit,
     createHomework,

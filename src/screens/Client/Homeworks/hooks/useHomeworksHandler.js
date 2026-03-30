@@ -1,9 +1,9 @@
 import { useNavigation } from "@react-navigation/native";
 import { useEffect } from "react";
-import { useUser } from "../../../../../context/UserContext";
-import { routesNames } from "../../../../../router/config/routesNames";
-import { createHomework } from "../../utils";
+import { useUser } from "../../../../context/UserContext";
+import { routesNames } from "../../../../router/config/routesNames";
 import { useHomework } from "../context/LocalContext";
+import { createHomework } from "../utils";
 import { useHomeworkUpdate } from "./useHomeworkUpdate";
 
 export const useHomeworksHandler = ({ setModalOpen }) => {
