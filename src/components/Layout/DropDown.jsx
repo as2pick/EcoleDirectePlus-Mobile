@@ -10,7 +10,7 @@ import Animated, {
 import SimpleArrow from "../../../assets/svg/SimpleArrow";
 import Text from "../Ui/core/Text";
 
-export default function CustomDropdown({
+export default function DropDown({
     options = [
         { label: "Trimestre 1", value: "A001" },
         { label: "Trimestre 2", value: "A002" },

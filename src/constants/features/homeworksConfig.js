@@ -1,0 +1,38 @@
+export const motivationSentences = {
+    0: [""],
+    0.25: [
+        "C'est un bon début !",
+        "On ne lâche rien !",
+        "Courrage c'est plus rapide qu'on le pense !",
+        "On enchaine...",
+        "Let's go, un premier bout de fait !",
+        "Bien, on continue...",
+        "3.2.1...Partez !",
+    ],
+    0.5: [
+        "Ça avance !",
+        "À la moitié ! on persévère...",
+        "Doucement mais sûrement.",
+        "C'est pas si dûr hein ?",
+        "Étape par étape...",
+    ],
+    0.75: [
+        "Plus de la moitié, on ne se décourrage pas !",
+        "Loins devant maintenant !",
+        "Ça avance super bien !",
+        "C'est presque un jeu d'enfant !",
+        "Bientôt l'arrêt au stand !",
+        "Alors c'est bien Ecole Directe Plus sur mobile ?",
+    ],
+    1: [
+        "Top 1 !",
+        "Après l'effort, le réconfort !",
+        "Hop ! Enfin débarrassé",
+        "C'est mieux quand c'est fini, n'est-ce-pas ?",
+        "Libéré !",
+        "Quelle efficacité !",
+        "Félicitations !",
+        "Bravo !",
+    ],
+};
+

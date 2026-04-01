@@ -1,57 +1,31 @@
-import { useFocusEffect } from "@react-navigation/native";
-import { useCallback, useState } from "react";
-import { Switch, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useTheme } from "../../../context/ThemeContext";
-import { useUser } from "../../../context/UserContext";
-import { storageServiceStates } from "../../../helpers/storageService";
-export default function HomeworksScreen() {
-    const { sortedHomeworksData, setSortedHomeworksData, userAccesToken } =
-        useUser();
-    const [loading, setLoading] = useState(true);
-    const { toggleTheme, colorScheme, isFollowingSystem, followSystemTheme } =
-        useTheme();
-    useFocusEffect(
-        useCallback(() => {
-            if (
-                !sortedHomeworksData ||
-                Object.keys(sortedHomeworksData).length === 0
-            ) {
-                setLoading(true);
-                storageServiceStates
-                    .getter({ originKey: "homeworks" })
-                    .then((userGrades) => {
-                        setSortedHomeworksData(userGrades);
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { routesNames } from "../../../router/config/routesNames";
+import HomeworkDetails from "./HomeworkDetails";
+import HomeworksContent from "./HomeworksContent";
+import { HomeworksProvider } from "./context/LocalContext";
 
-                        setLoading(false);
-                    })
-                    .catch((err) => {
-                        setError(err.message);
-                        setLoading(false);
-                    });
-            }
-        }, [userAccesToken, sortedHomeworksData])
-    );
+const NativeStack = createNativeStackNavigator();
+
+export default function HomeworksScreen() {
+    const {
+        client: {
+            homeworks: { content, details },
+        },
+    } = routesNames;
+
     return (
-        <SafeAreaView style={{ flex: 1 }}>
-            {/* <ScrollView> */}
-            <View
-                style={{
-                    transform: [{ scaleX: 5 }, { scaleY: 5 }],
-                    justifyContent: "center",
-                    alignItems: "center",
-                    flex: 1,
+        <HomeworksProvider>
+            <NativeStack.Navigator
+                initialRouteName={content}
+                screenOptions={{
+                    headerShown: false,
+                    animation: "fade",
                 }}
             >
-                {/* <Text>{JSON.stringify(sortedHomeworksData)}</Text> */}
-                <Switch value={colorScheme === "dark"} onValueChange={toggleTheme} />
-                <Switch
-                    value={isFollowingSystem}
-                    onValueChange={followSystemTheme}
-                />
-            </View>
-            {/* </ScrollView> */}
-        </SafeAreaView>
+                <NativeStack.Screen name={content} component={HomeworksContent} />
+                <NativeStack.Screen name={details} component={HomeworkDetails} />
+            </NativeStack.Navigator>
+        </HomeworksProvider>
     );
 }
 

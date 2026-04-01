@@ -17,7 +17,7 @@ import { timetableConfig } from "../../../constants/features/timetableConfig";
 
 import { Text } from "../../../components/Ui/core";
 import { useUser } from "../../../context/UserContext";
-import { storageServiceStates } from "../../../helpers/storageService";
+import { storageManager } from "../../../helpers/StorageManager";
 import { routesNames } from "../../../router/config/routesNames";
 import { addOpacityToCssRgb } from "../../../utils/colorGenerator";
 
@@ -57,7 +57,7 @@ export default function TimetableContent() {
         useCallback(() => {
             if (!sortedTimetableData || sortedTimetableData.length === 0) {
                 setLoading(true);
-                storageServiceStates
+                storageManager
                     .getter({ originKey: "timetable" })
                     .then((userTimetable) => {
                         setSortedTimetableData(userTimetable);
