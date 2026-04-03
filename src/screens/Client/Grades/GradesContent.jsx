@@ -65,7 +65,7 @@ export default function GradesContent() {
     const HIDE_THRESHOLD = 90;
     const SHOW_THRESHOLD = 100;
     const SNAP_LOWER = 0;
-    const SNAP_UPPER = 235;
+    const SNAP_UPPER = 250;
     const SNAP_MIDPOINT = 80;
 
     const scrollRef = useRef(null);
@@ -268,7 +268,7 @@ export default function GradesContent() {
     const toggleStats = () => {
         const next = !showStreak;
         setShowStreak(next);
-        transition.value = withTiming(next ? 0 : 1, { duration: 600 });
+        transition.value = withTiming(next ? 0 : 1, { duration: 400 });
     };
 
 
@@ -331,10 +331,7 @@ export default function GradesContent() {
                 >
 
                     {currentPage === 0 && (
-                        <View style={{ marginHorizontal: 14, paddingBottom: 110, gap: 12 }}>
-                            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: -10 }}>
-                                <TouchableOpacity style={{ borderRadius: 10, backgroundColor: "red", width: 30, height: 30 }} onPress={() => console.log("/20")} />
-                            </View>
+                        <View style={{ marginHorizontal: 14, paddingBottom: 110, gap: 12, marginTop: -10 }}>
                             {groupForRendering(renderDisciplinesArray).map((group, gIndex) => {
                                 const GroupClass = new Discipline(group.header);
                                 return (
