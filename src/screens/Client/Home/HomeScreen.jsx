@@ -10,8 +10,7 @@ import Animated, {
     withTiming,
 } from "react-native-reanimated";
 
-import { useActionBar } from "../../../context/ActionBarContext";
-import DashboardIcon from "../../../../assets/svg/navigation/DashboardIcon";
+
 import { SafeAreaView } from "react-native-safe-area-context";
 import InDev from "../../../components/Ui/InDev";
 import { useUser } from "../../../context/UserContext";
@@ -22,7 +21,7 @@ import Text from "../../../components/Ui/core/Text.jsx";
 export default function HomeScreen() {
     const { setIsConnected } = useUser();
     const navigation = useNavigation();
-    const { updateActions } = useActionBar();
+
     const theme = useTheme();
 
     const styles = createStyles(theme);
@@ -42,16 +41,7 @@ export default function HomeScreen() {
         };
     });
 
-    useFocusEffect(
-        useCallback(() => {
-            updateActions([
-                {
-                    icon: DashboardIcon,
-                    onPress: () => navigation.navigate(routesNames.navigators.core),
-                },
-            ]);
-        }, [updateActions, navigation])
-    );
+
 
     return (
         <SafeAreaView style={styles.container}>

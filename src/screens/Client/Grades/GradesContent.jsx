@@ -1,6 +1,5 @@
 import { useFocusEffect, useNavigation, useTheme } from "@react-navigation/native";
-import { useActionBar } from "../../../context/ActionBarContext";
-import GradesIcon from "../../../../assets/svg/navigation/GradesIcon"; // Pour test ou exemple
+
 import { LinearGradient } from "expo-linear-gradient";
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Dimensions, View, TouchableOpacity } from "react-native";
@@ -44,7 +43,7 @@ export default function GradesContent() {
     const { sortedGradesData, setSortedGradesData, userAccesToken } = useUser();
     const { state, dispatch } = useGrade();
     const navigation = useNavigation();
-    const { updateActions } = useActionBar();
+
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -146,21 +145,7 @@ export default function GradesContent() {
         setGeneralAverage,
     });
 
-    useFocusEffect(
-        useCallback(() => {
-            updateActions([
-                {
-                    icon: GradesIcon,
-                    onPress: () => { setCurrentPage(0), console.log("Notes") },
 
-                },
-                {
-                    icon: GradesIcon,
-                    onPress: () => { setCurrentPage(1), console.log("Statistiques") },
-                },
-            ]);
-        }, [updateActions])
-    );
 
     const fetchAndProcessGrades = useCallback(async () => {
         try {

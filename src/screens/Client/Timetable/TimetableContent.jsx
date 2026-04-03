@@ -2,8 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { useFocusEffect, useNavigation, useTheme } from "@react-navigation/native";
-import { useActionBar } from "../../../context/ActionBarContext";
-import TimetableIcon from "../../../../assets/svg/navigation/TimetableIcon";
+
 
 import Animated, {
     useAnimatedStyle,
@@ -37,18 +36,9 @@ export default function TimetableContent() {
 
     const navigation = useNavigation();
     const theme = useTheme();
-    const { updateActions } = useActionBar();
 
-    useFocusEffect(
-        useCallback(() => {
-            updateActions([
-                {
-                    icon: TimetableIcon,
-                    onPress: () => console.log("Timetable Action"),
-                },
-            ]);
-        }, [updateActions])
-    );
+
+
 
     const scrollViewRef = useRef(null);
 

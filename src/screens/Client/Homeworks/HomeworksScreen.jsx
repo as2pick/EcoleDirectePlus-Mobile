@@ -4,8 +4,7 @@ import { Switch, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "../../../context/ThemeContext";
 import { useUser } from "../../../context/UserContext";
-import { useActionBar } from "../../../context/ActionBarContext";
-import HomeworksIcon from "../../../../assets/svg/navigation/HomeworksIcon";
+
 import { storageServiceStates } from "../../../helpers/storageService";
 export default function HomeworksScreen() {
     const { sortedHomeworksData, setSortedHomeworksData, userAccesToken } =
@@ -13,18 +12,9 @@ export default function HomeworksScreen() {
     const [loading, setLoading] = useState(true);
     const { toggleTheme, colorScheme, isFollowingSystem, followSystemTheme } =
         useTheme();
-    const { updateActions } = useActionBar();
 
-    useFocusEffect(
-        useCallback(() => {
-            updateActions([
-                {
-                    icon: HomeworksIcon,
-                    onPress: () => console.log("Homeworks Action"),
-                },
-            ]);
-        }, [updateActions])
-    );
+
+
     useFocusEffect(
         useCallback(() => {
             if (

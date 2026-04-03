@@ -4,7 +4,7 @@ import { GlobalAppProvider } from "../context/GlobalAppContext";
 import { SignInProvider } from "../context/SignInContext";
 import { ThemeProvider } from "../context/ThemeContext";
 import { UserProvider } from "../context/UserContext";
-import { ActionBarProvider } from "../context/ActionBarContext";
+
 
 export default function RootProviders({ children }) {
     return (
@@ -21,9 +21,7 @@ export default function RootProviders({ children }) {
                                     translucent={true}
                                     />
                                     )} */}
-                                <ActionBarProvider>
-                                    {children}
-                                </ActionBarProvider>
+                                {children}
                                 {/* </View> */}
                             </SignInProvider>
                         </UserProvider>
