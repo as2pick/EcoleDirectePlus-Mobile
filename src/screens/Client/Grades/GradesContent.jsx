@@ -6,17 +6,14 @@ import { Dimensions, View, TouchableOpacity } from "react-native";
 import Animated, {
     Extrapolation,
     interpolate,
-    interpolateColor,
-    runOnJS,
+
     useAnimatedScrollHandler,
     useAnimatedStyle,
     useSharedValue,
     withTiming,
-    useAnimatedProps,
 } from "react-native-reanimated";
 import GradeArrow from "../../../../assets/svg/GradeArrow";
-import LottieView from "lottie-react-native";
-const AnimatedLottieView = Animated.createAnimatedComponent(LottieView);
+
 import { SafeAreaView } from "react-native-safe-area-context";
 import { DropDown, ScrollableStack } from "../../../components";
 import { API } from "../../../constants/api/api";
@@ -96,15 +93,7 @@ export default function GradesContent() {
         scrollY.value = event.contentOffset.y;
     });
 
-    const scrollXStrengths = useSharedValue(0);
-    const strengthsScrollHandler = useAnimatedScrollHandler((event) => {
-        scrollXStrengths.value = event.contentOffset.x;
-        runOnJS(setCarouselPage)(event.contentOffset.x > width / 2 ? 1 : 0);
-    });
-    const handleCarouselScroll = (event) => {
-        scrollXStrengths.value = event.nativeEvent.contentOffset.x;
-        setCarouselPage(event.nativeEvent.contentOffset.x > width / 2 ? 1 : 0);
-    };
+
 
     const containerStyle = useAnimatedStyle(() => {
         const translateY = interpolate(scrollY.value, [0, 200], [0, -(height * 0.2)], Extrapolation.CLAMP);
@@ -282,15 +271,10 @@ export default function GradesContent() {
         transition.value = withTiming(next ? 0 : 1, { duration: 600 });
     };
 
-    const lottieProps = useAnimatedProps(() => {
-        const pageWidth = width - 60;
-        return {
-            progress: interpolate(scrollXStrengths.value, [0, pageWidth], [0, 1], Extrapolation.CLAMP),
-        };
-    });
 
-    const [carouselPage, setCarouselPage] = useState(0);
-    const carouselRef = useRef(null);
+
+
+
     const [isStreghts, setIsStrenghts] = useState(true)
 
     return (
@@ -349,7 +333,6 @@ export default function GradesContent() {
                     {currentPage === 0 && (
                         <View style={{ marginHorizontal: 14, paddingBottom: 110, gap: 12 }}>
                             <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: -10 }}>
-                                <Text preset="h3" style={{ fontWeight: "bold" }} >Notes</Text>
                                 <TouchableOpacity style={{ borderRadius: 10, backgroundColor: "red", width: 30, height: 30 }} onPress={() => console.log("/20")} />
                             </View>
                             {groupForRendering(renderDisciplinesArray).map((group, gIndex) => {
