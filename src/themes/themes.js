@@ -49,6 +49,11 @@ export const THEMES = {
                 c1: "rgb(102, 145, 252)",
                 c2: "rgb(133, 114, 255)",
             },
+            navbartempo: {
+                case: "rgb(255, 255, 255)",
+                main: "rgb(119, 119, 247)",
+                secondary: "rgb(180, 180, 253)",
+            }
         },
         fonts: {
             bold: { fontFamily: "Luciole-Regular", fontWeight: "600" },
@@ -110,6 +115,11 @@ export const THEMES = {
                 c1: "rgb(180, 201, 255)",//A CLARIFIER (+ de saturation ???)
                 c2: "rgb(193, 183, 255)",// A CLARIFIER (+ de saturation ???)
             },
+            navbartempo: {
+                case: "rgb(94, 94, 136)",
+                main: "rgba(166, 166, 240, 1)",
+                secondary: "rgb(109, 106, 251)",
+            }
         },
         fonts: {
             bold: { fontFamily: "Luciole-Regular", fontWeight: "600" },

@@ -7,14 +7,18 @@ import { addOpacityToCssRgb } from "../../utils/colorGenerator";
 const NavigationBottomBar = ({ state, descriptors, navigation }) => {
     const [isPressedIn, setIsPressedIn] = useState(false);
     const [isLongPressed, setIsLongPressed] = useState(false);
-    const { shadow, colors } = useTheme();
+    const { shadow } = useTheme();
+    const { colors } = useTheme();
+    const caseColor = addOpacityToCssRgb(colors.navbartempo.case, 0.7);
+    const shadowColor = addOpacityToCssRgb("rgb(0, 0, 0)", shadow.oppacity);
     return (
         <View
             style={[
                 styles.container,
                 {
-                    backgroundColor: addOpacityToCssRgb(colors.navbar, .95),
-                    boxShadow: "0px 0px 10px 2px" + addOpacityToCssRgb("rgb(0, 0, 0)", shadow.oppacity),
+                    backgroundColor: caseColor,
+                    borderRadius: 25,
+                    boxShadow: "0px 0px 10px 2px rgb(0, 0, 0)" + shadowColor,
                 },
             ]}
         >
@@ -22,7 +26,6 @@ const NavigationBottomBar = ({ state, descriptors, navigation }) => {
                 const { options } = descriptors[route.key];
                 if (!options.inNavbar) return;
                 const isFocused = state.index === index;
-                const isHome = index === 2;
 
                 const onPress = () => {
                     const event = navigation.emit({
@@ -42,6 +45,8 @@ const NavigationBottomBar = ({ state, descriptors, navigation }) => {
                         key={index}
                         accessibilityRole="button"
                         accessibilityState={isFocused ? { selected: true } : {}}
+                        accessibilityLabel={options.tabBarAccessibilityLabel}
+                        testID={options.tabBarTestID}
                         onPress={onPress}
                         onPressIn={() => setIsPressedIn(true)}
                         onPressOut={() => {
@@ -52,14 +57,23 @@ const NavigationBottomBar = ({ state, descriptors, navigation }) => {
                         style={styles.tab}
                     >
                         <View
-                            style={[
-                                styles.iconContainer,
-                                isHome && isFocused && styles.homeIcon,
-                                isFocused && { backgroundColor: colors.main },
-                                !isHome && isFocused && styles.activeTab,
-                            ]}
+                            style={
+                                isFocused
+                                    ? [
+                                        styles.iconPadding,
+                                        {
+                                            backgroundColor: colors.navbartempo.main,
+                                        },
+                                    ]
+                                    : [
+                                        styles.iconPadding,
+                                        {
+                                            backgroundColor: colors.navbartempo.secondary,
+                                        },
+                                    ]
+                            }
                         >
-                            <IconComponent width={isHome && isFocused ? 47 : 40} height={isHome && isFocused ? 47 : 40} />
+                            <IconComponent width={36} height={36} />
                         </View>
                     </TouchableOpacity>
                 );
@@ -72,38 +86,28 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
         alignSelf: "center",
-        alignItems: "center",
-        padding: 14,
-        paddingBottom: 20,
-        borderRadius: 10,
-        bottom: 0,
+        padding: 12,
+        borderRadius: 25,
+        bottom: 18,
         position: "absolute",
-        width: "100%",
-        justifyContent: "space-around",
+        width: "95%",
+        justifyContent: "space-around", // or space-between
     },
     tab: {
+        //flex: 1,
         alignItems: "center",
-        justifyContent: "center",
+        //height: CONFIG.tabBarHeight, // 79
+        //justifyContent: "center",
     },
-    iconContainer: {
-        borderRadius: 12,
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    activeTab: {
-        borderRadius: 12,
+    iconPadding: {
         padding: 6,
+        borderRadius: 12,
     },
-    homeIcon: {
-        marginTop: -20,
-        width: 72,
-        height: 72,
-        borderRadius: 35,
-        elevation: 5,
-        zIndex: 10,
+    iconPadding: {
         padding: 6,
-        boxShadow: "0px -3px 9px -5px " + "black",
+        borderRadius: 12,
     },
 });
 
 export default NavigationBottomBar;
+
