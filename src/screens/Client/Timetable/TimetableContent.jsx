@@ -17,7 +17,7 @@ import { timetableConfig } from "../../../constants/features/timetableConfig";
 
 import { Text } from "../../../components/Ui/core";
 import { useUser } from "../../../context/UserContext";
-import { storageManager } from "../../../helpers/StorageManager";
+import useUserDatas from "../../../hooks/useUserDatas";
 import { routesNames } from "../../../router/config/routesNames";
 import { addOpacityToCssRgb } from "../../../utils/colorGenerator";
 
@@ -32,6 +32,7 @@ const screenHeight = height;
 export default function TimetableContent() {
     const { userAccesToken, sortedTimetableData, setSortedTimetableData } =
         useUser();
+    const { timetable } = useUserDatas();
 
     const navigation = useNavigation();
     const theme = useTheme();
@@ -57,12 +58,10 @@ export default function TimetableContent() {
         useCallback(() => {
             if (!sortedTimetableData || sortedTimetableData.length === 0) {
                 setLoading(true);
-                storageManager
-                    .getter({ originKey: "timetable" })
-                    .then((userTimetable) => {
-                        setSortedTimetableData(userTimetable);
-                        setLoading(false);
-                    });
+                const tempVar = timetable.data;
+
+                setSortedTimetableData(tempVar);
+                setLoading(false);
             } else {
             }
         }, [userAccesToken, sortedTimetableData])

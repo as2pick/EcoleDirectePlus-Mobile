@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import { payloadHelper } from "../../helpers/cryptoHelper";
-import { storageManager } from "../../helpers/StorageManager";
+import useUserDatas from "../../hooks/useUserDatas";
 import authService from "../../services/login/authService";
 import storeDatas from "./storeLoginDatas";
 
@@ -23,9 +23,7 @@ export async function tryLoginWithStoredCreds({
 
         if (now.isBefore(expiration)) {
             dispatch({ type: "SIGN_IN", userToken: payload.superSecretUserToken });
-            const getDataFromStorage = await storageManager.getter({
-                originKey: "userData",
-            });
+            const getDataFromStorage = useUserDatas.getState().globalUserData;
 
             storeDatas({
                 data: getDataFromStorage,

@@ -17,7 +17,7 @@ import LoadingWrapper from "../../../components/Layout/LoadingWrapper";
 import { Text } from "../../../components/Ui/core";
 import { motivationSentences } from "../../../constants/features/homeworksConfig";
 import { useUser } from "../../../context/UserContext";
-import { storageManager } from "../../../helpers/StorageManager";
+import useUserDatas from "../../../hooks/useUserDatas";
 import { adjustLightness } from "../../../utils/colorGenerator";
 import { formatFrenchDate } from "../../../utils/date";
 import NewHomeworkModal from "./components/NewHomeworkModal";
@@ -31,7 +31,10 @@ export default function HomeworksContent() {
         customHomeworksData,
         setCustomHomeworksData,
     } = useUser();
+
+    const { homeworks, customHomeworks } = useUserDatas();
     const { dispatch } = useHomework();
+    const { setUserState } = useUserDatas();
 
     const [loading, setLoading] = useState(true);
     const [homeworksDates, setHomeworksDates] = useState();
@@ -88,9 +91,8 @@ export default function HomeworksContent() {
 
             const loadHomeworks = async () => {
                 try {
-                    const storedHomeworks = await storageManager.getter({
-                        originKey: "homeworks",
-                    });
+                    const storedHomeworks = homeworks.data;
+
                     if (storedHomeworks) {
                         setSortedHomeworksData(storedHomeworks);
                         setFormatedDates(storedHomeworks.formatedDates);
@@ -102,9 +104,7 @@ export default function HomeworksContent() {
             };
             const loadCustomHomeworks = async () => {
                 try {
-                    const storedCustomHomeworks = await storageManager.getter({
-                        originKey: "custom_homeworks",
-                    });
+                    const storedCustomHomeworks = customHomeworks;
                     if (storedCustomHomeworks && storedCustomHomeworks.length > 0) {
                         setCustomHomeworksData(storedCustomHomeworks);
                     }
@@ -168,10 +168,7 @@ export default function HomeworksContent() {
         }
         setSortedHomeworksData(merged);
         const saveCustomHomeworks = async () => {
-            await storageManager.setter({
-                originKey: "custom_homeworks",
-                dataToStore: merged,
-            });
+            setUserState({ customHomeworks: merged });
         };
 
         saveCustomHomeworks().catch((e) => {

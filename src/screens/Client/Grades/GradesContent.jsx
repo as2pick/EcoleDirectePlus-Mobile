@@ -17,7 +17,7 @@ import Period from "./custom/classes/Period";
 import AddGradeModal from "./custom/components/SimulateGradeModal";
 
 import { Text } from "../../../components/Ui/core";
-import { storageManager } from "../../../helpers/StorageManager";
+import useUserDatas from "../../../hooks/useUserDatas";
 import { useGrade } from "./custom/context/LocalContext";
 import { calculateStrengthsWeaknesses, formatGradeText } from "./custom/helper";
 import { useSimulation } from "./custom/hooks/useSimulation";
@@ -27,6 +27,7 @@ const { width } = Dimensions.get("window");
 export default function GradesContent() {
     const { sortedGradesData, setSortedGradesData, userAccesToken } = useUser();
     const { state, dispatch } = useGrade();
+    const { grades } = useUserDatas();
     const navigation = useNavigation();
 
     const [loading, setLoading] = useState(true);
@@ -64,9 +65,7 @@ export default function GradesContent() {
         try {
             setLoading(true);
             setError(null);
-            const userGrades = await storageManager.getter({
-                originKey: "grades",
-            });
+            const userGrades = grades.data;
             setSortedGradesData(userGrades);
             setPeriodes(
                 Object.entries(userGrades).map(([value, { periodName }]) => ({

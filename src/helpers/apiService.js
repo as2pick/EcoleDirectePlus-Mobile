@@ -1,6 +1,6 @@
+import useUserDatas from "../hooks/useUserDatas";
 import resolvers, { originName } from "../resolver/resolver";
 import { generateChecksum } from "../utils/crypto";
-import { storageManager } from "./StorageManager";
 
 export default async function apiService({ origin, userToken, extra = null }) {
     if (origin !== "all" && !originName.includes(origin)) return;
@@ -9,16 +9,7 @@ export default async function apiService({ origin, userToken, extra = null }) {
         const promises = originName.map(async (origin) => {
             const resolverFunction = resolvers[origin];
             const data = await resolverFunction({ token: userToken, ...extra });
-            const apiDataChecksum = await generateChecksum(data);
-            // console.log(apiDataChecksum, "checksum generated");
-            await storageManager.setter({
-                originKey: origin,
-                dataToStore: data,
-            });
-            await storageManager.setter({
-                originKey: `checksum_${origin}`,
-                dataToStore: apiDataChecksum,
-            });
+            await useUserDatas.getState().updateDataAndChecksum(origin, data);
         });
 
         await Promise.all(promises);
@@ -26,20 +17,12 @@ export default async function apiService({ origin, userToken, extra = null }) {
     } else {
         const resolverFunction = resolvers[origin];
         const result = await resolverFunction({ token: userToken, ...extra });
-        const apiDataChecksum = await generateChecksum(result);
-
-        await storageManager.setter({
-            originKey: origin,
-            dataToStore: result,
-        });
-        await storageManager.setter({
-            originKey: `checksum_${origin}`,
-            dataToStore: apiDataChecksum,
-        });
+        await useUserDatas.getState().updateDataAndChecksum(origin, result);
 
         console.log(`Route ${origin} fetched and stored.`);
     }
 }
+//  LOG  Data out-to-date, updating for homeworks quand on coche, faudrait éviter ca !!! QUE QUAND ON CHOCHE, quand on décoche ca refetch pas
 
 export async function dataUpdater(userToken) {
     const promises = originName.map(async (origin) => {
@@ -47,9 +30,8 @@ export async function dataUpdater(userToken) {
             const resolverFunction = resolvers[origin];
             const data = await resolverFunction({ token: userToken });
             const apiChecksum = await generateChecksum(data);
-            const storedApiChecksum = await storageManager.getter({
-                originKey: `checksum_${origin}`,
-            });
+
+            const storedApiChecksum = await useUserDatas.getState()[origin].hash;
             if (apiChecksum !== storedApiChecksum) {
                 console.log(`Data out-to-date, updating for ${origin}`);
                 apiService({ origin, userToken });

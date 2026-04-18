@@ -1,4 +1,4 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import useUserDatas from "../hooks/useUserDatas";
 import { originName } from "../resolver/resolver";
 import { arraysEqual } from "../utils/json";
 import apiService, { dataUpdater } from "./apiService";
@@ -13,15 +13,8 @@ export default async function dataManager(
         type: "unknown",
     }
 ) {
-    let rawStorageKeys = await AsyncStorage.getAllKeys();
-    if (rawStorageKeys.includes("userData")) {
-        rawStorageKeys = rawStorageKeys.filter(
-            (userData) => userData !== "userData"
-        ); // remove user data from origins in storage
-    }
+    const keysStored = await useUserDatas.getState().getStoredKeys();
 
-    const keysStored = rawStorageKeys.filter((key) => originName.includes(key));
-    console.log(`Data keys stored on device :${keysStored.map((d) => ` ${d}`)}`);
     if (arraysEqual(keysStored, originName)) {
         if (network.isOnline) {
             console.log("All datas are stored on devices and network is connected");
@@ -36,9 +29,8 @@ export default async function dataManager(
         }
     } else {
         if (network.isOnline) {
-            const missing = originName.filter(
-                (item) => !rawStorageKeys.includes(item)
-            );
+            const missing = useUserDatas.getState().getEmptyDatasKeys();
+
             console.log(
                 "Invalid data count stored, network connected ,process to update them"
             );

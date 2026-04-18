@@ -2,6 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Constants from "expo-constants";
 import * as SecureStore from "expo-secure-store";
 import { payloadHelper } from "../../helpers/cryptoHelper";
+import useUserDatas from "../../hooks/useUserDatas";
 import { originName } from "../../resolver/resolver";
 import fetchApi from "../fetchApi";
 import { getCookiesFromResponse } from "../responseUtils";
@@ -80,6 +81,7 @@ const authService = {
             await SecureStore.deleteItemAsync(key);
             console.log("Deleted key:", key);
         });
+        useUserDatas.getState().reset();
         await AsyncStorage.clear();
     },
     getUserId: async () =>
