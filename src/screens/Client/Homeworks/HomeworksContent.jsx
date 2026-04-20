@@ -13,7 +13,6 @@ import { useFocusEffect } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import PlusIcon from "../../../../assets/svg/micro/PlusIcon";
 import { HomeworkCard } from "../../../components";
-import LoadingWrapper from "../../../components/Layout/LoadingWrapper";
 import { Text } from "../../../components/Ui/core";
 import { motivationSentences } from "../../../constants/features/homeworksConfig";
 import { useUser } from "../../../context/UserContext";
@@ -33,11 +32,10 @@ export default function HomeworksContent() {
 
     const { dispatch } = useHomework();
 
-    const [loading, setLoading] = useState(true);
     const [homeworksDates, setHomeworksDates] = useState();
     const [formatedDates, setFormatedDates] = useState();
     const [activeDate, setActiveDate] = useState("");
-    const [progression, setProgression] = useState(1);
+    const [progression, setProgression] = useState(0);
     const [displayTasks, setDisplayTasks] = useState([]);
     const [encouragementSentence, setEncouragemementSentence] = useState("");
     const [completedTasks, setCompletedTasks] = useState([]);
@@ -79,7 +77,6 @@ export default function HomeworksContent() {
                 if (!activeDate || !homeworksData?.formatedDates?.[activeDate]) {
                     setActiveDate(Object.keys(homeworksData.formatedDates)[0]);
                 }
-                setLoading(false);
                 return;
             }
 
@@ -96,9 +93,7 @@ export default function HomeworksContent() {
                 }
             };
 
-            setLoading(true);
             loadHomeworks();
-            setLoading(false);
         }, [homeworksData, customHomeworksData, activeDate])
     );
     useEffect(() => {
@@ -211,7 +206,7 @@ export default function HomeworksContent() {
         [dispatch]
     );
     return (
-        <LoadingWrapper loading={loading} setLoading={setLoading}>
+        <>
             <NewHomeworkModal visible={modalOpen} />
             <View style={{ flex: 1 }}>
                 <View
@@ -317,7 +312,7 @@ export default function HomeworksContent() {
                     </View>
                 </View>
             </View>
-        </LoadingWrapper>
+        </>
     );
 }
 

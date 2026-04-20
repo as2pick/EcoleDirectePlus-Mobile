@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 
-import { useFocusEffect, useNavigation, useTheme } from "@react-navigation/native";
+import { useNavigation, useTheme } from "@react-navigation/native";
 
 import Animated, {
     useAnimatedStyle,
@@ -9,14 +9,12 @@ import Animated, {
     withSpring,
 } from "react-native-reanimated";
 import RoadFinish from "../../../../assets/svg/RoadFinish";
-import { OverLoader } from "../../../components";
 import VerticalScrollView from "../../../components/Layout/VerticalScrollView";
 import { CONFIG } from "../../../constants/config";
 import { GLOBALS_DATAS } from "../../../constants/device/globals";
 import { timetableConfig } from "../../../constants/features/timetableConfig";
 
 import { Text } from "../../../components/Ui/core";
-import { useUser } from "../../../context/UserContext";
 import useUserDatas from "../../../hooks/useUserDatas";
 import { routesNames } from "../../../router/config/routesNames";
 import { addOpacityToCssRgb } from "../../../utils/colorGenerator";
@@ -30,17 +28,14 @@ height -= CONFIG.upper + 24; // ??? but works fine
 const screenHeight = height;
 
 export default function TimetableContent() {
-    const { userAccesToken, sortedTimetableData, setSortedTimetableData } =
-        useUser();
-    const { timetable } = useUserDatas();
-
+    const timetableData = useUserDatas((state) => state.timetable.data);
     const navigation = useNavigation();
     const theme = useTheme();
 
     const scrollViewRef = useRef(null);
 
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [showLoader, setShowLoader] = useState(false);
     const [timetableViewDims, setTimetableViewDims] = useState({
         width: 0,
@@ -54,41 +49,17 @@ export default function TimetableContent() {
         opacity: dynamicOpacity.value,
     }));
 
-    useFocusEffect(
-        useCallback(() => {
-            if (!sortedTimetableData || sortedTimetableData.length === 0) {
-                setLoading(true);
-                const tempVar = timetable.data;
+    const activeDate = timetableData?.[currentIndex]?.iSODate || "";
 
-                setSortedTimetableData(tempVar);
-                setLoading(false);
-            } else {
-            }
-        }, [userAccesToken, sortedTimetableData])
-    );
-
-    const activeDate = sortedTimetableData?.[currentIndex]?.iSODate || "";
     useEffect(() => {
         if (!timetableCoreSuccessLoaded) return;
 
         scrollViewRef.current.scrollToIndex(
-            sortedTimetableData.findIndex((day) => day.date === CONFIG.dateNow),
+            timetableData.findIndex((day) => day.date === CONFIG.dateNow),
             false
         );
         dynamicOpacity.value = withSpring(1, { duration: 1500 });
     }, [timetableCoreSuccessLoaded]);
-
-    if (loading) {
-        return (
-            <OverLoader
-                bgOpacityValue={0.7}
-                loaderStyles={styles.loader}
-                annimationStartTiming={1000}
-                triggerStateArr={[loading, setLoading]}
-                triggerViewArr={[showLoader, setShowLoader]}
-            />
-        );
-    }
 
     return (
         <View
@@ -131,7 +102,7 @@ export default function TimetableContent() {
                         }}
                         onLongPress={() =>
                             scrollViewRef.current.scrollToIndex(
-                                sortedTimetableData.findIndex(
+                                timetableData.findIndex(
                                     (day) => day.date === CONFIG.dateNow
                                 )
                             )
@@ -144,40 +115,30 @@ export default function TimetableContent() {
                 </View>
 
                 <VerticalScrollView
-                    arrayLength={sortedTimetableData?.length}
+                    arrayLength={timetableData?.length}
                     getIndex={(i) => setCurrentIndex(i)}
                     ref={scrollViewRef}
                 >
-                    {!loading &&
-                        sortedTimetableData?.map(
-                            (currentDay, index, courseIndex) => (
-                                <DayShedule
-                                    key={index}
-                                    currentDay={currentDay}
-                                    navigation={navigation}
-                                    theme={theme}
-                                    timetableViewDims={{
-                                        getter: timetableViewDims,
-                                        setter: setTimetableViewDims,
-                                    }}
-                                    index={courseIndex}
-                                />
-                            )
-                        )}
+                    {timetableData?.map((currentDay, index, courseIndex) => (
+                        <DayShedule
+                            key={index}
+                            currentDay={currentDay}
+                            navigation={navigation}
+                            theme={theme}
+                            timetableViewDims={{
+                                getter: timetableViewDims,
+                                setter: setTimetableViewDims,
+                            }}
+                            index={courseIndex}
+                        />
+                    ))}
                 </VerticalScrollView>
             </Animated.View>
         </View>
     );
 }
 
-const CourseBox = ({
-    course,
-    navigation,
-    theme,
-    timetableViewDims,
-    courseIndex,
-}) => {
-    const [libelleLayout, setLibelleLayout] = useState(null);
+const CourseBox = ({ course, navigation, theme, timetableViewDims }) => {
     const [roomLayout, setRoomLayout] = useState(null);
     const [overlap, setOverlap] = useState(false);
     const libelleLayoutRef = useRef(false);
@@ -210,12 +171,12 @@ const CourseBox = ({
         }
     }, [roomLayout, startCourseLayout]);
     const {
-        classGroup,
+        // classGroup,
         endCourse,
-        group,
+        // group,
         isCancelled,
         isDispensed,
-        isEdited,
+        // isEdited,
         libelle,
         room,
         startCourse,
@@ -229,7 +190,6 @@ const CourseBox = ({
 
     const handleLibelleLayout = (e) => {
         if (!libelleLayoutRef.current) {
-            setLibelleLayout(e.nativeEvent.layout);
             libelleLayoutRef.current = true;
         }
     };
@@ -264,7 +224,6 @@ const CourseBox = ({
             ]}
         >
             <TouchableOpacity
-                //key={webId}
                 style={[
                     {
                         marginHorizontal: 24,
@@ -390,7 +349,6 @@ const CourseBox = ({
                         </View>
                         <View
                             style={{
-                                //width: '100%',
                                 flexDirection: "row",
                                 justifyContent: "flex-start",
                             }}
@@ -489,4 +447,3 @@ const styles = StyleSheet.create({
         backgroundColor: "rgb(10, 10, 10)",
     },
 });
-
