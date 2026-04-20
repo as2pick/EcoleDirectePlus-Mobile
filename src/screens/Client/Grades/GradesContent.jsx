@@ -1,4 +1,3 @@
-import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useCallback, useEffect, useState } from "react";
 import { Dimensions, View } from "react-native";
@@ -9,7 +8,6 @@ import { FlatList } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { DropDown, ScrollableStack } from "../../../components";
 import { API } from "../../../constants/api/api";
-import { useUser } from "../../../context/UserContext";
 import { cssHslaToHsla } from "../../../utils/colorGenerator";
 import { parseNumber } from "../../../utils/grades/makeAverage";
 import Discipline from "./custom/classes/Discipline";
@@ -25,14 +23,9 @@ import { useSimulation } from "./custom/hooks/useSimulation";
 const { width } = Dimensions.get("window");
 
 export default function GradesContent() {
-    const { sortedGradesData, setSortedGradesData, userAccesToken } = useUser();
     const { state, dispatch } = useGrade();
     // const { grades } = useUserDatas();
     const gradesData = useUserDatas((state) => state.grades.data);
-    const navigation = useNavigation();
-
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
 
     const [periodes, setPeriodes] = useState([]);
     const [displayPeriode, setDisplayPeriode] = useState({});
@@ -65,7 +58,6 @@ export default function GradesContent() {
     const fetchAndProcessGrades = useCallback(() => {
         try {
             // setLoading(true);
-            setError(null);
             setPeriodes(
                 Object.entries(gradesData).map(([value, { periodName }]) => ({
                     label: periodName,
@@ -74,7 +66,6 @@ export default function GradesContent() {
             );
             setDisplayPeriode(gradesData[API.DEFAULT_PERIOD_KEY]);
         } catch (err) {
-            setError(err.message);
             console.error("Error while loading grades:", err);
         }
         // finally {
