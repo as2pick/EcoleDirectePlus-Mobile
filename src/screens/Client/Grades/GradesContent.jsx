@@ -1,4 +1,4 @@
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useCallback, useEffect, useState } from "react";
 import { Dimensions, View } from "react-native";
@@ -27,7 +27,8 @@ const { width } = Dimensions.get("window");
 export default function GradesContent() {
     const { sortedGradesData, setSortedGradesData, userAccesToken } = useUser();
     const { state, dispatch } = useGrade();
-    const { grades } = useUserDatas();
+    // const { grades } = useUserDatas();
+    const gradesData = useUserDatas((state) => state.grades.data);
     const navigation = useNavigation();
 
     const [loading, setLoading] = useState(true);
@@ -61,33 +62,30 @@ export default function GradesContent() {
         setGeneralAverage,
     });
 
-    const fetchAndProcessGrades = useCallback(async () => {
+    const fetchAndProcessGrades = useCallback(() => {
         try {
-            setLoading(true);
+            // setLoading(true);
             setError(null);
-            const userGrades = grades.data;
-            setSortedGradesData(userGrades);
             setPeriodes(
-                Object.entries(userGrades).map(([value, { periodName }]) => ({
+                Object.entries(gradesData).map(([value, { periodName }]) => ({
                     label: periodName,
                     value,
                 }))
             );
-            setDisplayPeriode(userGrades[API.DEFAULT_PERIOD_KEY]);
+            setDisplayPeriode(gradesData[API.DEFAULT_PERIOD_KEY]);
         } catch (err) {
             setError(err.message);
             console.error("Error while loading grades:", err);
-        } finally {
-            setLoading(false);
         }
-    }, [setSortedGradesData]);
+        // finally {
+        //     setLoading(false);
+        // }
+    }, [gradesData]);
 
-    useFocusEffect(
-        useCallback(() => {
-            if (sortedGradesData && Object.keys(sortedGradesData).length > 0) return;
-            fetchAndProcessGrades();
-        }, [userAccesToken, sortedGradesData, fetchAndProcessGrades])
-    );
+    useEffect(() => {
+        if (!gradesData || Object.keys(gradesData).length === 0) return;
+        fetchAndProcessGrades();
+    }, [gradesData]);
 
     useEffect(() => {
         if (!displayPeriode || Object.keys(displayPeriode).length === 0) return;
@@ -191,7 +189,7 @@ export default function GradesContent() {
                     {periodes.length > 0 && (
                         <DropDown
                             onSelect={(value) => {
-                                const changedPeriod = sortedGradesData[value];
+                                const changedPeriod = gradesData[value];
                                 setDisplayPeriode(changedPeriod);
 
                                 setDisplayPeriodeName(value);
@@ -429,4 +427,3 @@ function flattenDisciplines(groups) {
 
     return result;
 }
-
