@@ -25,16 +25,13 @@ import { useHomework } from "./context/LocalContext";
 import { useHomeworksHandler } from "./hooks/useHomeworksHandler";
 
 export default function HomeworksContent() {
-    const {
-        sortedHomeworksData,
-        setSortedHomeworksData,
-        customHomeworksData,
-        setCustomHomeworksData,
-    } = useUser();
+    const { setSortedHomeworksData } = useUser();
 
-    const { homeworks, customHomeworks } = useUserDatas();
+    const homeworksData = useUserDatas((state) => state.homeworks.data);
+    const customHomeworksData = useUserDatas((state) => state.customHomeworks.data);
+    const setUserState = useUserDatas((state) => state.setUserState);
+
     const { dispatch } = useHomework();
-    const { setUserState } = useUserDatas();
 
     const [loading, setLoading] = useState(true);
     const [homeworksDates, setHomeworksDates] = useState();
@@ -75,15 +72,12 @@ export default function HomeworksContent() {
     useFocusEffect(
         useCallback(() => {
             if (
-                sortedHomeworksData?.formatedDates &&
-                Object.keys(sortedHomeworksData).length > 0
+                homeworksData?.formatedDates &&
+                Object.keys(homeworksData).length > 0
             ) {
-                setFormatedDates(sortedHomeworksData.formatedDates);
-                if (
-                    !activeDate ||
-                    !sortedHomeworksData?.formatedDates?.[activeDate]
-                ) {
-                    setActiveDate(Object.keys(sortedHomeworksData.formatedDates)[0]);
+                setFormatedDates(homeworksData.formatedDates);
+                if (!activeDate || !homeworksData?.formatedDates?.[activeDate]) {
+                    setActiveDate(Object.keys(homeworksData.formatedDates)[0]);
                 }
                 setLoading(false);
                 return;
@@ -94,7 +88,6 @@ export default function HomeworksContent() {
                     const storedHomeworks = homeworks.data;
 
                     if (storedHomeworks) {
-                        setSortedHomeworksData(storedHomeworks);
                         setFormatedDates(storedHomeworks.formatedDates);
                         setActiveDate(Object.keys(storedHomeworks.formatedDates)[0]);
                     }
@@ -102,32 +95,21 @@ export default function HomeworksContent() {
                     console.error("Error while loading hw:", error);
                 }
             };
-            const loadCustomHomeworks = async () => {
-                try {
-                    const storedCustomHomeworks = customHomeworks;
-                    if (storedCustomHomeworks && storedCustomHomeworks.length > 0) {
-                        setCustomHomeworksData(storedCustomHomeworks);
-                    }
-                } catch (error) {
-                    console.error("Error while loading custom hw:", error);
-                }
-            };
 
             setLoading(true);
             loadHomeworks();
-            loadCustomHomeworks();
             setLoading(false);
-        }, [sortedHomeworksData, customHomeworksData, activeDate])
+        }, [homeworksData, customHomeworksData, activeDate])
     );
     useEffect(() => {
         if (
-            !sortedHomeworksData ||
+            !homeworksData ||
             !customHomeworksData ||
             customHomeworksData.length === 0
         )
             return;
 
-        const merged = JSON.parse(JSON.stringify(sortedHomeworksData));
+        const merged = JSON.parse(JSON.stringify(homeworksData));
         let hasChanged = false;
 
         customHomeworksData.forEach((custom) => {
@@ -177,16 +159,15 @@ export default function HomeworksContent() {
     }, [customHomeworksData]);
 
     useEffect(() => {
-        if (!sortedHomeworksData || Object.keys(sortedHomeworksData).length === 0)
-            return;
+        if (!homeworksData || Object.keys(homeworksData).length === 0) return;
 
-        setHomeworksDates(sortedHomeworksData.formatedDates);
-    }, [sortedHomeworksData]);
+        setHomeworksDates(homeworksData.formatedDates);
+    }, [homeworksData]);
 
     useEffect(() => {
         if (!activeDate) return;
 
-        const datas = sortedHomeworksData[activeDate];
+        const datas = homeworksData[activeDate];
         setDisplayTasks(datas);
         const completed = datas.filter(({ isDone }) => isDone);
         setCompletedTasks(completed);
@@ -194,7 +175,7 @@ export default function HomeworksContent() {
             Math.round((completed.length / datas.length) * 100) / 100;
         setProgression(progression);
         pickSentence(progression);
-    }, [activeDate, sortedHomeworksData]);
+    }, [activeDate, homeworksData]);
 
     useEffect(() => {
         if (!homeworksDates) return;
@@ -208,7 +189,7 @@ export default function HomeworksContent() {
         ({ item }) => {
             const [date, { contracted, isEvaluation }] = item;
 
-            const tasks = sortedHomeworksData[date] ?? [];
+            const tasks = homeworksData[date] ?? [];
             const allTasksCompleted =
                 tasks.length > 0 && tasks.every(({ isDone }) => isDone);
 
@@ -223,7 +204,7 @@ export default function HomeworksContent() {
                 />
             );
         },
-        [activeDate, sortedHomeworksData]
+        [activeDate, homeworksData]
     );
     const renderHomework = useCallback(
         ({ item }) => <HomeworkCard dispatch={dispatch} homework={item} />,
@@ -436,4 +417,3 @@ const DateItem = memo(
         );
     }
 );
-
