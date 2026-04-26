@@ -1,43 +1,55 @@
 import resolvers, { originName } from "../resolver/resolver";
 import { generateChecksum } from "../utils/crypto";
-import { storageManager } from "./StorageManager";
+import { storageServiceStates } from "./storageService";
 
 export default async function apiService({ origin, userToken, extra = null }) {
     if (origin !== "all" && !originName.includes(origin)) return;
 
     if (origin === "all") {
         const promises = originName.map(async (origin) => {
-            const resolverFunction = resolvers[origin];
-            const data = await resolverFunction({ token: userToken, ...extra });
-            const apiDataChecksum = await generateChecksum(data);
-            // console.log(apiDataChecksum, "checksum generated");
-            await storageManager.setter({
-                originKey: origin,
-                dataToStore: data,
-            });
-            await storageManager.setter({
-                originKey: `checksum_${origin}`,
-                dataToStore: apiDataChecksum,
-            });
+            try {
+                const resolverFunction = resolvers[origin];
+                const data = await resolverFunction({ token: userToken, ...extra });
+                if (!data) return;
+                
+                const apiDataChecksum = await generateChecksum(data);
+                console.log(apiDataChecksum, "checksum generated for", origin);
+                await storageServiceStates.setter({
+                    originKey: origin,
+                    dataToStore: data,
+                });
+                await storageServiceStates.setter({
+                    originKey: `checksum_${origin}`,
+                    dataToStore: apiDataChecksum,
+                });
+            } catch (error) {
+                console.error(`Error in apiService for ${origin}:`, error);
+            }
         });
 
         await Promise.all(promises);
-        console.log("All routes fetched and stored.");
+        console.log("All routes fetch attempt completed.");
     } else {
-        const resolverFunction = resolvers[origin];
-        const result = await resolverFunction({ token: userToken, ...extra });
-        const apiDataChecksum = await generateChecksum(result);
+        try {
+            const resolverFunction = resolvers[origin];
+            const result = await resolverFunction({ token: userToken, ...extra });
+            if (!result) return;
 
-        await storageManager.setter({
-            originKey: origin,
-            dataToStore: result,
-        });
-        await storageManager.setter({
-            originKey: `checksum_${origin}`,
-            dataToStore: apiDataChecksum,
-        });
+            const apiDataChecksum = await generateChecksum(result);
 
-        console.log(`Route ${origin} fetched and stored.`);
+            await storageServiceStates.setter({
+                originKey: origin,
+                dataToStore: result,
+            });
+            await storageServiceStates.setter({
+                originKey: `checksum_${origin}`,
+                dataToStore: apiDataChecksum,
+            });
+
+            console.log(`Route ${origin} fetched and stored.`);
+        } catch (error) {
+            console.error(`Error in apiService for ${origin}:`, error);
+        }
     }
 }
 
@@ -47,7 +59,7 @@ export async function dataUpdater(userToken) {
             const resolverFunction = resolvers[origin];
             const data = await resolverFunction({ token: userToken });
             const apiChecksum = await generateChecksum(data);
-            const storedApiChecksum = await storageManager.getter({
+            const storedApiChecksum = await storageServiceStates.getter({
                 originKey: `checksum_${origin}`,
             });
             if (apiChecksum !== storedApiChecksum) {
