@@ -105,11 +105,13 @@ function parseDiscipline(discipline) {
         discipline.professeurs?.map(({ nom }) => [nom]) || undefined;
 
     const decodedClassAssessment =
-        base64Handler.decode(discipline.appreciationClasse) || undefined;
+        base64Handler.decodeHTMLEntities(
+            base64Handler.decode(discipline.appreciationClasse)
+        ) || undefined;
 
     let decodedUserAssessment =
         discipline?.appreciations?.map((chain) =>
-            base64Handler.decode(chain)
+            base64Handler.decodeHTMLEntities(base64Handler.decode(chain))
         )[0] /* atention if too many users report less appreciations ! */ ||
         undefined;
 
@@ -285,4 +287,3 @@ function badgesDataInjectedIntoGrades(userGrades) {
     });
     return result;
 }
-

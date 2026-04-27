@@ -249,7 +249,8 @@ const CourseBox = ({
     };
 
     const { shadow } = useTheme();
-    const shadowColor = addOpacityToCssRgb("rgb(0, 0, 0)", shadow.oppacity);
+    const shadowOpacity = shadow?.oppacity ?? shadow?.opacity ?? 0.25;
+    const shadowColor = addOpacityToCssRgb("rgb(0, 0, 0)", shadowOpacity);
 
     return (
         <Animated.View
@@ -490,4 +491,3 @@ const styles = StyleSheet.create({
         backgroundColor: "rgb(10, 10, 10)",
     },
 });
-

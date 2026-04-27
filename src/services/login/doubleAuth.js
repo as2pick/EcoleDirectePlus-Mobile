@@ -18,7 +18,7 @@ export const getResponseChoices = async (token) => {
     const question = doubleAuthGetChoices.question;
     const encodedChoices = doubleAuthGetChoices.propositions;
     const decodedChoices = encodedChoices.map((value) => {
-        return base64Handler.decode(value);
+        return base64Handler.decodeHTMLEntities(base64Handler.decode(value));
     });
 
     const choices = decodedChoices.reduce((acc, key, index) => {
@@ -28,7 +28,10 @@ export const getResponseChoices = async (token) => {
     }, {});
     return {
         choices: { ...choices },
-        question: { [base64Handler.decode(question)]: question },
+        question: {
+            [base64Handler.decodeHTMLEntities(base64Handler.decode(question))]:
+                question,
+        },
     };
 };
 
@@ -50,4 +53,3 @@ export const sendResponseChoice = async (token, choice) => {
 
     return fetchDoubleAuth;
 };
-

@@ -1,4 +1,5 @@
 import { useFocusEffect } from "@react-navigation/native";
+import moment from "moment";
 import { useCallback, useMemo, useState } from "react";
 import {
     ActivityIndicator,
@@ -50,38 +51,52 @@ export default function GradesContent() {
     const periodInfo = useMemo(() => {
         if (!sortedGradesData) return { subjects: [], general: "0.00", name: "" };
         const periodCodes = Object.keys(sortedGradesData);
-        if (periodCodes.length === 0) return { subjects: [], general: "0.00", name: "" };
-        
+        if (periodCodes.length === 0)
+            return { subjects: [], general: "0.00", name: "" };
+
         const latestPeriodCode = periodCodes[periodCodes.length - 1];
         const periodData = sortedGradesData[latestPeriodCode];
-        
-        const subjects = periodData.groups.flatMap(group => 
-            group.isDisciplineGroup ? group.disciplines : [group]
-        ).map(s => {
-            const grades = s.grades || [];
-            const sum = grades.reduce((acc, g) => acc + (g.data.grade || 0), 0);
-            const avg = grades.length > 0 ? (sum / grades.length).toFixed(2) : null;
-            return {
-                ...s,
-                average: avg,
-                color: getSubjectColor(s.libelle)
-            };
-        }).filter(s => s.average !== null);
 
-        const general = subjects.length > 0 
-            ? (subjects.reduce((acc, s) => acc + parseFloat(s.average), 0) / subjects.length).toFixed(2)
-            : "0.00";
+        const subjects = periodData.groups
+            .flatMap((group) =>
+                group.isDisciplineGroup ? group.disciplines : [group]
+            )
+            .map((s) => {
+                const grades = s.grades || [];
+                const sum = grades.reduce((acc, g) => acc + (g.data.grade || 0), 0);
+                const avg =
+                    grades.length > 0 ? (sum / grades.length).toFixed(2) : null;
+                return {
+                    ...s,
+                    average: avg,
+                    color: getSubjectColor(s.libelle),
+                };
+            })
+            .filter((s) => s.average !== null);
+
+        const general =
+            subjects.length > 0
+                ? (
+                      subjects.reduce((acc, s) => acc + parseFloat(s.average), 0) /
+                      subjects.length
+                  ).toFixed(2)
+                : "0.00";
 
         return { subjects, general, name: latestPeriodCode };
     }, [sortedGradesData]);
 
     const displayGrades = useMemo(() => {
         if (!selectedSubject) {
-            return periodInfo.subjects.flatMap(s => s.grades.map(g => ({ ...g, color: s.color })))
+            return periodInfo.subjects
+                .flatMap((s) => s.grades.map((g) => ({ ...g, color: s.color })))
                 .sort((a, b) => new Date(b.date) - new Date(a.date));
         }
-        const subject = periodInfo.subjects.find(s => s.libelle === selectedSubject);
-        return subject ? subject.grades.map(g => ({ ...g, color: subject.color })) : [];
+        const subject = periodInfo.subjects.find(
+            (s) => s.libelle === selectedSubject
+        );
+        return subject
+            ? subject.grades.map((g) => ({ ...g, color: subject.color }))
+            : [];
     }, [selectedSubject, periodInfo]);
 
     if (loading) {
@@ -97,26 +112,57 @@ export default function GradesContent() {
             <View style={styles.header}>
                 <Text style={styles.periodName}>Période {periodInfo.name}</Text>
                 <View style={styles.generalAverageBox}>
-                    <Text style={styles.generalAverageValue}>{periodInfo.general}</Text>
+                    <Text style={styles.generalAverageValue}>
+                        {periodInfo.general}
+                    </Text>
                     <Text style={styles.generalAverageLabel}>Moyenne Générale</Text>
                 </View>
             </View>
 
             <View style={styles.subjectsContainer}>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.subjectsScroll}>
-                    <TouchableOpacity 
+                <ScrollView
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    contentContainerStyle={styles.subjectsScroll}
+                >
+                    <TouchableOpacity
                         onPress={() => setSelectedSubject(null)}
-                        style={[styles.subjectTab, !selectedSubject && styles.activeTab]}
+                        style={[
+                            styles.subjectTab,
+                            !selectedSubject && styles.activeTab,
+                        ]}
                     >
-                        <Text style={[styles.tabText, !selectedSubject && styles.activeTabText]}>Tous</Text>
+                        <Text
+                            style={[
+                                styles.tabText,
+                                !selectedSubject && styles.activeTabText,
+                            ]}
+                        >
+                            Tous
+                        </Text>
                     </TouchableOpacity>
                     {periodInfo.subjects.map((s, i) => (
-                        <TouchableOpacity 
-                            key={i} 
+                        <TouchableOpacity
+                            key={i}
                             onPress={() => setSelectedSubject(s.libelle)}
-                            style={[styles.subjectTab, selectedSubject === s.libelle && { borderColor: s.color, backgroundColor: "rgba(255,255,255,0.05)" }]}
+                            style={[
+                                styles.subjectTab,
+                                selectedSubject === s.libelle && {
+                                    borderColor: s.color,
+                                    backgroundColor: "rgba(255,255,255,0.05)",
+                                },
+                            ]}
                         >
-                            <Text style={[styles.tabText, selectedSubject === s.libelle && { color: s.color }]}>{s.libelle}</Text>
+                            <Text
+                                style={[
+                                    styles.tabText,
+                                    selectedSubject === s.libelle && {
+                                        color: s.color,
+                                    },
+                                ]}
+                            >
+                                {s.libelle}
+                            </Text>
                         </TouchableOpacity>
                     ))}
                 </ScrollView>
@@ -127,7 +173,11 @@ export default function GradesContent() {
                 height="70%"
                 debateSpacing="0%"
                 movementDetectionHeight="15%"
-                style={{ backgroundColor: "rgb(25, 25, 56)", borderTopLeftRadius: 30, borderTopRightRadius: 30 }}
+                style={{
+                    backgroundColor: "rgb(25, 25, 56)",
+                    borderTopLeftRadius: 30,
+                    borderTopRightRadius: 30,
+                }}
             >
                 <View style={styles.sheetContent}>
                     <Text style={styles.sheetTitle}>
@@ -138,14 +188,30 @@ export default function GradesContent() {
                         keyExtractor={(item, index) => index.toString()}
                         renderItem={({ item }) => (
                             <View style={styles.gradeCard}>
-                                <View style={[styles.gradeIndicator, { backgroundColor: item.color }]} />
+                                <View
+                                    style={[
+                                        styles.gradeIndicator,
+                                        { backgroundColor: item.color },
+                                    ]}
+                                />
                                 <View style={styles.gradeInfo}>
-                                    <Text style={styles.gradeLibelle} numberOfLines={1}>{item.libelle}</Text>
-                                    <Text style={styles.gradeDate}>{moment(item.date).format("D MMMM YYYY")}</Text>
+                                    <Text
+                                        style={styles.gradeLibelle}
+                                        numberOfLines={1}
+                                    >
+                                        {item.libelle}
+                                    </Text>
+                                    <Text style={styles.gradeDate}>
+                                        {moment(item.date).format("D MMMM YYYY")}
+                                    </Text>
                                 </View>
                                 <View style={styles.gradeValueBox}>
-                                    <Text style={styles.gradeValue}>{item.data.grade}</Text>
-                                    <Text style={styles.gradeOutOf}>/{item.data.outOf}</Text>
+                                    <Text style={styles.gradeValue}>
+                                        {item.data.grade}
+                                    </Text>
+                                    <Text style={styles.gradeOutOf}>
+                                        /{item.data.outOf}
+                                    </Text>
                                 </View>
                             </View>
                         )}

@@ -1,5 +1,13 @@
 import { sha256 } from "js-sha256";
 
+const assertString = (text, functionName) => {
+    if (typeof text !== "string") {
+        throw new TypeError(
+            `${functionName}: expected a string but received ${typeof text}`
+        );
+    }
+};
+
 export function textToHSL({
     text,
     salt = "",
@@ -8,7 +16,10 @@ export function textToHSL({
     variationS = 10, // 10
     variationL = 10,
 }) {
-    const int = parseInt(sha256(text + salt), 16);
+    // Provide safe default for undefined or empty text
+    const safeText = typeof text === "string" && text.length > 0 ? text : "default";
+
+    const int = parseInt(sha256(safeText + salt), 16);
     const l = int % 10000;
     const h = Math.round((int % 10 ** 8) / 10 ** 4);
     const s = Math.round((int % 10 ** 12) / 10 ** 8);
@@ -95,71 +106,95 @@ export function rgbToHsl(r, g, b) {
 
     return [Math.round(h), Math.round(s * 100), Math.round(l * 100)];
 }
-export const cssRgbToRgb = (text) => {
-    let [x, y, z] = text.match(/\d+/g);
 
+export const cssRgbToRgb = (text) => {
+    assertString(text, "cssRgbToRgb");
+    const rgbMatch = text.match(/\d+/g);
+
+    if (!rgbMatch || rgbMatch.length < 3) {
+        throw new Error("cssRgbToRgb: invalid RGB string");
+    }
+
+    const [x, y, z] = rgbMatch;
     return [x, y, z];
 };
 
 export const cssRgbToHsl = (text) => {
     const [r, g, b] = cssRgbToRgb(text);
-
     const [h, s, l] = rgbToHsl(r, g, b);
     return [h, s, l];
 };
 
 export const cssHslaToHsla = (text) => {
+    assertString(text, "cssHslaToHsla");
     const values = text.match(/[\d.]+%?/g);
 
     if (!values || values.length < 4) {
-        throw new Error("Invalid HSLA string");
+        throw new Error("cssHslaToHsla: invalid HSLA string");
     }
 
-    const [h, s, l, a] = values.map((v, i) =>
-        v.includes("%") ? parseFloat(v) : parseFloat(v)
-    );
-
+    const [h, s, l, a] = values.map((v) => parseFloat(v));
     return [h, s, l, a];
 };
 
 export const isDarkColor = (hsl) => {
-    const lightness = parseFloat(hsl.match(/,\s*(\d+)%\)$/)[1]);
+    assertString(hsl, "isDarkColor");
+    const match = hsl.match(/,\s*(\d+)%\)$/);
+
+    if (!match) {
+        throw new Error("isDarkColor: invalid HSL string");
+    }
+
+    const lightness = parseFloat(match[1]);
     return lightness < 50;
 };
 
 export const addOpacityToCssRgb = (text, a) => {
     if (a > 1) return "rgb(255, 100, 20)";
 
-    const [r, g, b] = cssRgbToRgb(text);
-    return `rgba(${r}, ${g}, ${b}, ${a})`;
+    const opacity =
+        typeof a === "number" && !Number.isNaN(a) ? Math.max(0, Math.min(1, a)) : 1;
+    if (typeof text !== "string") {
+        return `rgba(0, 0, 0, ${opacity})`;
+    }
+
+    const rgbMatch = text.match(/\d+/g);
+    if (!rgbMatch || rgbMatch.length < 3) {
+        return `rgba(0, 0, 0, ${opacity})`;
+    }
+
+    const [r, g, b] = rgbMatch;
+    return `rgba(${r}, ${g}, ${b}, ${opacity})`;
 };
 
 export const adjustLightness = (hslString, amount) => {
+    assertString(hslString, "adjustLightness");
     const match = hslString.match(/hsl\((\d+),\s*(\d+)%,\s*(\d+)%\)/);
+
     if (!match) {
-        throw new Error("Invalid HSL string format");
+        throw new Error("adjustLightness: invalid HSL string format");
     }
 
-    const h = parseInt(match[1]);
-    const s = parseInt(match[2]);
-    const l = parseInt(match[3]);
+    const h = parseInt(match[1], 10);
+    const s = parseInt(match[2], 10);
+    const l = parseInt(match[3], 10);
 
     const newL = Math.max(0, Math.min(100, l + amount));
-
     return `hsl(${h}, ${s}%, ${newL}%)`;
 };
 
 export const adjustSaturation = (hslString, amount) => {
+    assertString(hslString, "adjustSaturation");
     const match = hslString.match(/hsl\((\d+),\s*(\d+)%,\s*(\d+)%\)/);
+
     if (!match) {
-        throw new Error("Invalid HSL string format");
+        throw new Error("adjustSaturation: invalid HSL string format");
     }
 
-    const h = parseInt(match[1]);
-    const s = parseInt(match[2]);
-    const l = parseInt(match[3]);
+    const h = parseInt(match[1], 10);
+    const s = parseInt(match[2], 10);
+    const l = parseInt(match[3], 10);
 
     const newS = Math.max(0, Math.min(100, s + amount));
-
     return `hsl(${h}, ${newS}%, ${l}%)`;
 };

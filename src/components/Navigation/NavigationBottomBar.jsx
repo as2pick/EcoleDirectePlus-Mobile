@@ -10,7 +10,8 @@ const NavigationBottomBar = ({ state, descriptors, navigation }) => {
     const { shadow } = useTheme();
     const { colors } = useTheme();
     const caseColor = addOpacityToCssRgb(colors.case, 0.7);
-    const shadowColor = addOpacityToCssRgb("rgb(0, 0, 0)", shadow.oppacity);
+    const shadowOpacity = shadow?.oppacity ?? shadow?.opacity ?? 0.25;
+    const shadowColor = addOpacityToCssRgb("rgb(0, 0, 0)", shadowOpacity);
     return (
         <View
             style={[
@@ -110,4 +111,3 @@ const styles = StyleSheet.create({
 });
 
 export default NavigationBottomBar;
-

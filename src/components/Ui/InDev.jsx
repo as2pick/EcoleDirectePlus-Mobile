@@ -9,7 +9,8 @@ export default function InDev({}) {
     const { colors } = useTheme();
     const { shadow } = useTheme();
     const mainColor = addOpacityToCssRgb(colors.main, 0.7);
-    const shadowColor = addOpacityToCssRgb("rgb(0, 0, 0)", shadow.oppacity);
+    const shadowOpacity = shadow?.oppacity ?? shadow?.opacity ?? 0.25;
+    const shadowColor = addOpacityToCssRgb("rgb(0, 0, 0)", shadowOpacity);
     const caseColor = addOpacityToCssRgb(colors.case, 0.8);
     return (
         <View style={[styles.parent]}>
@@ -51,4 +52,3 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
 });
-

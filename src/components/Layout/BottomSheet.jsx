@@ -24,7 +24,11 @@ export default function BottomSheet({
     const translateY = useSharedValue(debateSpacing);
     const previousY = useSharedValue({ y: 0 });
 
-    useEffect(() => opened(isUp), [isUp]);
+    useEffect(() => {
+        if (typeof opened === "function") {
+            opened(isUp);
+        }
+    }, [isUp, opened]);
     const togglePosition = () => {
         translateY.value = withTiming(isUp ? debateSpacing : 0, {
             duration: 250,
@@ -112,4 +116,3 @@ const styles = StyleSheet.create({
         justifyContent: "flex-end",
     },
 });
-

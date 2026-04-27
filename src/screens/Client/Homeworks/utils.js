@@ -24,10 +24,14 @@ export function decodeHomeworkContent(homework) {
     return {
         ...homework,
         decodedHTMLCourseContent: homework.courseContent?.trim()
-            ? base64Handler.decode(homework.courseContent)
+            ? base64Handler.decodeHTMLEntities(
+                  base64Handler.decode(homework.courseContent)
+              )
             : "",
         decodedHTMLHomework: homework.homeworksContent?.content?.trim()
-            ? base64Handler.decode(homework.homeworksContent.content)
+            ? base64Handler.decodeHTMLEntities(
+                  base64Handler.decode(homework.homeworksContent.content)
+              )
             : "",
     };
 }
@@ -53,4 +57,3 @@ export const assignUnit = (size) => {
         return nombre.toString();
     }
 };
-

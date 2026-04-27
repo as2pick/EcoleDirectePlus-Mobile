@@ -14,6 +14,7 @@ import { useTheme } from "../../../context/ThemeContext";
 import { useUser } from "../../../context/UserContext";
 import { storageServiceStates } from "../../../helpers/storageService";
 import { textToHSL } from "../../../utils/colorGenerator";
+import handleBase64 from "../../../utils/handleBase64";
 
 export default function HomeworksScreen() {
     const { sortedHomeworksData, setSortedHomeworksData, userAccesToken } =
@@ -51,13 +52,21 @@ export default function HomeworksScreen() {
 
     const homeworkDays = useMemo(() => {
         if (!sortedHomeworksData) return [];
-        const dates = Object.keys(sortedHomeworksData).sort();
+        const dates = Object.keys(sortedHomeworksData)
+            .filter((d) => d !== "formatedDates")
+            .sort();
         return dates.map((date) => ({
             date,
             displayDate: moment(date).format("dddd D MMMM").toUpperCase(),
-            tasks: sortedHomeworksData[date].map((t) => ({
+            tasks: (sortedHomeworksData[date] || []).map((t) => ({
                 ...t,
-                color: getSubjectColor(t.matiere),
+                matiere: t.discipline?.name || t.matiere || "Inconnu",
+                devoir:
+                    t.homeworksContent?.content ||
+                    t.aFaire?.contenu ||
+                    t.devoir ||
+                    "",
+                color: getSubjectColor(t.discipline?.name || t.matiere || "Inconnu"),
             })),
         }));
     }, [sortedHomeworksData]);
@@ -101,27 +110,53 @@ export default function HomeworksScreen() {
                                 </View>
                             </View>
 
-                            {day.tasks.map((task, tIdx) => (
-                                <View key={tIdx} style={styles.taskCard}>
-                                    <View
-                                        style={[
-                                            styles.subjectIndicator,
-                                            { backgroundColor: task.color },
-                                        ]}
-                                    />
-                                    <View style={styles.taskContent}>
-                                        <Text style={[styles.subjectName, { color: task.color }]}>
-                                            {task.matiere.toUpperCase()}
-                                        </Text>
-                                        <Text style={styles.taskText}>{task.devoir}</Text>
+                            {day.tasks.map((task, tIdx) => {
+                                const subject = task.matiere || "Inconnu";
+                                let taskText = "Pas de description";
+                                try {
+                                    const rawContent =
+                                        task.devoir ||
+                                        task.homeworksContent?.content ||
+                                        "";
+                                    taskText = rawContent
+                                        ? handleBase64
+                                              .decodeAndClean(rawContent)
+                                              .substring(0, 100)
+                                        : "Pas de description";
+                                } catch (e) {
+                                    taskText = "Description indisponible";
+                                }
+                                return (
+                                    <View key={tIdx} style={styles.taskCard}>
+                                        <View
+                                            style={[
+                                                styles.subjectIndicator,
+                                                { backgroundColor: task.color },
+                                            ]}
+                                        />
+                                        <View style={styles.taskContent}>
+                                            <Text
+                                                style={[
+                                                    styles.subjectName,
+                                                    { color: task.color },
+                                                ]}
+                                            >
+                                                {subject.toUpperCase()}
+                                            </Text>
+                                            <Text style={styles.taskText}>
+                                                {taskText}
+                                            </Text>
+                                        </View>
                                     </View>
-                                </View>
-                            ))}
+                                );
+                            })}
                         </View>
                     ))
                 ) : (
                     <View style={styles.emptyContainer}>
-                        <Text style={styles.emptyText}>Aucun devoir pour le moment.</Text>
+                        <Text style={styles.emptyText}>
+                            Aucun devoir pour le moment.
+                        </Text>
                     </View>
                 )}
             </ScrollView>
