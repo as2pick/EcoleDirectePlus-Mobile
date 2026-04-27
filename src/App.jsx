@@ -13,6 +13,7 @@ export default function App() {
         "Lexend-Regular": require("../assets/fonts/Lexend-Regular.ttf"),
         "Lexend-Medium": require("../assets/fonts/Lexend-Medium.ttf"),
         "Lexend-Bold": require("../assets/fonts/Lexend-Bold.ttf"),
+        "Lexend-SemiBold": require("../assets/fonts/Lexend SemiBold.ttf"),
     });
 
     useEffect(() => {

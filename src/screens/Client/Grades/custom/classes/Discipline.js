@@ -1,21 +1,24 @@
-import { useEffect } from "react";
-import { TouchableOpacity, View } from "react-native";
+import { useEffect, useState } from "react";
+import { TouchableOpacity, View, ImageBackground } from "react-native";
 import { useTheme } from "@react-navigation/native";
 import Animated, {
     FadeIn,
     FadeOut,
     Layout,
+    runOnJS,
     useSharedValue,
     useAnimatedStyle,
     withTiming,
     interpolate,
 } from "react-native-reanimated";
 import { Text } from "../../../../../components/Ui/core";
-import { addOpacityToCssRgb } from "../../../../../utils/colorGenerator";
+import { addOpacity } from "../../../../../utils/colorGenerator";
 import { parseNumber } from "../../../../../utils/grades/makeAverage";
 import { objectsEqual } from "../../../../../utils/json";
 import { formatGradeText } from "../helper";
 import Grade from "./Grade";
+import flammeActive from "assets/icons/Flamme_active1.png";
+import flammeInactive from "assets/icons/Flamme_inactive1.png";
 
 export default class Discipline {
     constructor({
@@ -225,20 +228,28 @@ export default class Discipline {
 }
 
 function DisciplineCard({ isFirst, isLast, isExpanded, onPress, colors, dispatch, shadowColor, shadow, discipline }) {
+    const [shouldRenderContent, setShouldRenderContent] = useState(isExpanded);
     const expandProgress = useSharedValue(isExpanded ? 1 : 0);
 
     useEffect(() => {
-        expandProgress.value = withTiming(isExpanded ? 1 : 0, { duration: 300 });
+        if (isExpanded) {
+            setShouldRenderContent(true);
+        }
+        expandProgress.value = withTiming(isExpanded ? 1 : 0, { duration: 300 }, (finished) => {
+            if (finished && !isExpanded) {
+                runOnJS(setShouldRenderContent)(false);
+            }
+        });
     }, [isExpanded]);
 
-    const topRadiusClosed = isFirst ? 14 : 5;
-    const bottomRadiusClosed = isLast ? 14 : 5;
+    const topRadiusClosed = isFirst ? 16 : 8;
+    const bottomRadiusClosed = isLast ? 16 : 8;
 
     const containerAnimatedStyle = useAnimatedStyle(() => ({
-        borderTopLeftRadius: interpolate(expandProgress.value, [0, 0.5, 1], [topRadiusClosed, 11, 14]),
-        borderTopRightRadius: interpolate(expandProgress.value, [0, 0.5, 1], [topRadiusClosed, 11, 14]),
-        borderBottomLeftRadius: interpolate(expandProgress.value, [0, 0.5, 1], [bottomRadiusClosed, 11, 14]),
-        borderBottomRightRadius: interpolate(expandProgress.value, [0, 0.5, 1], [bottomRadiusClosed, 11, 14]),
+        borderTopLeftRadius: interpolate(expandProgress.value, [0, 0.5, 1], [topRadiusClosed, 11, 16]),
+        borderTopRightRadius: interpolate(expandProgress.value, [0, 0.5, 1], [topRadiusClosed, 11, 16]),
+        borderBottomLeftRadius: interpolate(expandProgress.value, [0, 0.5, 1], [bottomRadiusClosed, 11, 16]),
+        borderBottomRightRadius: interpolate(expandProgress.value, [0, 0.5, 1], [bottomRadiusClosed, 11, 16]),
     }));
 
     const contentAnimatedStyle = useAnimatedStyle(() => ({
@@ -254,7 +265,7 @@ function DisciplineCard({ isFirst, isLast, isExpanded, onPress, colors, dispatch
         { label: "Min", value: discipline.averageDatas.minAverage },
     ];
     const boxStyle = {
-        backgroundColor: "hsla(240, 26%, 13%, .35)",
+        backgroundColor: addOpacity(colors.main, .2),
         paddingHorizontal: 20,
         paddingVertical: 8,
         borderRadius: 8,
@@ -267,6 +278,9 @@ function DisciplineCard({ isFirst, isLast, isExpanded, onPress, colors, dispatch
                     {
                         backgroundColor: colors.secondary,
                         overflow: "hidden",
+                        boxShadow: "2px 6px 6px 0px rgba(0,0,0,0.25)",
+                        //borderColor: color,
+                        borderWidth: isExpanded ? 1 : 0,
                     },
                     containerAnimatedStyle,
                 ]}
@@ -275,45 +289,43 @@ function DisciplineCard({ isFirst, isLast, isExpanded, onPress, colors, dispatch
                     style={{
                         flexDirection: "row",
                         justifyContent: "space-between",
-                        padding: 18,
+                        paddingVertical: 10,
+                        paddingHorizontal: 20,
                         height: 80,
                         alignItems: "center",
                     }}
                 >
-                    <View style={{ flexDirection: "row", gap: 18 }}>
+                    <View style={{ flexDirection: "row", alignItems: "center", gap: 15 }}>
                         <View
                             style={{
                                 alignItems: "center",
                                 justifyContent: "center",
-                                borderRadius: 500,
-                                width: 42,
-                                height: 42,
-                                borderWidth: 2,
-                                borderColor: "white",
-                                backgroundColor: "hsla(240, 27%, 16%, .35)",
+                                width: 40,
+                                height: "90%",
+                                flexDirection: "column",
                             }}
                         >
-                            <View
+                            <ImageBackground
+                                source={
+                                    discipline.streakCount === 0
+                                        ? flammeInactive
+                                        : flammeActive
+                                }
                                 style={{
-                                    width: 34,
-                                    height: 34,
-                                    borderRadius: "50%",
-                                    overflow: "hidden",
-                                    backgroundColor:
-                                        discipline.streakCount === 0
-                                            ? "transparent"
-                                            : "hsl(35, 100%, 50%)",
+                                    height: "100%",
+                                    width: "100%",
                                     alignItems: "center",
                                     justifyContent: "center",
                                 }}
+                                resizeMode="cover"
                             >
-                                <Text align="center" preset="h3">
+                                <Text style={{ paddingTop: 23 }} preset="h3">
                                     {discipline.streakCount}
                                 </Text>
-                            </View>
+                            </ImageBackground>
                         </View>
-                        <View style={{ maxWidth: "64%" }}>
-                            <Text oneLine preset="label2">
+                        <View style={{ maxWidth: "68%" }}>
+                            <Text oneLine style={{ fontFamily: 'Lexend-SemiBold', fontSize: 18 }}>
                                 {discipline.libelle}
                             </Text>
                             <Text
@@ -329,7 +341,7 @@ function DisciplineCard({ isFirst, isLast, isExpanded, onPress, colors, dispatch
                             </Text>
                         </View>
                     </View>
-                    <Text preset="h3">
+                    <Text preset="h3" style={{ right: 20, position: "absolute" }}>
                         {formatGradeText(discipline.averageDatas.userAverage)}
                     </Text>
                 </View>
@@ -339,10 +351,10 @@ function DisciplineCard({ isFirst, isLast, isExpanded, onPress, colors, dispatch
                 >
                     <View
                         style={{
-                            backgroundColor: colors.main,
-                            height: 1,
+                            backgroundColor: addOpacity(colors.txt1, .4),
+                            height: 2,
                             borderRadius: 5,
-                            marginHorizontal: 18,
+                            marginHorizontal: 20,
                         }}
                     />
                     <View
@@ -371,12 +383,12 @@ function DisciplineCard({ isFirst, isLast, isExpanded, onPress, colors, dispatch
                             </View>
                         ))}
                     </View>
-                    {isExpanded && discipline.grades
+                    {shouldRenderContent && discipline.grades
                         .filter(({ isSimulation }) => !isSimulation)
                         .map((grade, idx) => {
-                            return new Grade(grade).RenderGrade(idx, dispatch);
+                            return new Grade(grade).RenderGrade(idx, dispatch, colors);
                         })}
-                    {isExpanded && (
+                    {shouldRenderContent && (
                         <TouchableOpacity
                             onPress={() =>
                                 dispatch({
@@ -393,21 +405,22 @@ function DisciplineCard({ isFirst, isLast, isExpanded, onPress, colors, dispatch
                                 style={{
                                     alignItems: "center",
                                     justifyContent: "center",
-                                    backgroundColor: "hsla(240, 14%, 32%, .25)",
-                                    paddingHorizontal: 24,
+                                    backgroundColor: addOpacity(colors.main, .8),
+                                    width: 55,
+                                    height: 30,
                                     borderRadius: 20,
                                 }}
                             >
-                                <Text preset="h3" align="center">
+                                <Text preset="h3" align="center" marginTop={-3}>
                                     +
                                 </Text>
                             </View>
                         </TouchableOpacity>
                     )}
-                    {isExpanded && discipline.grades
+                    {shouldRenderContent && discipline.grades
                         .filter(({ isSimulation }) => isSimulation)
                         .map((grade, idx) => {
-                            return new Grade(grade).RenderSimulatedGrade(idx, dispatch);
+                            return new Grade(grade).RenderSimulatedGrade(idx, dispatch, colors);
                         })}
                 </Animated.View>
             </Animated.View>

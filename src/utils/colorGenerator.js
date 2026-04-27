@@ -128,11 +128,27 @@ export const isDarkColor = (hsl) => {
     return lightness < 50;
 };
 
-export const addOpacityToCssRgb = (text, a) => {
+export const addOpacity = (text, a) => {
     "worklet";
-    if (a > 1) return "rgb(255, 100, 20)";
+    if (!text || typeof text !== "string" || a > 1 || a < 0) return text;
 
-    const [r, g, b] = cssRgbToRgb(text);
-    return `rgba(${r}, ${g}, ${b}, ${a})`;
+    // hsl(h, s%, l%) → hsla(h, s%, l%, a)
+    if (text.startsWith("hsl(")) {
+        return text.replace("hsl(", "hsla(").replace(")", `, ${a})`);
+    }
+    // rgb(r, g, b) → rgba(r, g, b, a)
+    if (text.startsWith("rgb(")) {
+        return text.replace("rgb(", "rgba(").replace(")", `, ${a})`);
+    }
+    // rgba(r, g, b, x) → rgba(r, g, b, a) (remplace l'alpha existant)
+    if (text.startsWith("rgba(")) {
+        return text.replace(/,\s*[\d.]+\)$/, `, ${a})`);
+    }
+    // hsla(h, s%, l%, x) → remplace l'alpha existant
+    if (text.startsWith("hsla(")) {
+        return text.replace(/,\s*[\d.]+\)$/, `, ${a})`);
+    }
+
+    return text;
 };
 

@@ -1,8 +1,13 @@
 import { useFocusEffect, useNavigation, useTheme } from "@react-navigation/native";
 
+import LottieView from "lottie-react-native";
+import Flamme from "../../../../assets/json/lottie/flamme.json";
+import Flamme2 from "../../../../assets/json/lottie/flamme2.json";
+import canardman from "../../../../assets/json/lottie/canardman_walking.json";
+
 import { LinearGradient } from "expo-linear-gradient";
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Dimensions, View, TouchableOpacity } from "react-native";
+import { Dimensions, View, TouchableOpacity, StyleSheet } from "react-native";
 import Animated, {
     Extrapolation,
     interpolate,
@@ -19,7 +24,7 @@ import { DropDown, ScrollableStack } from "../../../components";
 import { API } from "../../../constants/api/api";
 import { useUser } from "../../../context/UserContext";
 import { storageServiceStates } from "../../../helpers/storageService";
-import { cssHslaToHsla, addOpacityToCssRgb } from "../../../utils/colorGenerator";
+import { cssHslaToHsla, addOpacity } from "../../../utils/colorGenerator";
 import { parseNumber } from "../../../utils/grades/makeAverage";
 import Discipline from "./custom/classes/Discipline";
 import Period from "./custom/classes/Period";
@@ -35,7 +40,7 @@ const { width, height } = Dimensions.get("window");
 
 export default function GradesContent() {
     const { colors, shadow } = useTheme();
-    const shadowColor = addOpacityToCssRgb("rgb(0, 0, 0)", shadow.oppacity);
+    const shadowColor = addOpacity("rgb(0, 0, 0)", shadow.oppacity);
     const [currentPage, setCurrentPage] = useState(0);
     const { sortedGradesData, setSortedGradesData, userAccesToken } = useUser();
     const { state, dispatch } = useGrade();
@@ -65,8 +70,8 @@ export default function GradesContent() {
     const HIDE_THRESHOLD = 90;
     const SHOW_THRESHOLD = 100;
     const SNAP_LOWER = 0;
-    const SNAP_UPPER = 250;
-    const SNAP_MIDPOINT = 80;
+    const SNAP_UPPER = 160;
+    const SNAP_MIDPOINT = 50;
 
     const scrollRef = useRef(null);
 
@@ -274,7 +279,7 @@ export default function GradesContent() {
 
 
 
-
+    const styles = createStyles(colors, shadow);
     const [isStreghts, setIsStrenghts] = useState(true)
 
     return (
@@ -289,35 +294,21 @@ export default function GradesContent() {
                 contentContainerStyle={{ paddingBottom: 110 }}
                 showsVerticalScrollIndicator={false}
             >
-                <Animated.View
-                    style={[
-                        {
-                            zIndex: 3000,
-                            boxShadow: `0px 2px 10px 5px ${shadowColor}`,
-                            borderRadius: 30,
-                            width: "100%",
-                        },
-                        containerStyle,
-                    ]}
+                <LottieView source={canardman} autoPlay loop style={styles.canardman} colorFilters={[{ keyPath: "eVpvGSAbUci5_to.**", color: colors.canardman }]} />
+                <View
+                    style={styles.flammesContainer}
                 >
-                    <View style={innerContainerStyle}>
-                        <TouchableOpacity onPress={toggleStats} activeOpacity={0.9} style={{ flex: 1, borderRadius: 30, overflow: "hidden" }}>
-                            <HeaderStatsCarousel
-                                style={[itemWidthStyle, streakStyle]}
-                                item={streakItem}
-                                transition={transition}
-                            />
-                            <HeaderStatsCarousel
-                                style={[
-                                    { position: "absolute", width: "100%", height: "100%" },
-                                    averageStyle,
-                                ]}
-                                item={averageItem}
-                                transition={transition}
-                            />
-                        </TouchableOpacity>
+                    <View style={styles.flammeContainer}>
+                        <LottieView source={Flamme} autoPlay loop style={styles.flamme} renderMode="normal" />
+                        <Text style={[styles.flammeText]}>{globalStreakScore}</Text>
+                        <Text style={styles.flammeSubText}>Streak</Text>
                     </View>
-                </Animated.View>
+                    <View style={[styles.flammeContainer, { marginLeft: -21 }]}>
+                        <LottieView source={Flamme2} autoPlay loop style={styles.flamme} renderMode="normal" />
+                        <Text style={[styles.flammeText]}>{generalAverage}</Text>
+                        <Text style={styles.flammeSubText}>Moyenne</Text>
+                    </View>
+                </View>
                 <View
                     style={{
                         backgroundColor: colors.background.gradient,
@@ -326,12 +317,12 @@ export default function GradesContent() {
                         minHeight: Dimensions.get("window").height * 0.6,
                         paddingTop: 15,
                         zIndex: 2000,
-                        marginBottom: -110
+                        marginBottom: -110,
+                        marginTop: 180,
                     }}
                 >
-
                     {currentPage === 0 && (
-                        <View style={{ marginHorizontal: 14, paddingBottom: 110, gap: 12, marginTop: -10 }}>
+                        <View style={{ marginHorizontal: 14, paddingBottom: 110, gap: 12, marginTop: 0 }}>
                             {groupForRendering(renderDisciplinesArray).map((group, gIndex) => {
                                 const GroupClass = new Discipline(group.header);
                                 return (
@@ -341,7 +332,7 @@ export default function GradesContent() {
                                             index: gIndex,
                                             colors,
                                         })}
-                                        <View style={{ gap: 4 }}>
+                                        <View style={{ gap: 8 }}>
                                             {group.disciplines.map((item, dIndex) => {
                                                 const DisciplineClass = new Discipline(item);
                                                 return (
@@ -727,3 +718,46 @@ function groupForRendering(flatArray) {
     return groups;
 }
 
+const createStyles = (colors, shadow) => StyleSheet.create({
+    flammesContainer: {
+        position: "absolute",
+        zIndex: -1,
+        top: 29,
+        left: "5%",
+        flexDirection: "row",
+        alignItems: "flex-start",
+        justifyContent: "flex-start",
+    },
+    flammeContainer: {
+        width: 130,
+        height: 174,
+        flexDirection: "column",
+        alignItems: "center",
+    },
+    flamme: {
+        width: 130,
+        height: 174,
+        position: "absolute",
+    },
+    flammeText: {
+        fontSize: 28,
+        fontWeight: "bold",
+        marginTop: 96,
+        marginLeft: -5,
+        color: "#FFFFFF",
+    },
+    flammeSubText: {
+        fontSize: 16,
+        fontWeight: "650",
+        color: colors.txt1,
+        marginTop: 20,
+    },
+    canardman: {
+        position: "absolute",
+        top: 12,
+        right: -148,
+        width: 336,
+        height: 336,
+        transform: [{ rotate: "5deg" }, { scaleX: -1 }],
+    }
+});

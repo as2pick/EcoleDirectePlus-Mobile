@@ -8,7 +8,8 @@ export const THEMES = {
             ...NavigationDefaultTheme.colors,
             background: {
                 //gradient: ["rgba(169, 169, 255, 1)", "rgba(230, 230, 255, 1)"], // App backround gradient
-                gradient: "rgba(240, 240, 240, 1)",
+                //gradient: "rgba(240, 240, 240, 1)",
+                gradient: ["#A9A9FF", "#E6E6FF"],
                 login: "rgba(230, 230, 255, 1)", // Login screen background
                 modal: "rgb(240, 240, 253)",
             },
@@ -34,6 +35,7 @@ export const THEMES = {
             },
             border: "rgba(26, 26, 151, 1)", // DON'T USE IT
             error: "rgb(240, 90, 90)",
+            txt1: "rgb(65, 67, 76)",
             fond: ["rgba(150, 150, 172, 1)", "rgba(222, 222, 250, 1)"], // DON'T USE IT
             pastel: "rgba(200, 200, 252, 1)",
             secondary: "rgba(255, 255, 255)",
@@ -75,7 +77,8 @@ export const THEMES = {
             ...NavigationDefaultTheme.colors,
             // background: "rgb(18, 18, 138)", // default key
             background: {
-                gradient: "rgba(38, 39, 46, 1)", //"rgba(33, 33, 34, 1)", //"rgb(27, 27, 33)", // +20 or +30
+                //gradient: "rgba(38, 39, 46, 1)", //"rgba(33, 33, 34, 1)", //"rgb(27, 27, 33)", // +20 or +30
+                gradient: ["#172661ff", "#0E0F1A"],
                 login: "rgb(19, 19, 34)",
                 modal: "rgb(18, 18, 37)",
             },
@@ -96,9 +99,8 @@ export const THEMES = {
 
             border: "rgb(92, 113, 250)", // DON'T USE IT
             error: "rgb(240, 90, 90)",
-            cases: "rgb(25, 25, 56)", // DON'T USE IT
-            secondary: "rgba(24, 24, 24, 1)", //A CHANGER
-            main: "rgba(84, 84, 136, 1)",
+            secondary: "rgb(28, 30, 50)", //A CHANGER
+            main: "rgba(99, 130, 255, .8)",
             main2: "rgba(68, 68, 141, 1)",
             accent: "rgba(156, 156, 209, 1)", //A SUPPRIMER POUR JUSTE MAIN
             case: "rgb(72, 72, 102)", // DON'T USE IT A SUPPRIMER
@@ -106,11 +108,14 @@ export const THEMES = {
             contrast: "rgb(255, 255, 255)", //A PASSER EN TEXTE
             navbar: "rgba(63, 63, 73, 1)", //A SUPPRIMER
             theme: "rgba(0, 0, 0, 1)", //A VOIR
+            canardman: "#444C6A",
+
             txt: {
                 txt1: "rgb(255, 255, 255)", //A CHANGER
                 txt2: "rgba(184, 184, 184, 0.8)", //A CHANGER
                 txt3: "rgb(180, 180, 240)", //A CHANGER
             },
+            txt1: "rgb(255, 255, 255)", //A CHANGER
             edplogo: {
                 c1: "rgb(180, 201, 255)",//A CLARIFIER (+ de saturation ???)
                 c2: "rgb(193, 183, 255)",// A CLARIFIER (+ de saturation ???)

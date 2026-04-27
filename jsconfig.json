@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["src/*"],
+            "assets/*": ["assets/*"]
+        }
+    },
+    "exclude": ["node_modules", ".expo"]
+}

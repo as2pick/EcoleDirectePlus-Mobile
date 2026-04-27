@@ -8,7 +8,7 @@ import {
     UpTheStreak,
 } from "../../../../../../assets/svg/badges";
 import { Text } from "../../../../../components/Ui/core";
-import { cssHslaToHsla } from "../../../../../utils/colorGenerator";
+import { addOpacity } from "../../../../../utils/colorGenerator";
 import { formatGradeText } from "../helper";
 
 export default class Grade {
@@ -59,7 +59,7 @@ export default class Grade {
             isSimulation: this.isSimulation,
         };
     }
-    RenderGrade(idx, dispatch) {
+    RenderGrade(idx, dispatch, colors) {
         if (this.isSimulation)
             console.log("You asked to render a simulated grade as normal grade !");
 
@@ -72,10 +72,12 @@ export default class Grade {
             equal_to_discipline_average: EqualToDisciplineAverage,
         };
 
+
+
         let backgroundColor = null;
         switch (this.actionOnStreak) {
             case "nothing":
-                backgroundColor = "hsla(240, 40%, 28%, .35)";
+                backgroundColor = addOpacity(colors.main, .12);
                 break;
             case "up":
                 backgroundColor = "hsla(36, 100%, 34%, .3)";
@@ -87,8 +89,7 @@ export default class Grade {
                 backgroundColor = "red";
         }
 
-        const hsla = cssHslaToHsla(backgroundColor);
-        const borderColor = `hsla(${hsla[0]}, ${hsla[1]}%, ${hsla[2] + 16}%, ${hsla[3]})`;
+        const borderColor = addOpacity(colors.main, .2);
 
         const gradeItem = (
             <TouchableOpacity
@@ -149,7 +150,7 @@ export default class Grade {
         return <View key={idx}>{gradeItem}</View>;
     }
 
-    RenderSimulatedGrade(idx, dispatch) {
+    RenderSimulatedGrade(idx, dispatch, colors) {
         if (!this.isSimulation)
             console.log("You asked to render a normal grade as simulated grade !");
         const gradeItem = (
