@@ -19,12 +19,12 @@ import Text from "../../../components/Ui/core/Text.jsx";
 import { getApiMessage } from "../../../constants/api/codes.js";
 import { useSingIn } from "../../../context/SignInContext.jsx";
 import { routesNames } from "../../../router/config/routesNames.js";
-import { addOpacityToCssRgb } from "../../../utils/colorGenerator";
+import { addOpacity } from "../../../utils/colorGenerator";
 
 export default function LoginScreen() {
     const navigation = useNavigation();
     const theme = useTheme();
-    const caseColor = addOpacityToCssRgb(theme.colors.case, 0.3);
+    const caseColor = addOpacity(theme.colors.txt.txt1, 0.1);
 
     const styles = createStyles(theme, caseColor);
     const {

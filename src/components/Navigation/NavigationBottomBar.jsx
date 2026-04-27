@@ -2,15 +2,15 @@
 import { useTheme } from "@react-navigation/native";
 import { useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
-import { addOpacityToCssRgb } from "../../utils/colorGenerator";
+import { addOpacity } from "../../utils/colorGenerator";
 
 const NavigationBottomBar = ({ state, descriptors, navigation }) => {
     const [isPressedIn, setIsPressedIn] = useState(false);
     const [isLongPressed, setIsLongPressed] = useState(false);
     const { shadow } = useTheme();
     const { colors } = useTheme();
-    const caseColor = addOpacityToCssRgb(colors.navbartempo.case, 0.7);
-    const shadowColor = addOpacityToCssRgb("rgb(0, 0, 0)", shadow.oppacity);
+    const caseColor = addOpacity(colors.navbartempo.case, 0.7);
+    const shadowColor = addOpacity("rgb(0, 0, 0)", shadow.oppacity);
     return (
         <View
             style={[

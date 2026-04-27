@@ -1,13 +1,13 @@
 import { useTheme } from "@react-navigation/native";
 import { StyleSheet, View } from "react-native";
 import { CONFIG } from "../../constants/config";
-import { addOpacityToCssRgb } from "../../utils/colorGenerator";
+import { addOpacity } from "../../utils/colorGenerator";
 import LinkText from "./LinkText";
 import Text from "./core/Text";
 
 export default function InDev({ }) {
     const { colors } = useTheme();
-    const mainColor = addOpacityToCssRgb(colors.contrast, 0.8);
+    const mainColor = addOpacity(colors.contrast, 0.8);
     return (
         <View style={[styles.parent]}>
             <View

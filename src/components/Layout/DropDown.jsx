@@ -9,7 +9,7 @@ import Animated, {
 } from "react-native-reanimated";
 import SimpleArrow from "../../../assets/svg/SimpleArrow";
 import Text from "../Ui/core/Text";
-import { addOpacityToCssRgb } from "../../utils/colorGenerator";
+import { addOpacity } from "../../utils/colorGenerator";
 
 export default function CustomDropdown({
     options = [
@@ -53,7 +53,7 @@ export default function CustomDropdown({
             width: contentWidth.value === 0
                 ? undefined
                 : interpolate(progress.value, [0, 1], [minWidth, maxWidth]),
-            backgroundColor: addOpacityToCssRgb(colors.background.gradient, interpolate(progress.value, [0, 1], [0.45, 0.8])),
+            backgroundColor: addOpacity(colors.secondary, interpolate(progress.value, [0, 1], [0.45, 0.8])),
             borderRadius: 20, // Keep rounded corners
             borderColor: "hsla(240, 14%, 18%, .98)",
             //borderWidth: 1, // Optional: if you want a border
@@ -109,7 +109,7 @@ const createStyles = (colors, shadow) => StyleSheet.create({
         overflow: "hidden",
         alignItems: "center",
         paddingBottom: 12,
-        boxShadow: "1px 1px 7px 0px " + addOpacityToCssRgb("rgb(0, 0, 0)", shadow.oppacity),
+        boxShadow: "1px 1px 7px 0px " + addOpacity("rgb(0, 0, 0)", shadow.oppacity),
     },
     headerButton: {
         width: "100%",
@@ -133,7 +133,7 @@ const createStyles = (colors, shadow) => StyleSheet.create({
         borderRadius: 7,
         marginHorizontal: 12,
         paddingVertical: 5,
-        backgroundColor: addOpacityToCssRgb(colors.theme, 0.8),
+        backgroundColor: addOpacity(colors.theme, 0.8),
     },
     optionText: { flexShrink: 1 },
 });

@@ -1,7 +1,7 @@
 import { useTheme } from "@react-navigation/native";
 import { useState } from "react";
 import { FlatList, Modal, StyleSheet, TouchableOpacity, View } from "react-native";
-import { addOpacityToCssRgb } from "../../utils/colorGenerator";
+import { addOpacity } from "../../utils/colorGenerator";
 import Text from "../Ui/core/Text";
 
 export default function A2fSelectableModal({
@@ -74,7 +74,7 @@ export default function A2fSelectableModal({
                         style={[
                             styles.a2fText,
                             {
-                                backgroundColor: addOpacityToCssRgb(
+                                backgroundColor: addOpacity(
                                     colors.bg.bg1,
                                     0.5
                                 ),
@@ -112,7 +112,7 @@ export default function A2fSelectableModal({
                         style={[
                             styles.buttonsContainer,
                             {
-                                backgroundColor: addOpacityToCssRgb(
+                                backgroundColor: addOpacity(
                                     colors.bg.bg1,
                                     0.5
                                 ),

@@ -20,7 +20,7 @@ import { Text } from "../../../components/Ui/core";
 import { useUser } from "../../../context/UserContext";
 import { storageServiceStates } from "../../../helpers/storageService";
 import { routesNames } from "../../../router/config/routesNames";
-import { addOpacityToCssRgb } from "../../../utils/colorGenerator";
+import { addOpacity } from "../../../utils/colorGenerator";
 
 let {
     screen: { height, width },
@@ -193,7 +193,7 @@ const CourseBox = ({
     const startCourseLayoutRef = useRef(false);
 
     const { colors } = useTheme();
-    const caseColor = addOpacityToCssRgb(colors.theme, 0.3);
+    const caseColor = addOpacity(colors.theme, 0.3);
 
     useEffect(() => {
         if (roomLayout && startCourseLayout) {
@@ -253,7 +253,7 @@ const CourseBox = ({
     };
 
     const { shadow } = useTheme();
-    const shadowColor = addOpacityToCssRgb("rgb(0, 0, 0)", shadow.oppacity);
+    const shadowColor = addOpacity("rgb(0, 0, 0)", shadow.oppacity);
 
     return (
         <Animated.View
@@ -283,10 +283,10 @@ const CourseBox = ({
                                 1
                                 : CONFIG.minCourseSize,
                         overflow: "hidden",
-                        backgroundColor: caseColor,
+                        backgroundColor: colors.secondary,
                         borderRadius: 16,
-                        borderColor: color,
-                        borderWidth: 1.8,
+                        borderColor: addOpacity(color, 0.6),
+                        borderWidth: 2,
                         boxShadow: `1px 2px ${shadow.caseSize}px 0px ${shadowColor}`,
                     },
                 ]}
@@ -313,11 +313,11 @@ const CourseBox = ({
                             left: 0,
 
                             backgroundColor: isCancelled
-                                ? addOpacityToCssRgb(
+                                ? addOpacity(
                                     timetableConfig.cancelledColor,
                                     0.43
                                 )
-                                : addOpacityToCssRgb(
+                                : addOpacity(
                                     timetableConfig.dispensedColor,
                                     0.43
                                 ),
