@@ -265,7 +265,7 @@ function DisciplineCard({ isFirst, isLast, isExpanded, onPress, colors, dispatch
         { label: "Min", value: discipline.averageDatas.minAverage },
     ];
     const boxStyle = {
-        backgroundColor: addOpacity(colors.main, .2),
+        backgroundColor: addOpacity(colors.main, .3),
         paddingHorizontal: 20,
         paddingVertical: 8,
         borderRadius: 8,
@@ -278,7 +278,7 @@ function DisciplineCard({ isFirst, isLast, isExpanded, onPress, colors, dispatch
                     {
                         backgroundColor: colors.secondary,
                         overflow: "hidden",
-                        boxShadow: "2px 6px 6px 0px rgba(0,0,0,0.25)",
+                        boxShadow: "1px 3px 4px 0px rgba(0,0,0,0.25)",
                         //borderColor: color,
                         borderWidth: isExpanded ? 1 : 0,
                     },

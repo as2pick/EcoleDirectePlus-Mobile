@@ -9,7 +9,8 @@ const NavigationBottomBar = ({ state, descriptors, navigation }) => {
     const [isLongPressed, setIsLongPressed] = useState(false);
     const { shadow } = useTheme();
     const { colors } = useTheme();
-    const caseColor = addOpacity(colors.navbartempo.case, 0.7);
+    const boutonColor = addOpacity(colors.main, 0.8)
+    const caseColor = addOpacity(colors.secondary, 1);
     const shadowColor = addOpacity("rgb(0, 0, 0)", shadow.oppacity);
     return (
         <View
@@ -18,7 +19,7 @@ const NavigationBottomBar = ({ state, descriptors, navigation }) => {
                 {
                     backgroundColor: caseColor,
                     borderRadius: 25,
-                    boxShadow: "0px 0px 10px 2px rgb(0, 0, 0)" + shadowColor,
+                    boxShadow: "0px 0px 7px 0px rgb(0, 0, 0)" + shadowColor,
                 },
             ]}
         >
@@ -62,13 +63,13 @@ const NavigationBottomBar = ({ state, descriptors, navigation }) => {
                                     ? [
                                         styles.iconPadding,
                                         {
-                                            backgroundColor: colors.navbartempo.main,
+                                            backgroundColor: boutonColor,
                                         },
                                     ]
                                     : [
                                         styles.iconPadding,
                                         {
-                                            backgroundColor: colors.navbartempo.secondary,
+                                            backgroundColor: caseColor,
                                         },
                                     ]
                             }

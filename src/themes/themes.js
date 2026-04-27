@@ -38,7 +38,7 @@ export const THEMES = {
             txt1: "rgb(65, 67, 76)",
             fond: ["rgba(150, 150, 172, 1)", "rgba(222, 222, 250, 1)"], // DON'T USE IT
             pastel: "rgba(200, 200, 252, 1)",
-            secondary: "rgba(255, 255, 255)",
+            secondary: "rgba(255, 255, 255, 1)",
             main: "rgba(93, 93, 255, 1)",
             main2: "rgba(123, 123, 226, 1)",
             accent: "rgb(62, 62, 221)",
@@ -47,6 +47,7 @@ export const THEMES = {
             case: "rgb(255, 255, 255)",
             theme: "rgb(255, 255, 255)",
             navbar: "rgb(255, 255, 255)",
+            canardman: "#6F7EB8",
             edplogo: {
                 c1: "rgb(102, 145, 252)",
                 c2: "rgb(133, 114, 255)",

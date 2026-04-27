@@ -224,7 +224,7 @@ export default async function timetableResolver({ token, offset = 0 }) {
         {
             body: {
                 dateDebut: requestedMonday,
-                dateFin: addDaysToDateString(requestedMonday, 13),
+                dateFin: addDaysToDateString(requestedMonday, 30),
                 avecTrous: false,
             },
             headers: {
