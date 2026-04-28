@@ -76,3 +76,9 @@ package-lock.json
 
 # expo
 .expo/
+
+#ToDoList
+todo.txt
+
+# Figma Mockups
+assets/mockups/
