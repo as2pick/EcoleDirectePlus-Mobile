@@ -7,14 +7,14 @@ import { MainLayout } from "../components";
 import { useGlobalApp } from "../context/GlobalAppContext";
 import { useSingIn } from "../context/SignInContext";
 import { useAuthStore } from "../hooks/useAuthStore";
-import { useThemeStore } from "../hooks/useThemeStore";
+import { useActiveThemeMode, useThemeStore } from "../hooks/useThemeStore";
 import SplashScreen from "../screens/Splash/SplashScreen";
 import { THEMES_ASSOCIATIONS } from "../themes/themes";
 import Auth from "./display/auth/Auth";
 import Client from "./display/client/Client";
 
 export default function AuthNavigator() {
-    const colorScheme = useThemeStore((state) => state.colorScheme);
+    const activeMode = useActiveThemeMode();
     const status = useAuthStore((state) => state.status);
     const { setActiveNetworkStatus } = useGlobalApp();
 
@@ -61,7 +61,7 @@ export default function AuthNavigator() {
 
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
-            <NavigationContainer theme={THEMES_ASSOCIATIONS[colorScheme]}>
+            <NavigationContainer theme={THEMES_ASSOCIATIONS[activeMode]}>
                 {status === 'loading' || status === 'booting' ? (
                     <SplashScreen />
                 ) : status === 'success' ? (

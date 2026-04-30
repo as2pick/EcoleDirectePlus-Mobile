@@ -96,8 +96,10 @@ export function rgbToHsl(r, g, b) {
     return [Math.round(h), Math.round(s * 100), Math.round(l * 100)];
 }
 export const cssRgbToRgb = (text) => {
-    let [x, y, z] = text.match(/\d+/g);
-
+    if (!text) return [0, 0, 0];
+    let match = text.match(/\d+/g);
+    if (!match) return [0, 0, 0];
+    let [x, y, z] = match;
     return [x, y, z];
 };
 
@@ -109,10 +111,11 @@ export const cssRgbToHsl = (text) => {
 };
 
 export const cssHslaToHsla = (text) => {
+    if (!text) return [0, 0, 0, 0];
     const values = text.match(/[\d.]+%?/g);
 
     if (!values || values.length < 4) {
-        throw new Error("Invalid HSLA string");
+        return [0, 0, 0, 0];
     }
 
     const [h, s, l, a] = values.map((v, i) =>
@@ -123,7 +126,10 @@ export const cssHslaToHsla = (text) => {
 };
 
 export const isDarkColor = (hsl) => {
-    const lightness = parseFloat(hsl.match(/,\s*(\d+)%\)$/)[1]);
+    if (!hsl) return false;
+    const match = hsl.match(/,\s*(\d+)%\)$/);
+    if (!match) return false;
+    const lightness = parseFloat(match[1]);
     return lightness < 50;
 };
 
@@ -135,9 +141,10 @@ export const addOpacityToCssRgb = (text, a) => {
 };
 
 export const adjustLightness = (hslString, amount) => {
+    if (!hslString) return "hsl(0, 0%, 50%)";
     const match = hslString.match(/hsl\((\d+),\s*(\d+)%,\s*(\d+)%\)/);
     if (!match) {
-        throw new Error("Invalid HSL string format");
+        return hslString; // Return original if not HSL
     }
 
     const h = parseInt(match[1]);
@@ -150,9 +157,10 @@ export const adjustLightness = (hslString, amount) => {
 };
 
 export const adjustSaturation = (hslString, amount) => {
+    if (!hslString) return "hsl(0, 0%, 50%)";
     const match = hslString.match(/hsl\((\d+),\s*(\d+)%,\s*(\d+)%\)/);
     if (!match) {
-        throw new Error("Invalid HSL string format");
+        return hslString;
     }
 
     const h = parseInt(match[1]);
