@@ -5,6 +5,7 @@ import {
     createValidGradesArray,
     sortGradesByDate,
 } from "../screens/Client/Grades/custom/streakManagment";
+import { useColorStore } from "../hooks/useColorStore";
 import fetchApi from "../services/fetchApi";
 import { parseNumber } from "../utils/grades/makeAverage";
 import base64Handler from "../utils/handleBase64";
@@ -23,8 +24,6 @@ export default async function gradesResolver({ token }) {
             }
         );
         const grades = gradesResponse.data;
-        // const grades = require("../../test/api.json").data;
-        // Format periods
         const periodsObj = grades.periodes.reduce((acc, period) => {
             if (period.annuel) return acc;
 
@@ -116,6 +115,7 @@ function parseDiscipline(discipline) {
     const obj = {
         code: discipline.codeMatiere,
         libelle: discipline.discipline,
+        color: useColorStore.getState().getColor(discipline.codeMatiere),
         averageDatas: {
             classAverage: parseNumber(discipline.moyenneClasse),
             minAverage: parseNumber(discipline.moyenneMin),

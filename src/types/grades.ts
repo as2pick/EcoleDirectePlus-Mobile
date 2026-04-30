@@ -1,4 +1,3 @@
-import type { SubjectColorContext } from './user';
 
 export interface ApiGrade {
     codeMatiere: string;
@@ -77,7 +76,7 @@ export interface FormattedGrade {
 export interface FormattedDiscipline {
     code: string;
     libelle: string;
-    colorTheme?: SubjectColorContext;
+    color?: string;
     averageDatas: GradeAverageDatas;
     coef: number;
     isDisciplineGroup: boolean;

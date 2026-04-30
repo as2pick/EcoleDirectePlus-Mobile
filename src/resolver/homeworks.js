@@ -1,3 +1,4 @@
+import { useColorStore } from "../hooks/useColorStore";
 import { createHomework } from "../screens/Client/Homeworks/utils";
 import fetchApi from "../services/fetchApi";
 import { formatFrenchDate } from "../utils/date";
@@ -111,6 +112,7 @@ function formatHomeworksDetails(
             name: matiere,
             code: codeMatiere,
             teacher: nomProf,
+            color: useColorStore.getState().getColor(codeMatiere),
         },
         student: {
             // maybe so useless
