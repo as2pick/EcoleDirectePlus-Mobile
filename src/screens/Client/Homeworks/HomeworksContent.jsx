@@ -15,7 +15,7 @@ import PlusIcon from "../../../../assets/svg/micro/PlusIcon";
 import { HomeworkCard } from "../../../components";
 import { Text } from "../../../components/Ui/core";
 import { motivationSentences } from "../../../constants/features/homeworksConfig";
-import { useUser } from "../../../context/UserContext";
+
 import { adjustLightness } from "../../../utils/colorGenerator";
 import { formatFrenchDate } from "../../../utils/date";
 import NewHomeworkModal from "./components/NewHomeworkModal";
@@ -28,7 +28,6 @@ import { useHomeworks } from "../../../hooks/useHomeworks";
 import { useUserStore } from "../../../hooks/useUserStore";
 
 export default function HomeworksContent() {
-    const { setSortedHomeworksData } = useUser();
 
     const token = useUserStore((state) => state.token);
     const { data: homeworksData, isLoading, isError, toggleHomework } = useHomeworks(token);
@@ -36,6 +35,23 @@ export default function HomeworksContent() {
     const setUserState = useUserDatas((state) => state.setUserState);
 
     const { dispatch } = useHomework();
+
+    const mergedHomeworks = useMemo(() => {
+        if (!homeworksData) return null;
+        const merged = JSON.parse(JSON.stringify(homeworksData));
+        customHomeworksData.forEach((hw) => {
+            if (!merged[hw.date]) {
+                merged[hw.date] = [];
+                if (!merged.formatedDates) merged.formatedDates = {};
+                merged.formatedDates[hw.date] = { isEvaluation: hw.isEvaluation };
+            }
+            const alreadyExists = merged[hw.date].some((h) => h.id === hw.id);
+            if (!alreadyExists) {
+                merged[hw.date].push(hw);
+            }
+        });
+        return merged;
+    }, [homeworksData, customHomeworksData]);
 
     const [homeworksDates, setHomeworksDates] = useState();
     const [formatedDates, setFormatedDates] = useState();
@@ -75,14 +91,14 @@ export default function HomeworksContent() {
     );
     useFocusEffect(
         useCallback(() => {
-            if (!homeworksData) return;
+            if (!mergedHomeworks) return;
             if (
-                homeworksData?.formatedDates &&
-                Object.keys(homeworksData).length > 0
+                mergedHomeworks?.formatedDates &&
+                Object.keys(mergedHomeworks).length > 0
             ) {
-                setFormatedDates(homeworksData.formatedDates);
-                if (!activeDate || !homeworksData?.formatedDates?.[activeDate]) {
-                    setActiveDate(Object.keys(homeworksData.formatedDates)[0]);
+                setFormatedDates(mergedHomeworks.formatedDates);
+                if (!activeDate || !mergedHomeworks?.formatedDates?.[activeDate]) {
+                    setActiveDate(Object.keys(mergedHomeworks.formatedDates)[0]);
                 }
                 return;
             }
@@ -153,17 +169,19 @@ export default function HomeworksContent() {
     }, [homeworksData]);
 
     useEffect(() => {
-        if (!activeDate) return;
+        if (!activeDate || !mergedHomeworks) return;
 
-        const datas = homeworksData[activeDate];
+        const datas = mergedHomeworks[activeDate] || [];
         setDisplayTasks(datas);
         const completed = datas.filter(({ isDone }) => isDone);
         setCompletedTasks(completed);
         const progression =
-            Math.round((completed.length / datas.length) * 100) / 100;
+            datas.length > 0
+                ? Math.round((completed.length / datas.length) * 100) / 100
+                : 0;
         setProgression(progression);
         pickSentence(progression);
-    }, [activeDate, homeworksData]);
+    }, [activeDate, mergedHomeworks]);
 
     useEffect(() => {
         if (!homeworksDates) return;
@@ -177,7 +195,7 @@ export default function HomeworksContent() {
         ({ item }) => {
             const [date, { contracted, isEvaluation }] = item;
 
-            const tasks = homeworksData[date] ?? [];
+            const tasks = mergedHomeworks[date] ?? [];
             const allTasksCompleted =
                 tasks.length > 0 && tasks.every(({ isDone }) => isDone);
 

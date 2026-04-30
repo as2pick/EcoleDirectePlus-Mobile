@@ -7,10 +7,9 @@ import {
 import { getApiMessage } from "../constants/api/codes";
 import { useAuthStore } from "../hooks/useAuthStore";
 
-import dataManager from "../helpers/dataManager";
 import { useNetwork } from "../hooks/network";
 import authService from "../services/login/authService";
-import { useUser } from "./UserContext";
+import { useUserStore } from "../hooks/useUserStore";
 import { completeA2fLogin, handleA2fSubmit } from "./tools/a2fHandler";
 import { tryLoginWithStoredCreds, tryRestoreToken } from "./tools/bootstrapAsync";
 import storeDatas from "./tools/storeLoginDatas";
@@ -37,18 +36,15 @@ export const SignInProvider = ({ children }) => {
     const setKeepConnected = useAuthStore((state) => state.setKeepConnected);
     const resetAuth = useAuthStore((state) => state.reset);
 
-    const {
-        setGlobalUserData,
-        setUserAccesToken,
-        userAccesToken,
-        setIsConnected,
-    } = useUser();
+    const userAccesToken = useUserStore((state) => state.token);
+    const setProfile = useUserStore((state) => state.setProfile);
+    const setToken = useUserStore((state) => state.setToken);
     const network = useNetwork();
 
     const userSetters = {
-        setGlobalUserData,
-        setUserAccesToken,
-        setIsConnected,
+        setGlobalUserData: setProfile,
+        setUserAccesToken: setToken,
+        setIsConnected: () => { },
     };
 
     const bootstrapAsync = async () => {
@@ -134,8 +130,7 @@ export const SignInProvider = ({ children }) => {
     const handleSignOut = async () => {
         await authService.deleteCredentials();
         resetAuth();
-        setGlobalUserData(null);
-        setIsConnected(false);
+        useUserStore.getState().reset();
     };
 
     useEffect(() => {
@@ -157,14 +152,6 @@ export const SignInProvider = ({ children }) => {
             userSetters,
         });
     }, [a2fInfos?.fa, gtk]);
-
-    useEffect(() => {
-        if ((status === 'loading' || status === 'booting') && userAccesToken) {
-            dataManager(userAccesToken, network).finally(() => {
-                setStatus('success');
-            });
-        }
-    }, [status, userAccesToken, network.isOnline]);
 
     const authContext = useMemo(
         () => ({

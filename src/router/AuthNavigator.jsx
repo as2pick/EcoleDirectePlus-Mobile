@@ -6,17 +6,16 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { MainLayout } from "../components";
 import { useGlobalApp } from "../context/GlobalAppContext";
 import { useSingIn } from "../context/SignInContext";
-import { useTheme } from "../context/ThemeContext";
-import { useUser } from "../context/UserContext";
+import { useAuthStore } from "../hooks/useAuthStore";
+import { useThemeStore } from "../hooks/useThemeStore";
 import SplashScreen from "../screens/Splash/SplashScreen";
 import { THEMES_ASSOCIATIONS } from "../themes/themes";
 import Auth from "./display/auth/Auth";
 import Client from "./display/client/Client";
 
 export default function AuthNavigator() {
-    const { colorScheme } = useTheme();
-    const { state } = useSingIn();
-    const { isConnected, userAccesToken } = useUser();
+    const colorScheme = useThemeStore((state) => state.colorScheme);
+    const status = useAuthStore((state) => state.status);
     const { setActiveNetworkStatus } = useGlobalApp();
 
     useEffect(() => {
@@ -63,9 +62,9 @@ export default function AuthNavigator() {
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
             <NavigationContainer theme={THEMES_ASSOCIATIONS[colorScheme]}>
-                {state.isLoading ? (
+                {status === 'loading' || status === 'booting' ? (
                     <SplashScreen />
-                ) : isConnected ? (
+                ) : status === 'success' ? (
                     <MainLayout>
                         <Client />
                     </MainLayout>
