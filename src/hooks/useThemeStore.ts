@@ -43,3 +43,17 @@ export const useThemeStore = create<ThemeState>()(
         }
     )
 );
+
+export const useTheme = () => {
+    return useThemeStore((state) => {
+        const activeMode = state.followSystem ? state.systemTheme : state.themeMode;
+        return THEMES_ASSOCIATIONS[activeMode];
+    });
+};
+
+/**
+ * Helper hook to get the active theme mode string ('light' or 'dark')
+ */
+export const useActiveThemeMode = () => {
+    return useThemeStore((state) => state.followSystem ? state.systemTheme : state.themeMode);
+};

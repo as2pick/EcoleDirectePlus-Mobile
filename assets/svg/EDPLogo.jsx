@@ -1,8 +1,8 @@
 import Svg, { LinearGradient, Path, Stop } from "react-native-svg";
-import { useTheme } from "../../src/context/ThemeContext";
+import { useTheme } from "../../src/hooks/useThemeStore";
 
 export default function EDPLogo({ size = 30, fill = "white", props = {} }) {
-    const { theme } = useTheme();
+    const theme = useTheme();
     return (
         <Svg
             viewBox="0 0 91 86"
