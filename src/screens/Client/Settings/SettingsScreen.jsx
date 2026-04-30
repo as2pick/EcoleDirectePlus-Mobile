@@ -1,23 +1,18 @@
-import { Button, Text } from "react-native";
-import { useAppSettings } from "../../../context/AppSettingsContext";
+import { Button, Text, View } from "react-native";
+import { useTheme } from "../../../context/ThemeContext";
 
-export default function SettingsScreen({}) {
-    const { state, dispatch } = useAppSettings();
+export default function SettingsScreen() {
+    const { colorScheme, isFollowingSystem, followSystemTheme, toggleTheme } =
+        useTheme();
+
     return (
-        <>
-            <Text style={{ height: 300 }}>SETTINGS</Text>
-            <Button
-                onPress={() =>
-                    dispatch({
-                        type: "TOGGLE_THEME",
-                        // payload: state.backgroundColor === "red" ? "blue" : "red",
-                    })
-                }
-                title="Changecolor"
-            >
-                <Text>CHANGE COLOR </Text>
-            </Button>
-        </>
+        <View style={{ flex: 1, justifyContent: "center", padding: 24, gap: 16 }}>
+            <Text>Theme actuel : {colorScheme}</Text>
+            <Text>
+                Theme systeme : {isFollowingSystem ? "active" : "desactive"}
+            </Text>
+            <Button onPress={toggleTheme} title="Changer de theme" />
+            <Button onPress={followSystemTheme} title="Suivre le theme systeme" />
+        </View>
     );
 }
-

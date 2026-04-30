@@ -5,7 +5,7 @@ import { addOpacityToCssRgb } from "../../utils/colorGenerator";
 import LinkText from "./LinkText";
 import Text from "./core/Text";
 
-export default function InDev({}) {
+export default function InDev() {
     const { colors } = useTheme();
     const { shadow } = useTheme();
     const mainColor = addOpacityToCssRgb(colors.main, 0.7);
@@ -42,7 +42,12 @@ const styles = StyleSheet.create({
     parent: {
         height: "100%",
         alignItems: "center",
+<<<<<<< HEAD
         marginHorizontal: "4%",
+=======
+        justifyContent: "center",
+        marginHorizontal: "2%",
+>>>>>>> main
     },
     children: {
         borderRadius: 18,

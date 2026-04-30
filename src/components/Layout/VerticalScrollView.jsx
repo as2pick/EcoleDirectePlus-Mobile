@@ -51,9 +51,6 @@ const VerticalScrollView = forwardRef(({ children, arrayLength, getIndex }, ref)
                 activePageIndex + 1 !== arrayLength - 1 && // check page index (if not at end or start)
                 activePageIndex === 0 // check if we are at first index  (last element)
             ) {
-                if (event.translationY > 800) {
-                    translateY.value = translateY.value;
-                }
                 translateY.value = withSpring(event.translationY * 0.2, {
                     stiffness: 200,
                     damping: 20,
@@ -64,9 +61,6 @@ const VerticalScrollView = forwardRef(({ children, arrayLength, getIndex }, ref)
                 activePageIndex + 1 !== arrayLength - 1 && // check page index (if not at end or start)
                 activePageIndex === arrayLength - 1 // check if we are at least index (last element)
             ) {
-                if (event.translationY < -800) {
-                    translateY.value = translateY.value;
-                }
                 translateY.value = withSpring(
                     -pageIndex.value * height + event.translationY * 0.2,
                     {
@@ -118,6 +112,8 @@ const styles = StyleSheet.create({
     container: { flex: 1 },
     page: { width: "100%", height },
 });
+
+VerticalScrollView.displayName = "VerticalScrollView";
 
 export default VerticalScrollView;
 

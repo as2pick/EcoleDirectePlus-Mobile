@@ -1,12 +1,17 @@
+<<<<<<< HEAD
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
+=======
+import { StatusBar } from "expo-status-bar";
+>>>>>>> main
 import RootProviders from "./provider";
 import AuthNavigator from "./router/AuthNavigator";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
+<<<<<<< HEAD
     const [fontLoaded] = useFonts({
         "Luciole-Regular": require("../assets/fonts/Luciole-Regular.ttf"),
         "Lexend-Light": require("../assets/fonts/Lexend-Light.ttf"),
@@ -25,8 +30,11 @@ export default function App() {
     // useEffect(() => {
     //     authService.deleteStoredApiDatas();
     // }, []);
+=======
+>>>>>>> main
     return (
         <RootProviders>
+            <StatusBar hidden />
             <AuthNavigator />
         </RootProviders>
     );

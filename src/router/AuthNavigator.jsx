@@ -9,11 +9,11 @@ import { useSingIn } from "../context/SignInContext";
 import { useTheme } from "../context/ThemeContext";
 import { useUser } from "../context/UserContext";
 import SplashScreen from "../screens/Splash/SplashScreen";
-import { THEMES_ASSOCIATIONS } from "../themes/themes";
 import Auth from "./display/auth/Auth";
 import Client from "./display/client/Client";
 
 export default function AuthNavigator() {
+<<<<<<< HEAD
     const { colorScheme } = useTheme();
     const { state } = useSingIn();
     const { isConnected, userAccesToken } = useUser();
@@ -59,10 +59,16 @@ export default function AuthNavigator() {
             }
         };
     }, [setActiveNetworkStatus]);
+=======
+    const { theme } = useTheme();
+
+    const { state } = useSingIn();
+    const { isConnected } = useUser();
+>>>>>>> main
 
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
-            <NavigationContainer theme={THEMES_ASSOCIATIONS[colorScheme]}>
+            <NavigationContainer theme={theme}>
                 {state.isLoading ? (
                     <SplashScreen />
                 ) : isConnected ? (

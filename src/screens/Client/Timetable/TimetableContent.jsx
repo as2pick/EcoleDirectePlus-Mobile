@@ -22,7 +22,7 @@ import { routesNames } from "../../../router/config/routesNames";
 import { addOpacityToCssRgb } from "../../../utils/colorGenerator";
 
 let {
-    screen: { height, width },
+    screen: { height },
 } = GLOBALS_DATAS;
 
 height -= CONFIG.upper + 24; // ??? but works fine
@@ -63,7 +63,6 @@ export default function TimetableContent() {
                         setSortedTimetableData(userTimetable);
                         setLoading(false);
                     });
-            } else {
             }
         }, [userAccesToken, sortedTimetableData])
     );
@@ -180,7 +179,10 @@ const CourseBox = ({
 }) => {
     const [libelleLayout, setLibelleLayout] = useState(null);
     const [roomLayout, setRoomLayout] = useState(null);
+<<<<<<< HEAD
     const [overlap, setOverlap] = useState(false);
+=======
+>>>>>>> main
     const libelleLayoutRef = useRef(false);
 
     const roomLayoutRef = useRef(false);
@@ -207,16 +209,15 @@ const CourseBox = ({
                 roomLayout.y + roomLayout.height > startCourseLayout.y - TOLERANCE;
             const isOverlapping = checkX1 && checkX2 && checkY1 && checkY2;
 
-            setOverlap(isOverlapping);
+            if (isOverlapping) {
+                roomLayoutRef.current = false;
+            }
         }
     }, [roomLayout, startCourseLayout]);
     const {
-        classGroup,
         endCourse,
-        group,
         isCancelled,
         isDispensed,
-        isEdited,
         libelle,
         room,
         startCourse,
@@ -443,7 +444,7 @@ const DayShedule = ({
     currentDay,
     navigation,
     theme,
-    timetableViewDims = { getter, setter },
+    timetableViewDims = { getter: null, setter: () => {} },
     index,
 }) => {
     return (

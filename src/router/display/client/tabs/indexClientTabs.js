@@ -3,25 +3,25 @@ import GradesIcon from "../../../../../assets/svg/navigation/GradesIcon";
 import HomeworksIcon from "../../../../../assets/svg/navigation/HomeworksIcon";
 import MessagingIcon from "../../../../../assets/svg/navigation/MessagingIcon";
 import TimetableIcon from "../../../../../assets/svg/navigation/TimetableIcon";
-import GradesScreen from "../../../../screens/Client/Grades/GradesScreen";
+import InDev from "../../../../components/Ui/InDev";
 import HomeScreen from "../../../../screens/Client/Home/HomeScreen";
-import HomeworksScreen from "../../../../screens/Client/Homeworks/HomeworksScreen";
-import MessagingScreen from "../../../../screens/Client/Messaging/MessagingScreen";
-import TimetableScreen from "../../../../screens/Client/Timetable/TimetableScreen";
 import { routesNames } from "../../../config/routesNames";
 import createScreen from "../../../helpers/createScreen";
 
 const {
     client: { grades, home, homeworks, messaging, timetable },
-    navigators: { settings },
 } = routesNames;
 
 const tabClientScreens = [
-    createScreen(grades.group, GradesScreen, {
+    createScreen(grades.group, InDev, {
         inNavbar: true,
         icon: GradesIcon,
     }),
+<<<<<<< HEAD
     createScreen(homeworks.group, HomeworksScreen, {
+=======
+    createScreen(homeworks, InDev, {
+>>>>>>> main
         inNavbar: true,
         icon: HomeworksIcon,
     }),
@@ -29,11 +29,11 @@ const tabClientScreens = [
         inNavbar: true,
         icon: DashboardIcon,
     }),
-    createScreen(timetable.group, TimetableScreen, {
+    createScreen(timetable.group, InDev, {
         inNavbar: true,
         icon: TimetableIcon,
     }),
-    createScreen(messaging, MessagingScreen, {
+    createScreen(messaging, InDev, {
         inNavbar: true,
         icon: MessagingIcon,
     }),

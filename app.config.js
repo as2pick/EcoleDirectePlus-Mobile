@@ -7,7 +7,7 @@ export default {
             localSecretKeyStoreName: process.env.LOCAL_SECRET_KEY_STORE_NAME,
             totalTokenExpirationTime: process.env.TOTAL_TOKEN_EXPIRATION_TIME,
             eas: {
-                projectId: "af1bb224-a5bf-4931-971e-8ef02143898f",
+                projectId: "",
             },
         },
         plugins: ["expo-secure-store", "expo-font", "expo-splash-screen"],
@@ -36,6 +36,15 @@ export default {
                 foregroundImage: "./assets/adaptive-icon.png",
                 backgroundColor: "#ffffff",
             },
+        },
+        androidStatusBar: {
+            hidden: true,
+            translucent: true,
+        },
+        androidNavigationBar: {
+            visible: "immersive",
+            backgroundColor: "#000000",
+            barStyle: "light-content",
         },
 
         owner: "as2pick",

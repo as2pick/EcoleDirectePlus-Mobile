@@ -76,3 +76,6 @@ package-lock.json
 
 # expo
 .expo/
+
+#VSCode
+.vscode/

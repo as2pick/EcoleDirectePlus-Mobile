@@ -9,7 +9,7 @@ export const AppSettingsProvider = ({ children }) => {
     const appSettings = (state, action) => {
         switch (action.type) {
             case "TOGGLE_THEME":
-                return "toggeled theme";
+                return state;
             default:
                 return state;
         }

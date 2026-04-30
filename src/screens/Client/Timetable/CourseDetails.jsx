@@ -23,7 +23,6 @@ export default function CourseDetails({ route }) {
     const [startCourseTiming, setStartCourseTiming] = useState("");
 
     const {
-        classGroup,
         endCourse,
         group,
         isCancelled,
@@ -33,10 +32,7 @@ export default function CourseDetails({ route }) {
         room,
         startCourse,
         teacher,
-        webId,
         color,
-        placing,
-        height,
         textColor,
     } = courseData;
 
@@ -77,7 +73,7 @@ export default function CourseDetails({ route }) {
             </View>
         ),
 
-        []
+        [colors.bg.bg4]
     );
 
     const startCourseTimingCat = {
@@ -124,7 +120,7 @@ export default function CourseDetails({ route }) {
     if (hours > 0) {
         timing += `${hours} heure${hours > 1 ? "s" : ""}`;
     } else if (minutes > 0) {
-        timing += `${minutes} minute${minutes > 1 ? "s" : 0}`;
+        timing += `${minutes} minute${minutes > 1 ? "s" : ""}`;
     } else {
         timing = "Erreur lors de la lecture du temps";
     }
@@ -135,7 +131,7 @@ export default function CourseDetails({ route }) {
                     headerTitle={"Retour à l'emploi du temps"}
                     backArrow={{ color: colors.contrast, size: 24 }}
                     height={33}
-                    backgroundColor={colors.background}
+                    backgroundColor={colors.navbar.background}
                 />
                 <View
                     style={{

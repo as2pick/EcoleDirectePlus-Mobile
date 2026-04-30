@@ -170,6 +170,7 @@ export default function GradesContent() {
     );
 
     return (
+<<<<<<< HEAD
         <View style={{ flex: 1 }}>
             <View
                 style={{
@@ -319,6 +320,11 @@ export default function GradesContent() {
                 disciplineCodes={simulatedDisciplineCodes}
             />
         </View>
+=======
+        <SafeAreaView style={{ flex: 1 }}>
+            <InDev />
+        </SafeAreaView>
+>>>>>>> main
     );
 }
 

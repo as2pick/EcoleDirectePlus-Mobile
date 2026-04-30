@@ -4,11 +4,18 @@ import { useColorScheme } from "react-native";
 import { SYSTEM_FOLLOW_KEY, THEME_KEY, THEMES_ASSOCIATIONS } from "../themes/themes";
 
 const ThemeContext = createContext();
+const DEFAULT_THEME = "light";
+const getSafeThemeName = (themeName) =>
+    Object.prototype.hasOwnProperty.call(THEMES_ASSOCIATIONS, themeName)
+        ? themeName
+        : DEFAULT_THEME;
 
 export const ThemeProvider = ({ children }) => {
     const systemColorScheme = useColorScheme();
 
-    const [colorScheme, setColorScheme] = useState(systemColorScheme || "light");
+    const [colorScheme, setColorScheme] = useState(
+        getSafeThemeName(systemColorScheme)
+    );
     const [isFollowingSystem, setIsFollowingSystem] = useState(true);
 
     useEffect(() => {
@@ -23,27 +30,31 @@ export const ThemeProvider = ({ children }) => {
 
                 setIsFollowingSystem(shouldFollowSystem);
 
-                const savedTheme = savedThemeStr ? JSON.parse(savedThemeStr) : null;
+                const savedTheme = savedThemeStr
+                    ? getSafeThemeName(JSON.parse(savedThemeStr))
+                    : null;
+                const currentSystemTheme = getSafeThemeName(systemColorScheme);
 
                 if (!savedTheme) {
+                    setColorScheme(currentSystemTheme);
                     await storeThemeInPersistentStorage(
-                        systemColorScheme,
+                        currentSystemTheme,
                         shouldFollowSystem
                     );
                     return;
                 }
 
                 if (shouldFollowSystem) {
-                    setColorScheme(systemColorScheme || "light");
+                    setColorScheme(currentSystemTheme);
                 } else if (savedTheme) {
                     setColorScheme(savedTheme);
                     setIsFollowingSystem(false);
                 } else {
-                    setColorScheme(systemColorScheme || "light");
+                    setColorScheme(currentSystemTheme);
                 }
             } catch (e) {
                 console.log("Error when load theme :", e);
-                setColorScheme(systemColorScheme || "light");
+                setColorScheme(getSafeThemeName(systemColorScheme));
                 setIsFollowingSystem(true);
             }
         };
@@ -52,7 +63,7 @@ export const ThemeProvider = ({ children }) => {
 
     useEffect(() => {
         if (isFollowingSystem && systemColorScheme) {
-            setColorScheme(systemColorScheme);
+            setColorScheme(getSafeThemeName(systemColorScheme));
         }
     }, [systemColorScheme, isFollowingSystem]);
 
@@ -70,8 +81,9 @@ export const ThemeProvider = ({ children }) => {
     const followSystemTheme = async () => {
         try {
             setIsFollowingSystem(true);
-            setColorScheme(systemColorScheme || "light");
-            await storeThemeInPersistentStorage(systemColorScheme, true);
+            const currentSystemTheme = getSafeThemeName(systemColorScheme);
+            setColorScheme(currentSystemTheme);
+            await storeThemeInPersistentStorage(currentSystemTheme, true);
         } catch (e) {
             console.log("Error follow system theme", e);
         }
@@ -79,9 +91,10 @@ export const ThemeProvider = ({ children }) => {
 
     const setManualTheme = async (theme) => {
         try {
-            setColorScheme(theme);
+            const newTheme = getSafeThemeName(theme);
+            setColorScheme(newTheme);
             setIsFollowingSystem(false);
-            await storeThemeInPersistentStorage(theme);
+            await storeThemeInPersistentStorage(newTheme);
         } catch (e) {
             console.log("Error set theme manually:", e);
         }
@@ -93,7 +106,10 @@ export const ThemeProvider = ({ children }) => {
     ) => {
         try {
             await Promise.all([
-                AsyncStorage.setItem(THEME_KEY, JSON.stringify(themeValue)),
+                AsyncStorage.setItem(
+                    THEME_KEY,
+                    JSON.stringify(getSafeThemeName(themeValue))
+                ),
                 AsyncStorage.setItem(
                     SYSTEM_FOLLOW_KEY,
                     JSON.stringify(followSystem)
@@ -107,7 +123,7 @@ export const ThemeProvider = ({ children }) => {
     const contextValue = useMemo(
         () => ({
             colorScheme,
-            theme: THEMES_ASSOCIATIONS[colorScheme],
+            theme: THEMES_ASSOCIATIONS[colorScheme] || THEMES_ASSOCIATIONS.light,
             isFollowingSystem,
             toggleTheme,
             followSystemTheme,

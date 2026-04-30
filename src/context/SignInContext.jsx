@@ -183,6 +183,7 @@ export const SignInProvider = ({ children }) => {
         await authService.deleteCredentials();
         dispatch({ type: "SIGN_OUT" });
         setGlobalUserData(null);
+        setIsConnected(false);
     };
 
     useEffect(() => {

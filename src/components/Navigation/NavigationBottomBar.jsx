@@ -1,13 +1,15 @@
 // components/CustomNavbar.js
 import { useTheme } from "@react-navigation/native";
-import { useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { addOpacityToCssRgb } from "../../utils/colorGenerator";
 
 const NavigationBottomBar = ({ state, descriptors, navigation }) => {
+<<<<<<< HEAD
     const [isPressedIn, setIsPressedIn] = useState(false);
     const [isLongPressed, setIsLongPressed] = useState(false);
     const { shadow } = useTheme();
+=======
+>>>>>>> main
     const { colors } = useTheme();
     const caseColor = addOpacityToCssRgb(colors.case, 0.7);
     const shadowColor = addOpacityToCssRgb("rgb(0, 0, 0)", shadow.oppacity);
@@ -16,9 +18,15 @@ const NavigationBottomBar = ({ state, descriptors, navigation }) => {
             style={[
                 styles.container,
                 {
+<<<<<<< HEAD
                     backgroundColor: caseColor,
                     borderRadius: 25,
                     boxShadow: "0px 0px 10px 2px rgb(0, 0, 0)" + shadowColor,
+=======
+                    backgroundColor: colors.navbar.background,
+                    borderTopColor: colors.navbar.border,
+                    borderTopWidth: 1.2,
+>>>>>>> main
                 },
             ]}
         >
@@ -48,19 +56,13 @@ const NavigationBottomBar = ({ state, descriptors, navigation }) => {
                         accessibilityLabel={options.tabBarAccessibilityLabel}
                         testID={options.tabBarTestID}
                         onPress={onPress}
-                        onPressIn={() => setIsPressedIn(true)}
-                        onPressOut={() => {
-                            setIsPressedIn(false);
-                            setIsLongPressed(false);
-                        }}
-                        onLongPress={() => setIsLongPressed(true)}
-                        style={styles.tab}
+                        style={[styles.tab, isFocused && styles.activeTab]}
                     >
                         <View
                             style={
                                 isFocused
                                     ? [
-                                          styles.iconPadding,
+                                          styles.activeIconPadding,
                                           {
                                               backgroundColor: colors.main,
                                           },
@@ -85,6 +87,7 @@ const NavigationBottomBar = ({ state, descriptors, navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
+<<<<<<< HEAD
         alignSelf: "center",
         padding: 12,
         borderRadius: 25,
@@ -92,6 +95,10 @@ const styles = StyleSheet.create({
         position: "absolute",
         width: "95%",
         justifyContent: "space-around", // or space-between
+=======
+        paddingHorizontal: 12,
+        overflow: "visible",
+>>>>>>> main
     },
     tab: {
         //flex: 1,
@@ -107,6 +114,32 @@ const styles = StyleSheet.create({
         padding: 6,
         borderRadius: 12,
     },
+<<<<<<< HEAD
+=======
+    activeTab: {
+        zIndex: 2,
+    },
+    iconPadding: {
+        width: 48,
+        height: 48,
+        borderRadius: 12,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    activeIconPadding: {
+        width: 74,
+        height: 74,
+        borderRadius: 37,
+        alignItems: "center",
+        justifyContent: "center",
+        transform: [{ translateY: -18 }],
+        shadowColor: "#000",
+        shadowOpacity: 0.35,
+        shadowRadius: 10,
+        shadowOffset: { width: 0, height: 5 },
+        elevation: 10,
+    },
+>>>>>>> main
 });
 
 export default NavigationBottomBar;
