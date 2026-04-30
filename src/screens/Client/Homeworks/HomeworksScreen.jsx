@@ -1,17 +1,3 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { routesNames } from "../../../router/config/routesNames";
-import HomeworkDetails from "./HomeworkDetails";
-import HomeworksContent from "./HomeworksContent";
-import { HomeworksProvider } from "./context/LocalContext";
-
-const NativeStack = createNativeStackNavigator();
-
-export default function HomeworksScreen() {
-    const {
-        client: {
-            homeworks: { content, details },
-        },
-    } = routesNames;
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback, useState } from "react";
 import { Switch, Text, View } from "react-native";
@@ -44,19 +30,16 @@ export default function HomeworksScreen() {
                         setError(null);
                         setSortedHomeworksData(userGrades);
 
+                        setLoading(false);
+                    })
+                    .catch((err) => {
+                        setError(err.message);
+                        setLoading(false);
+                    });
+            }
+        }, [userAccesToken, sortedHomeworksData])
+    );
     return (
-        <HomeworksProvider>
-            <NativeStack.Navigator
-                initialRouteName={content}
-                screenOptions={{
-                    headerShown: false,
-                    animation: "fade",
-                }}
-            >
-                <NativeStack.Screen name={content} component={HomeworksContent} />
-                <NativeStack.Screen name={details} component={HomeworkDetails} />
-            </NativeStack.Navigator>
-        </HomeworksProvider>
         <SafeAreaView style={{ flex: 1 }}>
             {/* <ScrollView> */}
             {error && <Text>{error}</Text>}

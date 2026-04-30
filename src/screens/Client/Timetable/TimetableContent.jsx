@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import { useFocusEffect, useNavigation, useTheme } from "@react-navigation/native";
 
@@ -15,9 +15,8 @@ import { CONFIG } from "../../../constants/config";
 import { GLOBALS_DATAS } from "../../../constants/device/globals";
 import { timetableConfig } from "../../../constants/features/timetableConfig";
 
-import { Text } from "../../../components/Ui/core";
 import { useUser } from "../../../context/UserContext";
-import { storageManager } from "../../../helpers/StorageManager";
+import { storageServiceStates } from "../../../helpers/storageService";
 import { routesNames } from "../../../router/config/routesNames";
 import { addOpacityToCssRgb } from "../../../utils/colorGenerator";
 
@@ -57,7 +56,7 @@ export default function TimetableContent() {
         useCallback(() => {
             if (!sortedTimetableData || sortedTimetableData.length === 0) {
                 setLoading(true);
-                storageManager
+                storageServiceStates
                     .getter({ originKey: "timetable" })
                     .then((userTimetable) => {
                         setSortedTimetableData(userTimetable);
@@ -94,7 +93,6 @@ export default function TimetableContent() {
         <View
             style={{
                 flex: 1,
-                top: 20,
             }}
             onLayout={() => setTimetableCoreSuccessLoaded(true)}
         >
@@ -102,7 +100,7 @@ export default function TimetableContent() {
                 style={[
                     dynamicOpacityStyle,
                     {
-                        margin: 0,
+                        margin: 24,
                         overflow: "hidden",
                         flex: 1,
                         height: screenHeight,
@@ -119,8 +117,8 @@ export default function TimetableContent() {
                 >
                     <TouchableOpacity
                         style={{
-                            backgroundColor: theme.colors.main,
-                            width: "80%", // Otherwise "Dimanche 16 Novembre" won't fit
+                            backgroundColor: theme.colors.bg.bg4,
+                            width: "70%",
                             position: "absolute",
                             height: "65%",
                             borderRadius: 50,
@@ -137,11 +135,33 @@ export default function TimetableContent() {
                             )
                         }
                     >
-                        <Text preset="title1" oneLine color={theme.colors.theme}>
+                        <Text
+                            style={{
+                                fontWeight: 600,
+                                fontSize: 18,
+                            }}
+                        >
                             {activeDate}
                         </Text>
                     </TouchableOpacity>
                 </View>
+                {/* <TouchableOpacity
+                    style={{
+                        position: "absolute",
+                        width: 60,
+                        height: 60,
+                        backgroundColor: "red",
+                        zIndex: 100,
+                    }}
+                    onPress={() => {
+                        console.log(
+                            sortedTimetableData.findIndex(
+                                (day) => day.date === CONFIG.dateNow
+                            )
+                        );
+                        scrollViewRef.current.scrollToIndex(2, false);
+                    }}
+                /> */}
 
                 <VerticalScrollView
                     arrayLength={sortedTimetableData?.length}
@@ -149,68 +169,44 @@ export default function TimetableContent() {
                     ref={scrollViewRef}
                 >
                     {!loading &&
-                        sortedTimetableData?.map(
-                            (currentDay, index, courseIndex) => (
-                                <DayShedule
-                                    key={index}
-                                    currentDay={currentDay}
-                                    navigation={navigation}
-                                    theme={theme}
-                                    timetableViewDims={{
-                                        getter: timetableViewDims,
-                                        setter: setTimetableViewDims,
-                                    }}
-                                    index={courseIndex}
-                                />
-                            )
-                        )}
+                        sortedTimetableData?.map((currentDay, index) => (
+                            <DayShedule
+                                key={index}
+                                currentDay={currentDay}
+                                navigation={navigation}
+                                theme={theme}
+                                timetableViewDims={{
+                                    getter: timetableViewDims,
+                                    setter: setTimetableViewDims,
+                                }}
+                                index={index}
+                            />
+                        ))}
                 </VerticalScrollView>
             </Animated.View>
         </View>
     );
 }
 
-const CourseBox = ({
-    course,
-    navigation,
-    theme,
-    timetableViewDims,
-    courseIndex,
-}) => {
+const CourseBox = ({ course, navigation, theme, timetableViewDims }) => {
     const [libelleLayout, setLibelleLayout] = useState(null);
     const [roomLayout, setRoomLayout] = useState(null);
-    const [overlap, setOverlap] = useState(false);
     const libelleLayoutRef = useRef(false);
-
     const roomLayoutRef = useRef(false);
 
-    const [startCourseLayout, setStartCourseLayout] = useState(null);
-    const startCourseLayoutRef = useRef(false);
-
-    const { colors } = useTheme();
-    const caseColor = addOpacityToCssRgb(colors.theme, 0.2);
-
     useEffect(() => {
-        if (roomLayout && startCourseLayout) {
-            const TOLERANCE = 2;
-
-            const checkX1 =
-                roomLayout.x <
-                startCourseLayout.x + startCourseLayout.width + TOLERANCE;
-            const checkX2 =
-                roomLayout.x + roomLayout.width > startCourseLayout.x - TOLERANCE;
-            const checkY1 =
-                roomLayout.y <
-                startCourseLayout.y + startCourseLayout.height + TOLERANCE;
-            const checkY2 =
-                roomLayout.y + roomLayout.height > startCourseLayout.y - TOLERANCE;
-            const isOverlapping = checkX1 && checkX2 && checkY1 && checkY2;
+        if (libelleLayout && roomLayout) {
+            const isOverlapping =
+                roomLayout.x < libelleLayout.x + libelleLayout.width &&
+                roomLayout.x + roomLayout.width > libelleLayout.x &&
+                roomLayout.y < libelleLayout.y + libelleLayout.height &&
+                roomLayout.y + roomLayout.height > libelleLayout.y;
 
             if (isOverlapping) {
                 roomLayoutRef.current = false;
             }
         }
-    }, [roomLayout, startCourseLayout]);
+    }, [libelleLayout, roomLayout]);
     const {
         endCourse,
         isCancelled,
@@ -239,36 +235,22 @@ const CourseBox = ({
             roomLayoutRef.current = true;
         }
     };
-    const handleStartCourseLayout = (e) => {
-        if (!startCourseLayoutRef.current) {
-            setStartCourseLayout(e.nativeEvent.layout);
-            startCourseLayoutRef.current = true;
-        }
-    };
-
-    const { shadow } = useTheme();
-    const shadowColor = addOpacityToCssRgb("rgb(0, 0, 0)", shadow.oppacity);
 
     return (
-        <Animated.View
-            key={webId}
-            style={[
-                {
-                    height: `${height - 0.15}%`,
-                    top: `${placing}%`,
-                    width: "100%",
-                    position: "absolute",
-                    borderRadius: 16,
-                },
-            ]}
-        >
+        <>
             <TouchableOpacity
-                //key={webId}
+                key={webId}
                 style={[
                     {
-                        marginHorizontal: 24,
+                        height: `${height - 0.15}%`,
+                        top: `${placing}%`,
+                        width: "100%",
+                        borderColor: color,
+                        borderWidth: 1.8,
+                        borderRadius: 16,
+                        position: "absolute",
                         paddingHorizontal: 12,
-                        flex: 1,
+
                         paddingVertical:
                             height <= CONFIG.minCourseSize
                                 ? timetableViewDims.height /
@@ -277,14 +259,8 @@ const CourseBox = ({
                                   1
                                 : CONFIG.minCourseSize,
                         overflow: "hidden",
-                        backgroundColor: caseColor,
-                        borderRadius: 16,
-                        borderColor: color,
-                        borderWidth: 1.8,
-                        boxShadow: `1px 2px 5px 0px ${shadowColor}`,
                     },
                 ]}
-                activeOpacity={0.5}
                 onPress={() => {
                     navigation.navigate(
                         routesNames.client.timetable.course_details,
@@ -325,13 +301,11 @@ const CourseBox = ({
                                     ? timetableConfig.cancelledColor
                                     : timetableConfig.dispensedColor,
                                 borderRadius: 50,
-
-                                borderColor: theme.colors.contrast,
+                                fontSize: 18,
+                                borderColor: theme.colors.txt.txt1,
                                 borderWidth: 1.2,
                                 elevation: 14,
-                                transform: [{ rotate: "-6deg" }],
                             }}
-                            preset="title1"
                         >
                             {isCancelled ? "Annulé" : "Dispensé"}
                         </Text>
@@ -339,101 +313,91 @@ const CourseBox = ({
                 )}
                 <View
                     style={{
-                        flexDirection: "row",
                         justifyContent: "space-between",
                         flex: 1,
                         opacity: 1,
-                        width: "100%",
+                        // backgroundColor: "red",
                     }}
                 >
                     <View
                         style={{
-                            flexDirection: "column",
-                            justifyContent: "space-between",
-                        }}
-                    >
-                        <View
-                            style={{
-                                flexDirection: "row",
-                                justifyContent: "flex-start",
-                                gap: 6,
-                                alignItems: "center",
-                                width: "100%",
-                            }}
-                        >
-                            <Text
-                                style={{
-                                    backgroundColor: color,
-                                    borderRadius: 6,
-                                    paddingHorizontal: 8,
-                                    paddingVertical: 2,
-                                }}
-                                color={textColor}
-                                preset="label2"
-                                onLayout={handleLibelleLayout}
-                            >
-                                {libelle}
-                            </Text>
-
-                            <Text
-                                preset="label3"
-                                color={color}
-                                onLayout={handleRoomLayout}
-                                style={{
-                                    fontSize: overlap ? 10 : 12,
-                                    fontWeight: "bold",
-                                }}
-                            >
-                                {room}
-                            </Text>
-                        </View>
-                        <View
-                            style={{
-                                //width: '100%',
-                                flexDirection: "row",
-                                justifyContent: "flex-start",
-                            }}
-                        >
-                            <Text preset="label3">{teacher}</Text>
-                        </View>
-                    </View>
-                    <View
-                        style={{
-                            flexDirection: "column",
-                            justifyContent: "flex-end",
-                            right: 40,
-                            postion: "absolute",
-                            height: "100%",
-                        }}
-                    >
-                        <RoadFinish size={14} />
-                    </View>
-                    <View
-                        onLayout={handleStartCourseLayout}
-                        style={{
-                            flexDirection: "column",
+                            flexDirection: "row",
                             justifyContent: "space-between",
                             alignItems: "center",
-                            height: "100%",
-                            right: 0,
-                            position: "absolute",
                         }}
                     >
-                        <Text preset="label2">{startCourse.time}</Text>
+                        <Text
+                            style={{
+                                fontSize: 13,
+                                color: textColor,
+
+                                backgroundColor: color,
+                                borderRadius: 6,
+
+                                paddingHorizontal: 8,
+                                paddingVertical: 2,
+                            }}
+                            onLayout={handleLibelleLayout}
+                        >
+                            {libelle}
+                        </Text>
+
+                        <Text
+                            style={{
+                                color: color,
+                                fontWeight: 600,
+                                fontSize: 12,
+                            }}
+                            onLayout={handleRoomLayout}
+                        >
+                            {room}
+                        </Text>
+                    </View>
+                    <View
+                        style={{
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                        }}
+                    >
+                        <Text
+                            style={{
+                                fontSize: 13,
+                            }}
+                        >
+                            {teacher}
+                        </Text>
                         <View
                             style={{
-                                width: 3,
-                                backgroundColor: color,
                                 flexDirection: "row",
-                                flex: 1,
-                                borderRadius: 30,
+                                gap: height <= 17 ? 4.5 : 2,
+                                alignItems: "center",
                             }}
-                        />
-                        <Text preset="label2">{endCourse.time}</Text>
+                        >
+                            <Text
+                                style={{
+                                    fontSize: 14,
+                                    fontWeight: 300,
+                                }}
+                            >
+                                {startCourse.time}
+                            </Text>
+                            {/* <View style={{ position: "absolute" }}> */}
+
+                            {/* </View> */}
+                            <Text
+                                style={{
+                                    fontSize: 14,
+                                    fontWeight: 300,
+                                }}
+                            >
+                                {endCourse.time}
+                            </Text>
+                            <RoadFinish size={14} />
+                        </View>
                     </View>
                 </View>
             </TouchableOpacity>
-        </Animated.View>
+        </>
     );
 };
 
@@ -461,14 +425,13 @@ const DayShedule = ({
                 timetableViewDims.setter({ width, height });
             }}
         >
-            {currentDay?.courses.map((course, courseIndex) => (
+            {currentDay?.courses.map((course) => (
                 <CourseBox
                     key={course.webId}
                     course={course}
                     navigation={navigation}
                     theme={theme}
                     timetableViewDims={timetableViewDims.getter}
-                    courseIndex={courseIndex}
                 />
             ))}
         </View>

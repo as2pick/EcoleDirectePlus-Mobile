@@ -1,8 +1,7 @@
 import { useTheme } from "@react-navigation/native";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import CopyLeft from "../../../assets/svg/CopyLeft";
-import { Text } from "../../components/Ui/core";
 
 import {
     CustomTopHeader,
@@ -12,13 +11,13 @@ import {
     Title,
 } from "../../components";
 import { CONFIG } from "../../constants/config";
+
 const COLABORATORS = {
     main: {
         // "Truite Séchée": "https://github.com/truiteseche",
         // "Saumon Brulé": "https://github.com/saumon-brule",
         Lostosword: "https://github.com/Lostosword",
         "As de Pique": "https://github.com/as2pick",
-        Lucilus: "https://github.com/Lucilus78",
     },
     other: {
         // akash02ab: "https://github.com/akash02ab",
@@ -28,42 +27,48 @@ const COLABORATORS = {
         // xav35000: "https://github.com/xav35000",
         Lostosword: "https://github.com/Lostosword",
         "As de Pique": "https://github.com/as2pick",
-        Lucilus: "https://github.com/Lucilus78",
     },
 };
 
-const Paragraph = ({ children }) => {
-    return <Text style={styles.paragraph}>{children}</Text>;
+const Paragraph = ({ customStyle = {}, children }) => {
+    const { colors } = useTheme();
+    return (
+        <Text style={[styles.paragraph, customStyle, { color: colors.txt.txt3 }]}>
+            {children}
+        </Text>
+    );
 };
 
 const Link = ({ href, isPeople = false, children }) => {
     const { colors } = useTheme();
-
+    const styles = isPeople
+        ? {
+              color: colors.txt.txt3,
+              textDecorationLine: "underline",
+          }
+        : {
+              color: colors.txt.txt2,
+          };
     return (
-        <LinkText
-            href={String(href)}
-            color={isPeople ? colors.accent : colors.main}
-            underline={isPeople}
-        >
+        <LinkText href={String(href)} styles={styles}>
             {children}
         </LinkText>
     );
 };
 
 export default function PrivacyPolicyScreen() {
-    const { colors } = useTheme();
-
     return (
-        <View style={{ flex: 1, backgroundColor: colors.background.login }}>
+        <>
             <CustomTopHeader
                 headerTitle={"Privacy Policy And Terms of Use"}
                 height={38}
-                backgroundColor={colors.background.gradient}
             />
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.scrollview}>
                     <View>
-                        <Title>Politique de confidentialité</Title>
+                        <Title customStyle={styles.title}>
+                            Politique de confidentialité
+                        </Title>
                         <Subtitle>Résumé</Subtitle>
                         <Paragraph>
                             ℹ️ Ecole Directe Plus n'est en aucun cas affilié à
@@ -201,7 +206,9 @@ export default function PrivacyPolicyScreen() {
                         : Luciole © Laurent Bourcellier & Jonathan Perez
                     </Paragraph>
                     <Separation />
-                    <Title>Conditions d'utilisations</Title>
+                    <Title customStyle={styles.title}>
+                        Conditions d'utilisations
+                    </Title>
                     <Subtitle>1. Général</Subtitle>
                     <Paragraph>
                         • Les noms et pronoms "Ecole Directe Plus", "EDP", "service",
@@ -291,7 +298,7 @@ export default function PrivacyPolicyScreen() {
                     </Paragraph>
 
                     <Separation />
-                    <Title>Crédits</Title>
+                    <Title customStyle={styles.title}>Crédits</Title>
                     <Paragraph>
                         • Ecole Directe Plus est l'initiative du groupuscule
                         Magic-Fish :
@@ -345,7 +352,7 @@ export default function PrivacyPolicyScreen() {
                         {"- Base64\n"}
                         {"- JS-SHA256\n"}
                         {"- Set-cookie-parser\n"}
-                        {"- Day JS\n"}
+                        {"- Moment\n"}
                         {"- Lottie\n"}
                     </Paragraph>
                     <Paragraph>
@@ -360,7 +367,7 @@ export default function PrivacyPolicyScreen() {
                         {"- Nickro_01290\n"}
                         {"- Cthyllax\n"}
                         {"- EcoleDirecte Neptunium\n"}-{" "}
-                        <Text weight="bold">Internet</Text>
+                        <Text style={{ fontWeight: 800 }}>Internet</Text>
                     </Paragraph>
                     <Paragraph>
                         • Curieux et motivé ? Rejoignez nous et participez au
@@ -380,7 +387,7 @@ export default function PrivacyPolicyScreen() {
                         <Link href={CONFIG.discordInviteLink}>serveur Discord.</Link>
                     </Paragraph>
                     <Separation />
-                    <Title>License (MIT)</Title>
+                    <Title customStyle={styles.title}>License (MIT)</Title>
                     <Paragraph>
                         • Permission is hereby granted, free of charge, to any person
                         obtaining a copy of this software and associated
@@ -412,18 +419,23 @@ export default function PrivacyPolicyScreen() {
                         </Link>
                     </Paragraph>
 
-                    <Text style={[styles.copyleft]} align="center">
+                    <Text style={[styles.copyleft]}>
                         Copyleft 2025 <CopyLeft size={17} /> Ecole Directe Plus
                     </Text>
                 </View>
             </ScrollView>
-        </View>
+        </>
     );
 }
 // •
 const styles = StyleSheet.create({
+    title: {
+        fontSize: 26,
+        fontWeight: 600,
+        marginLeft: 20,
+    },
     scrollview: {
-        paddingVertical: 18,
+        paddingBottom: 32,
     },
     paragraph: {
         marginLeft: 30,
@@ -449,6 +461,8 @@ const styles = StyleSheet.create({
         position: "relative",
     },
     copyleft: {
+        textAlign: "center",
+        fontSize: 17,
         marginTop: 10,
     },
 });

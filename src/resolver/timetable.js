@@ -224,7 +224,7 @@ export default async function timetableResolver({ token, offset = 0 }) {
         {
             body: {
                 dateDebut: requestedMonday,
-                dateFin: addDaysToDateString(requestedMonday, 13),
+                dateFin: addDaysToDateString(requestedMonday, 6),
                 avecTrous: false,
             },
             headers: {
@@ -235,7 +235,7 @@ export default async function timetableResolver({ token, offset = 0 }) {
     );
 
     return !timetableResponse
-        ? fillHolidays(requestedMonday, addDaysToDateString(requestedMonday, 13))
+        ? fillHolidays(requestedMonday, addDaysToDateString(requestedMonday, 6))
         : await sortedTimetable(timetableResponse.data);
 }
 

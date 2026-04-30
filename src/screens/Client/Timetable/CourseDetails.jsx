@@ -1,8 +1,7 @@
 import { useFocusEffect, useTheme } from "@react-navigation/native";
-import dayjs from "dayjs";
+import moment from "moment";
 import { useCallback, useEffect, useState } from "react";
-import { View } from "react-native";
-
+import { Text, View } from "react-native";
 import BellOffIcon from "../../../../assets/svg/micro/BellOffIcon";
 import ClockIcon from "../../../../assets/svg/micro/ClockIcon";
 import DoorOpenIcon from "../../../../assets/svg/micro/DoorOpenIcon";
@@ -12,14 +11,13 @@ import PeoplesIcon from "../../../../assets/svg/micro/PeoplesIcon";
 import PersonIcon from "../../../../assets/svg/micro/PersonIcon";
 import TrashIcon from "../../../../assets/svg/micro/TrashIcon";
 import { CustomTopHeader, SwipeBackWrapper } from "../../../components";
-import { Text } from "../../../components/Ui/core";
 import { toHoursMinutes, toMilliseconds } from "../../../utils/time";
 
 export default function CourseDetails({ route }) {
     const { courseData } = route.params;
     const { colors } = useTheme();
 
-    const [now, setNow] = useState(dayjs());
+    const [now, setNow] = useState(moment());
     const [startCourseTiming, setStartCourseTiming] = useState("");
 
     const {
@@ -39,7 +37,7 @@ export default function CourseDetails({ route }) {
     const courseTiming =
         toMilliseconds(endCourse.time) - toMilliseconds(startCourse.time);
     const [hours, minutes] = toHoursMinutes(courseTiming);
-    const startCourseDateTime = dayjs(`${startCourse.date} ${startCourse.time}`);
+    const startCourseDateTime = moment(`${startCourse.date} ${startCourse.time}`);
 
     const [intervalDays, intervalHours, intervalMinutes] = [
         startCourseDateTime.diff(now, "days"),
@@ -84,7 +82,7 @@ export default function CourseDetails({ route }) {
 
     useEffect(() => {
         const interval = setInterval(() => {
-            setNow(dayjs());
+            setNow(moment());
         }, 1000);
 
         return () => clearInterval(interval);
@@ -126,10 +124,10 @@ export default function CourseDetails({ route }) {
     }
     return (
         <SwipeBackWrapper>
-            <View style={{ flex: 1, backgroundColor: colors.background }}>
+            <View style={{ flex: 1, backgroundColor: colors.bg.bg2 }}>
                 <CustomTopHeader
                     headerTitle={"Retour à l'emploi du temps"}
-                    backArrow={{ color: colors.contrast, size: 24 }}
+                    backArrow={{ color: "white", size: 24 }}
                     height={33}
                     backgroundColor={colors.navbar.background}
                 />
@@ -149,11 +147,17 @@ export default function CourseDetails({ route }) {
                             style={{
                                 backgroundColor: color,
                                 borderRadius: 6,
+
                                 paddingHorizontal: 8,
                                 paddingVertical: 2,
                             }}
                         >
-                            <Text preset="h2" color={textColor} align="center">
+                            <Text
+                                style={{
+                                    fontSize: 26,
+                                    color: textColor,
+                                }}
+                            >
                                 {libelle}
                             </Text>
                         </View>
@@ -174,9 +178,10 @@ export default function CourseDetails({ route }) {
                                     <ClockIcon />
                                     <Text
                                         style={{
+                                            fontSize: 17.5,
+                                            fontWeight: 600,
                                             marginLeft: 15,
                                         }}
-                                        preset="title1"
                                     >{`${startCourseTiming}`}</Text>
                                 </View>
                             )}
@@ -190,9 +195,10 @@ export default function CourseDetails({ route }) {
                                     <TrashIcon />
                                     <Text
                                         style={{
+                                            fontSize: 17.5,
+                                            fontWeight: 600,
                                             marginLeft: 15,
                                         }}
-                                        preset="h3"
                                     >{`Annulé`}</Text>
                                 </View>
                             )}
@@ -206,9 +212,10 @@ export default function CourseDetails({ route }) {
                                     <PenSquareIcon />
                                     <Text
                                         style={{
+                                            fontSize: 17.5,
+                                            fontWeight: 600,
                                             marginLeft: 15,
                                         }}
-                                        preset="h3"
                                     >{`Modifié`}</Text>
                                 </View>
                             )}
@@ -222,9 +229,10 @@ export default function CourseDetails({ route }) {
                                     <BellOffIcon />
                                     <Text
                                         style={{
+                                            fontSize: 17.5,
+                                            fontWeight: 600,
                                             marginLeft: 15,
                                         }}
-                                        preset="h3"
                                     >{`Dispensé`}</Text>
                                 </View>
                             )}
@@ -245,9 +253,10 @@ export default function CourseDetails({ route }) {
                                     <HourglassIcon />
                                     <Text
                                         style={{
+                                            fontSize: 17.5,
+                                            fontWeight: 600,
                                             marginLeft: 30,
                                         }}
-                                        preset="label1"
                                     >{`${timing}`}</Text>
                                 </View>
                             </>
@@ -272,10 +281,10 @@ export default function CourseDetails({ route }) {
                                     <PersonIcon />
                                     <Text
                                         style={{
+                                            fontSize: 17.5,
+                                            fontWeight: 600,
                                             marginLeft: 30,
                                         }}
-                                        preset="label1"
-                                        oneLine
                                     >{`${teacher}`}</Text>
                                 </View>
                             )}
@@ -289,9 +298,10 @@ export default function CourseDetails({ route }) {
                                     <DoorOpenIcon />
                                     <Text
                                         style={{
+                                            fontSize: 17.5,
+                                            fontWeight: 600,
                                             marginLeft: 30,
                                         }}
-                                        preset="label1"
                                     >{`${room}`}</Text>
                                 </View>
                             )}
@@ -305,9 +315,10 @@ export default function CourseDetails({ route }) {
                                     <PeoplesIcon />
                                     <Text
                                         style={{
+                                            fontSize: 17.5,
+                                            fontWeight: 600,
                                             marginLeft: 30,
                                         }}
-                                        preset="label1"
                                     >{`${group}`}</Text>
                                 </View>
                             )}

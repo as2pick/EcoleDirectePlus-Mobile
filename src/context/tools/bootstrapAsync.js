@@ -1,6 +1,6 @@
-import dayjs from "dayjs";
+import moment from "moment";
 import { payloadHelper } from "../../helpers/cryptoHelper";
-import { storageManager } from "../../helpers/StorageManager";
+import { storageServiceStates } from "../../helpers/storageService";
 import authService from "../../services/login/authService";
 import storeDatas from "./storeLoginDatas";
 
@@ -18,12 +18,12 @@ export async function tryLoginWithStoredCreds({
 }) {
     try {
         const payload = await payloadHelper.decrypt({ cipherHex: cipherText });
-        const now = dayjs();
-        const expiration = dayjs(payload.expirationDate, "YYYY-MM-DD_HH:mm");
+        const now = moment();
+        const expiration = moment(payload.expirationDate, "YYYY-MM-DD_HH:mm");
 
         if (now.isBefore(expiration)) {
             dispatch({ type: "SIGN_IN", userToken: payload.superSecretUserToken });
-            const getDataFromStorage = await storageManager.getter({
+            const getDataFromStorage = await storageServiceStates.getter({
                 originKey: "userData",
             });
 

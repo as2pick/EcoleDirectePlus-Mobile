@@ -1,22 +1,11 @@
-import { createContext, useContext, useMemo, useState } from "react";
+import { createContext, useContext, useMemo } from "react";
 
 const GlobalAppContext = createContext();
 
 export const GlobalAppProvider = ({ children }) => {
-    const [activeNetworkStatus, setActiveNetworkStatus] = useState({
-        isConnected: null,
-        isInternetReachable: null,
-        type: "unknown",
-        inAirplaneMode: null,
-    });
+    // global states
 
-    const contextValue = useMemo(
-        () => ({
-            activeNetworkStatus,
-            setActiveNetworkStatus,
-        }),
-        [activeNetworkStatus]
-    );
+    const contextValue = useMemo(() => ({}), []);
 
     return (
         <GlobalAppContext.Provider value={contextValue}>
@@ -25,11 +14,5 @@ export const GlobalAppProvider = ({ children }) => {
     );
 };
 
-export const useGlobalApp = () => {
-    const context = useContext(GlobalAppContext);
-    if (!context) {
-        throw new Error("useGlobalApp must be used in GlobalAppProvider");
-    }
-    return context;
-};
+export const useGlobalApp = () => useContext(GlobalAppContext);
 

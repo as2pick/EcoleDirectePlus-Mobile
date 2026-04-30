@@ -1,8 +1,4 @@
 import { useNavigation, useTheme } from "@react-navigation/native";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
-
-import { SafeAreaView } from "react-native-safe-area-context";
 import { useCallback, useEffect, useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import AccountIcon from "../../../../assets/svg/AccountIcon.jsx";
@@ -18,21 +14,14 @@ import {
     OverLoader,
 } from "../../../components/index.js";
 
-import MaskedView from "@react-native-masked-view/masked-view";
-import { LinearGradient } from "expo-linear-gradient";
-import Text from "../../../components/Ui/core/Text.jsx";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { getApiMessage } from "../../../constants/api/codes.js";
 import { useSingIn } from "../../../context/SignInContext.jsx";
 import { routesNames } from "../../../router/config/routesNames.js";
-import { addOpacityToCssRgb } from "../../../utils/colorGenerator";
 
 export default function LoginScreen() {
     const navigation = useNavigation();
     const theme = useTheme();
-    const caseColor = addOpacityToCssRgb(theme.colors.case, 0.3);
-
-    const styles = createStyles(theme, caseColor); //Temporary
     const {
         signIn,
         mcqDatas,
@@ -54,18 +43,6 @@ export default function LoginScreen() {
     });
     const [loading, setLoading] = useState(null);
     const [showLoader, setShowLoader] = useState(false);
-    const usernameInputRef = useRef(null);
-    const passwordInputRef = useRef(null);
-
-    const connect = useCallback(() => {
-        setLoading(true);
-        signIn({
-            username: username,
-            password: password,
-            keepConnected: keepConnected,
-        });
-        setApiError(null);
-    }, [username, password, keepConnected]);
 
     useEffect(() => {
         if (!state || !apiError) return;
@@ -107,13 +84,13 @@ export default function LoginScreen() {
         >
             <SafeAreaView style={styles.logos}>
                 <LinkButton url={"https://discord.gg/AKAqXfTgvE"}>
-                    <DiscordLogo fill={theme.colors.main} size={28} />
+                    <DiscordLogo fill={theme.colors.txt.txt3} size={28} />
                 </LinkButton>
 
                 <LinkButton
                     url={"https://github.com/as2pick/EcoleDirectePlus-Mobile"}
                 >
-                    <GithubLogo fill={theme.colors.main} size={28} />
+                    <GithubLogo fill={theme.colors.txt.txt3} size={28} />
                 </LinkButton>
             </SafeAreaView>
             <OverLoader
@@ -127,19 +104,6 @@ export default function LoginScreen() {
             <View style={styles.form}>
                 <View style={styles.logo.box}>
                     <EDPLogo size={88} />
-                    <MaskedView
-                        maskElement={<Text preset="h1">Ecole Directe Plus</Text>}
-                    >
-                        <LinearGradient
-                            colors={theme.colors.edptext}
-                            start={{ x: 1, y: 0 }}
-                            end={{ x: 0, y: 0 }}
-                        >
-                            <Text preset="h1" style={{ opacity: 0 }}>
-                                Ecole Directe Plus
-                            </Text>
-                        </LinearGradient>
-                    </MaskedView>
                     <GradientText
                         text={"Ecole Directe Plus"}
                         textStyle={{
@@ -153,20 +117,12 @@ export default function LoginScreen() {
                     <View style={styles.input.cases}>
                         <View style={styles.input.logos}>
                             <TextInput
-                                ref={usernameInputRef}
                                 placeholder="Identifiant"
-                                placeholderTextColor={theme.colors.main}
                                 onChangeText={(data) => {
                                     setApiError(null);
                                     setUsername(data);
                                 }}
-                                onSubmitEditing={() =>
-                                    passwordInputRef.current?.focus()
-                                }
-                                returnKeyType="next"
                                 value={username}
-                                textAlign="center"
-                                spellCheck={false}
                                 style={[
                                     styles.input.case,
                                     {
@@ -181,19 +137,12 @@ export default function LoginScreen() {
                         </View>
                         <View style={styles.input.logos}>
                             <TextInput
-                                ref={passwordInputRef}
                                 placeholder="Mot de passe"
-                                placeholderTextColor={theme.colors.main}
                                 onChangeText={(data) => {
                                     setApiError(null);
                                     setPassword(data);
                                 }}
-                                onSubmitEditing={connect}
                                 value={password}
-                                returnKeyType="done"
-                                spellCheck={false}
-                                textAlign="center"
-                                // keyboardType="visible-password"
                                 // secureTextEntry
                                 style={[
                                     styles.input.case,
@@ -218,22 +167,41 @@ export default function LoginScreen() {
                 </View>
 
                 <TouchableOpacity
-                    onPress={connect}
-                    style={{
-                        borderWidth: 1.4,
-                        borderRadius: 12,
-                        paddingVertical: 7,
-                        paddingHorizontal: 16,
-                        borderColor: theme.colors.border,
-                        transform: [{ scale: 1.2 }],
+                    onPress={() => {
+                        setLoading(true);
+                        signIn({
+                            username: username,
+                            password: password,
+                            keepConnected: keepConnected,
+                        });
+                        setApiError(null);
                     }}
                     style={styles.buttonWrapper}
                 >
-                    <Text preset="label2">{"Se connecter      ➜"}</Text>
+                    <Text
+                        style={[
+                            {
+                                borderColor: theme.colors.border,
+                                transform: [{ scale: 1.2 }],
+                            },
+                            styles.button,
+                        ]}
+                    >
+                        {"Se connecter      ➜"}
+                    </Text>
                 </TouchableOpacity>
             </View>
             {apiError && (
-                <Text style={styles.error} color={theme.colors.error}>
+                <Text
+                    style={{
+                        color: "rgb(240, 90, 90)",
+                        padding: 12,
+                        backgroundColor: theme.colors.bg.bg2,
+                        borderColor: "rgb(240, 60, 60)",
+                        borderWidth: 0.9,
+                        borderRadius: 12,
+                    }}
+                >
                     {apiError}
                 </Text>
             )}
@@ -244,10 +212,12 @@ export default function LoginScreen() {
                     }}
                 >
                     <Text
-                        style={[styles.privacyPolicy]}
-                        align="center"
-                        color={theme.colors.main}
-                        preset="body2"
+                        style={[
+                            styles.privacyPolicy,
+                            {
+                                color: theme.colors.txt.txt2,
+                            },
+                        ]}
                     >
                         Politique de confidentialité et Conditions d'utilisation
                     </Text>
@@ -266,102 +236,86 @@ export default function LoginScreen() {
     );
 }
 
-const createStyles = (theme, caseColor) =>
-    StyleSheet.create({
-        //const styles = StyleSheet.create({ - Temporary
-        container: {
-            flex: 1,
-            alignItems: "center",
-            backgroundColor: theme.colors.background.login,
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: "center",
+    },
+    logos: {
+        flexDirection: "row",
+        position: "absolute",
+        top: 12,
+        left: 8,
+        marginLeft: 12,
+        gap: 16,
+    },
+    checkBox: {
+        marginLeft: "5%",
+    },
+    loader: {
+        position: "absolute",
+        left: 0,
+        top: 0,
+        right: 0,
+        bottom: 0,
+        zIndex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "rgb(10, 10, 10)",
+    },
+    form: {
+        marginTop: 26,
+        height: "82%",
+        width: "100%",
+        justifyContent: "space-evenly",
+        flexDirection: "column",
+        alignItems: "center",
+    },
+    logo: {
+        box: { alignItems: "center", gap: 26 },
+        logoOutline: {
+            borderWidth: 1,
+            padding: 10,
+            borderRadius: 10,
+        },
+        text: {
+            fontWeight: 900,
+            fontSize: 48,
+        },
+        textOutline: {
+            paddingHorizontal: 17,
+            paddingVertical: 4,
+            borderWidth: 1,
+            borderRadius: 10,
+        },
+    },
+    input: {
+        box: {
+            width: "100%",
+            paddingHorizontal: 20,
+            borderRadius: 23,
+        },
+        cases: { gap: 20 },
+        case: {
+            borderRadius: 14,
+            borderWidth: 0.8,
+            paddingHorizontal: 14,
+            paddingRight: 42, // 30(logo size)+12(right 12)
+            fontSize: 16,
+            overflow: "hidden",
         },
         logos: {
-            flexDirection: "row",
-            position: "absolute",
-            top: 12,
-            left: 8,
-            marginLeft: 12,
-            gap: 16,
-            color: theme.colors.main,
-        },
-        checkBox: {
-            marginLeft: "5%",
-        },
-        loader: {
-            position: "absolute",
-            left: 0,
-            top: 0,
-            right: 0,
-            bottom: 0,
-            zIndex: 1,
             justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "rgb(10, 10, 10)",
         },
-        form: {
-            marginTop: 26,
-            height: "82%",
-            width: "100%",
-            justifyContent: "space-evenly",
-            flexDirection: "column",
-            alignItems: "center",
+        icon: {
+            right: 12,
+            position: "absolute",
         },
-        logo: {
-            box: { alignItems: "center", gap: 26 },
-            logoOutline: {
-                borderWidth: 1,
-                padding: 10,
-                borderRadius: 10,
-            },
+    },
 
-            textOutline: {
-                paddingHorizontal: 17,
-                paddingVertical: 4,
-                borderWidth: 1,
-                borderRadius: 10,
-            },
-        },
-        input: {
-            box: {
-                width: "100%",
-                paddingHorizontal: 20,
-                borderRadius: 23,
-            },
-            cases: { gap: 20 },
-            case: {
-                borderRadius: 14,
-                borderWidth: 0.8,
-                paddingHorizontal: 17,
-                paddingRight: 42, // 30(logo size)+12(right 12)
-                fontSize: 16,
-                overflow: "hidden",
-                borderColor: theme.colors.accent,
-                color: theme.colors.main,
-                backgroundColor: caseColor,
-            },
-            logos: {
-                justifyContent: "center",
-            },
-            icon: {
-                right: 12,
-                position: "absolute",
-            },
-        },
+    button: {
+        borderWidth: 1.4,
 
-        button: {
-            //borderWidth: 1,
-            //borderColor: theme.colors.accent,
-            //transform: [{ scale: 1.2 }],
-            borderRadius: 12,
-            paddingVertical: 7,
-            paddingHorizontal: 16,
-            color: theme.colors.theme,
-            //backgroundColor: theme.colors.accent,
-        },
-        buttonWrapper: {
-            borderRadius: 12,
-            overflow: "hidden",
-            transform: [{ scale: 1.2 }],
-        },
         borderRadius: 12,
         paddingVertical: 7,
         paddingHorizontal: 16,
@@ -370,25 +324,13 @@ const createStyles = (theme, caseColor) =>
         alignItems: "center",
     },
 
-        infos: {
-            position: "absolute",
-            bottom: 20,
-        },
-        privacyPolicy: {
-            maxWidth: 210,
-        },
-        error: {
-            padding: 12,
-            backgroundColor: theme.colors.bg.bg2,
-            borderColor: theme.colors.error,
-            borderWidth: 0.9,
-            borderRadius: 12,
-        },
-        gradientStyle: {
-            paddingVertical: 0,
-            paddingHorizontal: 0,
-            justifyContent: "center",
-            alignItems: "center",
-        },
-    });
+    infos: {
+        position: "absolute",
+        bottom: 20,
+    },
+    privacyPolicy: {
+        maxWidth: 210,
+        textAlign: "center",
+    },
+});
 

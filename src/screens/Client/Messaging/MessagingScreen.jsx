@@ -3,7 +3,6 @@ import InDev from "../../../components/Ui/InDev";
 
 export default function MessagingScreen() {
     return (
-        <SafeAreaView>
         <SafeAreaView style={{ flex: 1 }}>
             <InDev />
         </SafeAreaView>

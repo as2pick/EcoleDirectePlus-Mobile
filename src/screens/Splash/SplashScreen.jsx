@@ -1,10 +1,10 @@
-import { ActivityIndicator, StyleSheet, View } from "react-native";
-import Text from "../../components/Ui/core/Text";
+import React from "react";
+import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 
 const SplashScreen = () => {
     return (
         <View style={styles.container}>
-            <Text preset="h2">Bienvenue</Text>
+            <Text style={styles.title}>Bienvenue</Text>
             <ActivityIndicator size="large" color="#fff" />
         </View>
     );
@@ -16,6 +16,12 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "#1E90FF",
+    },
+    title: {
+        fontSize: 24,
+        color: "#fff",
+        fontWeight: "bold",
+        marginBottom: 20,
     },
 });
 

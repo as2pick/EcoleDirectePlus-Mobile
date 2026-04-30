@@ -1,14 +1,5 @@
-import Discipline from "../screens/Client/Grades/custom/classes/Discipline";
-import { deepEqualExcept } from "../screens/Client/Grades/custom/helper";
-import {
-    calculateStreak,
-    createValidGradesArray,
-    sortGradesByDate,
-} from "../screens/Client/Grades/custom/streakManagment";
 import fetchApi from "../services/fetchApi";
-import { parseNumber } from "../utils/grades/makeAverage";
-import base64Handler from "../utils/handleBase64";
-import { deepCopyObject } from "../utils/json";
+import { calculateWeightedAverage, parseNumber } from "../utils/grades/makeAverage";
 
 export default async function gradesResolver({ token }) {
     try {
@@ -23,7 +14,7 @@ export default async function gradesResolver({ token }) {
             }
         );
         const grades = gradesResponse.data;
-        // const grades = require("../../test/api.json").data;
+
         // Format periods
         const periodsObj = grades.periodes.reduce((acc, period) => {
             if (period.annuel) return acc;
@@ -55,33 +46,36 @@ export default async function gradesResolver({ token }) {
 
             acc[period.codePeriode] = {
                 groups,
-                periodName: period.periode,
             };
 
             return acc;
         }, {});
+
         // Enrich disciplines with grades, averages, streaks
         for (const [periodCode, periodData] of Object.entries(periodsObj)) {
             periodData.groups = periodData.groups.map((group) => {
                 if (group.isDisciplineGroup) {
                     group.disciplines = group.disciplines.map((discipline) => {
-                        return enrichDiscipline(
+                        const enriched = enrichDiscipline(
                             discipline,
                             periodCode,
                             grades.notes
                         );
+                        return enriched;
                     });
-                    group.averageDatas.userAverage = new Discipline(
-                        group
-                    ).getDisciplineGroupAverage();
                     return group;
                 } else {
-                    return enrichDiscipline(group, periodCode, grades.notes);
+                    const enriched = enrichDiscipline(
+                        group,
+                        periodCode,
+                        grades.notes
+                    );
+                    return enriched;
                 }
             });
         }
 
-        return streakDataInjectedIntoGrades(periodsObj);
+        return periodsObj;
     } catch (error) {
         console.error("Error fetching grades:", error);
         throw error;
@@ -92,27 +86,13 @@ const skillColorsCodes = {
     "-3": "not rated",
     "-2": "dispensed",
     "-1": "abscent",
-    1: "Non acquis",
-    2: "Partiellement acquis",
-    3: "Acquis",
-    4: "Dépassé",
+    1: "red",
+    2: "yellow",
+    3: "blue",
+    4: "green",
 };
 
 function parseDiscipline(discipline) {
-    // if (!discipline) return undefined;
-
-    const teachersWithoutId =
-        discipline.professeurs?.map(({ nom }) => [nom]) || undefined;
-
-    const decodedClassAssessment =
-        base64Handler.decode(discipline.appreciationClasse) || undefined;
-
-    let decodedUserAssessment =
-        discipline?.appreciations?.map((chain) =>
-            base64Handler.decode(chain)
-        )[0] /* atention if too many users report less appreciations ! */ ||
-        undefined;
-
     const obj = {
         code: discipline.codeMatiere,
         libelle: discipline.discipline,
@@ -124,13 +104,7 @@ function parseDiscipline(discipline) {
         },
         coef: discipline.coef,
         isDisciplineGroup: discipline.groupeMatiere,
-        workforce: discipline.effectif,
-        rank: discipline.rang,
-        teachers: teachersWithoutId,
-        classAssessment: decodedClassAssessment,
-        userAssessment: decodedUserAssessment,
     };
-
     return obj;
 }
 
@@ -181,8 +155,7 @@ function formatGrade(grade, periodCode) {
         onlySkills:
             (valeur == null || valeur === undefined) && elementsProgramme.length > 0,
 
-        actionOnStreak: undefined,
-        badges: [],
+        actionOnStreak: null,
     };
 }
 
@@ -203,86 +176,20 @@ function enrichDiscipline(discipline, periodCode, rawGrades) {
         formatGrade(grade, periodCode)
     );
 
-    const enrichedDiscipline = {
+    const validGrades = formattedGrades.filter(
+        (g) => g.data.grade != null && !g.onlySkills
+    );
+
+    const average =
+        validGrades.length > 0 ? calculateWeightedAverage(validGrades) : null;
+
+    return {
         ...discipline,
         grades: formattedGrades,
         averageDatas: {
             ...discipline.averageDatas,
+            userAverage: average,
         },
     };
-
-    enrichedDiscipline.averageDatas.userAverage = new Discipline(
-        enrichedDiscipline
-    ).getWeightedAverage();
-    return enrichedDiscipline;
-}
-
-function streakDataInjectedIntoGrades(userGrades) {
-    const result = deepCopyObject(userGrades);
-    Object.entries(result).forEach(([periodKey, periodData]) => {
-        const gradesSortedByDate = sortGradesByDate(
-            createValidGradesArray(result, periodKey)
-        );
-        const streak = calculateStreak(gradesSortedByDate, periodKey, result);
-        periodData.globalStreakScore = streak.globalStreakScore;
-
-        const periodStreakScores = streak.streakScores?.[periodKey] || {};
-
-        const periodDisciplines = periodData.groups.flatMap((group) =>
-            group.isDisciplineGroup ? group.disciplines : [group]
-        );
-
-        periodDisciplines.forEach((discipline) => {
-            discipline.streakCount = periodStreakScores[discipline.code] || 0;
-        });
-        streak.gradesItered.forEach((gradeData) => {
-            const discipline = periodDisciplines.find(
-                ({ code }) => code === gradeData.codes.discipline
-            );
-
-            if (!discipline) return;
-            const gradeToUpdate = discipline.grades.find((g) =>
-                deepEqualExcept(g, gradeData, ["actionOnStreak"])
-            );
-            if (gradeToUpdate) {
-                gradeToUpdate.actionOnStreak = gradeData.actionOnStreak;
-            }
-        });
-    });
-
-    return badgesDataInjectedIntoGrades(result);
-}
-
-function badgesDataInjectedIntoGrades(userGrades) {
-    const result = deepCopyObject(userGrades);
-
-    Object.values(result).forEach((periodData) => {
-        const periodDisciplines = periodData.groups.flatMap((group) =>
-            group.isDisciplineGroup ? group.disciplines : [group]
-        );
-
-        periodDisciplines.forEach((discipline) => {
-            const currentDisciplineAverage = discipline.averageDatas.userAverage;
-
-            discipline.grades.forEach((gradeObj) => {
-                const { classAverage, classMax, outOf, grade } =
-                    gradeObj?.data || {};
-                const badges = [];
-                if (!grade) return;
-
-                if (gradeObj.actionOnStreak === "up") badges.push("up_the_streak");
-                if (grade === outOf) badges.push("max_grade");
-                if (grade === classMax) badges.push("best_grade");
-                if (grade > classAverage) badges.push("upper_than_class_average");
-                if (currentDisciplineAverage && grade > currentDisciplineAverage)
-                    badges.push("upper_than_discipline_average");
-                if (grade === currentDisciplineAverage)
-                    badges.push("equal_to_discipline_average");
-
-                gradeObj.badges = badges;
-            });
-        });
-    });
-    return result;
 }
 

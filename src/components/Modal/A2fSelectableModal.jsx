@@ -1,8 +1,14 @@
 import { useTheme } from "@react-navigation/native";
-import { useState } from "react";
-import { FlatList, Modal, StyleSheet, TouchableOpacity, View } from "react-native";
+import React, { useState } from "react";
+import {
+    FlatList,
+    Modal,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+} from "react-native";
 import { addOpacityToCssRgb } from "../../utils/colorGenerator";
-import Text from "../Ui/core/Text";
 
 export default function A2fSelectableModal({
     visible,
@@ -38,16 +44,18 @@ export default function A2fSelectableModal({
                         styles.renderItemRadioButton,
                         { borderColor: colors.border },
                         selectedItem === item && {
-                            backgroundColor: colors.secondary,
-                            borderColor: colors.secondary,
+                            backgroundColor: colors.txt.txt2,
+                            borderColor: colors.txt.txt2,
                         },
                     ]}
                 />
             </View>
             <Text
-                size={16}
-                weight={selectedItem === item && "bold"}
-                color={colors.main}
+                style={[
+                    styles.renderItemText,
+                    { color: colors.txt.txt3 },
+                    selectedItem === item && [styles.renderItemTextSelected],
+                ]}
             >
                 {item}
             </Text>
@@ -87,7 +95,7 @@ export default function A2fSelectableModal({
                         style={[
                             styles.a2fTextInfo,
                             {
-                                color: colors.main,
+                                color: colors.txt.txt3,
                             },
                         ]}
                     >
@@ -127,7 +135,10 @@ export default function A2fSelectableModal({
                             style={styles.button}
                         >
                             <Text
-                                style={[styles.buttonText, { color: colors.main }]}
+                                style={[
+                                    styles.buttonText,
+                                    { color: colors.txt.txt3 },
+                                ]}
                             >
                                 Annuler
                             </Text>
@@ -227,7 +238,9 @@ const styles = StyleSheet.create({
     renderItemText: {
         fontSize: 16,
     },
-
+    renderItemTextSelected: {
+        fontWeight: "bold",
+    },
     a2fText: {
         textAlign: "center",
         paddingVertical: 22,

@@ -3,7 +3,7 @@ export function formatFrenchDate(dateString) {
     const options = { weekday: "long", day: "2-digit", month: "long" };
     let formattedDate = new Intl.DateTimeFormat("fr-FR", options).format(date);
     let [weekday, day, month] = formattedDate.split(" ");
-    return `${weekday.charAt(0).toUpperCase() + weekday.slice(1)} ${day} ${month}`;
+    return `${weekday.charAt(0).toUpperCase() + weekday.slice(1)} ${day} ${month.charAt(0).toUpperCase() + month.slice(1)}`;
 }
 
 export function addDaysToDateString(dateString, days) {
@@ -22,25 +22,3 @@ export function getPreviousMonday(dateString) {
 
     return date.toISOString().split("T")[0];
 }
-
-export function getTodayDateString() {
-    const date = new Date();
-    return date.toISOString().split("T")[0];
-}
-
-export const formatShortDate = (date) => {
-    const [year, month, day] = date.split("-");
-    return `${day}/${month}/${year}`;
-};
-
-export const formatDate = (date, ab = "display") => {
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const year = date.getFullYear();
-
-    if (ab === "ed") {
-        return `${year}-${month}-${day}`;
-    }
-
-    return `${day}/${month}/${year}`;
-};

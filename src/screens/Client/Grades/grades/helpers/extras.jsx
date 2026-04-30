@@ -1,3 +1,5 @@
+// helpers/gradesCalculations.js
+
 export const calculateStrengthsWeaknesses = (currentPeriod = {}, topCount = 3) => {
     const strengths = Array.from({ length: topCount }, () => undefined);
     const weaknesses = Array.from({ length: topCount }, () => undefined);
@@ -19,6 +21,7 @@ export const calculateStrengthsWeaknesses = (currentPeriod = {}, topCount = 3) =
         const algebricDiff =
             subject.averageDatas.userAverage - subject.averageDatas.classAverage;
 
+        // Insertion pour les points forts (ordre décroissant)
         for (let i = 0; i < strengths.length; i++) {
             const current = strengths[i];
             if (current === undefined || algebricDiff >= current.algebricDiff) {
@@ -28,6 +31,7 @@ export const calculateStrengthsWeaknesses = (currentPeriod = {}, topCount = 3) =
             }
         }
 
+        // Insertion pour les points faibles (ordre croissant)
         for (let i = 0; i < weaknesses.length; i++) {
             const current = weaknesses[i];
             if (current === undefined || algebricDiff <= current.algebricDiff) {
@@ -44,6 +48,7 @@ export const calculateStrengthsWeaknesses = (currentPeriod = {}, topCount = 3) =
     };
 };
 
+// Fonction utilitaire pour la comparaison d'objets
 export const deepEqualExcept = (obj1, obj2, excludedKeys = []) => {
     if (obj1 === obj2) return true;
 
@@ -66,21 +71,3 @@ export const deepEqualExcept = (obj1, obj2, excludedKeys = []) => {
 
     return obj1 === obj2;
 };
-
-export const formatGradeText = (gradeInt = 0.0, extraNumbers = 2) => {
-    try {
-        const grade = parseFloat(gradeInt);
-        if (isNaN(grade)) {
-            return "N.No";
-        }
-
-        if (extraNumbers === "auto") {
-            return String(grade).replace(".", ",");
-        } else {
-            return grade.toFixed(extraNumbers).replace(".", ",");
-        }
-    } catch (e) {
-        return "N.No";
-    }
-};
-

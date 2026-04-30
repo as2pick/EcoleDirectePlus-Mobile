@@ -1,7 +1,7 @@
-import { Linking } from "react-native";
-import Text from "./core/Text";
+import React from "react";
+import { Linking, Text } from "react-native";
 
-export default function LinkText({ href, color, underline = false, children }) {
+export default function LinkText({ href, styles, children }) {
     const openURL = () => {
         Linking.openURL(href).catch((err) =>
             console.error("Erreur lors de l'ouverture du lien :", err)
@@ -9,12 +9,7 @@ export default function LinkText({ href, color, underline = false, children }) {
     };
 
     return (
-        <Text
-            color={color}
-            onPress={openURL}
-            preset="label1"
-            decoration={underline ? "underline" : undefined}
-        >
+        <Text style={styles} onPress={openURL}>
             {children}
         </Text>
     );

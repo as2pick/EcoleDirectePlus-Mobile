@@ -1,9 +1,6 @@
 export const API = {
-    API_VERSION: "4.95.2",
+    API_VERSION: "4.80.0",
     BASE_URL: "https://api.ecoledirecte.com/v3",
-    USER_AGENT:
-        "Mozilla/5.0 (X11; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0",
     USER_ID: null,
-    DEFAULT_PERIOD_KEY: "A001",
 };
 

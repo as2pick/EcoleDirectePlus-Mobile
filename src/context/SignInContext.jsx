@@ -9,7 +9,6 @@ import {
 import { getApiMessage } from "../constants/api/codes";
 
 import dataManager from "../helpers/dataManager";
-import { useNetwork } from "../hooks/network";
 import authService from "../services/login/authService";
 import { useUser } from "./UserContext";
 import { completeA2fLogin, handleA2fSubmit } from "./tools/a2fHandler";
@@ -32,7 +31,6 @@ export const SignInProvider = ({ children }) => {
         userAccesToken,
         setIsConnected,
     } = useUser();
-    const network = useNetwork();
 
     const authReducer = (state, action) => {
         switch (action.type) {
@@ -209,11 +207,11 @@ export const SignInProvider = ({ children }) => {
 
     useEffect(() => {
         if (state.isLoading && state.userToken) {
-            dataManager(state.userToken, network).finally(() => {
+            dataManager(state.userToken).finally(() => {
                 dispatch({ type: "SET_LOADING", value: false });
             });
         }
-    }, [state.isLoading, state.userToken, network.isOnline]); // this useEffect is to load all API datas in the splash screen to save performance
+    }, [state.isLoading, state.userToken]); // this useEffect is to load all API datas in the splash screen to save performance
 
     const authContext = useMemo(
         () => ({

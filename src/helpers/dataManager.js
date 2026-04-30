@@ -1,69 +1,41 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { originName } from "../resolver/resolver";
 import { arraysEqual } from "../utils/json";
-import apiService, { dataUpdater } from "./apiService";
+import apiService from "./apiService";
 
-export default async function dataManager(
-    userToken,
-    network = {
-        inAirplaneMode: null,
-        isConnected: null,
-        isInternetReachable: null,
-        isOnline: null,
-        type: "unknown",
-    }
-) {
+export default async function dataManager(userToken) {
     let rawStorageKeys = await AsyncStorage.getAllKeys();
     if (rawStorageKeys.includes("userData")) {
         rawStorageKeys = rawStorageKeys.filter(
             (userData) => userData !== "userData"
         ); // remove user data from origins in storage
     }
+    const rawStorage = await AsyncStorage.multiGet(rawStorageKeys);
 
-    const keysStored = rawStorageKeys.filter((key) => originName.includes(key));
-    console.log(`Data keys stored on device :${keysStored.map((d) => ` ${d}`)}`);
-    if (arraysEqual(keysStored, originName)) {
-        if (network.isOnline) {
-            console.log("All datas are stored on devices and network is connected");
-            dataUpdater(userToken);
-
-            // update datas if necessary
-            return;
-        } else {
-            console.log("All datas are stored on devices but network is offline");
-            // warning
-            return;
-        }
-    } else {
-        if (network.isOnline) {
-            const missing = originName.filter(
-                (item) => !rawStorageKeys.includes(item)
-            );
-            console.log(
-                "Invalid data count stored, network connected ,process to update them"
-            );
-            // fetch api obligation
-            if (originName.length - missing.length === 0) {
-                // completely empty
-                await apiService({
-                    origin: "all",
-                    userToken: userToken /* origin="all" because storage is empty */,
-                });
-
-                return;
-            } else {
-                // partially empty
-                await Promise.all(
-                    missing.map((element) =>
-                        apiService({ userToken: userToken, origin: element })
-                    )
-                );
-                return;
-            }
-        } else {
-            console.log("Invalid data and network is offline");
-            // prblm use default datas (generic JSON) and warn
-        }
+    const isStorageEmpty = rawStorage.every(
+        ([key, value]) => !originName.includes(key)
+    );
+    if (isStorageEmpty) {
+        // console.log("Fetch All Origins");
+        await apiService({
+            origin: "all",
+            userToken: userToken /* origin="all" because storage is empty */,
+        });
     }
+
+    if (arraysEqual(rawStorageKeys, originName)) {
+        const missing = originName.filter((item) => !rawStorageKeys.includes(item));
+        console.log(`Fetch ${missing} datas`);
+
+        await Promise.all(
+            missing.map((element) =>
+                apiService({ userToken: userToken, origin: element })
+            )
+        );
+    }
+
+    // here all data is in storage
+
+    // compare storage and api
 }
 
