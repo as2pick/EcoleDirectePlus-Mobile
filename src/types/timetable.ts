@@ -1,5 +1,3 @@
-import type { SubjectColorContext } from './user';
-
 export interface ApiTimetableCourse {
     id: number;
     text: string;
@@ -32,7 +30,8 @@ export interface FormattedCourse {
     group?: string;
     libelle: string;
 
-    colorTheme: SubjectColorContext;
+    color: string;
+    textColor: string;
 
     height: number;
     placing: number;
@@ -44,3 +43,4 @@ export interface TimetableDay {
     isJustNoon: boolean;
     courses: FormattedCourse[];
 }
+
