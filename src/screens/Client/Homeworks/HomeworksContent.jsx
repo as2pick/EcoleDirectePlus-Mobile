@@ -1,5 +1,5 @@
 import { memo, useCallback, useEffect, useState } from "react";
-import { TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, TouchableOpacity, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import Animated, {
     interpolate,
@@ -16,18 +16,23 @@ import { HomeworkCard } from "../../../components";
 import { Text } from "../../../components/Ui/core";
 import { motivationSentences } from "../../../constants/features/homeworksConfig";
 import { useUser } from "../../../context/UserContext";
-import useUserDatas from "../../../hooks/useUserDatas";
 import { adjustLightness } from "../../../utils/colorGenerator";
 import { formatFrenchDate } from "../../../utils/date";
 import NewHomeworkModal from "./components/NewHomeworkModal";
 import { useHomework } from "./context/LocalContext";
 import { useHomeworksHandler } from "./hooks/useHomeworksHandler";
 
+import { useCustomDataStore } from "../../../hooks/useCustomDataStore";
+import useUserDatas from "../../../hooks/useUserDatas";
+import { useHomeworks } from "../../../hooks/useHomeworks";
+import { useUserStore } from "../../../hooks/useUserStore";
+
 export default function HomeworksContent() {
     const { setSortedHomeworksData } = useUser();
 
-    const homeworksData = useUserDatas((state) => state.homeworks.data);
-    const customHomeworksData = useUserDatas((state) => state.customHomeworks.data);
+    const token = useUserStore((state) => state.token);
+    const { data: homeworksData, isLoading, isError, toggleHomework } = useHomeworks(token);
+    const customHomeworksData = useCustomDataStore((state) => state.customHomeworks);
     const setUserState = useUserDatas((state) => state.setUserState);
 
     const { dispatch } = useHomework();
@@ -44,6 +49,7 @@ export default function HomeworksContent() {
 
     useHomeworksHandler({
         setModalOpen,
+        toggleHomework,
     });
 
     const animatedWidth = useSharedValue(0);
@@ -69,6 +75,7 @@ export default function HomeworksContent() {
     );
     useFocusEffect(
         useCallback(() => {
+            if (!homeworksData) return;
             if (
                 homeworksData?.formatedDates &&
                 Object.keys(homeworksData).length > 0
@@ -80,20 +87,6 @@ export default function HomeworksContent() {
                 return;
             }
 
-            const loadHomeworks = async () => {
-                try {
-                    const storedHomeworks = homeworks.data;
-
-                    if (storedHomeworks) {
-                        setFormatedDates(storedHomeworks.formatedDates);
-                        setActiveDate(Object.keys(storedHomeworks.formatedDates)[0]);
-                    }
-                } catch (error) {
-                    console.error("Error while loading hw:", error);
-                }
-            };
-
-            loadHomeworks();
         }, [homeworksData, customHomeworksData, activeDate])
     );
     useEffect(() => {
@@ -205,6 +198,10 @@ export default function HomeworksContent() {
         ({ item }) => <HomeworkCard dispatch={dispatch} homework={item} />,
         [dispatch]
     );
+
+    if (isLoading) return <ActivityIndicator />;
+    if (isError) return null;
+
     return (
         <>
             <NewHomeworkModal visible={modalOpen} />

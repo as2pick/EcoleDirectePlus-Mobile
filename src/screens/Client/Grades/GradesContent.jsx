@@ -1,6 +1,6 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { useCallback, useEffect, useState } from "react";
-import { Dimensions, View } from "react-native";
+import { Dimensions, View, ActivityIndicator } from "react-native";
 import GradeArrow from "../../../../assets/svg/GradeArrow";
 import BottomSheet from "../../../components/Layout/BottomSheet";
 
@@ -15,17 +15,20 @@ import Period from "./custom/classes/Period";
 import AddGradeModal from "./custom/components/SimulateGradeModal";
 
 import { Text } from "../../../components/Ui/core";
-import useUserDatas from "../../../hooks/useUserDatas";
 import { useGrade } from "./custom/context/LocalContext";
 import { calculateStrengthsWeaknesses, formatGradeText } from "./custom/helper";
 import { useSimulation } from "./custom/hooks/useSimulation";
+
+import { useGrades } from "../../../hooks/useGrades";
+import { useUserStore } from "../../../hooks/useUserStore";
 
 const { width } = Dimensions.get("window");
 
 export default function GradesContent() {
     const { state, dispatch } = useGrade();
-    // const { grades } = useUserDatas();
-    const gradesData = useUserDatas((state) => state.grades.data);
+
+    const token = useUserStore((state) => state.token);
+    const { data: gradesData, isLoading, isError } = useGrades(token);
 
     const [periodes, setPeriodes] = useState([]);
     const [displayPeriode, setDisplayPeriode] = useState({});
@@ -156,6 +159,9 @@ export default function GradesContent() {
         (item, index) => item.id?.toString() || `${item.libelle}-${index}`,
         []
     );
+
+    if (isLoading) return <ActivityIndicator />;
+    if (isError) return null;
 
     return (
         <View style={{ flex: 1 }}>
