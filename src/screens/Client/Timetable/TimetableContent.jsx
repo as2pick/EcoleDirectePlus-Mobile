@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { useNavigation, useTheme } from "@react-navigation/native";
 
@@ -15,9 +15,11 @@ import { GLOBALS_DATAS } from "../../../constants/device/globals";
 import { timetableConfig } from "../../../constants/features/timetableConfig";
 
 import { Text } from "../../../components/Ui/core";
-import useUserDatas from "../../../hooks/useUserDatas";
 import { routesNames } from "../../../router/config/routesNames";
 import { addOpacityToCssRgb } from "../../../utils/colorGenerator";
+
+import { useTimetable } from "../../../hooks/useTimetable";
+import { useUserStore } from "../../../hooks/useUserStore";
 
 let {
     screen: { height, width },
@@ -28,15 +30,14 @@ height -= CONFIG.upper + 24; // ??? but works fine
 const screenHeight = height;
 
 export default function TimetableContent() {
-    const timetableData = useUserDatas((state) => state.timetable.data);
     const navigation = useNavigation();
     const theme = useTheme();
 
     const scrollViewRef = useRef(null);
 
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [loading, setLoading] = useState(false);
-    const [showLoader, setShowLoader] = useState(false);
+    const token = useUserStore((state) => state.token);
+    const { data: timetableData, isLoading, isError } = useTimetable(token);
     const [timetableViewDims, setTimetableViewDims] = useState({
         width: 0,
         height: 0,
@@ -60,6 +61,9 @@ export default function TimetableContent() {
         );
         dynamicOpacity.value = withSpring(1, { duration: 1500 });
     }, [timetableCoreSuccessLoaded]);
+
+    if (isLoading) return <ActivityIndicator />;
+    if (isError) return null;
 
     return (
         <View
@@ -232,9 +236,9 @@ const CourseBox = ({ course, navigation, theme, timetableViewDims }) => {
                         paddingVertical:
                             height <= CONFIG.minCourseSize
                                 ? timetableViewDims.height /
-                                      CONFIG.minCourseSize /
-                                      height +
-                                  1
+                                CONFIG.minCourseSize /
+                                height +
+                                1
                                 : CONFIG.minCourseSize,
                         overflow: "hidden",
                         backgroundColor: caseColor,
@@ -268,13 +272,13 @@ const CourseBox = ({ course, navigation, theme, timetableViewDims }) => {
 
                             backgroundColor: isCancelled
                                 ? addOpacityToCssRgb(
-                                      timetableConfig.cancelledColor,
-                                      0.43
-                                  )
+                                    timetableConfig.cancelledColor,
+                                    0.43
+                                )
                                 : addOpacityToCssRgb(
-                                      timetableConfig.dispensedColor,
-                                      0.43
-                                  ),
+                                    timetableConfig.dispensedColor,
+                                    0.43
+                                ),
                         }}
                     >
                         <Text
