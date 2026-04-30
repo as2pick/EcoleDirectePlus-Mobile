@@ -4,19 +4,16 @@ import { StyleSheet, View } from "react-native";
 export default function GradientBackground({ children }) {
     const { colors } = useTheme();
     return (
-<<<<<<< HEAD
         <View
             style={[
                 styles.gradient,
                 { backgroundColor: colors.background.gradient },
             ]}
-=======
         <LinearGradient
             colors={colors.backgroundGradient}
             start={{ x: 0, y: 0.45 }}
             end={{ x: 1, y: 0 }}
             style={styles.gradient}
->>>>>>> main
         >
             {children}
         </View>

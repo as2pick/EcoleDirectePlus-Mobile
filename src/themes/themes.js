@@ -14,7 +14,6 @@ export const THEMES = {
         isDark: false,
         colors: {
             ...NavigationDefaultTheme.colors,
-<<<<<<< HEAD
             background: {
                 //gradient: ["rgba(169, 169, 255, 1)", "rgba(230, 230, 255, 1)"], // App backround gradient
                 gradient: "rgba(222, 222, 250, 1)",
@@ -66,7 +65,6 @@ export const THEMES = {
             oppacity: 0.14,
             //color: "rgb(0, 0, 0)",
         },
-=======
             background: "rgb(178, 193, 252)",
             backgroundGradient: ["rgb(228, 228, 255)", "rgb(176, 176, 225)"],
             bg: {
@@ -94,7 +92,6 @@ export const THEMES = {
             mascot: "canardmanchill2.png",
         },
         fonts,
->>>>>>> main
     },
     etheral: {
         ...NavigationDefaultTheme,
@@ -102,16 +99,13 @@ export const THEMES = {
         isDark: true,
         colors: {
             ...NavigationDefaultTheme.colors,
-<<<<<<< HEAD
             // background: "rgb(18, 18, 138)", // default key
             background: {
                 gradient: "rgb(43, 43, 63)", // +20 or +30
                 login: "rgb(19, 19, 34)",
             },
-=======
             background: "rgb(18, 18, 48)",
             backgroundGradient: ["rgb(18, 18, 48)", "rgb(43, 43, 63)"],
->>>>>>> main
             bg: {
                 bg1: "rgb(25, 25, 56)", // DON'T USE IT
                 bg2: "rgb(19, 19, 34)", // DON'T USE IT
@@ -121,7 +115,6 @@ export const THEMES = {
                 bg6: "rgb(64, 64, 130)", // DON'T USE IT
             },
             txt: {
-<<<<<<< HEAD
                 txt1: "rgb(255, 255, 255)", // DON'T USE IT
                 txt2: "rgb(109, 106, 251)", // DON'T USE IT
                 txt3: "rgb(180, 180, 240)", // DON'T USE IT
@@ -159,7 +152,6 @@ export const THEMES = {
             oppacity: 0.3,
             //color: "rgb(255, 255, 255)",
         },
-=======
                 txt1: "rgb(255, 255, 255)",
                 txt2: "rgb(109, 106, 251)",
                 txt3: "rgb(180, 180, 240)",
@@ -176,7 +168,6 @@ export const THEMES = {
             mascot: "canardmanchill2.png",
         },
         fonts,
->>>>>>> main
     },
 };
 

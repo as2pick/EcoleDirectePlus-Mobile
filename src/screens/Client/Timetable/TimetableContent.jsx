@@ -179,10 +179,7 @@ const CourseBox = ({
 }) => {
     const [libelleLayout, setLibelleLayout] = useState(null);
     const [roomLayout, setRoomLayout] = useState(null);
-<<<<<<< HEAD
     const [overlap, setOverlap] = useState(false);
-=======
->>>>>>> main
     const libelleLayoutRef = useRef(false);
 
     const roomLayoutRef = useRef(false);

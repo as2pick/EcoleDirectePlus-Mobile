@@ -4,12 +4,11 @@ import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { addOpacityToCssRgb } from "../../utils/colorGenerator";
 
 const NavigationBottomBar = ({ state, descriptors, navigation }) => {
-<<<<<<< HEAD
+
     const [isPressedIn, setIsPressedIn] = useState(false);
     const [isLongPressed, setIsLongPressed] = useState(false);
     const { shadow } = useTheme();
-=======
->>>>>>> main
+
     const { colors } = useTheme();
     const caseColor = addOpacityToCssRgb(colors.case, 0.7);
     const shadowColor = addOpacityToCssRgb("rgb(0, 0, 0)", shadow.oppacity);
@@ -18,15 +17,15 @@ const NavigationBottomBar = ({ state, descriptors, navigation }) => {
             style={[
                 styles.container,
                 {
-<<<<<<< HEAD
+
                     backgroundColor: caseColor,
                     borderRadius: 25,
                     boxShadow: "0px 0px 10px 2px rgb(0, 0, 0)" + shadowColor,
-=======
+
                     backgroundColor: colors.navbar.background,
                     borderTopColor: colors.navbar.border,
                     borderTopWidth: 1.2,
->>>>>>> main
+
                 },
             ]}
         >
@@ -87,7 +86,6 @@ const NavigationBottomBar = ({ state, descriptors, navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
-<<<<<<< HEAD
         alignSelf: "center",
         padding: 12,
         borderRadius: 25,
@@ -95,10 +93,10 @@ const styles = StyleSheet.create({
         position: "absolute",
         width: "95%",
         justifyContent: "space-around", // or space-between
-=======
+
         paddingHorizontal: 12,
         overflow: "visible",
->>>>>>> main
+
     },
     tab: {
         //flex: 1,
@@ -114,8 +112,8 @@ const styles = StyleSheet.create({
         padding: 6,
         borderRadius: 12,
     },
-<<<<<<< HEAD
-=======
+
+
     activeTab: {
         zIndex: 2,
     },
@@ -139,7 +137,7 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 5 },
         elevation: 10,
     },
->>>>>>> main
+
 });
 
 export default NavigationBottomBar;

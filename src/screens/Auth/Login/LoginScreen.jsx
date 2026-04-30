@@ -1,13 +1,10 @@
 import { useNavigation, useTheme } from "@react-navigation/native";
-<<<<<<< HEAD
 import { useCallback, useEffect, useRef, useState } from "react";
 import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
-=======
 import { useCallback, useEffect, useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
->>>>>>> main
 import AccountIcon from "../../../../assets/svg/AccountIcon.jsx";
 import DiscordLogo from "../../../../assets/svg/DiscordLogo.jsx";
 import EDPLogo from "../../../../assets/svg/EDPLogo.jsx";
@@ -21,13 +18,10 @@ import {
     OverLoader,
 } from "../../../components/index.js";
 
-<<<<<<< HEAD
 import MaskedView from "@react-native-masked-view/masked-view";
 import { LinearGradient } from "expo-linear-gradient";
 import Text from "../../../components/Ui/core/Text.jsx";
-=======
 import { SafeAreaView } from "react-native-safe-area-context";
->>>>>>> main
 import { getApiMessage } from "../../../constants/api/codes.js";
 import { useSingIn } from "../../../context/SignInContext.jsx";
 import { routesNames } from "../../../router/config/routesNames.js";
@@ -133,7 +127,6 @@ export default function LoginScreen() {
             <View style={styles.form}>
                 <View style={styles.logo.box}>
                     <EDPLogo size={88} />
-<<<<<<< HEAD
                     <MaskedView
                         maskElement={<Text preset="h1">Ecole Directe Plus</Text>}
                     >
@@ -147,7 +140,6 @@ export default function LoginScreen() {
                             </Text>
                         </LinearGradient>
                     </MaskedView>
-=======
                     <GradientText
                         text={"Ecole Directe Plus"}
                         textStyle={{
@@ -156,7 +148,6 @@ export default function LoginScreen() {
                             backgroundColor: "transparent",
                         }}
                     />
->>>>>>> main
                 </View>
                 <View style={[styles.input.box]}>
                     <View style={styles.input.cases}>
@@ -236,10 +227,7 @@ export default function LoginScreen() {
                         borderColor: theme.colors.border,
                         transform: [{ scale: 1.2 }],
                     }}
-<<<<<<< HEAD
-=======
                     style={styles.buttonWrapper}
->>>>>>> main
                 >
                     <Text preset="label2">{"Se connecter      ➜"}</Text>
                 </TouchableOpacity>
@@ -359,7 +347,6 @@ const createStyles = (theme, caseColor) =>
             },
         },
 
-<<<<<<< HEAD
         button: {
             //borderWidth: 1,
             //borderColor: theme.colors.accent,
@@ -375,7 +362,6 @@ const createStyles = (theme, caseColor) =>
             overflow: "hidden",
             transform: [{ scale: 1.2 }],
         },
-=======
         borderRadius: 12,
         paddingVertical: 7,
         paddingHorizontal: 16,
@@ -383,7 +369,6 @@ const createStyles = (theme, caseColor) =>
     buttonWrapper: {
         alignItems: "center",
     },
->>>>>>> main
 
         infos: {
             position: "absolute",

@@ -42,12 +42,9 @@ const styles = StyleSheet.create({
     parent: {
         height: "100%",
         alignItems: "center",
-<<<<<<< HEAD
         marginHorizontal: "4%",
-=======
         justifyContent: "center",
         marginHorizontal: "2%",
->>>>>>> main
     },
     children: {
         borderRadius: 18,
