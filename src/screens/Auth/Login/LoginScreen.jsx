@@ -13,14 +13,14 @@ import {
     CheckBox,
     LinkButton,
     OverLoader,
-} from "../../../components/index.js";
+} from "../../../components/index";
 
 import MaskedView from "@react-native-masked-view/masked-view";
 import { LinearGradient } from "expo-linear-gradient";
 import Text from "../../../components/Ui/core/Text.jsx";
-import { getApiMessage } from "../../../constants/api/codes.js";
+import { getApiMessage } from "../../../constants/api/codes";
 import { useSingIn } from "../../../context/SignInContext.jsx";
-import { routesNames } from "../../../router/config/routesNames.js";
+import { routesNames } from "../../../router/config/routesNames";
 import { addOpacityToCssRgb } from "../../../utils/colorGenerator";
 
 export default function LoginScreen() {

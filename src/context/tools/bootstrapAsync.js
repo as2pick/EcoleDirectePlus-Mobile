@@ -2,17 +2,16 @@ import dayjs from "dayjs";
 import { payloadHelper } from "../../helpers/cryptoHelper";
 import useUserDatas from "../../hooks/useUserDatas";
 import authService from "../../services/login/authService";
+import { useAuthStore } from "../../hooks/useAuthStore";
 import storeDatas from "./storeLoginDatas";
 
 /**
  * Get token and user data from storage
- * @param {Function} dispatch
  * @param {Object} credentialsCipherText
  * @returns {Promise<string|null>}
  */
 
 export async function tryLoginWithStoredCreds({
-    dispatch,
     cipherText,
     userSetters,
 }) {
@@ -22,7 +21,6 @@ export async function tryLoginWithStoredCreds({
         const expiration = dayjs(payload.expirationDate, "YYYY-MM-DD_HH:mm");
 
         if (now.isBefore(expiration)) {
-            dispatch({ type: "SIGN_IN", userToken: payload.superSecretUserToken });
             const getDataFromStorage = useUserDatas.getState().globalUserData;
 
             storeDatas({
@@ -31,6 +29,7 @@ export async function tryLoginWithStoredCreds({
                 ...userSetters,
             });
 
+            useAuthStore.getState().setStatus('success');
             return true;
         }
         return false;
@@ -41,7 +40,6 @@ export async function tryLoginWithStoredCreds({
 }
 
 export async function tryRestoreToken({
-    dispatch,
     credentialsPassword,
     userSetters,
 }) {
@@ -58,7 +56,6 @@ export async function tryRestoreToken({
         });
 
         const accountData = data.accounts[0];
-        dispatch({ type: "SIGN_IN", userToken: token });
 
         storeDatas({
             data: accountData,
@@ -67,6 +64,7 @@ export async function tryRestoreToken({
         });
 
         await authService.saveCredentials(token, accountData.id, authData);
+        useAuthStore.getState().setStatus('success');
         return true;
     } catch (error) {
         console.error("Error in tryRestoreToken:", error);

@@ -3,10 +3,9 @@ import {
     useContext,
     useEffect,
     useMemo,
-    useReducer,
-    useState,
 } from "react";
 import { getApiMessage } from "../constants/api/codes";
+import { useAuthStore } from "../hooks/useAuthStore";
 
 import dataManager from "../helpers/dataManager";
 import { useNetwork } from "../hooks/network";
@@ -18,66 +17,34 @@ import storeDatas from "./tools/storeLoginDatas";
 
 const SignInContext = createContext();
 
-const defaultA2fInfos = {
-    identifiant: null,
-    motdepasse: null,
-    fa: null,
-};
-
 export const SignInProvider = ({ children }) => {
+    const status = useAuthStore((state) => state.status);
+    const error = useAuthStore((state) => state.error);
+    const mcqDatas = useAuthStore((state) => state.mcqDatas);
+    const choice = useAuthStore((state) => state.selectedChoice);
+    const a2fInfos = useAuthStore((state) => state.a2fInfos);
+    const gtk = useAuthStore((state) => state.gtk);
+    const a2fToken = useAuthStore((state) => state.a2fToken);
+    const keepConnected = useAuthStore((state) => state.keepConnected);
+
+    const setStatus = useAuthStore((state) => state.setStatus);
+    const setError = useAuthStore((state) => state.setError);
+    const setMcqDatas = useAuthStore((state) => state.setMcqDatas);
+    const setSelectedChoice = useAuthStore((state) => state.setSelectedChoice);
+    const setA2fToken = useAuthStore((state) => state.setA2fToken);
+    const setGtk = useAuthStore((state) => state.setGtk);
+    const setA2fInfos = useAuthStore((state) => state.setA2fInfos);
+    const setKeepConnected = useAuthStore((state) => state.setKeepConnected);
+    const resetAuth = useAuthStore((state) => state.reset);
+
     const {
         setGlobalUserData,
-        globalUserData /* --> useless, just for display */,
         setUserAccesToken,
         userAccesToken,
         setIsConnected,
     } = useUser();
     const network = useNetwork();
 
-    const authReducer = (state, action) => {
-        switch (action.type) {
-            case "RESTORE_TOKEN":
-                return {
-                    ...state,
-                    userToken: action.userToken,
-                };
-            case "SIGN_IN":
-                return {
-                    ...state,
-                    isSignOut: false,
-                    userToken: action.userToken,
-                    isLoading: true, // important to allow app to fetch user data when loading screen appear
-                };
-            case "SIGN_OUT":
-                return {
-                    ...state,
-                    isSignOut: true,
-                    userToken: null,
-                    isLoading: false,
-                };
-            case "SET_LOADING":
-                return {
-                    ...state,
-                    isLoading: action.value,
-                };
-            default:
-                return state;
-        }
-    };
-
-    const [mcqDatas, setMcqDatas] = useState("");
-    const [a2fInfos, setA2fInfos] = useState(defaultA2fInfos);
-    const [choice, setChoice] = useState("");
-    const [apiError, setApiError] = useState(null);
-    const [keepConnected, setKeepConnected] = useState(true);
-    const [gtk, setGtk] = useState("");
-    const [a2fToken, setA2fToken] = useState("");
-
-    const [state, dispatch] = useReducer(authReducer, {
-        isLoading: true,
-        isSignOut: false,
-        userToken: null,
-    });
     const userSetters = {
         setGlobalUserData,
         setUserAccesToken,
@@ -92,7 +59,6 @@ export const SignInProvider = ({ children }) => {
 
             if (hasCipher) {
                 const success = await tryLoginWithStoredCreds({
-                    dispatch,
                     cipherText: credentials.cipherText,
                     userSetters,
                 });
@@ -101,26 +67,21 @@ export const SignInProvider = ({ children }) => {
 
             if (hasLoginCreds) {
                 const restored = await tryRestoreToken({
-                    dispatch,
                     credentialsPassword: credentials.password,
                     userSetters,
                 });
                 if (restored) return;
-
-                console.log("Error when generating user token");
             }
 
-            console.log("No valid credentials found, please login");
-            dispatch({ type: "SIGN_OUT" });
+            setStatus('idle');
         } catch (error) {
             console.error("ERROR IN BOOTSTRAPASYNC", error);
-            dispatch({ type: "SIGN_OUT" });
+            setStatus('idle');
         }
     };
 
     const handleLogin = async ({ username, password, keepConnected }) => {
-        // console.log(username, password, keepConnected);
-
+        setStatus('loading');
         setKeepConnected(keepConnected);
         const gtkCookie = await authService.generateGTK();
         const apiLoginData = await authService.login({
@@ -131,11 +92,10 @@ export const SignInProvider = ({ children }) => {
                 "X-GTK": await gtkCookie.split("=")[1],
             },
         });
-        setA2fInfos((prevState) => ({
-            ...prevState,
+        setA2fInfos({
             identifiant: encodeURIComponent(username),
             motdepasse: encodeURIComponent(password),
-        }));
+        });
 
         const { token } = apiLoginData;
 
@@ -150,7 +110,7 @@ export const SignInProvider = ({ children }) => {
                     });
                 }
 
-                dispatch({ type: "SIGN_IN", userToken: token });
+                setStatus('success');
                 storeDatas({ data: accountData, token, ...userSetters });
                 break;
             case 250:
@@ -163,26 +123,19 @@ export const SignInProvider = ({ children }) => {
                         })
                     );
                 setA2fToken(apiLoginData.responseHeaders["2fa-token"]);
-
                 break;
             default:
                 const message = getApiMessage(apiLoginData.code);
-                if (message) {
-                    console.log(message);
-                    setApiError(message);
-                } else
-                    console.log({
-                        error: "Bad error",
-                    });
-                setA2fInfos("");
+                setError(message || "Erreur de connexion");
                 break;
         }
     };
 
     const handleSignOut = async () => {
         await authService.deleteCredentials();
-        dispatch({ type: "SIGN_OUT" });
+        resetAuth();
         setGlobalUserData(null);
+        setIsConnected(false);
     };
 
     useEffect(() => {
@@ -191,43 +144,44 @@ export const SignInProvider = ({ children }) => {
 
     useEffect(() => {
         if (!choice) return;
-        handleA2fSubmit({ a2fToken, choice, setA2fInfos, setChoice, setGtk });
+        handleA2fSubmit({ a2fToken, choice, setA2fInfos, setSelectedChoice, setGtk });
     }, [choice]);
 
     useEffect(() => {
-        if (!a2fInfos.fa || a2fInfos.fa.length === 0 || !gtk) return;
+        if (!a2fInfos?.fa || a2fInfos.fa.length === 0 || !gtk) return;
         completeA2fLogin({
             a2fInfos,
             a2fToken,
-            dispatch,
             gtk: gtk,
             keepConnected,
             userSetters,
         });
-    }, [a2fInfos.fa, gtk]);
+    }, [a2fInfos?.fa, gtk]);
 
     useEffect(() => {
-        if (state.isLoading && state.userToken) {
-            dataManager(state.userToken, network).finally(() => {
-                dispatch({ type: "SET_LOADING", value: false });
+        if ((status === 'loading' || status === 'booting') && userAccesToken) {
+            dataManager(userAccesToken, network).finally(() => {
+                setStatus('success');
             });
         }
-    }, [state.isLoading, state.userToken, network.isOnline]); // this useEffect is to load all API datas in the splash screen to save performance
+    }, [status, userAccesToken, network.isOnline]);
 
     const authContext = useMemo(
         () => ({
-            signIn: handleLogin, // data passed auto
+            signIn: handleLogin,
             signOut: handleSignOut,
-            state,
+            state: {
+                isLoading: status === 'loading' || status === 'booting',
+                userToken: userAccesToken
+            },
             mcqDatas,
             choice,
-            apiError,
+            apiError: error,
             setMcqDatas,
-            setChoice,
-            setApiError,
+            setChoice: setSelectedChoice,
+            setApiError: setError,
         }),
-
-        [mcqDatas, choice, state, apiError]
+        [status, error, mcqDatas, choice, userAccesToken]
     );
 
     return (

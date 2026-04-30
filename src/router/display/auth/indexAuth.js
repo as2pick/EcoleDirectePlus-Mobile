@@ -1,6 +1,6 @@
 import LoginScreen from "../../../screens/Auth/Login/LoginScreen.jsx";
 import PrivacyPolicyScreen from "../../../screens/Auth/PrivacyPolicyScreen.jsx";
-import { routesNames } from "../../config/routesNames.js";
+import { routesNames } from "../../config/routesNames";
 import createScreen from "../../helpers/createScreen.jsx";
 
 const {

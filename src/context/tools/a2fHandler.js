@@ -1,19 +1,19 @@
 import authService from "../../services/login/authService";
+import { useAuthStore } from "../../hooks/useAuthStore";
 import storeDatas from "./storeLoginDatas";
 
 export const handleA2fSubmit = async ({
     a2fToken,
     choice,
     setA2fInfos,
-    setChoice,
+    setSelectedChoice,
     setGtk,
 }) => {
     const fa = await authService.submitFormA2f(a2fToken, choice);
-    setA2fInfos((prev) => ({
-        ...prev,
+    setA2fInfos({
         fa: [{ ...fa.data }],
-    }));
-    setChoice("");
+    });
+    setSelectedChoice("");
     const gtkCookie = await authService.generateGTK();
     setGtk(gtkCookie);
 };
@@ -23,7 +23,6 @@ export const completeA2fLogin = async ({
     gtk,
     a2fToken,
     keepConnected,
-    dispatch,
     userSetters,
 }) => {
     const accountData = await authService.login({
@@ -46,6 +45,7 @@ export const completeA2fLogin = async ({
         token,
         ...userSetters,
     });
-    dispatch({ type: "SIGN_IN", userToken: token });
+    
+    useAuthStore.getState().setStatus('success');
 };
 

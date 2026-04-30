@@ -1,5 +1,5 @@
-import base64Handler from "../../utils/handleBase64.js";
-import fetchApi from "../fetchApi.js";
+import base64Handler from "../../utils/handleBase64";
+import fetchApi from "../fetchApi";
 
 export const getResponseChoices = async (token) => {
     const requestParams = {
