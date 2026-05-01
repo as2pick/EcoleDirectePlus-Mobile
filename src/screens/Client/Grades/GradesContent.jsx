@@ -160,7 +160,6 @@ export default function GradesContent() {
         []
     );
 
-    if (isLoading) return <ActivityIndicator />;
     if (isError) return null;
 
     return (

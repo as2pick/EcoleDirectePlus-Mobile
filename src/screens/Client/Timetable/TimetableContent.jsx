@@ -53,16 +53,17 @@ export default function TimetableContent() {
     const activeDate = timetableData?.[currentIndex]?.iSODate || "";
 
     useEffect(() => {
-        if (!timetableCoreSuccessLoaded) return;
+        if (!timetableCoreSuccessLoaded || !timetableData) return;
 
-        scrollViewRef.current.scrollToIndex(
-            timetableData.findIndex((day) => day.date === CONFIG.dateNow),
-            false
-        );
+        const todayIndex = timetableData.findIndex((day) => day.date === CONFIG.dateNow);
+        
+        if (todayIndex !== -1) {
+            scrollViewRef.current.scrollToIndex(todayIndex, false);
+        }
+        
         dynamicOpacity.value = withSpring(1, { duration: 1500 });
-    }, [timetableCoreSuccessLoaded]);
+    }, [timetableCoreSuccessLoaded, timetableData]);
 
-    if (isLoading) return <ActivityIndicator />;
     if (isError) return null;
 
     return (
@@ -104,13 +105,12 @@ export default function TimetableContent() {
                             overflow: "hidden",
                             bottom: 0,
                         }}
-                        onLongPress={() =>
-                            scrollViewRef.current.scrollToIndex(
-                                timetableData.findIndex(
-                                    (day) => day.date === CONFIG.dateNow
-                                )
-                            )
-                        }
+                        onLongPress={() => {
+                            const todayIndex = timetableData.findIndex((day) => day.date === CONFIG.dateNow);
+                            if (todayIndex !== -1) {
+                                scrollViewRef.current.scrollToIndex(todayIndex);
+                            }
+                        }}
                     >
                         <Text preset="title1" oneLine color={theme.colors.theme}>
                             {activeDate}
@@ -123,7 +123,7 @@ export default function TimetableContent() {
                     getIndex={(i) => setCurrentIndex(i)}
                     ref={scrollViewRef}
                 >
-                    {timetableData?.map((currentDay, index, courseIndex) => (
+                    {timetableData?.map((currentDay, index) => (
                         <DayShedule
                             key={index}
                             currentDay={currentDay}

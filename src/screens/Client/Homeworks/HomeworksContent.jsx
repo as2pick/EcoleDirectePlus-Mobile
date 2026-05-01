@@ -23,7 +23,6 @@ import { useHomework } from "./context/LocalContext";
 import { useHomeworksHandler } from "./hooks/useHomeworksHandler";
 
 import { useCustomDataStore } from "../../../hooks/useCustomDataStore";
-import useUserDatas from "../../../hooks/useUserDatas";
 import { useHomeworks } from "../../../hooks/useHomeworks";
 import { useUserStore } from "../../../hooks/useUserStore";
 
@@ -32,8 +31,6 @@ export default function HomeworksContent() {
     const token = useUserStore((state) => state.token);
     const { data: homeworksData, isLoading, isError, toggleHomework } = useHomeworks(token);
     const customHomeworksData = useCustomDataStore((state) => state.customHomeworks);
-    const setUserState = useUserDatas((state) => state.setUserState);
-
     const { dispatch } = useHomework();
 
     const mergedHomeworks = useMemo(() => {
@@ -105,68 +102,13 @@ export default function HomeworksContent() {
 
         }, [homeworksData, customHomeworksData, activeDate])
     );
-    useEffect(() => {
-        if (
-            !homeworksData ||
-            !customHomeworksData ||
-            customHomeworksData.length === 0
-        )
-            return;
 
-        const merged = JSON.parse(JSON.stringify(homeworksData));
-        let hasChanged = false;
-
-        customHomeworksData.forEach((custom) => {
-            if (!merged[custom.date]) {
-                merged[custom.date] = [];
-
-                const frenchDate = formatFrenchDate(custom.date);
-                const contractedDate = [
-                    frenchDate.charAt(0).toLowerCase() + frenchDate.slice(1, 3),
-                    frenchDate.split(" ")[1],
-                ];
-
-                merged.formatedDates[custom.date] = {
-                    long: frenchDate,
-                    contracted: contractedDate,
-                    isEvaluation: false,
-                };
-                hasChanged = true;
-            }
-
-            const exists = merged[custom.date].some((hw) => hw.id === custom.id);
-            if (!exists) {
-                merged[custom.date].push(custom);
-            }
-        });
-        Object.fromEntries(
-            Object.entries(merged.formatedDates).sort(
-                ([dateA], [dateB]) => new Date(dateB) - new Date(dateA)
-            )
-        );
-
-        if (hasChanged) {
-            merged.formatedDates = Object.fromEntries(
-                Object.entries(merged.formatedDates).sort(
-                    ([a], [b]) => new Date(a) - new Date(b)
-                )
-            );
-        }
-        setSortedHomeworksData(merged);
-        const saveCustomHomeworks = async () => {
-            setUserState({ customHomeworks: merged });
-        };
-
-        saveCustomHomeworks().catch((e) => {
-            console.error("Error when try save custom homeworks", e);
-        });
-    }, [customHomeworksData]);
 
     useEffect(() => {
-        if (!homeworksData || Object.keys(homeworksData).length === 0) return;
+        if (!mergedHomeworks || Object.keys(mergedHomeworks).length === 0) return;
 
-        setHomeworksDates(homeworksData.formatedDates);
-    }, [homeworksData]);
+        setHomeworksDates(mergedHomeworks.formatedDates);
+    }, [mergedHomeworks]);
 
     useEffect(() => {
         if (!activeDate || !mergedHomeworks) return;
@@ -217,7 +159,6 @@ export default function HomeworksContent() {
         [dispatch]
     );
 
-    if (isLoading) return <ActivityIndicator />;
     if (isError) return null;
 
     return (
