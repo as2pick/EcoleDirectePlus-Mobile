@@ -126,8 +126,9 @@ export default function HomeworksContent() {
     }, [activeDate, mergedHomeworks]);
 
     useEffect(() => {
-        if (!homeworksDates) return;
+        if (!homeworksDates || !activeDate || !homeworksDates[activeDate]) return;
         setHomeworksDates((prev) => {
+            if (!prev[activeDate]) return prev;
             prev[activeDate].allTasksCompleted = progression === 1;
             return { ...prev };
         });
