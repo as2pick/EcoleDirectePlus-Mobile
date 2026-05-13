@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { ActivityIndicator, StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { useNavigation, useTheme } from "@react-navigation/native";
 
@@ -56,11 +56,11 @@ export default function TimetableContent() {
         if (!timetableCoreSuccessLoaded || !timetableData) return;
 
         const todayIndex = timetableData.findIndex((day) => day.date === CONFIG.dateNow);
-        
+
         if (todayIndex !== -1) {
             scrollViewRef.current.scrollToIndex(todayIndex, false);
         }
-        
+
         dynamicOpacity.value = withSpring(1, { duration: 1500 });
     }, [timetableCoreSuccessLoaded, timetableData]);
 
@@ -133,7 +133,7 @@ export default function TimetableContent() {
                                 getter: timetableViewDims,
                                 setter: setTimetableViewDims,
                             }}
-                            index={courseIndex}
+                            index={index}
                         />
                     ))}
                 </VerticalScrollView>
