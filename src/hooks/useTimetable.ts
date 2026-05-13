@@ -6,7 +6,5 @@ export function useTimetable(token: string, offset: number = 0) {
         queryKey: ["timetable", offset],
         queryFn: () => timetableResolver({ token, offset }),
         enabled: Boolean(token),
-        staleTime: 0,
-        gcTime: 0,
     });
 }

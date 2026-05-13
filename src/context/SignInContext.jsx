@@ -41,12 +41,6 @@ export const SignInProvider = ({ children }) => {
     const setToken = useUserStore((state) => state.setToken);
     const network = useNetwork();
 
-    const userSetters = {
-        setGlobalUserData: setProfile,
-        setUserAccesToken: setToken,
-        setIsConnected: () => { },
-    };
-
     const bootstrapAsync = async () => {
         try {
             const credentials = await authService.restoreCredentials();
@@ -56,7 +50,6 @@ export const SignInProvider = ({ children }) => {
             if (hasCipher) {
                 const success = await tryLoginWithStoredCreds({
                     cipherText: credentials.cipherText,
-                    userSetters,
                 });
                 if (success) return;
             }
@@ -64,7 +57,6 @@ export const SignInProvider = ({ children }) => {
             if (hasLoginCreds) {
                 const restored = await tryRestoreToken({
                     credentialsPassword: credentials.password,
-                    userSetters,
                 });
                 if (restored) return;
             }
@@ -107,7 +99,7 @@ export const SignInProvider = ({ children }) => {
                 }
 
                 setStatus('success');
-                storeDatas({ data: accountData, token, ...userSetters });
+                storeDatas({ data: accountData, token });
                 break;
             case 250:
                 authService
@@ -149,7 +141,6 @@ export const SignInProvider = ({ children }) => {
             a2fToken,
             gtk: gtk,
             keepConnected,
-            userSetters,
         });
     }, [a2fInfos?.fa, gtk]);
 

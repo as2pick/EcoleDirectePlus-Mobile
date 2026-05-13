@@ -13,7 +13,6 @@ import storeDatas from "./storeLoginDatas";
 
 export async function tryLoginWithStoredCreds({
     cipherText,
-    userSetters,
 }) {
     try {
         const payload = await payloadHelper.decrypt({ cipherHex: cipherText });
@@ -26,7 +25,6 @@ export async function tryLoginWithStoredCreds({
             storeDatas({
                 data: getDataFromStorage,
                 token: payload.superSecretUserToken,
-                ...userSetters,
             });
 
             useAuthStore.getState().setStatus('success');
@@ -41,7 +39,6 @@ export async function tryLoginWithStoredCreds({
 
 export async function tryRestoreToken({
     credentialsPassword,
-    userSetters,
 }) {
     try {
         const authData = JSON.parse(credentialsPassword);
@@ -60,7 +57,6 @@ export async function tryRestoreToken({
         storeDatas({
             data: accountData,
             token,
-            ...userSetters,
         });
 
         await authService.saveCredentials(token, accountData.id, authData);

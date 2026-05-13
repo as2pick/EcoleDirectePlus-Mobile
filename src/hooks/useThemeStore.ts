@@ -1,8 +1,17 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Appearance } from "react-native";
+import { createMMKV } from "react-native-mmkv";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { THEMES_ASSOCIATIONS } from "../themes/themes";
 import type { AppTheme, AppThemeConfig } from "../types";
+
+const storage = createMMKV({ id: "theme-storage" });
+
+const mmkvStorage = createJSONStorage(() => ({
+    getItem: (key) => storage.getString(key) ?? null,
+    setItem: (key, value) => storage.set(key, value),
+    removeItem: (key) => storage.remove(key),
+}));
 
 interface ThemeState {
     themeMode: AppTheme;
@@ -18,13 +27,12 @@ interface ThemeState {
 export const useThemeStore = create<ThemeState>()(
     persist(
         (set, get) => ({
-            themeMode: 'light',
+            themeMode: 'dark',
             followSystem: true,
-            systemTheme: 'light',
+            systemTheme: Appearance.getColorScheme() || 'dark',
 
             setThemeMode: (themeMode) => set({ themeMode, followSystem: false }),
             setFollowSystem: (followSystem) => set({ followSystem }),
-
             setSystemTheme: (systemTheme) => set({ systemTheme }),
 
             getTheme: () => {
@@ -35,7 +43,7 @@ export const useThemeStore = create<ThemeState>()(
         }),
         {
             name: "theme-storage",
-            storage: createJSONStorage(() => AsyncStorage),
+            storage: mmkvStorage,
             partialize: (state) => ({
                 themeMode: state.themeMode,
                 followSystem: state.followSystem,
@@ -51,9 +59,7 @@ export const useTheme = () => {
     });
 };
 
-/**
- * Helper hook to get the active theme mode string ('light' or 'dark')
- */
 export const useActiveThemeMode = () => {
     return useThemeStore((state) => state.followSystem ? state.systemTheme : state.themeMode);
 };
+

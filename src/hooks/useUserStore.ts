@@ -1,18 +1,16 @@
-// TODO: remplacer AsyncStorage par MMKV quand on aura un Dev Build
-// import { MMKV } from "react-native-mmkv";
-// const userStorage = new MMKV({ id: "user-store" });
-// const mmkvStorage = createJSONStorage(() => ({
-//     getItem: (key) => userStorage.getString(key) ?? null,
-//     setItem: (key, value) => userStorage.set(key, value),
-//     removeItem: (key) => userStorage.delete(key),
-// }));
-
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { createMMKV } from "react-native-mmkv";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import type { UserProfile } from "../types";
 
-const mmkvStorage = createJSONStorage(() => AsyncStorage);
+const storage = createMMKV({ id: "user-store" });
+
+
+const mmkvStorage = createJSONStorage(() => ({
+    getItem: (key) => storage.getString(key) ?? null,
+    setItem: (key, value) => storage.set(key, value),
+    removeItem: (key) => storage.remove(key),
+}));
 
 interface UserStoreState {
     profile: UserProfile | null;
@@ -42,3 +40,4 @@ export const useUserStore = create<UserStoreState>()(
         }
     )
 );
+

@@ -1,6 +1,14 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { createMMKV } from "react-native-mmkv";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
+
+const storage = createMMKV({ id: "user-data" });
+
+const mmkvStorage = createJSONStorage(() => ({
+    getItem: (key) => storage.getString(key) ?? null,
+    setItem: (key, value) => storage.set(key, value),
+    removeItem: (key) => storage.remove(key),
+}));
 
 type UserDatasStore = {
     globalUserData: any | null;
@@ -36,7 +44,7 @@ const useUserDatas = create<UserDatasStore>()(
         }),
         {
             name: "user-data",
-            storage: createJSONStorage(() => AsyncStorage),
+            storage: mmkvStorage,
             partialize: (state) => ({
                 globalUserData: state.globalUserData,
                 subjectColors: state.subjectColors,
@@ -44,4 +52,6 @@ const useUserDatas = create<UserDatasStore>()(
         }
     )
 );
+
 export default useUserDatas;
+

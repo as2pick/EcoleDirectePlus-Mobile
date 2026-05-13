@@ -10,7 +10,8 @@ export default {
                 projectId: "9b9101a7-7d93-4cd9-b9ba-d3149e8b3401",
             },
         },
-        plugins: ["expo-secure-store", "expo-font", "expo-splash-screen"],
+        scheme: "ecoledirecteplus",
+        plugins: ["expo-dev-client", "expo-secure-store", "expo-font", "expo-splash-screen"],
 
         version: "1.0.0",
         orientation: "portrait",

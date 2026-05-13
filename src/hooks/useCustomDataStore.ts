@@ -1,9 +1,15 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { createMMKV } from "react-native-mmkv";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import type { Homework } from "../types";
 
-// TODO: Migrer vers MMKV quand on aura un Dev Build.
+const storage = createMMKV({ id: "custom-data-storage" });
+
+const mmkvStorage = createJSONStorage(() => ({
+    getItem: (key) => storage.getString(key) ?? null,
+    setItem: (key, value) => storage.set(key, value),
+    removeItem: (key) => storage.remove(key),
+}));
 
 export interface SimulatedGrade {
     id: string;
@@ -73,7 +79,8 @@ export const useCustomDataStore = create<CustomDataState>()(
         }),
         {
             name: "custom-data-storage",
-            storage: createJSONStorage(() => AsyncStorage),
+            storage: mmkvStorage,
         }
     )
 );
+

@@ -23,7 +23,6 @@ export const completeA2fLogin = async ({
     gtk,
     a2fToken,
     keepConnected,
-    userSetters,
 }) => {
     const accountData = await authService.login({
         authConnectionDatas: a2fInfos,
@@ -43,7 +42,6 @@ export const completeA2fLogin = async ({
     storeDatas({
         data: account,
         token,
-        ...userSetters,
     });
     
     useAuthStore.getState().setStatus('success');

@@ -1,8 +1,15 @@
-// TODO: remplacer AsyncStorage par MMKV quand on aura un Dev Build
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { createMMKV } from "react-native-mmkv";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import type { SubjectColorContext } from "../types";
+
+const storage = createMMKV({ id: "color-store" });
+
+const mmkvStorage = createJSONStorage(() => ({
+    getItem: (key) => storage.getString(key) ?? null,
+    setItem: (key, value) => storage.set(key, value),
+    removeItem: (key) => storage.remove(key),
+}));
 
 const GOLDEN = 137.508;
 const S = 70;
@@ -61,7 +68,7 @@ export const useColorStore = create<ColorStoreState>()(
         }),
         {
             name: "color-store",
-            storage: createJSONStorage(() => AsyncStorage),
+            storage: mmkvStorage,
             partialize: (state) => ({
                 subjectColors: state.subjectColors,
                 nextIndex: state.nextIndex,
@@ -69,3 +76,4 @@ export const useColorStore = create<ColorStoreState>()(
         }
     )
 );
+
