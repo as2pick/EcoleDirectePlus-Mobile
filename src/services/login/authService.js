@@ -2,7 +2,8 @@ import { createMMKV } from "react-native-mmkv";
 import Constants from "expo-constants";
 import * as SecureStore from "expo-secure-store";
 import { payloadHelper } from "../../helpers/cryptoHelper";
-import useUserDatas from "../../hooks/useUserDatas";
+import { useUserStore } from "../../hooks/useUserStore";
+import { useColorStore } from "../../hooks/useColorStore";
 import { originName } from "../../resolver/resolver";
 import fetchApi from "../fetchApi";
 import { getCookiesFromResponse } from "../responseUtils";
@@ -77,44 +78,11 @@ const authService = {
             localSecretKeyStoreName,
             `${localSecretKeyStoreName}Payload`,
             "password",
-            "userData",
         ];
-        keyNames.map(async (key) => {
-            await SecureStore.deleteItemAsync(key);
-            console.log("Deleted key:", key);
-        });
-        useUserDatas.getState().reset();
+        await Promise.all(keyNames.map((key) => SecureStore.deleteItemAsync(key)));
+        useUserStore.getState().reset();
+        useColorStore.getState().reset();
         storage.clearAll();
-    },
-    getUserId: async () =>
-        await JSON.parse(await SecureStore.getItemAsync("userame")).userId,
-    storeUserData: async ({
-        id,
-        // identifiant,
-        prenom,
-        nom,
-        email,
-        nomEtablissement,
-        profile: {
-            sexe,
-            telPortable,
-            classe: { code, libelle },
-        },
-    }) => {
-        const userData = {
-            id,
-            name: prenom,
-            surname: nom,
-            sex: sexe,
-            phone: telPortable,
-            email,
-            schoolName: nomEtablissement,
-            class: {
-                libelle,
-                code,
-            },
-        };
-        storage.set("userData", JSON.stringify(userData));
     },
 
     deleteStoredApiDatas: async () => {

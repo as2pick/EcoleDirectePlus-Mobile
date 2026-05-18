@@ -7,7 +7,7 @@ import {
 import { getApiMessage } from "../constants/api/codes";
 import { useAuthStore } from "../hooks/useAuthStore";
 
-import { useNetwork } from "../hooks/network";
+
 import authService from "../services/login/authService";
 import { useUserStore } from "../hooks/useUserStore";
 import { completeA2fLogin, handleA2fSubmit } from "./tools/a2fHandler";
@@ -37,9 +37,6 @@ export const SignInProvider = ({ children }) => {
     const resetAuth = useAuthStore((state) => state.reset);
 
     const userAccesToken = useUserStore((state) => state.token);
-    const setProfile = useUserStore((state) => state.setProfile);
-    const setToken = useUserStore((state) => state.setToken);
-    const network = useNetwork();
 
     const bootstrapAsync = async () => {
         try {

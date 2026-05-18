@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import { payloadHelper } from "../../helpers/cryptoHelper";
-import useUserDatas from "../../hooks/useUserDatas";
+import { useUserStore } from "../../hooks/useUserStore";
 import authService from "../../services/login/authService";
 import { useAuthStore } from "../../hooks/useAuthStore";
 import storeDatas from "./storeLoginDatas";
@@ -20,7 +20,7 @@ export async function tryLoginWithStoredCreds({
         const expiration = dayjs(payload.expirationDate, "YYYY-MM-DD_HH:mm");
 
         if (now.isBefore(expiration)) {
-            const getDataFromStorage = useUserDatas.getState().globalUserData;
+            const getDataFromStorage = useUserStore.getState().profile;
 
             storeDatas({
                 data: getDataFromStorage,
