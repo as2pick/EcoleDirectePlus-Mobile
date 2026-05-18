@@ -5,7 +5,7 @@ import { persist, createJSONStorage } from "zustand/middleware";
 import { THEMES_ASSOCIATIONS } from "../themes/themes";
 import type { AppTheme, AppThemeConfig } from "../types";
 
-const storage = createMMKV({ id: "theme-storage" });
+const storage = createMMKV({ id: "theme-store" });
 
 const mmkvStorage = createJSONStorage(() => ({
     getItem: (key) => storage.getString(key) ?? null,
@@ -42,7 +42,7 @@ export const useThemeStore = create<ThemeState>()(
             },
         }),
         {
-            name: "theme-storage",
+            name: "theme-store",
             storage: mmkvStorage,
             partialize: (state) => ({
                 themeMode: state.themeMode,

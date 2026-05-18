@@ -3,7 +3,7 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import type { Homework } from "../types";
 
-const storage = createMMKV({ id: "custom-data-storage" });
+const storage = createMMKV({ id: "custom-data-store" });
 
 const mmkvStorage = createJSONStorage(() => ({
     getItem: (key) => storage.getString(key) ?? null,
@@ -78,7 +78,7 @@ export const useCustomDataStore = create<CustomDataState>()(
                 })),
         }),
         {
-            name: "custom-data-storage",
+            name: "custom-data-store",
             storage: mmkvStorage,
         }
     )
