@@ -12,7 +12,7 @@ import FileIcon from "../../../../assets/svg/FileIcon";
 import { CustomTopHeader, HomeworkCard, Modal } from "../../../components";
 import { Text } from "../../../components/Ui/core";
 import { useUserStore } from "../../../hooks/useUserStore";
-import { useQueryClient } from "@tanstack/react-query";
+import { useHomeworks } from "../../../hooks/useHomeworks";
 import { formatFrenchDate } from "../../../utils/date";
 import { useHomework } from "./context/LocalContext";
 import { downloadDocument, openDocument } from "./handler/handleDocuments";
@@ -30,9 +30,9 @@ export default function HomeworkDetails({ route }) {
     const navigation = useNavigation();
 
     const { dispatch } = useHomework();
-    const queryClient = useQueryClient();
     const { colors } = useTheme();
     const userAccesToken = useUserStore((state) => state.token);
+    const { data: homeworksQueryData } = useHomeworks(userAccesToken);
 
     const modalsHander = {
         document: useState(false),
@@ -40,15 +40,14 @@ export default function HomeworkDetails({ route }) {
     };
 
     const homework = useMemo(() => {
-        const fullData = queryClient.getQueryData(["homeworks"]);
         const current =
-            fullData?.[homeworksData.date]?.find(
+            homeworksQueryData?.[homeworksData.date]?.find(
                 (hw) => hw.id === homeworksData.id
             ) ?? homeworksData;
 
         const hw = createHomework(current);
         return hw.isCustom ? serializeHomework(hw) : decodeHomeworkContent(hw);
-    }, [queryClient, homeworksData]);
+    }, [homeworksQueryData, homeworksData]);
 
     const homeworkContent = homework.isCustom
         ? homework.homeworksContent.content

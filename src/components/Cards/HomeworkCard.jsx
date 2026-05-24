@@ -15,15 +15,28 @@ export default function HomeworkCard({ homework, dispatch, enabled = true }) {
             payload: serializeHomework(homework),
         });
     };
-    const handleToggle = () =>
+    const handleToggle = () => {
+        if (homework.loadingState === "loading" || homework.loadingState === "error") return;
+        const nextIsDoneBoolean = homework.isDone !== "done";
         dispatch({
             type: "TOGGLE_HOMEWORK",
             payload: {
                 id: homework.id,
                 isCustom: homework.isCustom,
-                updates: { isDone: !homework.isDone },
+                updates: { isDone: nextIsDoneBoolean },
             },
         });
+    };
+
+    let statusColor = "red";
+    if (homework.loadingState === "loading") {
+        statusColor = "orange";
+    } else if (homework.loadingState === "error") {
+        statusColor = "black";
+    } else {
+        statusColor = homework.isDone === "done" ? "green" : "red";
+    }
+
     return (
         <TouchableOpacity onPress={handlePress} disabled={!enabled}>
             <LinearGradient
@@ -89,15 +102,16 @@ export default function HomeworkCard({ homework, dispatch, enabled = true }) {
                     </Text>
                 </View>
 
-                <TouchableOpacity // DEBUG
+                <TouchableOpacity
                     style={{
                         aspectRatio: 1,
                         width: 40,
-                        backgroundColor: homework.isDone ? "green" : "red",
+                        backgroundColor: statusColor,
                         marginLeft: 12,
-                        borderRadius: "50%",
+                        borderRadius: 20,
                     }}
                     onPress={handleToggle}
+                    disabled={homework.loadingState === "loading" || homework.loadingState === "error"}
                 />
             </LinearGradient>
         </TouchableOpacity>

@@ -49,7 +49,7 @@ export const useCustomDataStore = create<CustomDataState>()(
             toggleCustomHomeworkDone: (id) =>
                 set((state) => ({
                     customHomeworks: state.customHomeworks.map((hw) =>
-                        hw.id === id ? { ...hw, isDone: !hw.isDone } : hw
+                        hw.id === id ? { ...hw, isDone: hw.isDone === "done" ? "todo" : "done" } : hw
                     ),
                 })),
 

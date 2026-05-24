@@ -16,7 +16,8 @@ export interface Homework {
     date: string;
     discipline: HomeworkDiscipline;
     homeworksContent: HomeworkContent;
-    isDone: boolean;
+    isDone: "done" | "todo";
+    loadingState?: "idle" | "loading" | "error";
     isEvaluation: boolean;
     isCustom: boolean;
     givenOn: string;

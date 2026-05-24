@@ -1,5 +1,5 @@
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
-import { ActivityIndicator, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import Animated, {
     interpolate,
@@ -115,7 +115,7 @@ export default function HomeworksContent() {
 
         const datas = mergedHomeworks[activeDate] || [];
         setDisplayTasks(datas);
-        const completed = datas.filter(({ isDone }) => isDone);
+        const completed = datas.filter(({ isDone }) => isDone === "done");
         setCompletedTasks(completed);
         const progression =
             datas.length > 0
@@ -140,7 +140,7 @@ export default function HomeworksContent() {
 
             const tasks = mergedHomeworks[date] ?? [];
             const allTasksCompleted =
-                tasks.length > 0 && tasks.every(({ isDone }) => isDone);
+                tasks.length > 0 && tasks.every(({ isDone }) => isDone === "done");
 
             return (
                 <DateItem
