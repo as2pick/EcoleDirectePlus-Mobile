@@ -36,7 +36,6 @@ export default function LoginScreen() {
         setMcqDatas,
         apiError,
         setApiError,
-        state,
     } = useSingIn();
 
     const [username, setUsername] = useState("");
@@ -64,9 +63,9 @@ export default function LoginScreen() {
     }, [username, password, keepConnected]);
 
     useEffect(() => {
-        if (!state || !apiError) return;
+        if (!apiError) return;
         setLoading(false);
-    }, [state, apiError]);
+    }, [apiError]);
 
     const toggleModal = useCallback(() => {
         setModalVisible((lastState) => !lastState);

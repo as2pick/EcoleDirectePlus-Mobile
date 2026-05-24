@@ -27,7 +27,8 @@ export async function tryLoginWithStoredCreds({
                 token: payload.superSecretUserToken,
             });
 
-            useAuthStore.getState().setStatus('success');
+            useAuthStore.getState().setAuthenticated(true);
+            useAuthStore.getState().setBooting(false);
             return true;
         }
         return false;
@@ -60,7 +61,8 @@ export async function tryRestoreToken({
         });
 
         await authService.saveCredentials(token, accountData.id, authData);
-        useAuthStore.getState().setStatus('success');
+        useAuthStore.getState().setAuthenticated(true);
+        useAuthStore.getState().setBooting(false);
         return true;
     } catch (error) {
         console.error("Error in tryRestoreToken:", error);

@@ -15,7 +15,8 @@ import Client from "./display/client/Client";
 
 export default function AuthNavigator() {
     const activeMode = useActiveThemeMode();
-    const status = useAuthStore((state) => state.status);
+    const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+    const isBooting = useAuthStore((state) => state.isBooting);
     const { setActiveNetworkStatus } = useGlobalApp();
 
     useEffect(() => {
@@ -62,9 +63,9 @@ export default function AuthNavigator() {
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
             <NavigationContainer theme={THEMES_ASSOCIATIONS[activeMode]}>
-                {status === 'loading' || status === 'booting' ? (
+                {isBooting ? (
                     <SplashScreen />
-                ) : status === 'success' ? (
+                ) : isAuthenticated ? (
                     <MainLayout>
                         <Client />
                     </MainLayout>

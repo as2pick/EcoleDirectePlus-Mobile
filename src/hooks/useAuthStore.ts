@@ -1,7 +1,8 @@
 import { create } from "zustand";
 
 interface AuthState {
-    status: 'idle' | 'loading' | 'success' | 'error' | 'a2f' | 'booting';
+    isAuthenticated: boolean;
+    isBooting: boolean;
     error: string | null;
 
     mcqDatas: { question: string; choices: string[] } | null;
@@ -11,11 +12,11 @@ interface AuthState {
     gtk: string | null;
     keepConnected: boolean;
 
-    setStatus: (status: AuthState['status']) => void;
+    setAuthenticated: (value: boolean) => void;
+    setBooting: (value: boolean) => void;
     setError: (error: string | null) => void;
     setMcqDatas: (datas: AuthState['mcqDatas']) => void;
     setSelectedChoice: (choice: string) => void;
-
 
     setA2fInfos: (infos: Partial<AuthState['a2fInfos']>) => void;
     setA2fToken: (token: string | null) => void;
@@ -26,7 +27,8 @@ interface AuthState {
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
-    status: 'booting',
+    isAuthenticated: false,
+    isBooting: true,
     error: null,
     mcqDatas: null,
     selectedChoice: null,
@@ -35,9 +37,10 @@ export const useAuthStore = create<AuthState>((set) => ({
     gtk: null,
     keepConnected: true,
 
-    setStatus: (status) => set({ status }),
-    setError: (error) => set({ error, status: error ? 'error' : 'idle' }),
-    setMcqDatas: (mcqDatas) => set({ mcqDatas, status: 'a2f' }),
+    setAuthenticated: (isAuthenticated) => set({ isAuthenticated }),
+    setBooting: (isBooting) => set({ isBooting }),
+    setError: (error) => set({ error }),
+    setMcqDatas: (mcqDatas) => set({ mcqDatas }),
     setSelectedChoice: (selectedChoice) => set({ selectedChoice }),
     setA2fInfos: (infos) => set((state) => ({
         a2fInfos: state.a2fInfos ? { ...state.a2fInfos, ...infos } : { identifiant: null, motdepasse: null, fa: null, ...infos }
@@ -47,13 +50,13 @@ export const useAuthStore = create<AuthState>((set) => ({
     setKeepConnected: (keepConnected) => set({ keepConnected }),
 
     reset: () => set({
-        status: 'idle',
+        isAuthenticated: false,
+        isBooting: false,
         error: null,
         mcqDatas: null,
         selectedChoice: null,
         a2fInfos: null,
         a2fToken: null,
-        gtk: null
+        gtk: null,
     }),
 }));
-

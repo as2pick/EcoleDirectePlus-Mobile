@@ -7,7 +7,6 @@ import {
 import { getApiMessage } from "../constants/api/codes";
 import { useAuthStore } from "../hooks/useAuthStore";
 
-
 import authService from "../services/login/authService";
 import { useUserStore } from "../hooks/useUserStore";
 import { completeA2fLogin, handleA2fSubmit } from "./tools/a2fHandler";
@@ -17,7 +16,6 @@ import storeDatas from "./tools/storeLoginDatas";
 const SignInContext = createContext();
 
 export const SignInProvider = ({ children }) => {
-    const status = useAuthStore((state) => state.status);
     const error = useAuthStore((state) => state.error);
     const mcqDatas = useAuthStore((state) => state.mcqDatas);
     const choice = useAuthStore((state) => state.selectedChoice);
@@ -26,7 +24,6 @@ export const SignInProvider = ({ children }) => {
     const a2fToken = useAuthStore((state) => state.a2fToken);
     const keepConnected = useAuthStore((state) => state.keepConnected);
 
-    const setStatus = useAuthStore((state) => state.setStatus);
     const setError = useAuthStore((state) => state.setError);
     const setMcqDatas = useAuthStore((state) => state.setMcqDatas);
     const setSelectedChoice = useAuthStore((state) => state.setSelectedChoice);
@@ -58,15 +55,14 @@ export const SignInProvider = ({ children }) => {
                 if (restored) return;
             }
 
-            setStatus('idle');
+            useAuthStore.getState().setBooting(false);
         } catch (error) {
             console.error("ERROR IN BOOTSTRAPASYNC", error);
-            setStatus('idle');
+            useAuthStore.getState().setBooting(false);
         }
     };
 
     const handleLogin = async ({ username, password, keepConnected }) => {
-        setStatus('loading');
         setKeepConnected(keepConnected);
         const gtkCookie = await authService.generateGTK();
         const apiLoginData = await authService.login({
@@ -95,8 +91,8 @@ export const SignInProvider = ({ children }) => {
                     });
                 }
 
-                setStatus('success');
                 storeDatas({ data: accountData, token });
+                useAuthStore.getState().setAuthenticated(true);
                 break;
             case 250:
                 authService
@@ -146,8 +142,7 @@ export const SignInProvider = ({ children }) => {
             signIn: handleLogin,
             signOut: handleSignOut,
             state: {
-                isLoading: status === 'loading' || status === 'booting',
-                userToken: userAccesToken
+                userToken: userAccesToken,
             },
             mcqDatas,
             choice,
@@ -156,7 +151,7 @@ export const SignInProvider = ({ children }) => {
             setChoice: setSelectedChoice,
             setApiError: setError,
         }),
-        [status, error, mcqDatas, choice, userAccesToken]
+        [error, mcqDatas, choice, userAccesToken]
     );
 
     return (
@@ -167,4 +162,3 @@ export const SignInProvider = ({ children }) => {
 };
 
 export const useSingIn = () => useContext(SignInContext);
-
