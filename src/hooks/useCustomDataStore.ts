@@ -33,6 +33,7 @@ interface CustomDataState {
     addSimulatedGrade: (grade: SimulatedGrade) => void;
     removeSimulatedGrade: (id: string) => void;
     clearSimulatedGrades: (disciplineCode?: string) => void;
+    reset: () => void;
 }
 
 export const useCustomDataStore = create<CustomDataState>()(
@@ -76,6 +77,12 @@ export const useCustomDataStore = create<CustomDataState>()(
                         )
                         : [],
                 })),
+
+            reset: () =>
+                set({
+                    customHomeworks: [],
+                    simulatedGrades: [],
+                }),
         }),
         {
             name: "custom-data-store",

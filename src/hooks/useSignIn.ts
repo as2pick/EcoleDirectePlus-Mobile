@@ -1,10 +1,12 @@
 import { useEffect, useCallback } from "react";
 import { useAuthStore } from "./useAuthStore";
 import { useUserStore } from "./useUserStore";
+import { useCustomDataStore } from "./useCustomDataStore";
+import { queryClient } from "../provider/QueryProvider";
 import authService from "../services/login/authService";
 import { getApiMessage } from "../constants/api/codes";
-import storeDatas from "../context/tools/storeLoginDatas";
-import { handleA2fSubmit, completeA2fLogin } from "../context/tools/a2fHandler";
+import storeDatas from "../services/login/tools/storeLoginDatas";
+import { handleA2fSubmit } from "../services/login/tools/a2fHandler";
 
 export const useSignIn = () => {
     const error = useAuthStore((state) => state.error);
@@ -86,6 +88,8 @@ export const useSignIn = () => {
         await authService.deleteCredentials();
         resetAuth();
         useUserStore.getState().reset();
+        useCustomDataStore.getState().reset();
+        queryClient.clear();
     }, [resetAuth]);
 
     useEffect(() => {
