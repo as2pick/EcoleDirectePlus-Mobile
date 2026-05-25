@@ -45,13 +45,21 @@ export async function tryRestoreToken({
         const authData = JSON.parse(credentialsPassword);
         const gtkCookie = await authService.generateGTK();
 
-        const { data, token } = await authService.login({
+        const loginResponse = await authService.login({
             authConnectionDatas: authData,
             headers: {
                 Cookie: gtkCookie,
                 "X-GTK": gtkCookie.split("=")[1],
             },
         });
+
+        if (loginResponse?.code === 505 || loginResponse?.code === 522) {
+            console.warn("Stored credentials are no longer valid (505/522). Clearing credentials.");
+            await authService.deleteCredentials();
+            return false;
+        }
+
+        const { data, token } = loginResponse;
 
         const accountData = data?.accounts?.[0];
         if (!accountData) {

@@ -33,14 +33,14 @@ const authService = {
                 body:
                     authConnectionDatas != null
                         ? {
-                              ...authConnectionDatas,
-                          }
+                            ...authConnectionDatas,
+                        }
                         : {
-                              identifiant: username,
-                              motdepasse: password,
-                              isReLogin: false,
-                              uuid: "",
-                          },
+                            identifiant: username,
+                            motdepasse: password,
+                            isReLogin: false,
+                            uuid: "",
+                        },
                 method: "POST",
                 headers: headers,
             }
@@ -60,7 +60,7 @@ const authService = {
             connectionToken: JSON.stringify(loginDatas),
             userId: userId,
         });
-        await SecureStore.setItemAsync("password", credentialsCipher);
+        await SecureStore.setItemAsync(`${localSecretKeyStoreName}Credentials`, credentialsCipher);
 
         const cipherText = await payloadHelper.encrypt({
             connectionToken: token,
@@ -73,7 +73,7 @@ const authService = {
         );
     },
     restoreCredentials: async () => {
-        const credentialsCipher = await SecureStore.getItemAsync("password");
+        const credentialsCipher = await SecureStore.getItemAsync(`${localSecretKeyStoreName}Credentials`);
         const cipherText = await SecureStore.getItemAsync(
             `${localSecretKeyStoreName}Payload`
         );
@@ -91,6 +91,7 @@ const authService = {
         const keyNames = [
             localSecretKeyStoreName,
             `${localSecretKeyStoreName}Payload`,
+            `${localSecretKeyStoreName}Credentials`,
             "password",
         ];
         await Promise.all(keyNames.map((key) => SecureStore.deleteItemAsync(key)));
