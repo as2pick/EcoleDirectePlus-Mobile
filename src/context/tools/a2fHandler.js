@@ -8,14 +8,24 @@ export const handleA2fSubmit = async ({
     setA2fInfos,
     setSelectedChoice,
     setGtk,
+    keepConnected,
 }) => {
     const fa = await authService.submitFormA2f(a2fToken, choice);
-    setA2fInfos({
+    const updatedA2fInfos = {
+        ...useAuthStore.getState().a2fInfos,
         fa: [{ ...fa.data }],
-    });
+    };
+    setA2fInfos(updatedA2fInfos);
     setSelectedChoice("");
     const gtkCookie = await authService.generateGTK();
     setGtk(gtkCookie);
+
+    await completeA2fLogin({
+        a2fInfos: updatedA2fInfos,
+        gtk: gtkCookie,
+        a2fToken,
+        keepConnected,
+    });
 };
 
 export const completeA2fLogin = async ({

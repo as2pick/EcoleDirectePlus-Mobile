@@ -90,18 +90,8 @@ export const useSignIn = () => {
 
     useEffect(() => {
         if (!choice) return;
-        handleA2fSubmit({ a2fToken, choice, setA2fInfos, setSelectedChoice, setGtk });
-    }, [choice, a2fToken, setA2fInfos, setSelectedChoice, setGtk]);
-
-    useEffect(() => {
-        if (!a2fInfos?.fa || a2fInfos.fa.length === 0 || !gtk) return;
-        completeA2fLogin({
-            a2fInfos,
-            a2fToken,
-            gtk,
-            keepConnected,
-        });
-    }, [a2fInfos?.fa, gtk, a2fToken, keepConnected]);
+        handleA2fSubmit({ a2fToken, choice, setA2fInfos, setSelectedChoice, setGtk, keepConnected });
+    }, [choice, a2fToken, setA2fInfos, setSelectedChoice, setGtk, keepConnected]);
 
     return {
         signIn,
