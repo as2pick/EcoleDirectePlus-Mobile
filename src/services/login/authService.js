@@ -4,7 +4,7 @@ import * as SecureStore from "expo-secure-store";
 import { payloadHelper } from "../../helpers/cryptoHelper";
 import { useUserStore } from "../../hooks/useUserStore";
 import { useColorStore } from "../../hooks/useColorStore";
-import { originName } from "../../resolver/resolver";
+
 import fetchApi from "../fetchApi";
 import { getCookiesFromResponse } from "../responseUtils";
 import { getResponseChoices, sendResponseChoice } from "./doubleAuth";
@@ -83,21 +83,6 @@ const authService = {
         useUserStore.getState().reset();
         useColorStore.getState().reset();
         storage.clearAll();
-    },
-
-    deleteStoredApiDatas: async () => {
-        try {
-            originName.map((origin) => {
-                storage.remove(origin);
-                console.log(`Deleted key in MMKV ${origin}`);
-            });
-            ["@user_theme", "@follow_system_theme"].map((d) => {
-                storage.remove(d);
-                console.log(`Deleted key in MMKV ${d}`);
-            });
-        } catch (e) {
-            console.log("Error in deleteStoredApiDatas", e);
-        }
     },
 };
 

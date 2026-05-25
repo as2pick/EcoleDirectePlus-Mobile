@@ -43,7 +43,8 @@ export const completeA2fLogin = async ({
         data: account,
         token,
     });
-    
+
     useAuthStore.getState().setAuthenticated(true);
+    useAuthStore.getState().setBooting(false);
 };
 

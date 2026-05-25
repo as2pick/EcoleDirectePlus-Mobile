@@ -93,6 +93,7 @@ export const SignInProvider = ({ children }) => {
 
                 storeDatas({ data: accountData, token });
                 useAuthStore.getState().setAuthenticated(true);
+                useAuthStore.getState().setBooting(false);
                 break;
             case 250:
                 authService

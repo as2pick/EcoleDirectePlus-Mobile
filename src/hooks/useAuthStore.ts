@@ -5,7 +5,7 @@ interface AuthState {
     isBooting: boolean;
     error: string | null;
 
-    mcqDatas: { question: string; choices: string[] } | null;
+    mcqDatas: { question: Record<string, any>; choices: Record<string, any> } | null;
     selectedChoice: string | null;
     a2fInfos: { identifiant: string | null; motdepasse: string | null; fa: any[] | null } | null;
     a2fToken: string | null;
