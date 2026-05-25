@@ -56,7 +56,7 @@ export const assignUnit = (size) => {
     } else if (absNombre >= 1000) {
         return (size / 1000).toFixed(2).replace(/\.?0+$/, "") + " ko";
     } else {
-        return nombre.toString();
+        return size.toString();
     }
 };
 
