@@ -176,7 +176,9 @@ export default function LoginScreen() {
                                 spellCheck={false}
                                 textAlign="center"
                                 // keyboardType="visible-password"
-                                // secureTextEntry
+                                secureTextEntry={true}
+                                autoComplete="password"
+                                textContentType="password"
                                 style={[
                                     styles.input.case,
                                     {
