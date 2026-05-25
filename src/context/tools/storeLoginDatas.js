@@ -1,4 +1,4 @@
-import { API } from "../../constants/api/api";
+
 import { useUserStore } from "../../hooks/useUserStore";
 
 export default function storeDatas({
@@ -25,5 +25,4 @@ export default function storeDatas({
 
     useUserStore.getState().setProfile(formattedProfile);
     useUserStore.getState().setToken(token);
-    API.USER_ID = data.id;
 }

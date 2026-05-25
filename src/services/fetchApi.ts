@@ -1,4 +1,5 @@
 import { API } from "../constants/api/api";
+import { useUserStore } from "../hooks/useUserStore";
 import { convertApiResponse } from "./responseUtils";
 
 export default async function fetchApi<T>(
@@ -30,9 +31,10 @@ export default async function fetchApi<T>(
         url = url.includes("{API_VERSION}")
             ? url.replace("{API_VERSION}", `v=${API.API_VERSION}`)
             : url;
+        const userId = useUserStore.getState().profile?.id;
         url =
-            url.includes("{USER_ID}") && API.USER_ID != null
-                ? url.replace("{USER_ID}", API.USER_ID)
+            url.includes("{USER_ID}") && userId != null
+                ? url.replace("{USER_ID}", String(userId))
                 : url;
 
         const apiResponse = await fetch(url, requestConfig);
