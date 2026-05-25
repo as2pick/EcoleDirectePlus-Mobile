@@ -1,5 +1,5 @@
-import authService from "../../services/login/authService";
-import { useAuthStore } from "../../hooks/useAuthStore";
+import authService from "../authService";
+import { useAuthStore } from "../../../hooks/useAuthStore";
 import storeDatas from "./storeLoginDatas";
 
 export const handleA2fSubmit = async ({
@@ -64,4 +64,3 @@ export const completeA2fLogin = async ({
     useAuthStore.getState().setAuthenticated(true);
     useAuthStore.getState().setBooting(false);
 };
-

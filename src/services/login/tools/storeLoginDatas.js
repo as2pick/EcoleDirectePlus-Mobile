@@ -1,5 +1,4 @@
-
-import { useUserStore } from "../../hooks/useUserStore";
+import { useUserStore } from "../../../hooks/useUserStore";
 
 export default function storeDatas({
     data,

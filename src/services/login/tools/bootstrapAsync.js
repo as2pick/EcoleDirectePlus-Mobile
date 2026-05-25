@@ -1,8 +1,8 @@
 import dayjs from "dayjs";
-import { payloadHelper } from "../../helpers/cryptoHelper";
-import { useUserStore } from "../../hooks/useUserStore";
-import authService from "../../services/login/authService";
-import { useAuthStore } from "../../hooks/useAuthStore";
+import { payloadHelper } from "../../../helpers/cryptoHelper";
+import { useUserStore } from "../../../hooks/useUserStore";
+import authService from "../authService";
+import { useAuthStore } from "../../../hooks/useAuthStore";
 import storeDatas from "./storeLoginDatas";
 
 /**
@@ -81,4 +81,3 @@ export async function tryRestoreToken({
         return false;
     }
 }
-
