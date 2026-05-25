@@ -55,7 +55,7 @@ export default function LoginScreen() {
     const connect = useCallback(() => {
         setLoading(true);
         signIn({
-            username: username,
+            username: username.trim(),
             password: password,
             keepConnected: keepConnected,
         });
