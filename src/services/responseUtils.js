@@ -21,7 +21,16 @@ export const convertApiResponse = async (response) => {
     const stringifyResponse = await response.text();
 
     if (stringifyResponse) {
-        return JSON.parse(stringifyResponse);
+        try {
+            return JSON.parse(stringifyResponse);
+        } catch (error) {
+            console.warn("Échec du parsing JSON (panne ou maintenance d'EcoleDirecte ?) :", error);
+            return {
+                code: 502,
+                message: "Serveur EcoleDirecte indisponible ou en maintenance.",
+                data: {}
+            };
+        }
     } else {
         return response;
     }
