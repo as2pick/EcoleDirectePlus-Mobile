@@ -84,3 +84,7 @@ todo.txt
 
 #android
 android/
+
+#env
+.env
+
