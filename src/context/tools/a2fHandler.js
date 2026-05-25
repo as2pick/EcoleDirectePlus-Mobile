@@ -33,8 +33,15 @@ export const completeA2fLogin = async ({
         },
     });
 
-    const account = accountData.data.accounts[0];
-    const token = accountData.token;
+    const account = accountData?.data?.accounts?.[0];
+    const token = accountData?.token;
+
+    if (!account || !token) {
+        console.error("Aucun compte valide reçu après double authentification");
+        useAuthStore.getState().setError("Une erreur est survenue lors de la double authentification.");
+        useAuthStore.getState().setBooting(false);
+        return;
+    }
 
     if (keepConnected) {
         await authService.saveCredentials(token, account.id, a2fInfos);

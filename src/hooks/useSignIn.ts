@@ -48,7 +48,11 @@ export const useSignIn = () => {
             switch (apiLoginData.code) {
                 case 200: {
                     const { data } = apiLoginData;
-                    const accountData = data.accounts[0];
+                    const accountData = data?.accounts?.[0];
+                    if (!accountData) {
+                        setError("Aucun compte valide trouvé");
+                        break;
+                    }
                     if (keepConnected) {
                         await authService.saveCredentials(token, accountData.id, {
                             identifiant: encodeURIComponent(username),

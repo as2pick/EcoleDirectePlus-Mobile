@@ -53,7 +53,11 @@ export async function tryRestoreToken({
             },
         });
 
-        const accountData = data.accounts[0];
+        const accountData = data?.accounts?.[0];
+        if (!accountData) {
+            console.error("No account found during token restoration");
+            return false;
+        }
 
         storeDatas({
             data: accountData,
