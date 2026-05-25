@@ -9,7 +9,6 @@ import Animated, {
     withSpring,
 } from "react-native-reanimated";
 
-import { useFocusEffect } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import PlusIcon from "../../../../assets/svg/micro/PlusIcon";
 import { HomeworkCard } from "../../../components";
@@ -40,7 +39,17 @@ export default function HomeworksContent() {
             if (!merged[hw.date]) {
                 merged[hw.date] = [];
                 if (!merged.formatedDates) merged.formatedDates = {};
-                merged.formatedDates[hw.date] = { isEvaluation: hw.isEvaluation };
+                const frenchDate = formatFrenchDate(hw.date);
+                const contractedDate = [
+                    frenchDate.charAt(0).toLowerCase() + frenchDate.slice(1, 3),
+                    frenchDate.split(" ")[1],
+                ];
+                merged.formatedDates[hw.date] = {
+                    long: frenchDate,
+                    contracted: contractedDate,
+                    isEvaluation: hw.isEvaluation,
+                    allTasksCompleted: false,
+                };
             }
             const alreadyExists = merged[hw.date].some((h) => h.id === hw.id);
             if (!alreadyExists) {
@@ -86,28 +95,15 @@ export default function HomeworksContent() {
         },
         [progression]
     );
-    useFocusEffect(
-        useCallback(() => {
-            if (!mergedHomeworks) return;
-            if (
-                mergedHomeworks?.formatedDates &&
-                Object.keys(mergedHomeworks).length > 0
-            ) {
-                setFormatedDates(mergedHomeworks.formatedDates);
-                if (!activeDate || !mergedHomeworks?.formatedDates?.[activeDate]) {
-                    setActiveDate(Object.keys(mergedHomeworks.formatedDates)[0]);
-                }
-                return;
-            }
-
-        }, [homeworksData, customHomeworksData, activeDate])
-    );
-
-
     useEffect(() => {
         if (!mergedHomeworks || Object.keys(mergedHomeworks).length === 0) return;
 
         setHomeworksDates(mergedHomeworks.formatedDates);
+        setFormatedDates(mergedHomeworks.formatedDates);
+
+        if (!activeDate || !mergedHomeworks.formatedDates[activeDate]) {
+            setActiveDate(Object.keys(mergedHomeworks.formatedDates)[0]);
+        }
     }, [mergedHomeworks]);
 
     useEffect(() => {
@@ -153,7 +149,7 @@ export default function HomeworksContent() {
                 />
             );
         },
-        [activeDate, homeworksData]
+        [activeDate, mergedHomeworks]
     );
     const renderHomework = useCallback(
         ({ item }) => <HomeworkCard dispatch={dispatch} homework={item} />,
@@ -171,7 +167,6 @@ export default function HomeworksContent() {
                         position: "absolute",
                         top: "5%",
                         right: "5%",
-                        zIndex: 1000,
                         gap: 2,
                         zIndex: 1,
                     }}
