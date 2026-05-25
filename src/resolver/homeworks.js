@@ -112,7 +112,7 @@ function formatHomeworksDetails(
             name: matiere,
             code: codeMatiere,
             teacher: nomProf,
-            color: useColorStore.getState().getColor(codeMatiere),
+            color: useColorStore.getState().getOrAssignColor(codeMatiere),
         },
         student: {
             // maybe so useless

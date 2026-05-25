@@ -56,7 +56,7 @@ const convertData = (arrayData = []) => {
         if (!finalTimetable[day]) {
             finalTimetable[day] = [];
         }
-        const color = useColorStore.getState().getColor(course.libelle);
+        const color = useColorStore.getState().getOrAssignColor(course.libelle);
         course["color"] = color;
         course["textColor"] = isDarkColor(color)
             ? "hsl(0, 100%, 100%)"
@@ -168,7 +168,7 @@ const fillHolidays = (startDateStr, endDateStr) => {
         // textColor: "hsl(0, 0%, 0%)",
         webId: 12345,
     }; // pushed in array
-    const color = useColorStore.getState().getColor(holidaysCourseTemplate.libelle);
+    const color = useColorStore.getState().getOrAssignColor(holidaysCourseTemplate.libelle);
     holidaysCourseTemplate["color"] = color;
     holidaysCourseTemplate["textColor"] = isDarkColor(color)
         ? "hsl(0, 100%, 100%)"

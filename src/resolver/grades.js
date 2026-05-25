@@ -115,7 +115,7 @@ function parseDiscipline(discipline) {
     const obj = {
         code: discipline.codeMatiere,
         libelle: discipline.discipline,
-        color: useColorStore.getState().getColor(discipline.codeMatiere),
+        color: useColorStore.getState().getOrAssignColor(discipline.codeMatiere),
         averageDatas: {
             classAverage: parseNumber(discipline.moyenneClasse),
             minAverage: parseNumber(discipline.moyenneMin),

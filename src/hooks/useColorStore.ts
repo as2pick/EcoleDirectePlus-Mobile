@@ -18,7 +18,8 @@ const L = 55;
 interface ColorStoreState {
     subjectColors: Record<string, SubjectColorContext>;
     nextIndex: number;
-    getColor: (subject: string) => string;
+    // Warning: This updates store state, do not call inside render methods!
+    getOrAssignColor: (subject: string) => string;
     setSubjectIndex: (subject: string, index: number) => void;
     setSubjectColor: (subject: string, color: string) => void;
     reset: () => void;
@@ -30,7 +31,8 @@ export const useColorStore = create<ColorStoreState>()(
             subjectColors: {},
             nextIndex: 0,
 
-            getColor: (subject: string): string => {
+            // Warning: This updates store state, do not call inside render methods!
+            getOrAssignColor: (subject: string): string => {
                 const { subjectColors, nextIndex } = get();
                 const existing = subjectColors[subject];
 
