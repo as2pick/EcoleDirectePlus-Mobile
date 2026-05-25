@@ -56,7 +56,12 @@ const authService = {
     },
 
     saveCredentials: async (token, userId, loginDatas) => {
-        await SecureStore.setItemAsync("password", JSON.stringify(loginDatas)); // stringify loginDatas
+        const credentialsCipher = await payloadHelper.encrypt({
+            connectionToken: JSON.stringify(loginDatas),
+            userId: userId,
+        });
+        await SecureStore.setItemAsync("password", credentialsCipher);
+
         const cipherText = await payloadHelper.encrypt({
             connectionToken: token,
             userId: userId,
@@ -67,12 +72,21 @@ const authService = {
             cipherText
         );
     },
-    restoreCredentials: async () => ({
-        password: await SecureStore.getItemAsync("password"),
-        cipherText: await SecureStore.getItemAsync(
+    restoreCredentials: async () => {
+        const credentialsCipher = await SecureStore.getItemAsync("password");
+        const cipherText = await SecureStore.getItemAsync(
             `${localSecretKeyStoreName}Payload`
-        ),
-    }),
+        );
+
+        const decryptedCredentials = credentialsCipher
+            ? await payloadHelper.decrypt({ cipherHex: credentialsCipher })
+            : null;
+
+        return {
+            password: decryptedCredentials?.superSecretUserToken ?? null,
+            cipherText,
+        };
+    },
     deleteCredentials: async () => {
         const keyNames = [
             localSecretKeyStoreName,
