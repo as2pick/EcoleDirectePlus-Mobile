@@ -8,5 +8,7 @@ export const CONFIG = {
     minCourseSize: 10, // %,
     middleNoonCourseTime: 48600000, // ms
     discordInviteLink: "https://discord.gg/AKAqXfTgvE",
+    localSecretKeyStoreName: "appnameversion",
+    totalTokenExpirationTime: 1200, // sec
 };
 

@@ -1,12 +1,10 @@
 import CryptoJS from "crypto-js";
-import Constants from "expo-constants";
 import * as Crypto from "expo-crypto";
 import * as SecureStore from "expo-secure-store";
 import dayjs from "dayjs";
 import { CONFIG } from "../constants/config";
 
-const { localSecretKeyStoreName, totalTokenExpirationTime } =
-    Constants.expoConfig.extra;
+const { localSecretKeyStoreName, totalTokenExpirationTime } = CONFIG;
 
 /**
  * Generate or get a secure key

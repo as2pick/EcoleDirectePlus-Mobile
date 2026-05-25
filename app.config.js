@@ -4,8 +4,6 @@ export default {
         slug: "ecoledirecteplus-mobile",
         sdkVersion: "54.0.0",
         extra: {
-            localSecretKeyStoreName: process.env.LOCAL_SECRET_KEY_STORE_NAME,
-            totalTokenExpirationTime: process.env.TOTAL_TOKEN_EXPIRATION_TIME,
             eas: {
                 projectId: "9b9101a7-7d93-4cd9-b9ba-d3149e8b3401",
             },

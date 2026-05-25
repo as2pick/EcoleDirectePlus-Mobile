@@ -1,16 +1,16 @@
 import { createMMKV } from "react-native-mmkv";
-import Constants from "expo-constants";
 import * as SecureStore from "expo-secure-store";
 import { payloadHelper } from "../../helpers/cryptoHelper";
 import { useUserStore } from "../../hooks/useUserStore";
 import { useColorStore } from "../../hooks/useColorStore";
+import { CONFIG } from "../../constants/config";
 
 import fetchApi from "../fetchApi";
 import { getCookiesFromResponse } from "../responseUtils";
 import { getResponseChoices, sendResponseChoice } from "./doubleAuth";
 
 const storage = createMMKV();
-const { localSecretKeyStoreName } = Constants.expoConfig.extra;
+const { localSecretKeyStoreName } = CONFIG;
 
 const authService = {
     generateGTK: async () => {
