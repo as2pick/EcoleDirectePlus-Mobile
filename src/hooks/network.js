@@ -1,7 +1,7 @@
-import { useGlobalApp } from "../context/GlobalAppContext";
+import { useNetworkStore } from "./useNetworkStore";
 
 export const useNetwork = () => {
-    const { activeNetworkStatus } = useGlobalApp();
+    const activeNetworkStatus = useNetworkStore((state) => state.activeNetworkStatus);
 
     return {
         isConnected: activeNetworkStatus.isConnected ?? false,

@@ -19,7 +19,7 @@ import MaskedView from "@react-native-masked-view/masked-view";
 import { LinearGradient } from "expo-linear-gradient";
 import Text from "../../../components/Ui/core/Text.jsx";
 import { getApiMessage } from "../../../constants/api/codes";
-import { useSingIn } from "../../../context/SignInContext.jsx";
+import { useSignIn } from "../../../hooks/useSignIn";
 import { routesNames } from "../../../router/config/routesNames";
 import { addOpacityToCssRgb } from "../../../utils/colorGenerator";
 
@@ -36,7 +36,7 @@ export default function LoginScreen() {
         setMcqDatas,
         apiError,
         setApiError,
-    } = useSingIn();
+    } = useSignIn();
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
