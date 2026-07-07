@@ -1,7 +1,7 @@
 import { CONFIG } from "../constants/config";
+import { useColorStore } from "../hooks/useColorStore";
 import fetchApi from "../services/fetchApi";
 import { isDarkColor } from "../utils/colorGenerator";
-import { useColorStore } from "../hooks/useColorStore";
 import {
     addDaysToDateString,
     formatFrenchDate,
@@ -168,7 +168,9 @@ const fillHolidays = (startDateStr, endDateStr) => {
         // textColor: "hsl(0, 0%, 0%)",
         webId: 12345,
     }; // pushed in array
-    const color = useColorStore.getState().getOrAssignColor(holidaysCourseTemplate.libelle);
+    const color = useColorStore
+        .getState()
+        .getOrAssignColor(holidaysCourseTemplate.libelle);
     holidaysCourseTemplate["color"] = color;
     holidaysCourseTemplate["textColor"] = isDarkColor(color)
         ? "hsl(0, 100%, 100%)"
@@ -228,9 +230,11 @@ export default async function timetableResolver({ token, offset = 0 }) {
             method: "POST",
         }
     );
+    if (timetableResponse.isDataEmpty) {
+        return {}; // Pas testé, peu causer des erreurs
+    }
 
     return !timetableResponse
         ? fillHolidays(requestedMonday, addDaysToDateString(requestedMonday, 13))
         : await sortedTimetable(timetableResponse.data);
 }
-

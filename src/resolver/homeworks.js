@@ -8,8 +8,10 @@ export default async function homeworksResolver({ token }) {
         "https://api.ecoledirecte.com/v3/Eleves/{USER_ID}/cahierdetexte.awp?verbe=get&{API_VERSION}",
         { headers: { "X-Token": token }, method: "POST" }
     );
+    if (homeworksResponse.isDataEmpty) {
+        return {};
+    }
     const homeworks = homeworksResponse.data;
-
     const entries = await Promise.all(
         Object.entries(homeworks).map(async ([date, value]) => {
             const details = await homeworksDetails({ date, token });
@@ -20,7 +22,6 @@ export default async function homeworksResolver({ token }) {
             return [date, homework];
         })
     );
-
     return {
         ...Object.fromEntries(entries),
         formatedDates: extractDates(homeworks),
@@ -151,4 +152,3 @@ export async function toggleHomeworkInApi({ token, id, state }) {
 
 const isEmptyValue = (value) =>
     value == null || (typeof value === "string" && value.trim() === "");
-

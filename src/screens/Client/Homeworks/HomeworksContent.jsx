@@ -24,11 +24,18 @@ import { useHomeworksHandler } from "./hooks/useHomeworksHandler";
 import { useCustomDataStore } from "../../../hooks/useCustomDataStore";
 import { useHomeworks } from "../../../hooks/useHomeworks";
 import { useUserStore } from "../../../hooks/useUserStore";
+import { objectsEqual } from "../../../utils/json";
 
 export default function HomeworksContent() {
-
     const token = useUserStore((state) => state.token);
-    const { data: homeworksData, isLoading, isError, toggleHomework } = useHomeworks(token);
+    const {
+        data: homeworksData,
+        isLoading,
+        isError,
+        toggleHomework,
+        error,
+        isDataEmpty,
+    } = useHomeworks(token);
     const customHomeworksData = useCustomDataStore((state) => state.customHomeworks);
     const { dispatch } = useHomework();
 
@@ -156,8 +163,9 @@ export default function HomeworksContent() {
         [dispatch]
     );
 
-    if (isError) return null;
-
+    if (isError) {
+        return null;
+    }
     return (
         <>
             <NewHomeworkModal visible={modalOpen} />
@@ -238,6 +246,16 @@ export default function HomeworksContent() {
                             padding: 24,
                         }}
                     >
+                        {objectsEqual({}, homeworksData) && (
+                            <Text>
+                                Chouette, vous n'avez pas de devoirs donnés par votre
+                                établissement !
+                                <Text preset="label3" color="grey">
+                                    (annonce immonde a revoir et penser a faire un
+                                    compteur de devoir etab et devoirs custom)
+                                </Text>
+                            </Text>
+                        )}
                         <View
                             style={{
                                 flexDirection: "row",
@@ -251,7 +269,6 @@ export default function HomeworksContent() {
                                     formatedDates[activeDate].long}
                             </Text>
                         </View>
-
                         <FlatList
                             data={displayTasks}
                             renderItem={renderHomework}

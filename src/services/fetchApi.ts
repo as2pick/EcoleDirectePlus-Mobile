@@ -38,7 +38,6 @@ export default async function fetchApi<T>(
                 : url;
 
         const apiResponse = await fetch(url, requestConfig);
-
         if (!apiResponse.ok) {
             throw new Error(
                 `HTTP Error: ${apiResponse.status} - ${apiResponse.statusText}`
@@ -47,17 +46,16 @@ export default async function fetchApi<T>(
 
         const data = await convertApiResponse(apiResponse);
 
-        if (
-            JSON.stringify(data.data) === "{}" ||
-            JSON.stringify(data.data) === "[]"
-        ) {
-            return null;
-        }
+        const isDataEmpty =
+            JSON.stringify(data.data) === "{}" || JSON.stringify(data.data) === "[]";
 
-        return { ...data, responseHeaders: (apiResponse.headers as any).map } as T;
+        return {
+            ...data,
+            isDataEmpty,
+            responseHeaders: (apiResponse.headers as any).map,
+        } as T;
     } catch (error) {
         console.error("Une erreur est survenue lors de l'appel à fetchApi :", error);
         return null;
     }
 }
-

@@ -1,3 +1,4 @@
+import { useColorStore } from "../hooks/useColorStore";
 import Discipline from "../screens/Client/Grades/custom/classes/Discipline";
 import { deepEqualExcept } from "../screens/Client/Grades/custom/helper";
 import {
@@ -5,7 +6,6 @@ import {
     createValidGradesArray,
     sortGradesByDate,
 } from "../screens/Client/Grades/custom/streakManagment";
-import { useColorStore } from "../hooks/useColorStore";
 import fetchApi from "../services/fetchApi";
 import { parseNumber } from "../utils/grades/makeAverage";
 import base64Handler from "../utils/handleBase64";
@@ -23,6 +23,9 @@ export default async function gradesResolver({ token }) {
                 },
             }
         );
+        if (gradesResponse.isDataEmpty) {
+            return {}; // Pas testé , peu eventuellement causer des erreurs
+        }
         const grades = gradesResponse.data;
         const periodsObj = grades.periodes.reduce((acc, period) => {
             if (period.annuel) return acc;
@@ -285,4 +288,3 @@ function badgesDataInjectedIntoGrades(userGrades) {
     });
     return result;
 }
-
