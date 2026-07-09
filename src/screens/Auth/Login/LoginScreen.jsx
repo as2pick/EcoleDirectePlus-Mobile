@@ -29,14 +29,8 @@ export default function LoginScreen() {
     const caseColor = addOpacityToCssRgb(theme.colors.case, 0.3);
 
     const styles = createStyles(theme, caseColor); //Temporary
-    const {
-        signIn,
-        mcqDatas,
-        setChoice,
-        setMcqDatas,
-        apiError,
-        setApiError,
-    } = useSignIn();
+    const { signIn, mcqDatas, setChoice, setMcqDatas, apiError, setApiError } =
+        useSignIn();
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -176,9 +170,9 @@ export default function LoginScreen() {
                                 spellCheck={false}
                                 textAlign="center"
                                 // keyboardType="visible-password"
-                                secureTextEntry={true}
-                                autoComplete="password"
-                                textContentType="password"
+                                // secureTextEntry={true}  // ONLY IN PROD ENV
+                                // autoComplete="password" // ONLY IN PROD ENV
+                                // textContentType="password" // ONLY IN PROD ENV
                                 style={[
                                     styles.input.case,
                                     {
@@ -367,4 +361,3 @@ const createStyles = (theme, caseColor) =>
             alignItems: "center",
         },
     });
-
