@@ -1,16 +1,17 @@
 import { useNavigation } from "@react-navigation/native";
 import { useEffect } from "react";
-import { useUser } from "../../../../context/UserContext";
+import { useCustomDataStore } from "../../../../hooks/useCustomDataStore";
 import { routesNames } from "../../../../router/config/routesNames";
 import { useHomework } from "../context/LocalContext";
 import { createHomework } from "../utils";
-import { useHomeworkUpdate } from "./useHomeworkUpdate";
 
-export const useHomeworksHandler = ({ setModalOpen }) => {
+
+export const useHomeworksHandler = ({ setModalOpen, toggleHomework }) => {
     const navigation = useNavigation();
-    const { setSortedHomeworksData, setCustomHomeworksData } = useUser();
+    const addCustomHomework = useCustomDataStore((state) => state.addCustomHomework);
+    const removeCustomHomework = useCustomDataStore((state) => state.removeCustomHomework);
+    const toggleCustomHomeworkDone = useCustomDataStore((state) => state.toggleCustomHomeworkDone);
     const { state, dispatch } = useHomework();
-    const { updateHomeworkStatusDone } = useHomeworkUpdate();
 
     useEffect(() => {
         if (state.homeworksData) {
@@ -23,14 +24,14 @@ export const useHomeworksHandler = ({ setModalOpen }) => {
 
     useEffect(() => {
         if (state.toggle) {
-            updateHomeworkStatusDone(
-                state.toggle.id,
-                state.toggle.isCustom,
-                state.toggle.updates
-            );
+            if (state.toggle.isCustom) {
+                toggleCustomHomeworkDone(state.toggle.id);
+            } else {
+                toggleHomework({ id: state.toggle.id, state: state.toggle.updates.isDone });
+            }
             dispatch({ type: "RESET" });
         }
-    }, [state.toggle, updateHomeworkStatusDone]);
+    }, [state.toggle, toggleHomework, toggleCustomHomeworkDone, dispatch]);
 
     useEffect(() => {
         if (state.new.modalOpen !== undefined) {
@@ -52,7 +53,7 @@ export const useHomeworksHandler = ({ setModalOpen }) => {
             isCustom: true,
         });
 
-        setCustomHomeworksData((prev) => [...prev, homework]);
+        addCustomHomework(homework);
         dispatch({ type: "RESET" });
     }, [
         state.new.discipline,
@@ -66,18 +67,7 @@ export const useHomeworksHandler = ({ setModalOpen }) => {
 
         const { date, id, customHomeworkMd5Key } = state.homeworkToRemove;
 
-        setSortedHomeworksData((prev) => {
-            const updated = { ...prev };
-            updated[date] = prev[date].filter((hw) => hw.id !== id);
-            if (updated[date].length === 0) {
-                delete updated.formatedDates[date];
-            }
-            return updated;
-        });
-
-        setCustomHomeworksData((prev) =>
-            prev.filter((hw) => hw.customHomeworkMd5Key !== customHomeworkMd5Key)
-        );
+        removeCustomHomework(id);
 
         dispatch({ type: "RESET" });
     }, [state.homeworkToRemove]);

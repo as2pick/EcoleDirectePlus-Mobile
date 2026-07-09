@@ -15,9 +15,11 @@ import { GLOBALS_DATAS } from "../../../constants/device/globals";
 import { timetableConfig } from "../../../constants/features/timetableConfig";
 
 import { Text } from "../../../components/Ui/core";
-import useUserDatas from "../../../hooks/useUserDatas";
 import { routesNames } from "../../../router/config/routesNames";
 import { addOpacityToCssRgb } from "../../../utils/colorGenerator";
+
+import { useTimetable } from "../../../hooks/useTimetable";
+import { useUserStore } from "../../../hooks/useUserStore";
 
 let {
     screen: { height, width },
@@ -28,15 +30,14 @@ height -= CONFIG.upper + 24; // ??? but works fine
 const screenHeight = height;
 
 export default function TimetableContent() {
-    const timetableData = useUserDatas((state) => state.timetable.data);
     const navigation = useNavigation();
     const theme = useTheme();
 
     const scrollViewRef = useRef(null);
 
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [loading, setLoading] = useState(false);
-    const [showLoader, setShowLoader] = useState(false);
+    const token = useUserStore((state) => state.token);
+    const { data: timetableData, isLoading, isError } = useTimetable(token);
     const [timetableViewDims, setTimetableViewDims] = useState({
         width: 0,
         height: 0,
@@ -52,14 +53,18 @@ export default function TimetableContent() {
     const activeDate = timetableData?.[currentIndex]?.iSODate || "";
 
     useEffect(() => {
-        if (!timetableCoreSuccessLoaded) return;
+        if (!timetableCoreSuccessLoaded || !timetableData) return;
 
-        scrollViewRef.current.scrollToIndex(
-            timetableData.findIndex((day) => day.date === CONFIG.dateNow),
-            false
-        );
+        const todayIndex = timetableData.findIndex((day) => day.date === CONFIG.dateNow);
+
+        if (todayIndex !== -1) {
+            scrollViewRef.current.scrollToIndex(todayIndex, false);
+        }
+
         dynamicOpacity.value = withSpring(1, { duration: 1500 });
-    }, [timetableCoreSuccessLoaded]);
+    }, [timetableCoreSuccessLoaded, timetableData]);
+
+    if (isError) return null;
 
     return (
         <View
@@ -100,13 +105,12 @@ export default function TimetableContent() {
                             overflow: "hidden",
                             bottom: 0,
                         }}
-                        onLongPress={() =>
-                            scrollViewRef.current.scrollToIndex(
-                                timetableData.findIndex(
-                                    (day) => day.date === CONFIG.dateNow
-                                )
-                            )
-                        }
+                        onLongPress={() => {
+                            const todayIndex = timetableData.findIndex((day) => day.date === CONFIG.dateNow);
+                            if (todayIndex !== -1) {
+                                scrollViewRef.current.scrollToIndex(todayIndex);
+                            }
+                        }}
                     >
                         <Text preset="title1" oneLine color={theme.colors.theme}>
                             {activeDate}
@@ -119,7 +123,7 @@ export default function TimetableContent() {
                     getIndex={(i) => setCurrentIndex(i)}
                     ref={scrollViewRef}
                 >
-                    {timetableData?.map((currentDay, index, courseIndex) => (
+                    {timetableData?.map((currentDay, index) => (
                         <DayShedule
                             key={index}
                             currentDay={currentDay}
@@ -129,7 +133,7 @@ export default function TimetableContent() {
                                 getter: timetableViewDims,
                                 setter: setTimetableViewDims,
                             }}
-                            index={courseIndex}
+                            index={index}
                         />
                     ))}
                 </VerticalScrollView>
@@ -232,9 +236,9 @@ const CourseBox = ({ course, navigation, theme, timetableViewDims }) => {
                         paddingVertical:
                             height <= CONFIG.minCourseSize
                                 ? timetableViewDims.height /
-                                      CONFIG.minCourseSize /
-                                      height +
-                                  1
+                                CONFIG.minCourseSize /
+                                height +
+                                1
                                 : CONFIG.minCourseSize,
                         overflow: "hidden",
                         backgroundColor: caseColor,
@@ -268,13 +272,13 @@ const CourseBox = ({ course, navigation, theme, timetableViewDims }) => {
 
                             backgroundColor: isCancelled
                                 ? addOpacityToCssRgb(
-                                      timetableConfig.cancelledColor,
-                                      0.43
-                                  )
+                                    timetableConfig.cancelledColor,
+                                    0.43
+                                )
                                 : addOpacityToCssRgb(
-                                      timetableConfig.dispensedColor,
-                                      0.43
-                                  ),
+                                    timetableConfig.dispensedColor,
+                                    0.43
+                                ),
                         }}
                     >
                         <Text

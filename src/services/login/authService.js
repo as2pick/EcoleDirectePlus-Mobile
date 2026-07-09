@@ -1,13 +1,16 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import Constants from "expo-constants";
+import { createMMKV } from "react-native-mmkv";
 import * as SecureStore from "expo-secure-store";
 import { payloadHelper } from "../../helpers/cryptoHelper";
-import useUserDatas from "../../hooks/useUserDatas";
-import { originName } from "../../resolver/resolver";
+import { useUserStore } from "../../hooks/useUserStore";
+import { useColorStore } from "../../hooks/useColorStore";
+import { CONFIG } from "../../constants/config";
+
 import fetchApi from "../fetchApi";
 import { getCookiesFromResponse } from "../responseUtils";
 import { getResponseChoices, sendResponseChoice } from "./doubleAuth";
-const { localSecretKeyStoreName } = Constants.expoConfig.extra;
+
+const storage = createMMKV();
+const { localSecretKeyStoreName } = CONFIG;
 
 const authService = {
     generateGTK: async () => {
@@ -30,14 +33,14 @@ const authService = {
                 body:
                     authConnectionDatas != null
                         ? {
-                              ...authConnectionDatas,
-                          }
+                            ...authConnectionDatas,
+                        }
                         : {
-                              identifiant: username,
-                              motdepasse: password,
-                              isReLogin: false,
-                              uuid: "",
-                          },
+                            identifiant: username,
+                            motdepasse: password,
+                            isReLogin: false,
+                            uuid: "",
+                        },
                 method: "POST",
                 headers: headers,
             }
@@ -53,7 +56,12 @@ const authService = {
     },
 
     saveCredentials: async (token, userId, loginDatas) => {
-        await SecureStore.setItemAsync("password", JSON.stringify(loginDatas)); // stringify loginDatas
+        const credentialsCipher = await payloadHelper.encrypt({
+            connectionToken: JSON.stringify(loginDatas),
+            userId: userId,
+        });
+        await SecureStore.setItemAsync(`${localSecretKeyStoreName}Credentials`, credentialsCipher);
+
         const cipherText = await payloadHelper.encrypt({
             connectionToken: token,
             userId: userId,
@@ -64,72 +72,35 @@ const authService = {
             cipherText
         );
     },
-    restoreCredentials: async () => ({
-        password: await SecureStore.getItemAsync("password"),
-        cipherText: await SecureStore.getItemAsync(
+    restoreCredentials: async () => {
+        const credentialsCipher = await SecureStore.getItemAsync(`${localSecretKeyStoreName}Credentials`);
+        const cipherText = await SecureStore.getItemAsync(
             `${localSecretKeyStoreName}Payload`
-        ),
-    }),
+        );
+
+        const decryptedCredentials = credentialsCipher
+            ? await payloadHelper.decrypt({ cipherHex: credentialsCipher })
+            : null;
+
+        return {
+            password: decryptedCredentials?.superSecretUserToken ?? null,
+            cipherText,
+        };
+    },
     deleteCredentials: async () => {
         const keyNames = [
             localSecretKeyStoreName,
             `${localSecretKeyStoreName}Payload`,
+            `${localSecretKeyStoreName}Credentials`,
             "password",
-            "userData",
         ];
-        keyNames.map(async (key) => {
-            await SecureStore.deleteItemAsync(key);
-            console.log("Deleted key:", key);
-        });
-        useUserDatas.getState().reset();
-        await AsyncStorage.clear();
-    },
-    getUserId: async () =>
-        await JSON.parse(await SecureStore.getItemAsync("userame")).userId,
-    storeUserData: async ({
-        id,
-        // identifiant,
-        prenom,
-        nom,
-        email,
-        nomEtablissement,
-        profile: {
-            sexe,
-            telPortable,
-            classe: { code, libelle },
-        },
-    }) => {
-        const userData = {
-            id,
-            name: prenom,
-            surname: nom,
-            sex: sexe,
-            phone: telPortable,
-            email,
-            schoolName: nomEtablissement,
-            class: {
-                libelle,
-                code,
-            },
-        };
-        await AsyncStorage.setItem("userData", JSON.stringify(userData));
-    },
-
-    deleteStoredApiDatas: async () => {
-        try {
-            originName.map((origin) => {
-                AsyncStorage.removeItem(origin);
-                console.log(`Deleted key in AsyncStorage ${origin}`);
-            });
-            ["@user_theme", "@follow_system_theme"].map((d) => {
-                AsyncStorage.removeItem(d);
-                console.log(`Deleted key in AsyncStorage ${d}`);
-            });
-        } catch (e) {
-            console.log("Error in deleteStoredApiDatas", e);
-        }
+        await Promise.all(keyNames.map((key) => SecureStore.deleteItemAsync(key)));
+        useUserStore.getState().reset();
+        useColorStore.getState().reset();
+        storage.clearAll();
     },
 };
+
 
 export default authService;
 

@@ -4,13 +4,12 @@ export default {
         slug: "ecoledirecteplus-mobile",
         sdkVersion: "54.0.0",
         extra: {
-            localSecretKeyStoreName: process.env.LOCAL_SECRET_KEY_STORE_NAME,
-            totalTokenExpirationTime: process.env.TOTAL_TOKEN_EXPIRATION_TIME,
             eas: {
-                projectId: "af1bb224-a5bf-4931-971e-8ef02143898f",
+                projectId: "9b9101a7-7d93-4cd9-b9ba-d3149e8b3401",
             },
         },
-        plugins: ["expo-secure-store", "expo-font", "expo-splash-screen"],
+        scheme: "ecoledirecteplus",
+        plugins: ["expo-dev-client", "expo-secure-store", "expo-font", "expo-splash-screen"],
 
         version: "1.0.0",
         orientation: "portrait",

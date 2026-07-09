@@ -1,3 +1,4 @@
+import { useColorStore } from "../hooks/useColorStore";
 import Discipline from "../screens/Client/Grades/custom/classes/Discipline";
 import { deepEqualExcept } from "../screens/Client/Grades/custom/helper";
 import {
@@ -22,9 +23,10 @@ export default async function gradesResolver({ token }) {
                 },
             }
         );
+        if (gradesResponse.isDataEmpty) {
+            return {}; // Pas testé , peu eventuellement causer des erreurs
+        }
         const grades = gradesResponse.data;
-        // const grades = require("../../test/api.json").data;
-        // Format periods
         const periodsObj = grades.periodes.reduce((acc, period) => {
             if (period.annuel) return acc;
 
@@ -116,6 +118,7 @@ function parseDiscipline(discipline) {
     const obj = {
         code: discipline.codeMatiere,
         libelle: discipline.discipline,
+        color: useColorStore.getState().getOrAssignColor(discipline.codeMatiere),
         averageDatas: {
             classAverage: parseNumber(discipline.moyenneClasse),
             minAverage: parseNumber(discipline.moyenneMin),
@@ -285,4 +288,3 @@ function badgesDataInjectedIntoGrades(userGrades) {
     });
     return result;
 }
-

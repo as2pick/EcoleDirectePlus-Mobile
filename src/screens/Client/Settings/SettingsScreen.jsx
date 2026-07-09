@@ -1,17 +1,16 @@
 import { Button, Text } from "react-native";
-import { useAppSettings } from "../../../context/AppSettingsContext";
+import { useThemeStore } from "../../../hooks/useThemeStore";
 
-export default function SettingsScreen({}) {
-    const { state, dispatch } = useAppSettings();
+export default function SettingsScreen({ }) {
+    const themeMode = useThemeStore((state) => state.themeMode);
+    const setThemeMode = useThemeStore((state) => state.setThemeMode);
+
     return (
         <>
             <Text style={{ height: 300 }}>SETTINGS</Text>
             <Button
                 onPress={() =>
-                    dispatch({
-                        type: "TOGGLE_THEME",
-                        // payload: state.backgroundColor === "red" ? "blue" : "red",
-                    })
+                    setThemeMode(themeMode === 'light' ? 'dark' : 'light')
                 }
                 title="Changecolor"
             >

@@ -1,8 +1,8 @@
 import Svg, { Path, Rect } from "react-native-svg";
-import { useTheme } from "../../../src/context/ThemeContext";
+import { useTheme } from "../../../src/hooks/useThemeStore";
 
 export default function PeoplesIcon({ size = 30, fill, props = {} }) {
-    const { theme } = useTheme();
+    const theme = useTheme();
     fill = fill || theme.colors.contrast;
     return (
         <Svg fill={fill} width={size} height={size} viewBox="0 0 24 24">

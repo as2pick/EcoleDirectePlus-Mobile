@@ -1,5 +1,5 @@
 import Svg, { Path, Text } from "react-native-svg";
-import { useTheme } from "../../src/context/ThemeContext";
+import { useTheme } from "../../src/hooks/useThemeStore";
 
 export default function FileIcon({
     size = 100,
@@ -7,7 +7,7 @@ export default function FileIcon({
     extention = "pdf",
     props = {},
 }) {
-    const { theme } = useTheme();
+    const theme = useTheme();
 
     fill = fill || theme.colors.textMain;
     return (

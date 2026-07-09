@@ -13,14 +13,14 @@ import {
     CheckBox,
     LinkButton,
     OverLoader,
-} from "../../../components/index.js";
+} from "../../../components/index";
 
 import MaskedView from "@react-native-masked-view/masked-view";
 import { LinearGradient } from "expo-linear-gradient";
 import Text from "../../../components/Ui/core/Text.jsx";
-import { getApiMessage } from "../../../constants/api/codes.js";
-import { useSingIn } from "../../../context/SignInContext.jsx";
-import { routesNames } from "../../../router/config/routesNames.js";
+import { getApiMessage } from "../../../constants/api/codes";
+import { useSignIn } from "../../../hooks/useSignIn";
+import { routesNames } from "../../../router/config/routesNames";
 import { addOpacityToCssRgb } from "../../../utils/colorGenerator";
 
 export default function LoginScreen() {
@@ -29,15 +29,8 @@ export default function LoginScreen() {
     const caseColor = addOpacityToCssRgb(theme.colors.case, 0.3);
 
     const styles = createStyles(theme, caseColor); //Temporary
-    const {
-        signIn,
-        mcqDatas,
-        setChoice,
-        setMcqDatas,
-        apiError,
-        setApiError,
-        state,
-    } = useSingIn();
+    const { signIn, mcqDatas, setChoice, setMcqDatas, apiError, setApiError } =
+        useSignIn();
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -56,7 +49,7 @@ export default function LoginScreen() {
     const connect = useCallback(() => {
         setLoading(true);
         signIn({
-            username: username,
+            username: username.trim(),
             password: password,
             keepConnected: keepConnected,
         });
@@ -64,9 +57,9 @@ export default function LoginScreen() {
     }, [username, password, keepConnected]);
 
     useEffect(() => {
-        if (!state || !apiError) return;
+        if (!apiError) return;
         setLoading(false);
-    }, [state, apiError]);
+    }, [apiError]);
 
     const toggleModal = useCallback(() => {
         setModalVisible((lastState) => !lastState);
@@ -177,7 +170,9 @@ export default function LoginScreen() {
                                 spellCheck={false}
                                 textAlign="center"
                                 // keyboardType="visible-password"
-                                // secureTextEntry
+                                // secureTextEntry={true}  // ONLY IN PROD ENV
+                                // autoComplete="password" // ONLY IN PROD ENV
+                                // textContentType="password" // ONLY IN PROD ENV
                                 style={[
                                     styles.input.case,
                                     {
@@ -366,4 +361,3 @@ const createStyles = (theme, caseColor) =>
             alignItems: "center",
         },
     });
-

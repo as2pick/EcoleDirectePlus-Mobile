@@ -1,9 +1,9 @@
-import { useTheme } from "../../context/ThemeContext";
+import { useTheme } from "../../hooks/useThemeStore";
 import { UiStyles } from "./UiStyles";
 import Text from "./core/Text";
 
 export default function Subtitle({ children, ...props }) {
-    const { theme } = useTheme();
+    const theme = useTheme();
 
     return (
         <Text

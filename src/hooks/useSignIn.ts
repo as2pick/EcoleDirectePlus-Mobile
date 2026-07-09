@@ -1,0 +1,111 @@
+import { useEffect, useCallback } from "react";
+import { useAuthStore } from "./useAuthStore";
+import { useUserStore } from "./useUserStore";
+import { useCustomDataStore } from "./useCustomDataStore";
+import { queryClient } from "../provider/QueryProvider";
+import authService from "../services/login/authService";
+import { getApiMessage } from "../constants/api/codes";
+import storeDatas from "../services/login/tools/storeLoginDatas";
+import { handleA2fSubmit } from "../services/login/tools/a2fHandler";
+
+export const useSignIn = () => {
+    const error = useAuthStore((state) => state.error);
+    const mcqDatas = useAuthStore((state) => state.mcqDatas);
+    const choice = useAuthStore((state) => state.selectedChoice);
+    const a2fInfos = useAuthStore((state) => state.a2fInfos);
+    const gtk = useAuthStore((state) => state.gtk);
+    const a2fToken = useAuthStore((state) => state.a2fToken);
+    const keepConnected = useAuthStore((state) => state.keepConnected);
+    const userAccessToken = useUserStore((state) => state.token);
+
+    const setError = useAuthStore((state) => state.setError);
+    const setMcqDatas = useAuthStore((state) => state.setMcqDatas);
+    const setSelectedChoice = useAuthStore((state) => state.setSelectedChoice);
+    const setA2fToken = useAuthStore((state) => state.setA2fToken);
+    const setGtk = useAuthStore((state) => state.setGtk);
+    const setA2fInfos = useAuthStore((state) => state.setA2fInfos);
+    const setKeepConnected = useAuthStore((state) => state.setKeepConnected);
+    const resetAuth = useAuthStore((state) => state.reset);
+
+    const signIn = useCallback(async ({ username, password, keepConnected }: any) => {
+        setKeepConnected(keepConnected);
+        try {
+            const gtkCookie = await authService.generateGTK();
+            const apiLoginData = await authService.login({
+                username,
+                password,
+                headers: {
+                    Cookie: gtkCookie,
+                    "X-GTK": gtkCookie.split("=")[1],
+                },
+            });
+
+            setA2fInfos({
+                identifiant: encodeURIComponent(username),
+                motdepasse: encodeURIComponent(password),
+            });
+
+            const { token } = apiLoginData;
+
+            switch (apiLoginData.code) {
+                case 200: {
+                    const { data } = apiLoginData;
+                    const accountData = data?.accounts?.[0];
+                    if (!accountData) {
+                        setError("Aucun compte valide trouvé");
+                        break;
+                    }
+                    if (keepConnected) {
+                        await authService.saveCredentials(token, accountData.id, {
+                            identifiant: encodeURIComponent(username),
+                            motdepasse: encodeURIComponent(password),
+                        });
+                    }
+                    storeDatas({ data: accountData, token });
+                    useAuthStore.getState().setAuthenticated(true);
+                    useAuthStore.getState().setBooting(false);
+                    break;
+                }
+                case 250: {
+                    const a2fTokenHeader = apiLoginData.responseHeaders["2fa-token"];
+                    const { choices, question } = await authService.startA2fProcess(a2fTokenHeader);
+                    setMcqDatas({ choices, question });
+                    setA2fToken(a2fTokenHeader);
+                    break;
+                }
+                default: {
+                    const message = getApiMessage(apiLoginData.code);
+                    setError(message || "Erreur de connexion");
+                    break;
+                }
+            }
+        } catch (err) {
+            setError("Une erreur inattendue est survenue");
+        }
+    }, [setKeepConnected, setA2fInfos, setMcqDatas, setA2fToken, setError]);
+
+    const signOut = useCallback(async () => {
+        await authService.deleteCredentials();
+        resetAuth();
+        useUserStore.getState().reset();
+        useCustomDataStore.getState().reset();
+        queryClient.clear();
+    }, [resetAuth]);
+
+    useEffect(() => {
+        if (!choice) return;
+        handleA2fSubmit({ a2fToken, choice, setA2fInfos, setSelectedChoice, setGtk, keepConnected });
+    }, [choice, a2fToken, setA2fInfos, setSelectedChoice, setGtk, keepConnected]);
+
+    return {
+        signIn,
+        signOut,
+        userAccessToken,
+        mcqDatas,
+        choice,
+        apiError: error,
+        setMcqDatas,
+        setChoice: setSelectedChoice,
+        setApiError: setError,
+    };
+};

@@ -1,12 +1,10 @@
 import CryptoJS from "crypto-js";
-import Constants from "expo-constants";
 import * as Crypto from "expo-crypto";
 import * as SecureStore from "expo-secure-store";
 import dayjs from "dayjs";
 import { CONFIG } from "../constants/config";
 
-const { localSecretKeyStoreName, totalTokenExpirationTime } =
-    Constants.expoConfig.extra;
+const { localSecretKeyStoreName, totalTokenExpirationTime } = CONFIG;
 
 /**
  * Generate or get a secure key
@@ -44,11 +42,12 @@ export const payloadHelper = {
 
             const key = CryptoJS.enc.Hex.parse(keyHex);
 
+            const now = dayjs();
             const payload = JSON.stringify({
                 userId: userId,
                 superSecretUserToken: connectionToken,
-                creationDate: CONFIG.preciseDateNow,
-                expirationDate: dayjs(CONFIG.preciseDateNow, "YYYY-MM-DD_HH:mm")
+                creationDate: now.format("YYYY-MM-DD_HH:mm"),
+                expirationDate: now
                     .add(totalTokenExpirationTime / 60, "minutes")
                     .format("YYYY-MM-DD_HH:mm"),
             });

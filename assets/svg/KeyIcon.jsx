@@ -1,8 +1,8 @@
 import Svg, { Path } from "react-native-svg";
-import { useTheme } from "../../src/context/ThemeContext";
+import { useTheme } from "../../src/hooks/useThemeStore";
 
 export default function KeyIcon({ size = 30, fill, props = {} }) {
-    const { theme } = useTheme();
+    const theme = useTheme();
     fill = fill || theme.colors.main
     return (
         <Svg viewBox="0 0 35 35" fill="none" width={size} height={size}>

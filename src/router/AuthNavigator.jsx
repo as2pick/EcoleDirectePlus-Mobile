@@ -4,20 +4,52 @@ import { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import { MainLayout } from "../components";
-import { useGlobalApp } from "../context/GlobalAppContext";
-import { useSingIn } from "../context/SignInContext";
-import { useTheme } from "../context/ThemeContext";
-import { useUser } from "../context/UserContext";
+import { useAuthStore } from "../hooks/useAuthStore";
+import { useActiveThemeMode } from "../hooks/useThemeStore";
+import { useNetworkStore } from "../hooks/useNetworkStore";
+import authService from "../services/login/authService";
+import { tryLoginWithStoredCreds, tryRestoreToken } from "../services/login/tools/bootstrapAsync";
 import SplashScreen from "../screens/Splash/SplashScreen";
 import { THEMES_ASSOCIATIONS } from "../themes/themes";
 import Auth from "./display/auth/Auth";
 import Client from "./display/client/Client";
 
 export default function AuthNavigator() {
-    const { colorScheme } = useTheme();
-    const { state } = useSingIn();
-    const { isConnected, userAccesToken } = useUser();
-    const { setActiveNetworkStatus } = useGlobalApp();
+    const activeMode = useActiveThemeMode();
+    const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+    const isBooting = useAuthStore((state) => state.isBooting);
+    const setActiveNetworkStatus = useNetworkStore((state) => state.setActiveNetworkStatus);
+
+    useEffect(() => {
+        const bootstrapAsync = async () => {
+            try {
+                const credentials = await authService.restoreCredentials();
+                const hasCipher = Boolean(credentials?.cipherText);
+                const hasLoginCreds = Boolean(credentials?.password);
+
+                if (hasCipher) {
+                    const success = await tryLoginWithStoredCreds({
+                        cipherText: credentials.cipherText,
+                    });
+                    if (success) return;
+                }
+
+                if (hasLoginCreds) {
+                    const restored = await tryRestoreToken({
+                        credentialsPassword: credentials.password,
+                    });
+                    if (restored) return;
+                }
+
+                useAuthStore.getState().setBooting(false);
+            } catch (error) {
+                console.error("ERROR IN BOOTSTRAPASYNC", error);
+                useAuthStore.getState().setBooting(false);
+            }
+        };
+
+        bootstrapAsync();
+    }, []);
 
     useEffect(() => {
         const initializeNetwork = async () => {
@@ -62,10 +94,10 @@ export default function AuthNavigator() {
 
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
-            <NavigationContainer theme={THEMES_ASSOCIATIONS[colorScheme]}>
-                {state.isLoading ? (
+            <NavigationContainer theme={THEMES_ASSOCIATIONS[activeMode]}>
+                {isBooting ? (
                     <SplashScreen />
-                ) : isConnected ? (
+                ) : isAuthenticated ? (
                     <MainLayout>
                         <Client />
                     </MainLayout>

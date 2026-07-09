@@ -2,13 +2,19 @@ import { formatDate } from "../../../utils/date";
 import base64Handler from "../../../utils/handleBase64";
 
 export function createHomework(raw) {
+    let isDone = "todo";
+    if (raw.isDone === true || raw.isDone === "done") {
+        isDone = "done";
+    }
+
     return {
         courseContent: raw.courseContent,
         discipline: raw.discipline,
         givenOn: raw.givenOn || formatDate(new Date(), "ed"),
         homeworksContent: raw.homeworksContent,
         id: raw.id ?? null,
-        isDone: raw.isDone,
+        isDone,
+        loadingState: raw.loadingState || "idle",
         isEvaluation: raw.isEvaluation,
         returnOnline: raw.returnOnline ?? null,
         student: raw.student ?? null,
@@ -50,7 +56,7 @@ export const assignUnit = (size) => {
     } else if (absNombre >= 1000) {
         return (size / 1000).toFixed(2).replace(/\.?0+$/, "") + " ko";
     } else {
-        return nombre.toString();
+        return size.toString();
     }
 };
 

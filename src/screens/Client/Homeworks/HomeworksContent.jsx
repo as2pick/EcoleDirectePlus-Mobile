@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import Animated, {
@@ -9,28 +9,62 @@ import Animated, {
     withSpring,
 } from "react-native-reanimated";
 
-import { useFocusEffect } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import PlusIcon from "../../../../assets/svg/micro/PlusIcon";
 import { HomeworkCard } from "../../../components";
 import { Text } from "../../../components/Ui/core";
 import { motivationSentences } from "../../../constants/features/homeworksConfig";
-import { useUser } from "../../../context/UserContext";
-import useUserDatas from "../../../hooks/useUserDatas";
+
 import { adjustLightness } from "../../../utils/colorGenerator";
 import { formatFrenchDate } from "../../../utils/date";
 import NewHomeworkModal from "./components/NewHomeworkModal";
 import { useHomework } from "./context/LocalContext";
 import { useHomeworksHandler } from "./hooks/useHomeworksHandler";
 
+import { useCustomDataStore } from "../../../hooks/useCustomDataStore";
+import { useHomeworks } from "../../../hooks/useHomeworks";
+import { useUserStore } from "../../../hooks/useUserStore";
+import { objectsEqual } from "../../../utils/json";
+
 export default function HomeworksContent() {
-    const { setSortedHomeworksData } = useUser();
-
-    const homeworksData = useUserDatas((state) => state.homeworks.data);
-    const customHomeworksData = useUserDatas((state) => state.customHomeworks.data);
-    const setUserState = useUserDatas((state) => state.setUserState);
-
+    const token = useUserStore((state) => state.token);
+    const {
+        data: homeworksData,
+        isLoading,
+        isError,
+        toggleHomework,
+        error,
+        isDataEmpty,
+    } = useHomeworks(token);
+    const customHomeworksData = useCustomDataStore((state) => state.customHomeworks);
     const { dispatch } = useHomework();
+
+    const mergedHomeworks = useMemo(() => {
+        if (!homeworksData) return null;
+        const merged = JSON.parse(JSON.stringify(homeworksData));
+        customHomeworksData.forEach((hw) => {
+            if (!merged[hw.date]) {
+                merged[hw.date] = [];
+                if (!merged.formatedDates) merged.formatedDates = {};
+                const frenchDate = formatFrenchDate(hw.date);
+                const contractedDate = [
+                    frenchDate.charAt(0).toLowerCase() + frenchDate.slice(1, 3),
+                    frenchDate.split(" ")[1],
+                ];
+                merged.formatedDates[hw.date] = {
+                    long: frenchDate,
+                    contracted: contractedDate,
+                    isEvaluation: hw.isEvaluation,
+                    allTasksCompleted: false,
+                };
+            }
+            const alreadyExists = merged[hw.date].some((h) => h.id === hw.id);
+            if (!alreadyExists) {
+                merged[hw.date].push(hw);
+            }
+        });
+        return merged;
+    }, [homeworksData, customHomeworksData]);
 
     const [homeworksDates, setHomeworksDates] = useState();
     const [formatedDates, setFormatedDates] = useState();
@@ -44,6 +78,7 @@ export default function HomeworksContent() {
 
     useHomeworksHandler({
         setModalOpen,
+        toggleHomework,
     });
 
     const animatedWidth = useSharedValue(0);
@@ -67,114 +102,36 @@ export default function HomeworksContent() {
         },
         [progression]
     );
-    useFocusEffect(
-        useCallback(() => {
-            if (
-                homeworksData?.formatedDates &&
-                Object.keys(homeworksData).length > 0
-            ) {
-                setFormatedDates(homeworksData.formatedDates);
-                if (!activeDate || !homeworksData?.formatedDates?.[activeDate]) {
-                    setActiveDate(Object.keys(homeworksData.formatedDates)[0]);
-                }
-                return;
-            }
-
-            const loadHomeworks = async () => {
-                try {
-                    const storedHomeworks = homeworks.data;
-
-                    if (storedHomeworks) {
-                        setFormatedDates(storedHomeworks.formatedDates);
-                        setActiveDate(Object.keys(storedHomeworks.formatedDates)[0]);
-                    }
-                } catch (error) {
-                    console.error("Error while loading hw:", error);
-                }
-            };
-
-            loadHomeworks();
-        }, [homeworksData, customHomeworksData, activeDate])
-    );
     useEffect(() => {
-        if (
-            !homeworksData ||
-            !customHomeworksData ||
-            customHomeworksData.length === 0
-        )
-            return;
+        if (!mergedHomeworks || Object.keys(mergedHomeworks).length === 0) return;
 
-        const merged = JSON.parse(JSON.stringify(homeworksData));
-        let hasChanged = false;
+        setHomeworksDates(mergedHomeworks.formatedDates);
+        setFormatedDates(mergedHomeworks.formatedDates);
 
-        customHomeworksData.forEach((custom) => {
-            if (!merged[custom.date]) {
-                merged[custom.date] = [];
-
-                const frenchDate = formatFrenchDate(custom.date);
-                const contractedDate = [
-                    frenchDate.charAt(0).toLowerCase() + frenchDate.slice(1, 3),
-                    frenchDate.split(" ")[1],
-                ];
-
-                merged.formatedDates[custom.date] = {
-                    long: frenchDate,
-                    contracted: contractedDate,
-                    isEvaluation: false,
-                };
-                hasChanged = true;
-            }
-
-            const exists = merged[custom.date].some((hw) => hw.id === custom.id);
-            if (!exists) {
-                merged[custom.date].push(custom);
-            }
-        });
-        Object.fromEntries(
-            Object.entries(merged.formatedDates).sort(
-                ([dateA], [dateB]) => new Date(dateB) - new Date(dateA)
-            )
-        );
-
-        if (hasChanged) {
-            merged.formatedDates = Object.fromEntries(
-                Object.entries(merged.formatedDates).sort(
-                    ([a], [b]) => new Date(a) - new Date(b)
-                )
-            );
+        if (!activeDate || !mergedHomeworks.formatedDates[activeDate]) {
+            setActiveDate(Object.keys(mergedHomeworks.formatedDates)[0]);
         }
-        setSortedHomeworksData(merged);
-        const saveCustomHomeworks = async () => {
-            setUserState({ customHomeworks: merged });
-        };
-
-        saveCustomHomeworks().catch((e) => {
-            console.error("Error when try save custom homeworks", e);
-        });
-    }, [customHomeworksData]);
+    }, [mergedHomeworks]);
 
     useEffect(() => {
-        if (!homeworksData || Object.keys(homeworksData).length === 0) return;
+        if (!activeDate || !mergedHomeworks) return;
 
-        setHomeworksDates(homeworksData.formatedDates);
-    }, [homeworksData]);
-
-    useEffect(() => {
-        if (!activeDate) return;
-
-        const datas = homeworksData[activeDate];
+        const datas = mergedHomeworks[activeDate] || [];
         setDisplayTasks(datas);
-        const completed = datas.filter(({ isDone }) => isDone);
+        const completed = datas.filter(({ isDone }) => isDone === "done");
         setCompletedTasks(completed);
         const progression =
-            Math.round((completed.length / datas.length) * 100) / 100;
+            datas.length > 0
+                ? Math.round((completed.length / datas.length) * 100) / 100
+                : 0;
         setProgression(progression);
         pickSentence(progression);
-    }, [activeDate, homeworksData]);
+    }, [activeDate, mergedHomeworks]);
 
     useEffect(() => {
-        if (!homeworksDates) return;
+        if (!homeworksDates || !activeDate || !homeworksDates[activeDate]) return;
         setHomeworksDates((prev) => {
+            if (!prev[activeDate]) return prev;
             prev[activeDate].allTasksCompleted = progression === 1;
             return { ...prev };
         });
@@ -184,9 +141,9 @@ export default function HomeworksContent() {
         ({ item }) => {
             const [date, { contracted, isEvaluation }] = item;
 
-            const tasks = homeworksData[date] ?? [];
+            const tasks = mergedHomeworks[date] ?? [];
             const allTasksCompleted =
-                tasks.length > 0 && tasks.every(({ isDone }) => isDone);
+                tasks.length > 0 && tasks.every(({ isDone }) => isDone === "done");
 
             return (
                 <DateItem
@@ -199,12 +156,16 @@ export default function HomeworksContent() {
                 />
             );
         },
-        [activeDate, homeworksData]
+        [activeDate, mergedHomeworks]
     );
     const renderHomework = useCallback(
         ({ item }) => <HomeworkCard dispatch={dispatch} homework={item} />,
         [dispatch]
     );
+
+    if (isError) {
+        return null;
+    }
     return (
         <>
             <NewHomeworkModal visible={modalOpen} />
@@ -214,7 +175,6 @@ export default function HomeworksContent() {
                         position: "absolute",
                         top: "5%",
                         right: "5%",
-                        zIndex: 1000,
                         gap: 2,
                         zIndex: 1,
                     }}
@@ -286,6 +246,16 @@ export default function HomeworksContent() {
                             padding: 24,
                         }}
                     >
+                        {objectsEqual({}, homeworksData) && (
+                            <Text>
+                                Chouette, vous n'avez pas de devoirs donnés par votre
+                                établissement !
+                                <Text preset="label3" color="grey">
+                                    (annonce immonde a revoir et penser a faire un
+                                    compteur de devoir etab et devoirs custom)
+                                </Text>
+                            </Text>
+                        )}
                         <View
                             style={{
                                 flexDirection: "row",
@@ -299,7 +269,6 @@ export default function HomeworksContent() {
                                     formatedDates[activeDate].long}
                             </Text>
                         </View>
-
                         <FlatList
                             data={displayTasks}
                             renderItem={renderHomework}

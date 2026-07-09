@@ -76,3 +76,15 @@ package-lock.json
 
 # expo
 .expo/
+
+# assets/mockups
+assets/mockups/*
+
+todo.txt
+
+#android
+android/
+
+#env
+.env
+

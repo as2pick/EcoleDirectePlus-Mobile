@@ -1,6 +1,7 @@
 import { CONFIG } from "../constants/config";
+import { useColorStore } from "../hooks/useColorStore";
 import fetchApi from "../services/fetchApi";
-import { isDarkColor, textToHSL } from "../utils/colorGenerator";
+import { isDarkColor } from "../utils/colorGenerator";
 import {
     addDaysToDateString,
     formatFrenchDate,
@@ -55,11 +56,9 @@ const convertData = (arrayData = []) => {
         if (!finalTimetable[day]) {
             finalTimetable[day] = [];
         }
-        const [h, s, l] = textToHSL({ text: course.libelle });
-
-        course["color"] = `hsl(${h}, ${s}%, ${l}%)`;
-
-        course["textColor"] = isDarkColor(course.color)
+        const color = useColorStore.getState().getOrAssignColor(course.libelle);
+        course["color"] = color;
+        course["textColor"] = isDarkColor(color)
             ? "hsl(0, 100%, 100%)"
             : "hsl(0, 0%, 0%)";
 
@@ -169,13 +168,11 @@ const fillHolidays = (startDateStr, endDateStr) => {
         // textColor: "hsl(0, 0%, 0%)",
         webId: 12345,
     }; // pushed in array
-    const [h, s, l] = textToHSL({ text: holidaysCourseTemplate.libelle });
-
-    holidaysCourseTemplate["color"] = `hsl(${h}, ${s}%, ${l}%)`;
-
-    holidaysCourseTemplate["textColor"] = isDarkColor(
-        holidaysCourseTemplate.color /* added with previous line */
-    )
+    const color = useColorStore
+        .getState()
+        .getOrAssignColor(holidaysCourseTemplate.libelle);
+    holidaysCourseTemplate["color"] = color;
+    holidaysCourseTemplate["textColor"] = isDarkColor(color)
         ? "hsl(0, 100%, 100%)"
         : "hsl(0, 0%, 0%)";
 
@@ -233,9 +230,11 @@ export default async function timetableResolver({ token, offset = 0 }) {
             method: "POST",
         }
     );
+    if (timetableResponse.isDataEmpty) {
+        return {}; // Pas testé, peu causer des erreurs
+    }
 
     return !timetableResponse
         ? fillHolidays(requestedMonday, addDaysToDateString(requestedMonday, 13))
         : await sortedTimetable(timetableResponse.data);
 }
-
