@@ -1,14 +1,14 @@
-import { CONFIG } from "../constants/config";
-import { useColorStore } from "../hooks/useColorStore";
-import fetchApi from "../services/fetchApi";
-import { isDarkColor } from "../utils/colorGenerator";
+import { CONFIG } from "@/constants/config";
+import { useColorStore } from "@/hooks/useColorStore";
+import fetchApi from "@/services/fetchApi";
+import { isDarkColor } from "@/utils/colorGenerator";
 import {
     addDaysToDateString,
     formatFrenchDate,
     getPreviousMonday,
-} from "../utils/date";
-import { toMilliseconds } from "../utils/time";
-import makeUniqueIds from "../utils/uniqueIds";
+} from "@/utils/date";
+import { toMilliseconds } from "@/utils/time";
+import makeUniqueIds from "@/utils/uniqueIds";
 
 const convertData = (arrayData = []) => {
     const convertedTimetable = [];

@@ -3,17 +3,19 @@ import dayjs from "dayjs";
 import { useCallback, useEffect, useState } from "react";
 import { View } from "react-native";
 
-import BellOffIcon from "../../../../assets/svg/micro/BellOffIcon";
-import ClockIcon from "../../../../assets/svg/micro/ClockIcon";
-import DoorOpenIcon from "../../../../assets/svg/micro/DoorOpenIcon";
-import HourglassIcon from "../../../../assets/svg/micro/HourglassIcon";
-import PenSquareIcon from "../../../../assets/svg/micro/PenSquareIcon";
-import PeoplesIcon from "../../../../assets/svg/micro/PeoplesIcon";
-import PersonIcon from "../../../../assets/svg/micro/PersonIcon";
-import TrashIcon from "../../../../assets/svg/micro/TrashIcon";
+import {
+    BellOff,
+    Clock,
+    DoorOpen,
+    Hourglass,
+    PenSquare,
+    Peoples,
+    Person,
+    Trash,
+} from "@/components/svg";
 import { CustomTopHeader, SwipeBackWrapper } from "../../../components";
-import { Text } from "../../../components/Ui/core";
-import { toHoursMinutes, toMilliseconds } from "../../../utils/time";
+import { Text } from "@/components/core";
+import { toHoursMinutes, toMilliseconds } from "@/utils/time";
 
 export default function CourseDetails({ route }) {
     const { courseData } = route.params;
@@ -175,7 +177,7 @@ export default function CourseDetails({ route }) {
                                         alignItems: "center",
                                     }}
                                 >
-                                    <ClockIcon />
+                                    <Clock />
                                     <Text
                                         style={{
                                             marginLeft: 15,
@@ -191,7 +193,7 @@ export default function CourseDetails({ route }) {
                                         alignItems: "center",
                                     }}
                                 >
-                                    <TrashIcon />
+                                    <Trash />
                                     <Text
                                         style={{
                                             marginLeft: 15,
@@ -207,7 +209,7 @@ export default function CourseDetails({ route }) {
                                         alignItems: "center",
                                     }}
                                 >
-                                    <PenSquareIcon />
+                                    <PenSquare />
                                     <Text
                                         style={{
                                             marginLeft: 15,
@@ -223,7 +225,7 @@ export default function CourseDetails({ route }) {
                                         alignItems: "center",
                                     }}
                                 >
-                                    <BellOffIcon />
+                                    <BellOff />
                                     <Text
                                         style={{
                                             marginLeft: 15,
@@ -246,7 +248,7 @@ export default function CourseDetails({ route }) {
                                         marginVertical: "7%",
                                     }}
                                 >
-                                    <HourglassIcon />
+                                    <Hourglass />
                                     <Text
                                         style={{
                                             marginLeft: 30,
@@ -273,7 +275,7 @@ export default function CourseDetails({ route }) {
                                         alignItems: "center",
                                     }}
                                 >
-                                    <PersonIcon />
+                                    <Person />
                                     <Text
                                         style={{
                                             marginLeft: 30,
@@ -290,7 +292,7 @@ export default function CourseDetails({ route }) {
                                         alignItems: "center",
                                     }}
                                 >
-                                    <DoorOpenIcon />
+                                    <DoorOpen />
                                     <Text
                                         style={{
                                             marginLeft: 30,
@@ -306,7 +308,7 @@ export default function CourseDetails({ route }) {
                                         alignItems: "center",
                                     }}
                                 >
-                                    <PeoplesIcon />
+                                    <Peoples />
                                     <Text
                                         style={{
                                             marginLeft: 30,

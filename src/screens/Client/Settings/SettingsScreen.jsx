@@ -1,5 +1,5 @@
 import { Button, Text } from "react-native";
-import { useThemeStore } from "../../../hooks/useThemeStore";
+import { useThemeStore } from "@/hooks/useThemeStore";
 
 export default function SettingsScreen({ }) {
     const themeMode = useThemeStore((state) => state.themeMode);

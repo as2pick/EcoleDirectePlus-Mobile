@@ -8,18 +8,18 @@ import Animated, {
     useSharedValue,
     withSpring,
 } from "react-native-reanimated";
-import RoadFinish from "../../../../assets/svg/RoadFinish";
-import VerticalScrollView from "../../../components/Layout/VerticalScrollView";
-import { CONFIG } from "../../../constants/config";
-import { GLOBALS_DATAS } from "../../../constants/device/globals";
-import { timetableConfig } from "../../../constants/features/timetableConfig";
+import { RoadFinish } from "@/components/svg";
+import VerticalScrollView from "@/components/layout/VerticalScrollView";
+import { CONFIG } from "@/constants/config";
+import { GLOBALS_DATAS } from "@/constants/device/globals";
+import { timetableConfig } from "@/constants/features/timetableConfig";
 
-import { Text } from "../../../components/Ui/core";
-import { routesNames } from "../../../router/config/routesNames";
-import { addOpacityToCssRgb } from "../../../utils/colorGenerator";
+import { Text } from "@/components/core";
+import { routesNames } from "@/router/config/routesNames";
+import { addOpacityToCssRgb } from "@/utils/colorGenerator";
 
-import { useTimetable } from "../../../hooks/useTimetable";
-import { useUserStore } from "../../../hooks/useUserStore";
+import { useTimetable } from "@/hooks/useTimetable";
+import { useUserStore } from "@/hooks/useUserStore";
 
 let {
     screen: { height, width },

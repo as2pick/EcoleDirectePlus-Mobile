@@ -6,13 +6,13 @@ import {
     UpperThanClassAverage,
     UpperThanDisciplineAverage,
     UpTheStreak,
-} from "../../../../assets/svg/badges";
+} from "@/components/svg";
 import { CustomTopHeader } from "../../../components";
-import { Text } from "../../../components/Ui/core";
-import { formatFrenchDate } from "../../../utils/date";
-import Discipline from "./custom/classes/Discipline";
-import Grade from "./custom/classes/Grade";
-import { formatGradeText } from "./custom/helper";
+import { Text } from "@/components/core";
+import { formatFrenchDate } from "@/utils/date";
+import Discipline from "@/features/grades/models/Discipline";
+import Grade from "@/features/grades/models/Grade";
+import { formatGradeText } from "@/features/grades/utils/helpers";
 
 const UI_BADGES = {
     max_grade: MaxGrade,

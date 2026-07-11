@@ -1,4 +1,4 @@
-import Period from "../../screens/Client/Grades/grades/classes/Period";
+import Period from "@/features/grades/models/Period";
 import { parseNumber } from "./makeAverage";
 
 export const createValidGradesArray = (gradesData, periodCode) => {

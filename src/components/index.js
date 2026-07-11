@@ -1,22 +1,34 @@
-export { default as HomeworkCard } from "./Cards/HomeworkCard";
-export { default as BottomSheet } from "./Layout/BottomSheet";
-export { default as DropDown } from "./Layout/DropDown";
-export { default as MainLayout } from "./Layout/MainLayout";
-export { default as Onboarding } from "./Layout/Onboarding";
-export { default as ScrollableStack } from "./Layout/ScrollableStack";
-export { default as Stack } from "./Layout/Stack";
-export { default as A2fSelectableModal } from "./Modal/A2fSelectableModal";
-export { default as Modal } from "./Modal/Modal";
-export { default as CustomTopHeader } from "./Navigation/CustomTopHeader";
-export { default as NavigationBottomBar } from "./Navigation/NavigationBottomBar";
-export { default as SwipeBackWrapper } from "./Navigation/SwipeBackWrapper";
-export { default as CheckBox } from "./Ui/CheckBox";
-export { default as GradientBackground } from "./Ui/GradientBackground";
-export { default as LinkButton } from "./Ui/LinkButton";
-export { default as LinkText } from "./Ui/LinkText";
-export { default as LoadingSpinner } from "./Ui/LoadingSpinner/Loader";
-export { default as OverLoader } from "./Ui/LoadingSpinner/OverLoader";
-export { default as Separation } from "./Ui/Separation";
-export { default as Subtitle } from "./Ui/Subtitle";
-export { default as Title } from "./Ui/Title";
+// core
+export { default as Stack } from "./core/Stack";
+export { Text } from "./core";
 
+// layout
+export { default as BottomSheet } from "./layout/BottomSheet";
+export { default as DropDown } from "./layout/DropDown";
+export { default as MainLayout } from "./layout/MainLayout";
+export { default as Onboarding } from "./layout/Onboarding";
+export { default as ScrollableStack } from "./layout/ScrollableStack";
+
+// feedback
+export { default as LoadingSpinner } from "./feedback/LoadingSpinner";
+export { default as OverLoader } from "./feedback/OverLoader";
+
+// navigation
+export { default as CustomTopHeader } from "./navigation/CustomTopHeader";
+export { default as NavigationBottomBar } from "./navigation/NavigationBottomBar";
+export { default as SwipeBackWrapper } from "./navigation/SwipeBackWrapper";
+
+// modal
+export { default as A2fSelectableModal } from "./modal/A2fSelectableModal";
+export { default as Modal } from "./modal/Modal";
+
+// form
+export { default as CheckBox } from "./form/CheckBox";
+
+// display
+export { default as GradientBackground } from "./display/GradientBackground";
+export { default as LinkButton } from "./display/LinkButton";
+export { default as LinkText } from "./display/LinkText";
+export { default as Separation } from "./display/Separation";
+export { default as Subtitle } from "./display/Subtitle";
+export { default as Title } from "./display/Title";

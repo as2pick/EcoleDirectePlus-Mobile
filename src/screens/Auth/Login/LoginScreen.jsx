@@ -3,25 +3,21 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
-import AccountIcon from "../../../../assets/svg/AccountIcon.jsx";
-import DiscordLogo from "../../../../assets/svg/DiscordLogo.jsx";
-import EDPLogo from "../../../../assets/svg/EDPLogo.jsx";
-import GithubLogo from "../../../../assets/svg/GithubLogo.jsx";
-import KeyIcon from "../../../../assets/svg/KeyIcon.jsx";
+import { Account, Discord, EDP, Github, Key } from "@/components/svg";
 import {
     A2fSelectableModal,
     CheckBox,
     LinkButton,
     OverLoader,
-} from "../../../components/index";
+} from "@/components/index";
 
 import MaskedView from "@react-native-masked-view/masked-view";
 import { LinearGradient } from "expo-linear-gradient";
-import Text from "../../../components/Ui/core/Text.jsx";
-import { getApiMessage } from "../../../constants/api/codes";
-import { useSignIn } from "../../../hooks/useSignIn";
-import { routesNames } from "../../../router/config/routesNames";
-import { addOpacityToCssRgb } from "../../../utils/colorGenerator";
+import { Text } from "@/components/core";
+import { getApiMessage } from "@/constants/api/codes";
+import { useSignIn } from "@/hooks/useSignIn";
+import { routesNames } from "@/router/config/routesNames";
+import { addOpacityToCssRgb } from "@/utils/colorGenerator";
 
 export default function LoginScreen() {
     const navigation = useNavigation();
@@ -91,13 +87,13 @@ export default function LoginScreen() {
         <SafeAreaView style={[styles.container]}>
             <SafeAreaView style={styles.logos}>
                 <LinkButton url={"https://discord.gg/AKAqXfTgvE"}>
-                    <DiscordLogo fill={theme.colors.main} size={28} />
+                    <Discord fill={theme.colors.main} size={28} />
                 </LinkButton>
 
                 <LinkButton
                     url={"https://github.com/as2pick/EcoleDirectePlus-Mobile"}
                 >
-                    <GithubLogo fill={theme.colors.main} size={28} />
+                    <Github fill={theme.colors.main} size={28} />
                 </LinkButton>
             </SafeAreaView>
             <OverLoader
@@ -110,7 +106,7 @@ export default function LoginScreen() {
 
             <View style={styles.form}>
                 <View style={styles.logo.box}>
-                    <EDPLogo size={88} />
+                    <EDP size={88} />
                     <MaskedView
                         maskElement={<Text preset="h1">Ecole Directe Plus</Text>}
                     >
@@ -152,7 +148,7 @@ export default function LoginScreen() {
                                 ]}
                             />
                             <View style={styles.input.icon}>
-                                <AccountIcon />
+                                <Account />
                             </View>
                         </View>
                         <View style={styles.input.logos}>
@@ -182,7 +178,7 @@ export default function LoginScreen() {
                                 ]}
                             />
                             <View style={styles.input.icon}>
-                                <KeyIcon />
+                                <Key />
                             </View>
                         </View>
                         <View style={styles.checkBox}>
