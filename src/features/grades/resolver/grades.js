@@ -123,7 +123,7 @@ export default async function gradesResolver({ token }) {
 
         Object.defineProperty(result, "lastGrades", {
             value: lastGrades,
-            enumerable: false,
+            enumerable: true,
             writable: true,
             configurable: true,
         });
