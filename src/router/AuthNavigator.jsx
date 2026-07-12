@@ -4,13 +4,13 @@ import { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import { MainLayout } from "../components";
-import { useAuthStore } from "../hooks/useAuthStore";
-import { useActiveThemeMode } from "../hooks/useThemeStore";
-import { useNetworkStore } from "../hooks/useNetworkStore";
-import authService from "../services/login/authService";
-import { tryLoginWithStoredCreds, tryRestoreToken } from "../services/login/tools/bootstrapAsync";
-import SplashScreen from "../screens/Splash/SplashScreen";
-import { THEMES_ASSOCIATIONS } from "../themes/themes";
+import { useAuthStore } from "@/hooks/useAuthStore";
+import { useActiveThemeMode } from "@/hooks/useThemeStore";
+import { useNetworkStore } from "@/hooks/useNetworkStore";
+import authService from "@/services/login/authService";
+import { tryLoginWithStoredCreds, tryRestoreToken } from "@/services/login/tools/bootstrapAsync";
+import SplashScreen from "@/screens/Splash/SplashScreen";
+import { THEMES_ASSOCIATIONS } from "@/themes/themes";
 import Auth from "./display/auth/Auth";
 import Client from "./display/client/Client";
 

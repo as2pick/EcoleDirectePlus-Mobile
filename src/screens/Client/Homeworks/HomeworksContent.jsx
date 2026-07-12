@@ -10,21 +10,21 @@ import Animated, {
 } from "react-native-reanimated";
 
 import { SafeAreaView } from "react-native-safe-area-context";
-import PlusIcon from "../../../../assets/svg/micro/PlusIcon";
-import { HomeworkCard } from "../../../components";
-import { Text } from "../../../components/Ui/core";
-import { motivationSentences } from "../../../constants/features/homeworksConfig";
+import { Plus } from "@/components/svg";
+import HomeworkCard from "@/features/homeworks/components/HomeworkCard";
+import { Text } from "@/components/core";
+import { motivationSentences } from "@/constants/features/homeworksConfig";
 
-import { adjustLightness } from "../../../utils/colorGenerator";
-import { formatFrenchDate } from "../../../utils/date";
-import NewHomeworkModal from "./components/NewHomeworkModal";
-import { useHomework } from "./context/LocalContext";
-import { useHomeworksHandler } from "./hooks/useHomeworksHandler";
+import { adjustLightness } from "@/utils/colorGenerator";
+import { formatFrenchDate } from "@/utils/date";
+import NewHomeworkModal from "@/features/homeworks/components/NewHomeworkModal";
+import { useHomework } from "@/features/homeworks/context/HomeworkContext";
+import { useHomeworksHandler } from "@/features/homeworks/hooks/useHomeworksHandler";
 
-import { useCustomDataStore } from "../../../hooks/useCustomDataStore";
-import { useHomeworks } from "../../../hooks/useHomeworks";
-import { useUserStore } from "../../../hooks/useUserStore";
-import { objectsEqual } from "../../../utils/json";
+import { useCustomDataStore } from "@/hooks/useCustomDataStore";
+import { useHomeworks } from "@/hooks/useHomeworks";
+import { useUserStore } from "@/hooks/useUserStore";
+import { objectsEqual } from "@/utils/json";
 
 export default function HomeworksContent() {
     const token = useUserStore((state) => state.token);
@@ -187,7 +187,7 @@ export default function HomeworksContent() {
                         }}
                         onPress={() => dispatch({ type: "OPEN_NEW_HOMEWORK_MODAL" })}
                     >
-                        <PlusIcon size={36} />
+                        <Plus size={36} />
                     </TouchableOpacity>
                 </View>
 

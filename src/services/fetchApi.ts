@@ -1,5 +1,5 @@
-import { API } from "../constants/api/api";
-import { useUserStore } from "../hooks/useUserStore";
+import { API } from "@/constants/api/api";
+import { useUserStore } from "@/hooks/useUserStore";
 import { convertApiResponse } from "./responseUtils";
 
 export default async function fetchApi<T>(

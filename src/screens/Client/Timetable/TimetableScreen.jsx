@@ -1,7 +1,7 @@
 // TimetableScreen.js
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { GLOBALS_DATAS } from "../../../constants/device/globals";
-import { routesNames } from "../../../router/config/routesNames";
+import { GLOBALS_DATAS } from "@/constants/device/globals";
+import { routesNames } from "@/router/config/routesNames";
 import CourseDetails from "./CourseDetails";
 import TimetableContent from "./TimetableContent";
 

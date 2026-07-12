@@ -1,26 +1,26 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { useCallback, useEffect, useState } from "react";
-import { Dimensions, View, ActivityIndicator } from "react-native";
-import GradeArrow from "../../../../assets/svg/GradeArrow";
-import BottomSheet from "../../../components/Layout/BottomSheet";
+import { Dimensions, View } from "react-native";
+import { GradeArrow } from "@/components/svg";
+import BottomSheet from "@/components/layout/BottomSheet";
 
 import { FlatList } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { DropDown, ScrollableStack } from "../../../components";
-import { API } from "../../../constants/api/api";
-import { cssHslaToHsla } from "../../../utils/colorGenerator";
-import { parseNumber } from "../../../utils/grades/makeAverage";
-import Discipline from "./custom/classes/Discipline";
-import Period from "./custom/classes/Period";
-import AddGradeModal from "./custom/components/SimulateGradeModal";
+import { DropDown, ScrollableStack } from "@/components";
+import { API } from "@/constants/api/api";
+import { cssHslaToHsla } from "@/utils/colorGenerator";
+import { parseNumber } from "@/features/grades/utils/averages";
+import Discipline from "@/features/grades/models/Discipline";
+import Period from "@/features/grades/models/Period";
+import AddGradeModal from "@/features/grades/components/SimulateGradeModal";
 
-import { Text } from "../../../components/Ui/core";
-import { useGrade } from "./custom/context/LocalContext";
-import { calculateStrengthsWeaknesses, formatGradeText } from "./custom/helper";
-import { useSimulation } from "./custom/hooks/useSimulation";
+import { Text } from "@/components/core";
+import { useGrade } from "@/features/grades/context/GradeContext";
+import { calculateStrengthsWeaknesses, formatGradeText } from "@/features/grades/utils/helpers";
+import { useSimulation } from "@/features/grades/hooks/useSimulation";
 
-import { useGrades } from "../../../hooks/useGrades";
-import { useUserStore } from "../../../hooks/useUserStore";
+import { useGrades } from "@/hooks/useGrades";
+import { useUserStore } from "@/hooks/useUserStore";
 
 const { width } = Dimensions.get("window");
 

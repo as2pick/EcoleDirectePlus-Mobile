@@ -2,7 +2,7 @@ import { Appearance } from "react-native";
 import { createMMKV } from "react-native-mmkv";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import { THEMES_ASSOCIATIONS } from "../themes/themes";
+import { THEMES_ASSOCIATIONS } from "@/themes/themes";
 import type { AppTheme, AppThemeConfig } from "../types";
 
 const storage = createMMKV({ id: "theme-store" });

@@ -1,9 +1,9 @@
 import { createMMKV } from "react-native-mmkv";
 import * as SecureStore from "expo-secure-store";
-import { payloadHelper } from "../../helpers/cryptoHelper";
-import { useUserStore } from "../../hooks/useUserStore";
-import { useColorStore } from "../../hooks/useColorStore";
-import { CONFIG } from "../../constants/config";
+import { payloadHelper } from "@/helpers/cryptoHelper";
+import { useUserStore } from "@/hooks/useUserStore";
+import { useColorStore } from "@/hooks/useColorStore";
+import { CONFIG } from "@/constants/config";
 
 import fetchApi from "../fetchApi";
 import { getCookiesFromResponse } from "../responseUtils";

@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import mapScreens from "../../helpers/mapScreens";
+import mapScreens from "@/router/helpers/mapScreens";
 import appNavigatorOrganisation from "./indexClient";
 
 const Stack = createNativeStackNavigator();
