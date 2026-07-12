@@ -8,11 +8,11 @@ SplashScreen.preventAutoHideAsync();
 
 export default function App() {
     const [fontLoaded] = useFonts({
-        "Luciole-Regular": require("../assets/fonts/Luciole-Regular.ttf"),
-        "Lexend-Light": require("../assets/fonts/Lexend-Light.ttf"),
-        "Lexend-Regular": require("../assets/fonts/Lexend-Regular.ttf"),
-        "Lexend-Medium": require("../assets/fonts/Lexend-Medium.ttf"),
-        "Lexend-Bold": require("../assets/fonts/Lexend-Bold.ttf"),
+        "Luciole-Regular": require("assets/fonts/Luciole-Regular.ttf"),
+        "Lexend-Light": require("assets/fonts/Lexend-Light.ttf"),
+        "Lexend-Regular": require("assets/fonts/Lexend-Regular.ttf"),
+        "Lexend-Medium": require("assets/fonts/Lexend-Medium.ttf"),
+        "Lexend-Bold": require("assets/fonts/Lexend-Bold.ttf"),
     });
 
     useEffect(() => {

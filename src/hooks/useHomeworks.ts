@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import homeworksResolver, { toggleHomeworkInApi } from "../resolver/homeworks";
+import homeworksResolver, { toggleHomeworkInApi } from "@/resolver/homeworks";
 
 export function useHomeworks(token: string) {
     const queryClient = useQueryClient();

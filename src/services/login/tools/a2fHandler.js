@@ -1,5 +1,5 @@
 import authService from "../authService";
-import { useAuthStore } from "../../../hooks/useAuthStore";
+import { useAuthStore } from "@/hooks/useAuthStore";
 import storeDatas from "./storeLoginDatas";
 
 export const handleA2fSubmit = async ({

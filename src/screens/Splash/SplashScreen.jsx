@@ -1,5 +1,5 @@
 import { ActivityIndicator, StyleSheet, View } from "react-native";
-import Text from "../../components/Ui/core/Text";
+import { Text } from "@/components/core";
 
 const SplashScreen = () => {
     return (

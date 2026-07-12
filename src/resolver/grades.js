@@ -1,15 +1,15 @@
-import { useColorStore } from "../hooks/useColorStore";
-import Discipline from "../screens/Client/Grades/custom/classes/Discipline";
-import { deepEqualExcept } from "../screens/Client/Grades/custom/helper";
+import { useColorStore } from "@/hooks/useColorStore";
+import Discipline from "@/features/grades/models/Discipline";
+import { deepEqualExcept } from "@/features/grades/utils/helpers";
 import {
     calculateStreak,
     createValidGradesArray,
     sortGradesByDate,
-} from "../screens/Client/Grades/custom/streakManagment";
-import fetchApi from "../services/fetchApi";
-import { parseNumber } from "../utils/grades/makeAverage";
-import base64Handler from "../utils/handleBase64";
-import { deepCopyObject } from "../utils/json";
+} from "@/features/grades/utils/streakManagement";
+import fetchApi from "@/services/fetchApi";
+import { parseNumber } from "@/utils/grades/makeAverage";
+import base64Handler from "@/utils/handleBase64";
+import { deepCopyObject } from "@/utils/json";
 
 export default async function gradesResolver({ token }) {
     try {

@@ -8,20 +8,21 @@ import {
 } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import RenderHTML from "react-native-render-html";
-import FileIcon from "../../../../assets/svg/FileIcon";
-import { CustomTopHeader, HomeworkCard, Modal } from "../../../components";
-import { Text } from "../../../components/Ui/core";
-import { useUserStore } from "../../../hooks/useUserStore";
-import { useHomeworks } from "../../../hooks/useHomeworks";
-import { formatFrenchDate } from "../../../utils/date";
-import { useHomework } from "./context/LocalContext";
-import { downloadDocument, openDocument } from "./handler/handleDocuments";
+import { File } from "@/components/svg";
+import { CustomTopHeader, Modal } from "../../../components";
+import HomeworkCard from "@/features/homeworks/components/HomeworkCard";
+import { Text } from "@/components/core";
+import { useUserStore } from "@/hooks/useUserStore";
+import { useHomeworks } from "@/hooks/useHomeworks";
+import { formatFrenchDate } from "@/utils/date";
+import { useHomework } from "@/features/homeworks/context/HomeworkContext";
+import { downloadDocument, openDocument } from "@/features/homeworks/utils/documents";
 import {
     assignUnit,
     createHomework,
     decodeHomeworkContent,
     serializeHomework,
-} from "./utils";
+} from "@/features/homeworks/utils/homeworks";
 
 export default function HomeworkDetails({ route }) {
     const { homeworksData } = route.params;
@@ -155,7 +156,7 @@ export default function HomeworkDetails({ route }) {
                             <Text preset="label2">{libelle}</Text>
                             <Text preset="label3">{assignUnit(size)}</Text>
                         </View>
-                        <FileIcon fill={colors.contrast} size={25} extention={ext} />
+                        <File fill={colors.contrast} size={25} extention={ext} />
                     </View>
                 </TouchableOpacity>
             );

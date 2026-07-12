@@ -1,8 +1,8 @@
 import dayjs from "dayjs";
-import { payloadHelper } from "../../../helpers/cryptoHelper";
-import { useUserStore } from "../../../hooks/useUserStore";
+import { payloadHelper } from "@/helpers/cryptoHelper";
+import { useUserStore } from "@/hooks/useUserStore";
 import authService from "../authService";
-import { useAuthStore } from "../../../hooks/useAuthStore";
+import { useAuthStore } from "@/hooks/useAuthStore";
 import storeDatas from "./storeLoginDatas";
 
 /**

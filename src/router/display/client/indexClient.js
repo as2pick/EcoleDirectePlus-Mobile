@@ -1,5 +1,5 @@
 import { routesNames } from "../../config/routesNames";
-import createScreen from "../../helpers/createScreen";
+import createScreen from "@/router/helpers/createScreen";
 import Core from "./core/Core";
 import Tabs from "./tabs/Tabs";
 

@@ -1,7 +1,7 @@
-import LoginScreen from "../../../screens/Auth/Login/LoginScreen.jsx";
-import PrivacyPolicyScreen from "../../../screens/Auth/PrivacyPolicyScreen.jsx";
+import LoginScreen from "@/screens/Auth/Login/LoginScreen.jsx";
+import PrivacyPolicyScreen from "@/screens/Auth/PrivacyPolicyScreen.jsx";
 import { routesNames } from "../../config/routesNames";
-import createScreen from "../../helpers/createScreen.jsx";
+import createScreen from "@/router/helpers/createScreen.jsx";
 
 const {
     auth: { login, privacyPolicy },

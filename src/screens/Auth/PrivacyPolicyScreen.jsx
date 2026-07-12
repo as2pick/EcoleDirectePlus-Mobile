@@ -1,8 +1,8 @@
 import { useTheme } from "@react-navigation/native";
 import { StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import CopyLeft from "../../../assets/svg/CopyLeft";
-import { Text } from "../../components/Ui/core";
+import { CopyLeft } from "@/components/svg";
+import { Text } from "@/components/core";
 
 import {
     CustomTopHeader,
@@ -11,7 +11,7 @@ import {
     Subtitle,
     Title,
 } from "../../components";
-import { CONFIG } from "../../constants/config";
+import { CONFIG } from "@/constants/config";
 const COLABORATORS = {
     main: {
         // "Truite Séchée": "https://github.com/truiteseche",

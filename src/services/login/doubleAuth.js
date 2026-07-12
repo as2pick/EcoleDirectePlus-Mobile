@@ -1,4 +1,4 @@
-import base64Handler from "../../utils/handleBase64";
+import base64Handler from "@/utils/handleBase64";
 import fetchApi from "../fetchApi";
 
 export const getResponseChoices = async (token) => {

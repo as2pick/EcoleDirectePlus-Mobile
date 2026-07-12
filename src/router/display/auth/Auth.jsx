@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { routesNames } from "../../config/routesNames";
-import mapScreens from "../../helpers/mapScreens";
+import mapScreens from "@/router/helpers/mapScreens";
 import authScreens from "./indexAuth";
 
 const Stack = createNativeStackNavigator();

@@ -2,7 +2,7 @@ import CryptoJS from "crypto-js";
 import * as Crypto from "expo-crypto";
 import * as SecureStore from "expo-secure-store";
 import dayjs from "dayjs";
-import { CONFIG } from "../constants/config";
+import { CONFIG } from "@/constants/config";
 
 const { localSecretKeyStoreName, totalTokenExpirationTime } = CONFIG;
 

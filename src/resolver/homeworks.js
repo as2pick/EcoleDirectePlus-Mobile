@@ -1,7 +1,7 @@
-import { useColorStore } from "../hooks/useColorStore";
-import { createHomework } from "../screens/Client/Homeworks/utils";
-import fetchApi from "../services/fetchApi";
-import { formatFrenchDate } from "../utils/date";
+import { useColorStore } from "@/hooks/useColorStore";
+import { createHomework } from "@/features/homeworks/utils/homeworks";
+import fetchApi from "@/services/fetchApi";
+import { formatFrenchDate } from "@/utils/date";
 
 export default async function homeworksResolver({ token }) {
     const homeworksResponse = await fetchApi(

@@ -1,8 +1,8 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { routesNames } from "../../../router/config/routesNames";
+import { routesNames } from "@/router/config/routesNames";
 import HomeworkDetails from "./HomeworkDetails";
 import HomeworksContent from "./HomeworksContent";
-import { HomeworksProvider } from "./context/LocalContext";
+import { HomeworksProvider } from "@/features/homeworks/context/HomeworkContext";
 
 const NativeStack = createNativeStackNavigator();
 
