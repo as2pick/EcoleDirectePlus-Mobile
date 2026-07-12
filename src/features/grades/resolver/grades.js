@@ -6,10 +6,10 @@ import fetchApi from "@/services/fetchApi";
 import base64Handler from "@/utils/handleBase64";
 
 const skillColorsCodes = {
-    "1": "red",
-    "2": "orange",
-    "3": "paleGreen",
-    "4": "green",
+    1: "red",
+    2: "orange",
+    3: "paleGreen",
+    4: "green",
 };
 
 export default async function gradesResolver({ token }) {
@@ -89,9 +89,46 @@ export default async function gradesResolver({ token }) {
             });
         });
 
-        const periodsObjWithStreaks = streakDataInjectedIntoGrades(periodsObj);
+        const result = streakDataInjectedIntoGrades(periodsObj);
 
-        return periodsObjWithStreaks;
+        const rawLastGrades = getLatestGrades(grades.notes, 10);
+        const lastGrades = rawLastGrades.map((grade) => {
+            const periodCode = grade.codes.period;
+            const disciplineCode = grade.codes.discipline;
+            const period = result[periodCode];
+            let disciplineData = null;
+
+            if (period?.groups) {
+                for (const group of period.groups) {
+                    if (group.isDisciplineGroup) {
+                        const found = group.disciplines.find(
+                            (d) => d.code === disciplineCode
+                        );
+                        if (found) {
+                            disciplineData = found;
+                            break;
+                        }
+                    } else if (group.code === disciplineCode) {
+                        disciplineData = group;
+                        break;
+                    }
+                }
+            }
+
+            return {
+                ...grade,
+                disciplineData,
+            };
+        });
+
+        Object.defineProperty(result, "lastGrades", {
+            value: lastGrades,
+            enumerable: false,
+            writable: true,
+            configurable: true,
+        });
+
+        return result;
     } catch (e) {
         console.log("Error inside grades resolver : ", e);
         throw e;
@@ -232,3 +269,4 @@ export function getLatestGrades(rawNotes, limit = 5) {
             return formatted;
         });
 }
+
