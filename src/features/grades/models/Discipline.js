@@ -1,7 +1,7 @@
 import { TouchableOpacity, View } from "react-native";
 import Animated from "react-native-reanimated";
 import { Text } from "@/components/core";
-import { parseNumber } from "@/utils/grades/makeAverage";
+import { parseNumber } from "../utils/averages";
 import { objectsEqual } from "@/utils/json";
 import { formatGradeText } from "@/features/grades/utils/helpers";
 import Grade from "./Grade";

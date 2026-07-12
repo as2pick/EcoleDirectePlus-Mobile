@@ -1,16 +1,11 @@
 import { CONFIG } from "@/constants/config";
 import { useColorStore } from "@/hooks/useColorStore";
-import fetchApi from "@/services/fetchApi";
 import { isDarkColor } from "@/utils/colorGenerator";
-import {
-    addDaysToDateString,
-    formatFrenchDate,
-    getPreviousMonday,
-} from "@/utils/date";
+import { formatFrenchDate } from "@/utils/date";
 import { toMilliseconds } from "@/utils/time";
 import makeUniqueIds from "@/utils/uniqueIds";
 
-const convertData = (arrayData = []) => {
+export const convertData = (arrayData = []) => {
     const convertedTimetable = [];
     const finalTimetable = {};
     const ids = makeUniqueIds(arrayData.map((course) => course.id));
@@ -83,13 +78,13 @@ const convertData = (arrayData = []) => {
     }));
 };
 
-function getTimePercentage(time, startDayTime, interval) {
+export function getTimePercentage(time, startDayTime, interval) {
     const [hours, minutes] = time.split(":").map(Number);
     const msTime = hours * 3600000 + minutes * 60000;
     return (((msTime - startDayTime) / interval) * 100).toFixed(2);
 }
 
-function sizeTimetable(timetableData = []) {
+export function sizeTimetable(timetableData = []) {
     const hours = {};
     const maxTime = [];
     const minTime = [];
@@ -128,17 +123,17 @@ function sizeTimetable(timetableData = []) {
             const height = ((endMs - startMs) / hours[data.date].interval) * 100;
 
             timetableData[index].courses[i].height = timetableData[index].isJustNoon
-                ? height / 2.5 // to limit size (for ex wednesday 8h -> 12h so is splitted to middle (environ))
-                : height; // else normal
+                ? height / 2.5
+                : height;
             timetableData[index].courses[i].placing = timetableData[index].isJustNoon
-                ? placing / 2.5 // to limit size (for ex wednesday 8h -> 12h so is splitted to middle (environ))
-                : placing; // else normal
+                ? placing / 2.5
+                : placing;
         });
     });
     return timetableData;
 }
 
-const otherEdits = (timetableData = []) => {
+export const otherEdits = (timetableData = []) => {
     timetableData.forEach((_, index) => {
         timetableData[index]["iSODate"] = formatFrenchDate(
             timetableData[index].date
@@ -148,93 +143,10 @@ const otherEdits = (timetableData = []) => {
     return timetableData;
 };
 
-const fillHolidays = (startDateStr, endDateStr) => {
-    const finalHolidaysTimetable = [];
-
-    const holidaysCourseTemplate = {
-        classGroup: undefined,
-        // color: "hsl(229, 50%, 77%)",
-        endCourse: { /*date: "2025-12-22", added dynamicly*/ time: "23:59" },
-        group: undefined,
-        height: 100,
-        isCancelled: false,
-        isDispensed: false,
-        isEdited: false,
-        libelle: "CONGÉS",
-        placing: "0.00",
-        room: undefined,
-        startCourse: { /*date: "2025-12-22",*/ time: "00:00" },
-        teacher: undefined,
-        // textColor: "hsl(0, 0%, 0%)",
-        webId: 12345,
-    }; // pushed in array
-    const color = useColorStore
-        .getState()
-        .getOrAssignColor(holidaysCourseTemplate.libelle);
-    holidaysCourseTemplate["color"] = color;
-    holidaysCourseTemplate["textColor"] = isDarkColor(color)
-        ? "hsl(0, 100%, 100%)"
-        : "hsl(0, 0%, 0%)";
-
-    let dateList = [];
-    let startDate = new Date(startDateStr);
-    let endDate = new Date(endDateStr);
-    while (startDate <= endDate) {
-        const year = startDate.getFullYear();
-        const month = String(startDate.getMonth() + 1).padStart(2, "0");
-        const day = String(startDate.getDate()).padStart(2, "0");
-        const dateString = `${year}-${month}-${day}`;
-        dateList.push(dateString);
-        const iSOFrenchDate = formatFrenchDate(dateString);
-        holidaysCourseTemplate["startCourse"].date = dateString;
-        holidaysCourseTemplate["endCourse"].date = dateString;
-
-        const holidaysDay = {
-            courses: [holidaysCourseTemplate],
-            date: dateString,
-            iSODate: iSOFrenchDate,
-            isJustNoon: false,
-        };
-
-        finalHolidaysTimetable.push(holidaysDay);
-
-        startDate.setDate(startDate.getDate() + 1);
-    }
-    return finalHolidaysTimetable;
-};
-
-const sortedTimetable = async (timetable) => {
+export const sortedTimetable = async (timetable) => {
     const newTimetable = convertData(await timetable);
     const sizedTimetable = sizeTimetable(newTimetable);
-
     const finalSortedTimetable = otherEdits(sizedTimetable);
 
     return finalSortedTimetable;
 };
-
-export default async function timetableResolver({ token, offset = 0 }) {
-    const baseMonday = getPreviousMonday(CONFIG.dateNow);
-    const requestedMonday = addDaysToDateString(baseMonday, offset * 7);
-
-    const timetableResponse = await fetchApi(
-        `https://api.ecoledirecte.com/v3/E/{USER_ID}/emploidutemps.awp?verbe=get&{API_VERSION}`,
-        {
-            body: {
-                dateDebut: requestedMonday,
-                dateFin: addDaysToDateString(requestedMonday, 13),
-                avecTrous: false,
-            },
-            headers: {
-                "X-Token": token,
-            },
-            method: "POST",
-        }
-    );
-    if (timetableResponse.isDataEmpty) {
-        return {}; // Pas testé, peu causer des erreurs
-    }
-
-    return !timetableResponse
-        ? fillHolidays(requestedMonday, addDaysToDateString(requestedMonday, 13))
-        : await sortedTimetable(timetableResponse.data);
-}

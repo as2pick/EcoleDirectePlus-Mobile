@@ -1,4 +1,4 @@
-import { parseNumber } from "@/utils/grades/makeAverage";
+import { parseNumber } from "../utils/averages";
 import { objectsEqual } from "@/utils/json";
 import Discipline from "./Discipline";
 import Grade from "./Grade";

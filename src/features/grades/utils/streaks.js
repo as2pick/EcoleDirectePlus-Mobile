@@ -1,71 +1,8 @@
-import Period from "@/features/grades/models/Period";
-import { parseNumber } from "./makeAverage";
-
-export const createValidGradesArray = (gradesData, periodCode) => {
-    if (!gradesData[periodCode]?.groups) return [];
-
-    const disciplines = gradesData[periodCode].groups.flatMap((group) =>
-        group.isDisciplineGroup ? group.disciplines : [group]
-    );
-
-    const gradesArray = disciplines.flatMap((discipline) =>
-        Array.isArray(discipline.grades)
-            ? discipline.grades.filter((grade) => {
-                  const data = grade.data || {};
-                  const gradeValue = data.grade;
-                  const coef = data.coef;
-                  const outOf = data.outOf;
-
-                  return (
-                      !grade.notSignificant &&
-                      !grade.onlySkills &&
-                      gradeValue !== "" &&
-                      gradeValue !== null &&
-                      !isNaN(gradeValue) &&
-                      coef !== 0 &&
-                      coef !== "" &&
-                      !isNaN(coef) &&
-                      outOf !== 0 &&
-                      outOf !== "" &&
-                      !isNaN(outOf)
-                  );
-              })
-            : []
-    );
-
-    return gradesArray;
-};
-
-export const calculateWeightedAverageFromArray = (grades, disciplineCode = null) => {
-    if (!Array.isArray(grades) || grades.length === 0) return null;
-
-    const { total, totalCoef } = grades.reduce(
-        (acc, grade) => {
-            if (disciplineCode && grade.codes?.discipline !== disciplineCode)
-                return acc;
-
-            const value = (grade.data?.grade / grade.data?.outOf) * 20;
-            const coef = grade.data?.coef;
-
-            if (
-                value !== null &&
-                value !== "" &&
-                !isNaN(value) &&
-                coef !== null &&
-                coef !== "" &&
-                !isNaN(coef)
-            ) {
-                acc.total += value * coef;
-                acc.totalCoef += coef;
-            }
-
-            return acc;
-        },
-        { total: 0, totalCoef: 0 }
-    );
-
-    return totalCoef > 0 ? parseNumber(total / totalCoef) : null;
-};
+import { deepCopyObject } from "@/utils/json";
+import Period from "../models/Period";
+import { calculateWeightedAverageFromArray, createValidGradesArray } from "./averages";
+import { badgesDataInjectedIntoGrades } from "./badges";
+import { deepEqualExcept } from "./helpers";
 
 export const sortGradesByDate = (grades) => {
     return grades
@@ -144,3 +81,38 @@ export const calculateStreak = (gradesArrayChronologicaly, periodCode, apiData) 
     };
 };
 
+export function streakDataInjectedIntoGrades(userGrades) {
+    const result = deepCopyObject(userGrades);
+    Object.entries(result).forEach(([periodKey, periodData]) => {
+        const gradesSortedByDate = sortGradesByDate(
+            createValidGradesArray(result, periodKey)
+        );
+        const streak = calculateStreak(gradesSortedByDate, periodKey, result);
+        periodData.globalStreakScore = streak.globalStreakScore;
+
+        const periodStreakScores = streak.streakScores?.[periodKey] || {};
+
+        const periodDisciplines = periodData.groups.flatMap((group) =>
+            group.isDisciplineGroup ? group.disciplines : [group]
+        );
+
+        periodDisciplines.forEach((discipline) => {
+            discipline.streakCount = periodStreakScores[discipline.code] || 0;
+        });
+        streak.gradesItered.forEach((gradeData) => {
+            const discipline = periodDisciplines.find(
+                ({ code }) => code === gradeData.codes.discipline
+            );
+
+            if (!discipline) return;
+            const gradeToUpdate = discipline.grades.find((g) =>
+                deepEqualExcept(g, gradeData, ["actionOnStreak"])
+            );
+            if (gradeToUpdate) {
+                gradeToUpdate.actionOnStreak = gradeData.actionOnStreak;
+            }
+        });
+    });
+
+    return badgesDataInjectedIntoGrades(result);
+}

@@ -1,7 +1,7 @@
 import { useColorStore } from "@/hooks/useColorStore";
-import { createHomework } from "@/features/homeworks/utils/homeworks";
+import { createHomework } from "../utils/homeworks";
+import { extractDates } from "../utils/dates";
 import fetchApi from "@/services/fetchApi";
-import { formatFrenchDate } from "@/utils/date";
 
 export default async function homeworksResolver({ token }) {
     const homeworksResponse = await fetchApi(
@@ -22,44 +22,12 @@ export default async function homeworksResolver({ token }) {
             return [date, homework];
         })
     );
+    entries.sort((a, b) => a[0].localeCompare(b[0]));
+
     return {
         ...Object.fromEntries(entries),
         formatedDates: extractDates(homeworks),
     };
-}
-
-function extractDates(homeworks) {
-    const evaluationsDates = [];
-    Object.entries(homeworks).map(([date, value]) => {
-        value.forEach(({ interrogation }) => {
-            if (interrogation) evaluationsDates.push(date);
-        });
-    });
-
-    const countMap = new Map();
-    evaluationsDates.forEach((date) => {
-        countMap.set(date, (countMap.get(date) || 0) + 1);
-    });
-
-    return Object.fromEntries(
-        Object.keys(homeworks).map((date) => {
-            const frenchDate = formatFrenchDate(date);
-            const contractedDate = [
-                frenchDate.charAt(0).toLowerCase() + frenchDate.slice(1, 3),
-                frenchDate.split(" ")[1],
-            ];
-            return [
-                date,
-                {
-                    long: frenchDate,
-                    contracted: contractedDate,
-                    isEvaluation: evaluationsDates.includes(date),
-                    totalEvaluations: countMap.get(date),
-                    allTasksCompleted: false,
-                },
-            ];
-        })
-    );
 }
 
 export async function homeworksDetails({ token, date }) {
@@ -116,7 +84,6 @@ function formatHomeworksDetails(
             color: useColorStore.getState().getOrAssignColor(codeMatiere),
         },
         student: {
-            // maybe so useless
             class: entityLibelle,
             classCode: entityCode,
         },
@@ -149,6 +116,3 @@ export async function toggleHomeworkInApi({ token, id, state }) {
         }
     ).catch((e) => console.log("An error expected in toggleHomework, ", e));
 }
-
-const isEmptyValue = (value) =>
-    value == null || (typeof value === "string" && value.trim() === "");

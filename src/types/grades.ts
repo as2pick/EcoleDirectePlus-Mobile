@@ -1,4 +1,3 @@
-
 export interface ApiGrade {
     codeMatiere: string;
     codePeriode: string;
@@ -12,7 +11,11 @@ export interface ApiGrade {
     moyenneClasse: string;
     minClasse: string;
     maxClasse: string;
-    elementsProgramme: Array<{ descriptif: string; valeur: number; libelleCompetence: string }>;
+    elementsProgramme: Array<{
+        descriptif: string;
+        valeur: number;
+        libelleCompetence: string;
+    }>;
     typeDevoir: string;
 }
 
@@ -58,6 +61,9 @@ export interface FormattedGrade {
     isExam: boolean;
     homeworkType: string;
     disciplineName: string;
+    disciplineColor?: string;
+    disciplineLibelle?: string;
+    disciplineData?: FormattedDiscipline | FormattedDisciplineGroup | null;
     codes: { period: string; discipline: string };
     data: {
         coef: number;
@@ -69,7 +75,7 @@ export interface FormattedGrade {
     };
     skills: Array<{ name: string; description: string; value: string | null }>;
     onlySkills: boolean;
-    actionOnStreak?: "up" | "down" | "equal";
+    actionOnStreak?: "up" | "down" | "equal" | "nothing" | "previous up";
     badges: string[];
 }
 
@@ -101,4 +107,7 @@ export interface FormattedPeriod {
     groups: (FormattedDiscipline | FormattedDisciplineGroup)[];
 }
 
-export type ResolvedGrades = Record<string, FormattedPeriod>;
+export type ResolvedGrades = Record<string, FormattedPeriod> & {
+    lastGrades?: FormattedGrade[];
+};
+

@@ -9,7 +9,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { DropDown, ScrollableStack } from "@/components";
 import { API } from "@/constants/api/api";
 import { cssHslaToHsla } from "@/utils/colorGenerator";
-import { parseNumber } from "@/utils/grades/makeAverage";
+import { parseNumber } from "@/features/grades/utils/averages";
 import Discipline from "@/features/grades/models/Discipline";
 import Period from "@/features/grades/models/Period";
 import AddGradeModal from "@/features/grades/components/SimulateGradeModal";

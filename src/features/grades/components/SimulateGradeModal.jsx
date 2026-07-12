@@ -9,7 +9,7 @@ import Animated, {
 import { scheduleOnRN } from "react-native-worklets";
 import { Text } from "@/components/core";
 import { getTodayDateString } from "@/utils/date";
-import { parseNumber } from "@/utils/grades/makeAverage";
+import { parseNumber } from "../utils/averages";
 import Grade from "../models/Grade";
 import { useGrade } from "../context/GradeContext";
 
