@@ -203,7 +203,10 @@ export default function HomeworksContent() {
                             {completedTasks.length}/{displayTasks.length}
                         </Text>
                     </View>
-                    <ProgressBar progression={progression} />
+                    <ProgressBar
+                        progression={progression}
+                        style={{ marginHorizontal: 50 }}
+                    />
 
                     <Text preset="custom1" align="center" color="hsl(240, 34%, 77%)">
                         {encouragementSentence}

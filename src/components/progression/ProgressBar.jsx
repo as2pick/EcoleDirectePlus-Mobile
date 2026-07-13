@@ -8,7 +8,7 @@ import Animated, {
     withSpring,
 } from "react-native-reanimated";
 
-export const ProgressBar = ({ progression, color = "auto" }) => {
+export const ProgressBar = ({ progression, color = "auto", style }) => {
     const animatedWidth = useSharedValue(0);
 
     useEffect(() => {
@@ -39,11 +39,13 @@ export const ProgressBar = ({ progression, color = "auto" }) => {
 
     return (
         <View
-            style={{
-                marginHorizontal: 50,
-                backgroundColor: "hsl(240, 15%, 33%)",
-                borderRadius: 20,
-            }}
+            style={[
+                {
+                    backgroundColor: "hsl(240, 15%, 33%)",
+                    borderRadius: 20,
+                },
+                style,
+            ]}
         >
             <Animated.View
                 style={[
