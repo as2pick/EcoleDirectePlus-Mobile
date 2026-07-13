@@ -111,3 +111,14 @@ export type ResolvedGrades = Record<string, FormattedPeriod> & {
     lastGrades?: FormattedGrade[];
 };
 
+export interface SimulatedGrade {
+    id: string;
+    disciplineCode: string;
+    periodCode: string;
+    libelle: string;
+    grade: number;
+    outOf: number;
+    coef: number;
+    isSimulation: true;
+}
+

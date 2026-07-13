@@ -1,7 +1,7 @@
 import { createMMKV } from "react-native-mmkv";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import type { Homework } from "../types";
+import type { Homework, SimulatedGrade } from "../types";
 
 const storage = createMMKV({ id: "custom-data-store" });
 
@@ -10,17 +10,6 @@ const mmkvStorage = createJSONStorage(() => ({
     setItem: (key, value) => storage.set(key, value),
     removeItem: (key) => storage.remove(key),
 }));
-
-export interface SimulatedGrade {
-    id: string;
-    disciplineCode: string;
-    periodCode: string;
-    libelle: string;
-    grade: number;
-    outOf: number;
-    coef: number;
-    isSimulation: true;
-}
 
 interface CustomDataState {
     customHomeworks: Homework[];
@@ -50,13 +39,20 @@ export const useCustomDataStore = create<CustomDataState>()(
             toggleCustomHomeworkDone: (id) =>
                 set((state) => ({
                     customHomeworks: state.customHomeworks.map((hw) =>
-                        hw.id === id ? { ...hw, isDone: hw.isDone === "done" ? "todo" : "done" } : hw
+                        hw.id === id
+                            ? {
+                                  ...hw,
+                                  isDone: hw.isDone === "done" ? "todo" : "done",
+                              }
+                            : hw
                     ),
                 })),
 
             removeCustomHomework: (id) =>
                 set((state) => ({
-                    customHomeworks: state.customHomeworks.filter((hw) => hw.id !== id),
+                    customHomeworks: state.customHomeworks.filter(
+                        (hw) => hw.id !== id
+                    ),
                 })),
 
             addSimulatedGrade: (grade) =>
@@ -66,15 +62,17 @@ export const useCustomDataStore = create<CustomDataState>()(
 
             removeSimulatedGrade: (id) =>
                 set((state) => ({
-                    simulatedGrades: state.simulatedGrades.filter((g) => g.id !== id),
+                    simulatedGrades: state.simulatedGrades.filter(
+                        (g) => g.id !== id
+                    ),
                 })),
 
             clearSimulatedGrades: (disciplineCode) =>
                 set((state) => ({
                     simulatedGrades: disciplineCode
                         ? state.simulatedGrades.filter(
-                            (g) => g.disciplineCode !== disciplineCode
-                        )
+                              (g) => g.disciplineCode !== disciplineCode
+                          )
                         : [],
                 })),
 

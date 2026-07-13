@@ -40,3 +40,34 @@ export interface FormattedDate {
 export type ResolvedHomeworks = Record<string, Homework[]> & {
     formatedDates: Record<string, FormattedDate>;
 };
+
+export interface ApiHomework {
+    entityCode: string;
+    entityLibelle: string;
+    entityType: string;
+    matiere: string;
+    codeMatiere: string;
+    nomProf: string;
+    id: number;
+    interrogation: boolean;
+    blogActif?: boolean;
+    nbJourMaxRenduDevoir?: number;
+    aFaire?: {
+        contenu?: string;
+        documents?: any[];
+        effectue: boolean;
+        rendreEnLigne: boolean | null;
+        donneLe: string;
+        contenuDeSeance?: {
+            contenu?: string;
+        };
+    };
+    contenuDeSeance?: {
+        contenu?: string;
+    };
+}
+
+export interface ApiHomeworksDetailsResponse {
+    date: string;
+    matieres: ApiHomework[];
+}
