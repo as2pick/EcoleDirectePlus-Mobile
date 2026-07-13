@@ -41,7 +41,6 @@ export const ProgressBar = ({ progression, color = "auto", style }) => {
         <View
             style={[
                 {
-                    backgroundColor: "hsl(240, 15%, 33%)",
                     borderRadius: 20,
                 },
                 style,
@@ -50,7 +49,7 @@ export const ProgressBar = ({ progression, color = "auto", style }) => {
             <Animated.View
                 style={[
                     {
-                        height: 20,
+                        height: style?.height || 20,
                         borderRadius: 20,
                         alignItems: "flex-end",
                         justifyContent: "center",

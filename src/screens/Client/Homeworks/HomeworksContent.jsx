@@ -205,7 +205,10 @@ export default function HomeworksContent() {
                     </View>
                     <ProgressBar
                         progression={progression}
-                        style={{ marginHorizontal: 50 }}
+                        style={{
+                            marginHorizontal: 50,
+                            backgroundColor: "hsl(240, 15%, 33%)",
+                        }}
                     />
 
                     <Text preset="custom1" align="center" color="hsl(240, 34%, 77%)">
