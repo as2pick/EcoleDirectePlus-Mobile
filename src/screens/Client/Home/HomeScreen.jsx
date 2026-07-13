@@ -1,5 +1,6 @@
 import { Text } from "@/components";
 import ActiveCourseCard from "@/features/home/components/ActiveCourseCard";
+import GeneralAveragePreview from "@/features/home/components/GeneralAveragePreview";
 import { useCustomDataStore } from "@/hooks/useCustomDataStore";
 import { useGrades } from "@/hooks/useGrades";
 import { useHomeworks } from "@/hooks/useHomeworks";
@@ -32,8 +33,9 @@ export default function HomeScreen() {
                 </Text>
                 <Text size={38}>Pierre</Text>
             </View>
-            <View style={{ alignItems: "center" }}>
+            <View style={{ alignItems: "center", gap: 30 }}>
                 <ActiveCourseCard />
+                <GeneralAveragePreview />
             </View>
         </LinearGradient>
     );
