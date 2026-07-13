@@ -4,3 +4,4 @@ export * from './timetable';
 export * from './grades';
 export * from './theme';
 export * from './homeworks';
+export * from './messaging';
