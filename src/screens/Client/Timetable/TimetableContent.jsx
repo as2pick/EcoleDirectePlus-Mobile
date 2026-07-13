@@ -18,7 +18,7 @@ import { Text } from "@/components/core";
 import { routesNames } from "@/router/config/routesNames";
 import { addOpacityToCssRgb } from "@/utils/colorGenerator";
 
-import { useTimetable } from "@/hooks/useTimetable";
+import { useTimetable } from "@/features/timetable";
 import { useUserStore } from "@/hooks/useUserStore";
 
 let {

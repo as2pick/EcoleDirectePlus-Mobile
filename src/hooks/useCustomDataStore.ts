@@ -1,7 +1,8 @@
 import { createMMKV } from "react-native-mmkv";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import type { Homework, SimulatedGrade } from "../types";
+import type { Homework } from "@/features/homeworks";
+import type { SimulatedGrade } from "@/features/grades";
 
 const storage = createMMKV({ id: "custom-data-store" });
 

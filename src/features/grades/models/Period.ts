@@ -2,31 +2,36 @@ import { parseNumber } from "../utils/averages";
 import { objectsEqual } from "@/utils/json";
 import Discipline from "./Discipline";
 import Grade from "./Grade";
+import { FormattedDiscipline, FormattedDisciplineGroup, FormattedPeriod, FormattedGrade } from "../types";
 
 export default class Period {
+    groups: (FormattedDiscipline | FormattedDisciplineGroup)[];
+    periodCode: string;
+    globalStreakScore: number | null;
+    periodName: string | null;
+
     constructor(
-        { groups, globalStreakScore = null, periodName = null },
-        periodCode
+        data: { groups: (FormattedDiscipline | FormattedDisciplineGroup)[]; globalStreakScore?: number | null; periodName?: string | null },
+        periodCode: string = ""
     ) {
-        this.groups = groups;
+        this.groups = data.groups || [];
         this.periodCode = periodCode;
-        this.globalStreakScore = globalStreakScore;
-        this.periodName = periodName;
+        this.globalStreakScore = data.globalStreakScore !== undefined ? data.globalStreakScore : null;
+        this.periodName = data.periodName !== undefined ? data.periodName : null;
     }
 
-    makeGeneralAverage() {
-        // get all disciplines from all groups (in one array)
+    makeGeneralAverage(): number | null {
         const disciplines = this.groups.flatMap((group) =>
-            group.isDisciplineGroup ? group.disciplines : [group]
+            (group as FormattedDisciplineGroup).isDisciplineGroup ? (group as FormattedDisciplineGroup).disciplines : [group as FormattedDiscipline]
         );
-        // use acuumulator to add averages and coef in one var - is like a loop
+
         const { total, totalCoef } = disciplines.reduce(
             (acc, discipline) => {
                 const disciplineObj = new Discipline(discipline);
                 const average = disciplineObj.getWeightedAverage();
                 const coef = disciplineObj.getTotalCoef();
 
-                if (!isNaN(average) && !isNaN(coef) && coef > 0) {
+                if (average !== null && !isNaN(average) && !isNaN(coef) && coef > 0) {
                     acc.total += average * coef;
                     acc.totalCoef += coef;
                 }
@@ -41,13 +46,13 @@ export default class Period {
         return parseNumber(average);
     }
 
-    makeDisciplineAverage(disciplineCode) {
-        let disciplineSearched = null;
+    makeDisciplineAverage(disciplineCode: string): number | null {
+        let disciplineSearched: FormattedDiscipline | null = null;
 
         for (const group of this.groups) {
-            const disciplines = group.isDisciplineGroup
-                ? group.disciplines
-                : this.groups;
+            const disciplines = (group as FormattedDisciplineGroup).isDisciplineGroup
+                ? (group as FormattedDisciplineGroup).disciplines
+                : [group as FormattedDiscipline];
 
             const found = disciplines.find((d) => d.code === disciplineCode);
             if (found) {
@@ -64,10 +69,10 @@ export default class Period {
         return discipline.getWeightedAverage();
     }
 
-    createReferentialStreakScore() {
-        const ref = {};
+    createReferentialStreakScore(): Record<string, Record<string, number>> {
+        const ref: Record<string, Record<string, number>> = {};
         const disciplines = this.groups.flatMap((group) =>
-            group.isDisciplineGroup ? group.disciplines : [group]
+            (group as FormattedDisciplineGroup).isDisciplineGroup ? (group as FormattedDisciplineGroup).disciplines : [group as FormattedDiscipline]
         );
         ref[this.periodCode] = {};
 
@@ -84,11 +89,11 @@ export default class Period {
             numberOfDisciplines: 0,
         };
         this.groups.forEach((group) => {
-            if (group.isDisciplineGroup) {
+            if ((group as FormattedDisciplineGroup).isDisciplineGroup) {
                 infos.numberOfGroups++;
-                infos.numberOfDisciplines += group.disciplines.length;
+                infos.numberOfDisciplines += (group as FormattedDisciplineGroup).disciplines.length;
             } else {
-                infos.numberOfDisciplines += group.length;
+                infos.numberOfDisciplines += 1;
             }
         });
 
@@ -98,10 +103,11 @@ export default class Period {
             ...infos,
         };
     }
-    injectGrade(rawGrade) {
+
+    injectGrade(rawGrade: FormattedGrade) {
         const grade = new Grade(rawGrade);
         const periodDisciplines = this.groups.flatMap((group) =>
-            group.isDisciplineGroup ? group.disciplines : [group]
+            (group as FormattedDisciplineGroup).isDisciplineGroup ? (group as FormattedDisciplineGroup).disciplines : [group as FormattedDiscipline]
         );
 
         const discipline = periodDisciplines.find(
@@ -119,18 +125,21 @@ export default class Period {
             discipline.grades = [];
         }
 
-        discipline.grades.push(grade);
+        discipline.grades.push(grade.getGrade());
     }
-    removeGrade(rawGrade) {
+
+    removeGrade(rawGrade: FormattedGrade) {
         const grade = new Grade(rawGrade);
 
         const periodDisciplines = this.groups.flatMap((group) =>
-            group.isDisciplineGroup ? group.disciplines : [group]
+            (group as FormattedDisciplineGroup).isDisciplineGroup ? (group as FormattedDisciplineGroup).disciplines : [group as FormattedDiscipline]
         );
 
         const discipline = periodDisciplines.find(
             ({ code }) => code === grade.codes.discipline
         );
+
+        if (!discipline) return;
 
         if (!Array.isArray(discipline.grades) || discipline.grades.length === 0) {
             console.warn(`Any grade to delete for ${discipline.code}`);
@@ -148,4 +157,3 @@ export default class Period {
         }
     }
 }
-

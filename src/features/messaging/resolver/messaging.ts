@@ -1,5 +1,6 @@
 import fetchApi from "@/services/fetchApi";
 import base64Handler from "@/utils/handleBase64";
+import { FetchApiResponse } from "@/types";
 import {
     ApiMessage,
     ApiMessageSender,
@@ -10,9 +11,8 @@ import {
     MessageSender,
     ResolvedMessaging,
     MessagingResolverParams,
-    FetchApiResponse,
     MessageContentResolverParams,
-} from "@/types/messaging";
+} from "../types";
 
 const DEFAULT_MESSAGING: ResolvedMessaging = {
     received: [],

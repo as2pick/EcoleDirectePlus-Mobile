@@ -3,7 +3,8 @@ import fetchApi from "@/services/fetchApi";
 import { addDaysToDateString, getPreviousMonday } from "@/utils/date";
 import { sortedTimetable } from "../utils/layout";
 import { fillHolidays } from "../utils/holidays";
-import { TimetableDay, ApiTimetableCourse, TimetableResolverParams, FetchApiResponse } from "@/types";
+import { FetchApiResponse } from "@/types";
+import { TimetableDay, ApiTimetableCourse, TimetableResolverParams } from "../types";
 
 export default async function timetableResolver({
     token,

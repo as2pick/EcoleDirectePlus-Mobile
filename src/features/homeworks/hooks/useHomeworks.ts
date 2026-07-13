@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import homeworksResolver, {
     toggleHomeworkInApi,
 } from "@/features/homeworks/resolver/homeworks";
-import { ResolvedHomeworks } from "@/types";
+import { ResolvedHomeworks } from "../types";
 
 export function useHomeworks(token: string) {
     const queryClient = useQueryClient();
