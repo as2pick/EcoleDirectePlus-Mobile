@@ -1,6 +1,7 @@
 import { Text } from "@/components";
 import ActiveCourseCard from "@/features/home/components/ActiveCourseCard";
 import GeneralAveragePreview from "@/features/home/components/GeneralAveragePreview";
+import LastGrades from "@/features/home/components/LastGrades";
 import { useCustomDataStore } from "@/hooks/useCustomDataStore";
 import { useGrades } from "@/hooks/useGrades";
 import { useHomeworks } from "@/hooks/useHomeworks";
@@ -19,7 +20,6 @@ export default function HomeScreen() {
     const { data: homeworksData } = useHomeworks(token);
     const customHomeworksData = useCustomDataStore((state) => state.customHomeworks);
 
-    console.log(gradesData?.lastGrades?.[0]);
     return (
         <LinearGradient
             colors={["hsla(228, 70%, 18%, 1)", "hsla(228, 30%, 8%, 0.85)"]}
@@ -33,9 +33,10 @@ export default function HomeScreen() {
                 </Text>
                 <Text size={38}>Pierre</Text>
             </View>
-            <View style={{ alignItems: "center", gap: 30 }}>
+            <View style={{ alignItems: "center", gap: 20 }}>
                 <ActiveCourseCard />
                 <GeneralAveragePreview />
+                <LastGrades />
             </View>
         </LinearGradient>
     );
