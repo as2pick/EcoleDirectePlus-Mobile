@@ -1,0 +1,136 @@
+export interface ApiMessageSender {
+    id: number;
+    civilite?: string;
+    prenom?: string;
+    nom?: string;
+    particule?: string;
+    role?: string;
+}
+
+export interface ApiMessage {
+    id: number;
+    subject?: string;
+    date: string;
+    read: boolean;
+    answered: boolean;
+    transferred: boolean;
+    canAnswer: boolean;
+    mtype: string;
+    idClasseur: number;
+    files?: any[];
+    to_cc_cci?: string;
+    from?: ApiMessageSender;
+}
+
+export interface ApiMessagingResponseData {
+    messages: {
+        received?: ApiMessage[];
+        sent?: ApiMessage[];
+        draft?: ApiMessage[];
+        archived?: ApiMessage[];
+    };
+    pagination: {
+        messagesRecusCount: number;
+        messagesEnvoyesCount: number;
+        messagesDraftCount: number;
+        messagesArchivesCount: number;
+        messagesRecusNotReadCount: number;
+    };
+    classeurs: Array<{ id: number; libelle: string }>;
+    parametrage: {
+        isActif: boolean;
+        destProf: boolean;
+        destAdmin: boolean;
+        destEleve: boolean;
+        destFamille: boolean;
+        destEntreprise: boolean;
+    };
+}
+
+export interface MessageAttachment {
+    id: number | string;
+    libelle: string;
+    type: string;
+    [key: string]: any;
+}
+
+export interface MessageSender {
+    id: number | null;
+    fullName: string;
+    firstName: string;
+    lastName: string;
+    initials: string;
+    role: string | null;
+}
+
+export interface FormattedMessage {
+    id: number;
+    subject: string;
+    date: string;
+    read: boolean;
+    answered: boolean;
+    transferred: boolean;
+    canAnswer: boolean;
+    type: string;
+    folderId: number | null;
+    folderName: string | null;
+    hasAttachments: boolean;
+    files: MessageAttachment[];
+    recipientType: string | null;
+    sender: MessageSender;
+}
+
+export interface MessageFolder {
+    id: number;
+    name: string;
+    messages: FormattedMessage[];
+}
+
+export interface MessagePagination {
+    receivedCount: number;
+    sentCount: number;
+    draftCount: number;
+    archivedCount: number;
+    unreadCount: number;
+}
+
+export interface MessageSettings {
+    isActive: boolean;
+    canContactTeachers: boolean;
+    canContactAdmin: boolean;
+    canContactStudents: boolean;
+    canContactFamilies: boolean;
+    canContactCompanies: boolean;
+}
+
+export interface ResolvedMessaging {
+    received: FormattedMessage[];
+    sent: FormattedMessage[];
+    draft: FormattedMessage[];
+    archived: FormattedMessage[];
+    folders: MessageFolder[];
+    pagination: MessagePagination;
+    settings: MessageSettings;
+}
+
+export interface MessageContent {
+    id: number;
+    content: string;
+    files: MessageAttachment[];
+}
+
+export interface MessagingResolverParams {
+    token: string;
+    page?: number;
+    itemsPerPage?: number;
+    typeRecuperation?: "received" | "sent" | "draft" | "archived";
+    idClasseur?: number;
+}
+
+export interface FetchApiResponse<T> {
+    code: number;
+    token: string;
+    message: string;
+    data: T;
+    isDataEmpty: boolean;
+}
