@@ -1,26 +1,20 @@
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
-import Animated, {
-    interpolate,
-    useAnimatedStyle,
-    useSharedValue,
-    withDelay,
-    withSpring,
-} from "react-native-reanimated";
 
-import { SafeAreaView } from "react-native-safe-area-context";
-import { Plus } from "@/components/svg";
-import HomeworkCard from "@/features/homeworks/components/HomeworkCard";
 import { Text } from "@/components/core";
+import { Plus } from "@/components/svg";
 import { motivationSentences } from "@/constants/features/homeworksConfig";
+import HomeworkCard from "@/features/homeworks/components/HomeworkCard";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-import { adjustLightness } from "@/utils/colorGenerator";
-import { formatFrenchDate } from "@/utils/date";
 import NewHomeworkModal from "@/features/homeworks/components/NewHomeworkModal";
 import { useHomework } from "@/features/homeworks/context/HomeworkContext";
 import { useHomeworksHandler } from "@/features/homeworks/hooks/useHomeworksHandler";
+import { adjustLightness } from "@/utils/colorGenerator";
+import { formatFrenchDate } from "@/utils/date";
 
+import { ProgressBar } from "@/components/progression/ProgressBar";
 import { useCustomDataStore } from "@/hooks/useCustomDataStore";
 import { useHomeworks } from "@/hooks/useHomeworks";
 import { useUserStore } from "@/hooks/useUserStore";
@@ -80,8 +74,6 @@ export default function HomeworksContent() {
         setModalOpen,
         toggleHomework,
     });
-
-    const animatedWidth = useSharedValue(0);
 
     const pickSentence = useCallback(
         (progression) => {
@@ -211,10 +203,7 @@ export default function HomeworksContent() {
                             {completedTasks.length}/{displayTasks.length}
                         </Text>
                     </View>
-                    <TasksProgression
-                        progression={progression}
-                        animatedWidth={animatedWidth}
-                    />
+                    <ProgressBar progression={progression} />
 
                     <Text preset="custom1" align="center" color="hsl(240, 34%, 77%)">
                         {encouragementSentence}
@@ -285,50 +274,6 @@ export default function HomeworksContent() {
     );
 }
 
-const TasksProgression = ({ progression, animatedWidth }) => {
-    useEffect(() => {
-        animatedWidth.value = withDelay(
-            100,
-            withSpring(progression * 100, {
-                damping: 40,
-                stiffness: 100,
-            })
-        );
-    }, [progression]);
-
-    const animatedStyle = useAnimatedStyle(() => {
-        const hue = interpolate(animatedWidth.value, [0, 100], [0, 120]);
-
-        return {
-            width: `${animatedWidth.value}%`,
-            backgroundColor: `hsl(${hue}, 100%, 50%)`,
-        };
-    });
-
-    return (
-        <View
-            style={{
-                marginHorizontal: 50,
-                backgroundColor: "hsl(240, 15%, 33%)",
-                borderRadius: 20,
-            }}
-        >
-            <Animated.View
-                style={[
-                    {
-                        height: 20,
-                        borderRadius: 20,
-                        alignItems: "flex-end",
-                        justifyContent: "center",
-                        paddingRight: 8,
-                    },
-                    animatedStyle,
-                ]}
-            />
-        </View>
-    );
-};
-
 const DateItem = memo(
     ({ contracted, isEvaluation, isActive, allTasksCompleted, onPress }) => {
         let dateBackgroundColor;
@@ -381,3 +326,4 @@ const DateItem = memo(
         );
     }
 );
+
