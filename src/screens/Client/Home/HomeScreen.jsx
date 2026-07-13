@@ -1,3 +1,4 @@
+import { Text } from "@/components";
 import ActiveCourseCard from "@/features/home/components/ActiveCourseCard";
 import { useCustomDataStore } from "@/hooks/useCustomDataStore";
 import { useGrades } from "@/hooks/useGrades";
@@ -23,11 +24,18 @@ export default function HomeScreen() {
             colors={["hsla(228, 70%, 18%, 1)", "hsla(228, 30%, 8%, 0.85)"]}
             start={{ x: 0, y: 0 }}
             end={{ x: 0, y: 0.3 }}
-            style={{ flex: 1 }}
+            style={{ flex: 1, paddingHorizontal: 20 }}
         >
+            <View style={{ marginTop: "25%", marginBottom: 28 }}>
+                <Text size={26} color="hsla(1, 0%, 100%, 0.4)">
+                    Bonjour,
+                </Text>
+                <Text size={38}>Pierre</Text>
+            </View>
             <View style={{ alignItems: "center" }}>
                 <ActiveCourseCard />
             </View>
         </LinearGradient>
     );
 }
+
