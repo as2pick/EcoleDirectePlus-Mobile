@@ -44,3 +44,8 @@ export interface TimetableDay {
     courses: FormattedCourse[];
 }
 
+export interface TimetableResolverParams {
+    token: string;
+    offset?: number;
+}
+

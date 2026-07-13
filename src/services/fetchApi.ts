@@ -56,6 +56,6 @@ export default async function fetchApi<T>(
         } as T;
     } catch (error) {
         console.error("Une erreur est survenue lors de l'appel à fetchApi :", error);
-        return null;
+        throw error;
     }
 }

@@ -1,6 +1,7 @@
 import { useNetworkStore } from "./useNetworkStore";
+import { NetworkInfo } from "@/types";
 
-export const useNetwork = () => {
+export const useNetwork = (): NetworkInfo => {
     const activeNetworkStatus = useNetworkStore((state) => state.activeNetworkStatus);
 
     return {
@@ -14,4 +15,3 @@ export const useNetwork = () => {
             false,
     };
 };
-
