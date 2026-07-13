@@ -1,8 +1,8 @@
 import { Text } from "@/components";
+import { useHaptic } from "@/hooks/useHaptics";
 import { blendWithWhite } from "@/utils/colorGenerator";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { FlatList, View } from "react-native";
-
 export default function LastGrades({}) {
     const [lastGrades, setLastGrades] = useState([
         {
@@ -1513,10 +1513,25 @@ export default function LastGrades({}) {
             },
         },
     ]);
+    const hapticFeedback = useHaptic("heavy");
+
+    const lastViewableId = useRef(null);
+
+    const onViewableItemsChanged = useRef(({ viewableItems }) => {
+        if (viewableItems.length > 0) {
+            hapticFeedback(); // the haptics doesn't work, idk why, maybe regenerate dev client ?
+        }
+    }).current;
+
+    const viewabilityConfig = useRef({
+        itemVisiblePercentThreshold: 50,
+    }).current;
 
     return (
         <View style={{ height: 100 }}>
             <FlatList
+                onViewableItemsChanged={onViewableItemsChanged}
+                viewabilityConfig={viewabilityConfig}
                 data={lastGrades}
                 horizontal
                 showsHorizontalScrollIndicator={false}
