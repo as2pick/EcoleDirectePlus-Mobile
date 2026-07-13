@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import timetableResolver from "@/features/timetable/resolver/timetable";
-import { TimetableDay } from "@/types";
+import { TimetableDay } from "../types";
 
 export function useTimetable(token: string, offset: number = 0) {
     return useQuery<TimetableDay[]>({

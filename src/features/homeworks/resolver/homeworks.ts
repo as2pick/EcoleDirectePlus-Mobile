@@ -2,12 +2,12 @@ import { useColorStore } from "@/hooks/useColorStore";
 import { createHomework } from "../utils/homeworks";
 import { extractDates } from "../utils/dates";
 import fetchApi from "@/services/fetchApi";
+import { FetchApiResponse } from "@/types";
 import {
     ResolvedHomeworks,
     ApiHomework,
     ApiHomeworksDetailsResponse,
-    FetchApiResponse,
-} from "@/types";
+} from "../types";
 
 export default async function homeworksResolver({
     token,

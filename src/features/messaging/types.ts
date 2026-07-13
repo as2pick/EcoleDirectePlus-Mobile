@@ -127,13 +127,7 @@ export interface MessagingResolverParams {
     idClasseur?: number;
 }
 
-export interface FetchApiResponse<T> {
-    code: number;
-    token: string;
-    message: string;
-    data: T;
-    isDataEmpty: boolean;
-}
+
 
 export interface MessageContentResolverParams {
     token: string;

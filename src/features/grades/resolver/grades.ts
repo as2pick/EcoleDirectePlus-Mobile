@@ -4,6 +4,7 @@ import { parseNumber } from "../utils/averages";
 import { streakDataInjectedIntoGrades } from "../utils/streaks";
 import fetchApi from "@/services/fetchApi";
 import base64Handler from "@/utils/handleBase64";
+import { FetchApiResponse } from "@/types";
 import {
     ApiGrade,
     ApiDiscipline,
@@ -14,8 +15,7 @@ import {
     FormattedDisciplineGroup,
     FormattedPeriod,
     ResolvedGrades,
-    FetchApiResponse,
-} from "@/types";
+} from "../types";
 
 const skillColorsCodes: Record<string, string> = {
     "1": "red",

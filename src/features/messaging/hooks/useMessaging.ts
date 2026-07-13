@@ -2,7 +2,7 @@ import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import messagingResolver, {
     messageContentResolver,
 } from "@/features/messaging/resolver/messaging";
-import { ResolvedMessaging, MessageContent } from "@/types";
+import { ResolvedMessaging, MessageContent } from "../types";
 
 export interface UseMessagingOptions {
     typeRecuperation?: "received" | "sent" | "draft" | "archived";

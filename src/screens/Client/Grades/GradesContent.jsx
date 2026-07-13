@@ -13,13 +13,15 @@ import { parseNumber } from "@/features/grades/utils/averages";
 import Discipline from "@/features/grades/models/Discipline";
 import Period from "@/features/grades/models/Period";
 import AddGradeModal from "@/features/grades/components/SimulateGradeModal";
+import DisciplineItem from "@/features/grades/components/DisciplineItem";
+import DisciplineGroupItem from "@/features/grades/components/DisciplineGroupItem";
 
 import { Text } from "@/components/core";
 import { useGrade } from "@/features/grades/context/GradeContext";
 import { calculateStrengthsWeaknesses, formatGradeText } from "@/features/grades/utils/helpers";
 import { useSimulation } from "@/features/grades/hooks/useSimulation";
 
-import { useGrades } from "@/hooks/useGrades";
+import { useGrades } from "@/features/grades";
 import { useUserStore } from "@/hooks/useUserStore";
 
 const { width } = Dimensions.get("window");
@@ -131,27 +133,34 @@ export default function GradesContent() {
     }, []);
 
     const renderItem = ({ item, index }) => {
-        const DisciplineClass = new Discipline(item);
+        const discipline = new Discipline(item);
 
-        if (DisciplineClass.isDisciplineGroup) {
-            return DisciplineClass.RenderDisciplineGroup({
-                dataLength: renderDisciplinesArray.length,
-                index: index,
-            });
+        if (discipline.isDisciplineGroup) {
+            return (
+                <DisciplineGroupItem
+                    discipline={discipline}
+                    dataLength={renderDisciplinesArray.length}
+                    index={index}
+                />
+            );
         } else {
-            return DisciplineClass.RenderDiscipline({
-                dataLength: renderDisciplinesArray.length,
-                index,
-                isExpanded:
-                    expandedChain ===
-                    `${DisciplineClass.code}-${DisciplineClass.libelle}`,
-                onPress: () =>
-                    handleItemPress(
-                        `${DisciplineClass.code}-${DisciplineClass.libelle}`
-                    ),
-
-                dispatch: dispatch,
-            });
+            return (
+                <DisciplineItem
+                    discipline={discipline}
+                    index={index}
+                    dataLength={renderDisciplinesArray.length}
+                    isExpanded={
+                        expandedChain ===
+                        `${discipline.code}-${discipline.libelle}`
+                    }
+                    onPress={() =>
+                        handleItemPress(
+                            `${discipline.code}-${discipline.libelle}`
+                        )
+                    }
+                    dispatch={dispatch}
+                />
+            );
         }
     };
 

@@ -77,6 +77,7 @@ export interface FormattedGrade {
     onlySkills: boolean;
     actionOnStreak?: "up" | "down" | "equal" | "nothing" | "previous up";
     badges: string[];
+    isSimulation?: boolean;
 }
 
 export interface FormattedDiscipline {

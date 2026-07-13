@@ -22,7 +22,7 @@ import { useHomework } from "@/features/homeworks/context/HomeworkContext";
 import { useHomeworksHandler } from "@/features/homeworks/hooks/useHomeworksHandler";
 
 import { useCustomDataStore } from "@/hooks/useCustomDataStore";
-import { useHomeworks } from "@/hooks/useHomeworks";
+import { useHomeworks } from "@/features/homeworks";
 import { useUserStore } from "@/hooks/useUserStore";
 import { objectsEqual } from "@/utils/json";
 
