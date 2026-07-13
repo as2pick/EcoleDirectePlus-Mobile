@@ -1538,7 +1538,6 @@ const GradeCard = ({ disciplineColor, disciplineData: { libelle }, data }) => {
         () => blendWithWhite(disciplineColor, 0.35),
         [disciplineColor]
     );
-    console.log(lightColor);
     return (
         <View
             style={{
