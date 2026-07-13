@@ -11,6 +11,7 @@ import {
     ResolvedMessaging,
     MessagingResolverParams,
     FetchApiResponse,
+    MessageContentResolverParams,
 } from "@/types/messaging";
 
 const DEFAULT_MESSAGING: ResolvedMessaging = {
@@ -175,11 +176,6 @@ function getInitials(from?: ApiMessageSender): string {
     return `${first}${last}`.toUpperCase() || "?";
 }
 
-export interface MessageContentResolverParams {
-    token: string;
-    messageId: number | string;
-    mode?: "destinataire" | "expediteur";
-}
 
 export async function messageContentResolver({
     token,

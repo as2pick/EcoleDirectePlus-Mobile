@@ -134,3 +134,9 @@ export interface FetchApiResponse<T> {
     data: T;
     isDataEmpty: boolean;
 }
+
+export interface MessageContentResolverParams {
+    token: string;
+    messageId: number | string;
+    mode?: "destinataire" | "expediteur";
+}
