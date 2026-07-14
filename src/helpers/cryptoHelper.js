@@ -47,9 +47,9 @@ export const payloadHelper = {
                 userId: userId,
                 superSecretUserToken: connectionToken,
                 creationDate: now.format("YYYY-MM-DD_HH:mm"),
-                expirationDate: now
-                    .add(totalTokenExpirationTime / 60, "minutes")
-                    .format("YYYY-MM-DD_HH:mm"),
+                expirationDate: connectionToken === "guest_token"
+                    ? now.add(99, "years").format("YYYY-MM-DD_HH:mm")
+                    : now.add(totalTokenExpirationTime / 60, "minutes").format("YYYY-MM-DD_HH:mm"),
             });
 
             // IV generated with expo-crypto for compatibility
