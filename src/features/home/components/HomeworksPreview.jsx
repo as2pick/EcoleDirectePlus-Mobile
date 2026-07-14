@@ -455,7 +455,6 @@ export default function HomeworksPreview({}) {
                         <TouchableOpacity
                             key={item.customHomeworkMd5Key}
                             onPress={() => {
-                                console.log(item);
                                 navigation.navigate(
                                     routesNames.client.homeworks.group,
                                     {

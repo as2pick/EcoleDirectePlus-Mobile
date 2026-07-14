@@ -1542,7 +1542,6 @@ export default function LastGrades({}) {
                 renderItem={({ item }) => (
                     <TouchableOpacity
                         onPress={() => {
-                            console.log(item);
                             navigation.navigate(routesNames.client.grades.group, {
                                 screen: routesNames.client.grades.details,
                                 params: {
