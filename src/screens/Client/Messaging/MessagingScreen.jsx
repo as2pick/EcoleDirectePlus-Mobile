@@ -13,17 +13,9 @@ export default function MessagingScreen() {
     const { data, isLoading } = useMessaging(token);
 
     return (
-        <View style={{ flex: 1, paddingBottom: tabPadding }}>
-            {/* <InDev /> */}
-            <View
-                style={{
-                    width: "70%",
-                    borderWidth: 3,
-                    borderColor: "red",
-                    flex: 1,
-                }}
-            ></View>
-        </View>
+        <SafeAreaView style={{ flex: 1, paddingBottom: tabPadding }}>
+            <InDev />
+        </SafeAreaView>
     );
 }
 
