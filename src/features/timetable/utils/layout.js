@@ -22,6 +22,7 @@ export const convertData = (arrayData = []) => {
             dispense,
             isModifie,
             isAnnule,
+            codeMatiere,
         } = element;
 
         const converter = {
@@ -42,6 +43,7 @@ export const convertData = (arrayData = []) => {
             classGroup: classe && classe.trim() === "" ? undefined : classe,
             group: groupe && groupe.trim() === "" ? undefined : groupe,
             libelle: text.toUpperCase(),
+            codeMatiere: codeMatiere || text,
         };
 
         convertedTimetable.push(converter);
@@ -51,7 +53,8 @@ export const convertData = (arrayData = []) => {
         if (!finalTimetable[day]) {
             finalTimetable[day] = [];
         }
-        const color = useColorStore.getState().getOrAssignColor(course.libelle);
+        const colorKey = course.codeMatiere || course.libelle;
+        const color = useColorStore.getState().getOrAssignColor(colorKey);
         course["color"] = color;
         course["textColor"] = isDarkColor(color)
             ? "hsl(0, 100%, 100%)"
@@ -150,3 +153,4 @@ export const sortedTimetable = async (timetable) => {
 
     return finalSortedTimetable;
 };
+

@@ -29,6 +29,21 @@ export const useSignIn = () => {
 
     const signIn = useCallback(async ({ username, password, keepConnected }: any) => {
         setKeepConnected(keepConnected);
+
+        const guestUser = process.env.EXPO_PUBLIC_GUEST_USERNAME;
+        const guestPass = process.env.EXPO_PUBLIC_GUEST_PASSWORD;
+
+        if (guestUser && guestPass && username === guestUser && password === guestPass) {
+            try {
+                const { loginAsGuest } = require("@/services/guestData");
+                await loginAsGuest(keepConnected);
+                return;
+            } catch (err) {
+                setError("Erreur lors de la connexion invité");
+                return;
+            }
+        }
+
         try {
             const gtkCookie = await authService.generateGTK();
             const apiLoginData = await authService.login({
