@@ -1,9 +1,11 @@
 import { Text } from "@/components";
+import { useGrades } from "@/features/grades";
 import ActiveCourseCard from "@/features/home/components/ActiveCourseCard";
 import GeneralAveragePreview from "@/features/home/components/GeneralAveragePreview";
 import HomeworksPreview from "@/features/home/components/HomeworksPreview";
 import LastGrades from "@/features/home/components/LastGrades";
 import getGreetingMessage from "@/features/home/utils/getGreetingMessage";
+import { useHomeworks } from "@/features/homeworks";
 import { useTimetable } from "@/features/timetable";
 import { useCurrentTime } from "@/hooks/useCurrentTime";
 import { useSignIn } from "@/hooks/useSignIn";
@@ -25,7 +27,9 @@ export default function HomeScreen() {
 
     const token = useUserStore((state) => state.token);
     const { name } = useUserStore((state) => state.profile);
-    const { data: timetableData, isLoading, isError } = useTimetable(token);
+    const { data: timetableData } = useTimetable(token);
+    const { data: gradesData } = useGrades(token);
+    const { data: homeworksData } = useHomeworks(token);
     const currentTime = useCurrentTime();
     const [greetingMessage] = useState(getGreetingMessage);
 
@@ -132,7 +136,7 @@ export default function HomeScreen() {
                     />
                     <GeneralAveragePreview />
 
-                    <LastGrades />
+                    <LastGrades lastGradesObject={gradesData.lastGrades} />
                     <HomeworksPreview />
                 </View>
             </ScrollView>
