@@ -19,10 +19,12 @@ export default class Discipline {
     disciplines?: FormattedDiscipline[];
     disciplineCodes?: string[];
     simulatedGrades: FormattedGrade[];
+    color?: string;
 
     constructor(data: any) {
         this.code = data.code || "";
         this.libelle = data.libelle || "";
+        this.color = data.color;
         this.averageDatas = data.averageDatas || {
             classAverage: null,
             minAverage: null,
@@ -60,6 +62,7 @@ export default class Discipline {
             disciplines: this.disciplines,
             disciplineCodes: this.disciplineCodes,
             simulatedGrades: this.simulatedGrades,
+            color: this.color,
         };
     }
 

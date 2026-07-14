@@ -1,0 +1,27 @@
+{
+    "code": 200,
+    "token": "guest_token",
+    "host": "HTTP200",
+    "message": "",
+    "data": {
+        "accounts": [
+            {
+                "id": 7875,
+                "typeCompte": "E",
+                "prenom": "Lucas",
+                "nom": "Mage",
+                "email": "lucas.mage@gmail.com",
+                "nomEtablissement": "Lycée Saint François d'Assise",
+                "profile": {
+                    "sexe": "M",
+                    "telPortable": "0607080910",
+                    "classe": {
+                        "libelle": "Terminale Générale 1",
+                        "code": "TG1"
+                    }
+                }
+            }
+        ]
+    }
+}
+

@@ -7,6 +7,18 @@ export default async function fetchApi<T>(
     requestPayload?: { headers?: any; body?: any; method?: string }
 ): Promise<T> {
     try {
+        const token = requestPayload?.headers?.["X-Token"] || useUserStore.getState().token;
+
+        if (token === "guest_token") {
+            const { getGuestData } = require("./guestData");
+            const response = getGuestData(url, requestPayload?.body);
+            return {
+                ...response,
+                isDataEmpty: !response || !response.data,
+                responseHeaders: {},
+            } as any;
+        }
+
         const defaultHeaders = {
             "User-Agent": `Mozilla/5.0 (X11; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0`,
         };
