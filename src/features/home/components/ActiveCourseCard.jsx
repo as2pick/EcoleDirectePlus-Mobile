@@ -2,11 +2,13 @@ import { Text } from "@/components";
 import { ProgressBar } from "@/components/progression/ProgressBar";
 import { BackArrow } from "@/components/svg";
 import { routesNames } from "@/router/config/routesNames";
+import { formatDuration, getTimeInterval } from "@/utils/time";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity, View } from "react-native";
 
-export default function ActiveCourseCard({}) {
+export default function ActiveCourseCard({ progression, activeCourse, nextCourse }) {
     const navigation = useNavigation();
+
     return (
         <TouchableOpacity
             onPress={() => {
@@ -49,7 +51,7 @@ export default function ActiveCourseCard({}) {
                 }}
             >
                 <Text color="hsla(1, 100%, 100%, 0.9)" preset="h3">
-                    Maths
+                    {activeCourse?.libelle}
                 </Text>
                 <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
                     <BackArrow
@@ -58,13 +60,13 @@ export default function ActiveCourseCard({}) {
                         size={22}
                     />
                     <Text preset="label1" color="hsla(1, 100%, 100%, 0.9)">
-                        10h30
+                        {activeCourse?.endCourse?.time}
                     </Text>
                 </View>
             </View>
             <View style={{ justifyContent: "space-between", marginBottom: 12 }}>
                 <ProgressBar
-                    progression={0.7}
+                    progression={progression}
                     color="hsla(228, 100%, 69%, 0.85)"
                     style={{
                         backgroundColor: "hsla(228, 100%, 69%, .25)",
@@ -98,7 +100,7 @@ export default function ActiveCourseCard({}) {
                         marginHorizontal: 8,
                     }}
                 >
-                    <Text>Dans 23 min</Text>
+                    <Text>Dans {formatDuration(nextCourse.timeRemaining)}</Text>
                 </View>
                 <View
                     style={{
@@ -127,7 +129,9 @@ export default function ActiveCourseCard({}) {
                             borderRadius: 8,
                         }}
                     >
-                        <Text color="hsl(219, 100%, 69%)">E205</Text>
+                        <Text color="hsl(219, 100%, 69%)">
+                            {nextCourse.course.room}
+                        </Text>
                     </View>
                 </View>
                 <View
@@ -140,7 +144,9 @@ export default function ActiveCourseCard({}) {
                             gap: 6,
                         }}
                     >
-                        <Text color="hsla(1, 0%, 100%, .9)">M. LABRU TO</Text>
+                        <Text color="hsla(1, 0%, 100%, .9)">
+                            {nextCourse.course.teacher}
+                        </Text>
                         <View
                             style={{
                                 width: 6,
@@ -149,9 +155,20 @@ export default function ActiveCourseCard({}) {
                                 borderRadius: 12,
                             }}
                         />
-                        <Text color="hsla(1, 0%, 100%, .9)">1h30</Text>
+                        <Text color="hsla(1, 0%, 100%, .9)">
+                            {formatDuration(
+                                getTimeInterval(
+                                    `${nextCourse.course.startCourse.date}T${nextCourse.course.startCourse.time}`,
+                                    `${nextCourse.course.endCourse.date}T${nextCourse.course.endCourse.time}`
+                                ),
+                                "short"
+                            )}
+                        </Text>
                     </View>
-                    <Text color="hsla(1, 0%, 100%, .9)">10h45 / 11h30</Text>
+                    <Text color="hsla(1, 0%, 100%, .9)">
+                        {nextCourse.course.startCourse.time}/{" "}
+                        {nextCourse.course.endCourse.time}
+                    </Text>
                 </View>
             </View>
         </TouchableOpacity>
