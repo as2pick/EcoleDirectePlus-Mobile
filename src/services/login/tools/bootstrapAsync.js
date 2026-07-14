@@ -11,16 +11,26 @@ import storeDatas from "./storeLoginDatas";
  * @returns {Promise<string|null>}
  */
 
-export async function tryLoginWithStoredCreds({
-    cipherText,
-}) {
+export async function tryLoginWithStoredCreds({ cipherText }) {
     try {
         const payload = await payloadHelper.decrypt({ cipherHex: cipherText });
         const now = dayjs();
         const expiration = dayjs(payload.expirationDate, "YYYY-MM-DD_HH:mm");
 
         if (now.isBefore(expiration)) {
-            const getDataFromStorage = useUserStore.getState().profile;
+            let getDataFromStorage = useUserStore.getState().profile;
+
+            if (
+                !getDataFromStorage &&
+                payload.superSecretUserToken === "guest_token"
+            ) {
+                const mockLogin = require("../../../../test/login.json");
+                getDataFromStorage = mockLogin?.data?.accounts?.[0];
+            }
+
+            if (payload.superSecretUserToken === "guest_token") {
+                console.log("Restauration du compte développeur");
+            }
 
             storeDatas({
                 data: getDataFromStorage,
@@ -38,11 +48,31 @@ export async function tryLoginWithStoredCreds({
     }
 }
 
-export async function tryRestoreToken({
-    credentialsPassword,
-}) {
+export async function tryRestoreToken({ credentialsPassword }) {
     try {
         const authData = JSON.parse(credentialsPassword);
+        const guestUser = process.env.EXPO_PUBLIC_GUEST_USERNAME || "guest";
+        const guestPass = process.env.EXPO_PUBLIC_GUEST_PASSWORD || "guest";
+
+        if (
+            authData?.identifiant === guestUser &&
+            authData?.motdepasse === guestPass
+        ) {
+            console.log(
+                "\n========================================================"
+            );
+            console.log(
+                "🛸 ✨  [GUEST MODE] - RESTAURATION DE SESSION (TOKEN)  ✨ 🛸"
+            );
+            console.log("👤 Session invité regénérée à chaud avec succès.");
+            console.log(
+                "========================================================\n"
+            );
+            const { loginAsGuest } = require("@/services/guestData");
+            await loginAsGuest(true);
+            return true;
+        }
+
         const gtkCookie = await authService.generateGTK();
 
         const loginResponse = await authService.login({
@@ -54,7 +84,9 @@ export async function tryRestoreToken({
         });
 
         if (loginResponse?.code === 505 || loginResponse?.code === 522) {
-            console.warn("Stored credentials are no longer valid (505/522). Clearing credentials.");
+            console.warn(
+                "Stored credentials are no longer valid (505/522). Clearing credentials."
+            );
             await authService.deleteCredentials();
             return false;
         }
@@ -81,3 +113,4 @@ export async function tryRestoreToken({
         return false;
     }
 }
+

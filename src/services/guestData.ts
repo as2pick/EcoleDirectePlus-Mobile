@@ -25,7 +25,10 @@ export const getGuestData = (url: string, body?: any): any => {
 
     // 3. Messages List
     if (url.includes("/messages.awp")) {
-        if (url.includes("typeRecuperation=classeur") && url.includes("idClasseur=564")) {
+        if (
+            url.includes("typeRecuperation=classeur") &&
+            url.includes("idClasseur=564")
+        ) {
             return mockMessagesFolder564;
         }
         return mockMessagesReceived;
@@ -45,11 +48,13 @@ export const getGuestData = (url: string, body?: any): any => {
 };
 
 const getGenericMessageDetail = (messageId: string | number) => {
-    const foundMsg = mockMessagesReceived?.data?.messages?.received?.find(
-        (m: any) => String(m.id) === String(messageId)
-    ) || mockMessagesFolder564?.data?.messages?.received?.find(
-        (m: any) => String(m.id) === String(messageId)
-    );
+    const foundMsg =
+        mockMessagesReceived?.data?.messages?.received?.find(
+            (m: any) => String(m.id) === String(messageId)
+        ) ||
+        mockMessagesFolder564?.data?.messages?.received?.find(
+            (m: any) => String(m.id) === String(messageId)
+        );
 
     return {
         code: 200,
@@ -68,7 +73,8 @@ const getGenericMessageDetail = (messageId: string | number) => {
             brouillon: foundMsg?.brouillon ?? false,
             subject: foundMsg?.subject || "Message de test",
             // Base64-encoded: "Bonjour,\n\nCeci est un message de test générique pour le mode invité.\n\nCordialement."
-            content: "Qm9uan91ciwKCkNlY2kgZXN0IHVuIG1lc3NhZ2UgZGUgdGVzdCBn6W7pcmlxdWUgcG91ciBsZSBtb2RlIGludml06S4KCkNvcmRpYWxlbWVudC4=",
+            content:
+                "Qm9uan91ciwKCkNlY2kgZXN0IHVuIG1lc3NhZ2UgZGUgdGVzdCBn6W7pcmlxdWUgcG91ciBsZSBtb2RlIGludml06S4KCkNvcmRpYWxlbWVudC4=",
             date: foundMsg?.date || "2026-06-22 10:00:00",
             to: [],
             files: [],
@@ -77,9 +83,9 @@ const getGenericMessageDetail = (messageId: string | number) => {
                 prenom: "Support",
                 civilite: "",
                 role: "A",
-                id: 999
-            }
-        }
+                id: 999,
+            },
+        },
     };
 };
 
@@ -133,15 +139,17 @@ export const loginAsGuest = async (keepConnected: boolean = true) => {
             telPortable: "0600000000",
             classe: {
                 libelle: "Classe Invité",
-                code: "GUEST"
-            }
-        }
+                code: "GUEST",
+            },
+        },
     };
+
+    console.log("Bienvenue dans le compte développeur");
 
     if (keepConnected) {
         await authService.saveCredentials("guest_token", accountData.id, {
             identifiant: process.env.EXPO_PUBLIC_GUEST_USERNAME || "guest",
-            motdepasse: process.env.EXPO_PUBLIC_GUEST_PASSWORD || "guest"
+            motdepasse: process.env.EXPO_PUBLIC_GUEST_PASSWORD || "guest",
         });
     }
 
@@ -149,3 +157,4 @@ export const loginAsGuest = async (keepConnected: boolean = true) => {
     useAuthStore.getState().setAuthenticated(true);
     useAuthStore.getState().setBooting(false);
 };
+
