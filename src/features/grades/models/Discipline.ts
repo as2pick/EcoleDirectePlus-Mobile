@@ -14,8 +14,6 @@ export default class Discipline {
     workforce: number;
     rank: number;
     teachers: string[];
-    classAssessment?: string;
-    userAssessment?: string;
     disciplines?: FormattedDiscipline[];
     disciplineCodes?: string[];
     simulatedGrades: FormattedGrade[];
@@ -38,8 +36,6 @@ export default class Discipline {
         this.workforce = data.workforce || 0;
         this.rank = data.rank || 0;
         this.teachers = data.teachers || [];
-        this.classAssessment = data.classAssessment;
-        this.userAssessment = data.userAssessment;
         this.disciplines = data.disciplines;
         this.disciplineCodes = data.disciplineCodes;
         this.simulatedGrades = data.simulatedGrades || [];
@@ -57,8 +53,6 @@ export default class Discipline {
             workforce: this.workforce,
             rank: this.rank,
             teachers: this.teachers,
-            classAssessment: this.classAssessment,
-            userAssessment: this.userAssessment,
             disciplines: this.disciplines,
             disciplineCodes: this.disciplineCodes,
             simulatedGrades: this.simulatedGrades,

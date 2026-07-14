@@ -61,9 +61,6 @@ export interface FormattedGrade {
     isExam: boolean;
     homeworkType: string;
     disciplineName: string;
-    disciplineColor?: string;
-    disciplineLibelle?: string;
-    disciplineData?: FormattedDiscipline | FormattedDisciplineGroup | null;
     codes: { period: string; discipline: string };
     data: {
         coef: number;
@@ -91,8 +88,6 @@ export interface FormattedDiscipline {
     workforce: number;
     rank: number;
     teachers?: string[][];
-    classAssessment?: string;
-    userAssessment?: string;
     grades: FormattedGrade[];
     streakCount?: number;
 }
@@ -108,8 +103,21 @@ export interface FormattedPeriod {
     groups: (FormattedDiscipline | FormattedDisciplineGroup)[];
 }
 
+export interface LastGrade {
+    libelle: string;
+    date: string;
+    disciplineName: string;
+    disciplineColor?: string;
+    codes: { period: string; discipline: string };
+    data: {
+        coef: number;
+        outOf: number | null;
+        grade: number | null;
+    };
+}
+
 export type ResolvedGrades = Record<string, FormattedPeriod> & {
-    lastGrades?: FormattedGrade[];
+    lastGrades?: LastGrade[];
 };
 
 export interface SimulatedGrade {
@@ -122,4 +130,5 @@ export interface SimulatedGrade {
     coef: number;
     isSimulation: true;
 }
+
 

@@ -3,7 +3,6 @@ import Discipline from "../models/Discipline";
 import { parseNumber } from "../utils/averages";
 import { streakDataInjectedIntoGrades } from "../utils/streaks";
 import fetchApi from "@/services/fetchApi";
-import base64Handler from "@/utils/handleBase64";
 import { FetchApiResponse } from "@/types";
 import {
     ApiGrade,
@@ -109,35 +108,7 @@ export default async function gradesResolver(
 
         const result = streakDataInjectedIntoGrades(periodsObj) as any;
 
-        const rawLastGrades = getLatestGrades(grades.notes || [], 10);
-        const lastGrades = rawLastGrades.map((grade) => {
-            const periodCode = grade.codes.period;
-            const disciplineCode = grade.codes.discipline;
-            const period = result[periodCode];
-            let disciplineData: any = null;
-
-            if (period?.groups) {
-                for (const group of period.groups) {
-                    if (group.isDisciplineGroup) {
-                        const found = group.disciplines.find(
-                            (d: any) => d.code === disciplineCode
-                        );
-                        if (found) {
-                            disciplineData = found;
-                            break;
-                        }
-                    } else if (group.code === disciplineCode) {
-                        disciplineData = group;
-                        break;
-                    }
-                }
-            }
-
-            return {
-                ...grade,
-                disciplineData,
-            };
-        });
+        const lastGrades = getLatestGrades(grades.notes || [], 10);
 
         Object.defineProperty(result, "lastGrades", {
             value: lastGrades,
@@ -155,18 +126,6 @@ export default async function gradesResolver(
 
 function parseDiscipline(discipline: ApiDiscipline) {
     const teachersWithoutId = (discipline.professeurs || []).map(({ nom }) => nom);
-    const appreciationsList = discipline.appreciations || [];
-    const decodedClassAssessment =
-        appreciationsList.map((chain) =>
-            base64Handler.decode(chain)
-        )[1] /* atention if too many users report less appreciations ! */ ||
-        undefined;
-
-    const decodedUserAssessment =
-        appreciationsList.map((chain) =>
-            base64Handler.decode(chain)
-        )[0] /* atention if too many users report less appreciations ! */ ||
-        undefined;
 
     const obj = {
         code: discipline.codeMatiere,
@@ -183,8 +142,6 @@ function parseDiscipline(discipline: ApiDiscipline) {
         workforce: discipline.effectif,
         rank: discipline.rang,
         teachers: teachersWithoutId,
-        classAssessment: decodedClassAssessment,
-        userAssessment: decodedUserAssessment,
     };
 
     return obj;
@@ -283,7 +240,7 @@ function enrichDiscipline(
     return enrichedDiscipline;
 }
 
-export function getLatestGrades(rawNotes: ApiGrade[], limit = 5): FormattedGrade[] {
+export function getLatestGrades(rawNotes: ApiGrade[], limit = 5): any[] {
     if (!Array.isArray(rawNotes)) return [];
 
     return rawNotes
@@ -291,11 +248,23 @@ export function getLatestGrades(rawNotes: ApiGrade[], limit = 5): FormattedGrade
         .sort((a, b) => b.date.localeCompare(a.date))
         .slice(0, limit)
         .map((note) => {
-            const formatted = formatGrade(note, note.codePeriode);
-            formatted.disciplineColor = useColorStore
-                .getState()
-                .getOrAssignColor(note.codeMatiere);
-            return formatted;
+            return {
+                libelle: note.devoir,
+                date: note.date,
+                disciplineName: note.libelleMatiere,
+                disciplineColor: useColorStore
+                    .getState()
+                    .getOrAssignColor(note.codeMatiere),
+                codes: {
+                    period: note.codePeriode,
+                    discipline: note.codeMatiere,
+                },
+                data: {
+                    coef: parseFloat(note.coef),
+                    grade: parseNumber(note.valeur),
+                    outOf: parseNumber(note.noteSur),
+                },
+            };
         });
 }
 
