@@ -58,16 +58,7 @@ export async function tryRestoreToken({ credentialsPassword }) {
             authData?.identifiant === guestUser &&
             authData?.motdepasse === guestPass
         ) {
-            console.log(
-                "\n========================================================"
-            );
-            console.log(
-                "🛸 ✨  [GUEST MODE] - RESTAURATION DE SESSION (TOKEN)  ✨ 🛸"
-            );
-            console.log("👤 Session invité regénérée à chaud avec succès.");
-            console.log(
-                "========================================================\n"
-            );
+            console.log("Restauration du compte développeur");
             try {
                 const { loginAsGuest } = require("../../../../test/guestData");
                 await loginAsGuest(true);

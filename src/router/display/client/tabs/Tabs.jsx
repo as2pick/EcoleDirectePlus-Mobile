@@ -1,5 +1,4 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-
 import { NavigationBottomBar } from "../../../../components";
 import { routesNames } from "../../../config/routesNames";
 import mapScreens from "@/router/helpers/mapScreens";

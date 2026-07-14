@@ -17,8 +17,10 @@ import { scheduleOnRN } from "react-native-worklets";
 import { Text } from "@/components/core";
 import { formatDate } from "@/utils/date";
 import { useHomework } from "../context/HomeworkContext";
+import { useTabPadding } from "@/hooks/useTabPadding";
 
 export default function NewHomeworkModal({ visible }) {
+    const tabPadding = useTabPadding();
     const { dispatch } = useHomework();
     const [isRendered, setIsRendered] = useState(false);
     const [error, setError] = useState(null);
@@ -128,7 +130,7 @@ export default function NewHomeworkModal({ visible }) {
                     style={{ flex: 1 }}
                 />
             </Animated.View>
-            <Animated.View
+             <Animated.View
                 style={[
                     {
                         position: "absolute",
@@ -139,7 +141,7 @@ export default function NewHomeworkModal({ visible }) {
                         borderTopRightRadius: 42,
                         paddingHorizontal: 24,
                         paddingTop: 16,
-                        paddingBottom: 40,
+                        paddingBottom: 40 + tabPadding,
                         minHeight: 400,
                         maxHeight: "85%",
                     },

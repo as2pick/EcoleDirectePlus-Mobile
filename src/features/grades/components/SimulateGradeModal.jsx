@@ -12,11 +12,13 @@ import { getTodayDateString } from "@/utils/date";
 import { parseNumber } from "../utils/averages";
 import Grade from "../models/Grade";
 import { useGrade } from "../context/GradeContext";
+import { useTabPadding } from "@/hooks/useTabPadding";
 
 const PLACEHOLDERS = { coef: 1, grade: 15, outOf: 20 };
 
 export default function AddGradeModal({ visible, disciplineCodes }) {
     const { state, dispatch } = useGrade();
+    const tabPadding = useTabPadding();
 
     const [simulatedGrade, setSimulatedGrade] = useState(PLACEHOLDERS);
     const [simulationCount, setSimulationCount] = useState(1);
@@ -96,7 +98,7 @@ export default function AddGradeModal({ visible, disciplineCodes }) {
                         borderTopRightRadius: 42,
                         paddingHorizontal: 24,
                         paddingTop: 16,
-                        paddingBottom: 40,
+                        paddingBottom: 40 + tabPadding,
                         minHeight: 400,
                         maxHeight: "85%",
                     },

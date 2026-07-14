@@ -8,6 +8,7 @@ import Animated, {
     withTiming,
 } from "react-native-reanimated";
 import { scheduleOnRN } from "react-native-worklets";
+import { useTabPadding } from "@/hooks/useTabPadding";
 
 export default function BottomSheet({
     children,
@@ -17,6 +18,7 @@ export default function BottomSheet({
     opened,
     style = {},
 }) {
+    const tabPadding = useTabPadding();
     debateSpacing = Number(debateSpacing.replace("%", ""));
 
     const [isUp, setIsUp] = useState(false);
@@ -80,7 +82,12 @@ export default function BottomSheet({
         >
             <GestureDetector gesture={panGesture}>
                 <Animated.View
-                    style={[styles.slidingView, { height }, style, animatedStyle]}
+                    style={[
+                        styles.slidingView,
+                        { height, paddingBottom: tabPadding },
+                        style,
+                        animatedStyle,
+                    ]}
                 >
                     {displayLine && (
                         <View

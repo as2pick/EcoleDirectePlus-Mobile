@@ -25,9 +25,11 @@ import { useCustomDataStore } from "@/hooks/useCustomDataStore";
 import { useHomeworks } from "@/features/homeworks";
 import { useUserStore } from "@/hooks/useUserStore";
 import { objectsEqual } from "@/utils/json";
+import { useTabPadding } from "@/hooks/useTabPadding";
 
 export default function HomeworksContent() {
     const token = useUserStore((state) => state.token);
+    const tabPadding = useTabPadding();
     const {
         data: homeworksData,
         isLoading,
@@ -276,6 +278,7 @@ export default function HomeworksContent() {
                             showsVerticalScrollIndicator={false}
                             contentContainerStyle={{
                                 gap: 10,
+                                paddingBottom: tabPadding,
                             }}
                         />
                     </View>

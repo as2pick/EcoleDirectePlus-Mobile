@@ -20,6 +20,7 @@ import { addOpacityToCssRgb } from "@/utils/colorGenerator";
 
 import { useTimetable } from "@/features/timetable";
 import { useUserStore } from "@/hooks/useUserStore";
+import { useTabPadding } from "@/hooks/useTabPadding";
 
 let {
     screen: { height, width },
@@ -32,6 +33,7 @@ const screenHeight = height;
 export default function TimetableContent() {
     const navigation = useNavigation();
     const theme = useTheme();
+    const tabPadding = useTabPadding();
 
     const scrollViewRef = useRef(null);
 
@@ -55,7 +57,9 @@ export default function TimetableContent() {
     useEffect(() => {
         if (!timetableCoreSuccessLoaded || !timetableData) return;
 
-        const todayIndex = timetableData.findIndex((day) => day.date === CONFIG.dateNow);
+        const todayIndex = timetableData.findIndex(
+            (day) => day.date === CONFIG.dateNow
+        );
 
         if (todayIndex !== -1) {
             scrollViewRef.current.scrollToIndex(todayIndex, false);
@@ -106,7 +110,9 @@ export default function TimetableContent() {
                             bottom: 0,
                         }}
                         onLongPress={() => {
-                            const todayIndex = timetableData.findIndex((day) => day.date === CONFIG.dateNow);
+                            const todayIndex = timetableData.findIndex(
+                                (day) => day.date === CONFIG.dateNow
+                            );
                             if (todayIndex !== -1) {
                                 scrollViewRef.current.scrollToIndex(todayIndex);
                             }
@@ -134,6 +140,7 @@ export default function TimetableContent() {
                                 setter: setTimetableViewDims,
                             }}
                             index={index}
+                            tabPadding={tabPadding}
                         />
                     ))}
                 </VerticalScrollView>
@@ -236,9 +243,9 @@ const CourseBox = ({ course, navigation, theme, timetableViewDims }) => {
                         paddingVertical:
                             height <= CONFIG.minCourseSize
                                 ? timetableViewDims.height /
-                                CONFIG.minCourseSize /
-                                height +
-                                1
+                                      CONFIG.minCourseSize /
+                                      height +
+                                  1
                                 : CONFIG.minCourseSize,
                         overflow: "hidden",
                         backgroundColor: caseColor,
@@ -272,13 +279,13 @@ const CourseBox = ({ course, navigation, theme, timetableViewDims }) => {
 
                             backgroundColor: isCancelled
                                 ? addOpacityToCssRgb(
-                                    timetableConfig.cancelledColor,
-                                    0.43
-                                )
+                                      timetableConfig.cancelledColor,
+                                      0.43
+                                  )
                                 : addOpacityToCssRgb(
-                                    timetableConfig.dispensedColor,
-                                    0.43
-                                ),
+                                      timetableConfig.dispensedColor,
+                                      0.43
+                                  ),
                         }}
                     >
                         <Text
@@ -406,14 +413,15 @@ const DayShedule = ({
     theme,
     timetableViewDims = { getter, setter },
     index,
+    tabPadding = 0,
 }) => {
     return (
         <View
             key={index}
             style={{
                 width: "100%",
-                height: screenHeight - 95, // idk why but... works on other devices ?
-                top: 20,
+                height: screenHeight - tabPadding, // idk why but... works on other devices ?
+                top: 25,
 
                 alignItems: "center",
                 position: "absolute",
@@ -451,3 +459,4 @@ const styles = StyleSheet.create({
         backgroundColor: "rgb(10, 10, 10)",
     },
 });
+
