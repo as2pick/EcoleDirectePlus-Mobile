@@ -16,7 +16,7 @@ import { formatFrenchDate } from "@/utils/date";
 
 import { ProgressBar } from "@/components/progression/ProgressBar";
 import { useCustomDataStore } from "@/hooks/useCustomDataStore";
-import { useHomeworks } from "@/hooks/useHomeworks";
+import { useHomeworks } from "@/features/homeworks";
 import { useUserStore } from "@/hooks/useUserStore";
 import { objectsEqual } from "@/utils/json";
 

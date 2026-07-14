@@ -23,3 +23,11 @@ export interface UserPreferences {
     theme: AppTheme;
     isFollowingSystem: boolean;
 }
+
+export interface NetworkInfo {
+    isConnected: boolean;
+    isInternetReachable: boolean;
+    type: string;
+    inAirplaneMode: boolean;
+    isOnline: boolean;
+}

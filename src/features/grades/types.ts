@@ -77,6 +77,7 @@ export interface FormattedGrade {
     onlySkills: boolean;
     actionOnStreak?: "up" | "down" | "equal" | "nothing" | "previous up";
     badges: string[];
+    isSimulation?: boolean;
 }
 
 export interface FormattedDiscipline {
@@ -110,4 +111,15 @@ export interface FormattedPeriod {
 export type ResolvedGrades = Record<string, FormattedPeriod> & {
     lastGrades?: FormattedGrade[];
 };
+
+export interface SimulatedGrade {
+    id: string;
+    disciplineCode: string;
+    periodCode: string;
+    libelle: string;
+    grade: number;
+    outOf: number;
+    coef: number;
+    isSimulation: true;
+}
 

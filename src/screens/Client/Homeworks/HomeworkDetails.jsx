@@ -13,7 +13,7 @@ import { CustomTopHeader, Modal } from "../../../components";
 import HomeworkCard from "@/features/homeworks/components/HomeworkCard";
 import { Text } from "@/components/core";
 import { useUserStore } from "@/hooks/useUserStore";
-import { useHomeworks } from "@/hooks/useHomeworks";
+import { useHomeworks } from "@/features/homeworks";
 import { formatFrenchDate } from "@/utils/date";
 import { useHomework } from "@/features/homeworks/context/HomeworkContext";
 import { downloadDocument, openDocument } from "@/features/homeworks/utils/documents";

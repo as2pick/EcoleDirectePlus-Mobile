@@ -4,17 +4,31 @@ import { parseNumber } from "../utils/averages";
 import { streakDataInjectedIntoGrades } from "../utils/streaks";
 import fetchApi from "@/services/fetchApi";
 import base64Handler from "@/utils/handleBase64";
+import { FetchApiResponse } from "@/types";
+import {
+    ApiGrade,
+    ApiDiscipline,
+    ApiPeriod,
+    ApiGradesResponse,
+    FormattedGrade,
+    FormattedDiscipline,
+    FormattedDisciplineGroup,
+    FormattedPeriod,
+    ResolvedGrades,
+} from "../types";
 
-const skillColorsCodes = {
-    1: "red",
-    2: "orange",
-    3: "paleGreen",
-    4: "green",
+const skillColorsCodes: Record<string, string> = {
+    "1": "red",
+    "2": "orange",
+    "3": "paleGreen",
+    "4": "green",
 };
 
-export default async function gradesResolver({ token }) {
+export default async function gradesResolver(
+    token: string
+): Promise<ResolvedGrades | Record<string, never>> {
     try {
-        const gradesResponse = await fetchApi(
+        const gradesResponse = await fetchApi<FetchApiResponse<ApiGradesResponse>>(
             "https://api.ecoledirecte.com/v3/eleves/{USER_ID}/notes.awp?verbe=get&{API_VERSION}",
             {
                 headers: { "X-Token": token },
@@ -24,21 +38,23 @@ export default async function gradesResolver({ token }) {
                 },
             }
         );
-        if (gradesResponse.isDataEmpty) {
+        if (!gradesResponse || gradesResponse.isDataEmpty) {
             return {};
         }
         const grades = gradesResponse.data;
-        const periodsObj = grades.periodes.reduce((acc, period) => {
+        const periodsObj = (grades.periodes || []).reduce<
+            Record<string, FormattedPeriod>
+        >((acc, period) => {
             if (period.annuel) return acc;
 
-            const groups = [];
-            let currentGroup = null;
+            const groups: Array<any> = [];
+            let currentGroup: any = null;
 
             for (const disciplineRaw of period.ensembleMatieres.disciplines) {
                 const discipline = parseDiscipline(disciplineRaw);
 
                 if (discipline.isDisciplineGroup) {
-                    delete discipline.code;
+                    delete (discipline as any).code;
                     currentGroup = {
                         disciplines: [],
                         isDisciplineGroup: true,
@@ -60,28 +76,30 @@ export default async function gradesResolver({ token }) {
             }
 
             acc[period.codePeriode] = {
-                globalStreakScore: null,
+                globalStreakScore: undefined,
                 groups,
                 periodName: period.periode,
             };
             return acc;
         }, {});
 
-        const rawNotes = grades.notes;
+        const rawNotes = grades.notes || [];
 
         Object.entries(periodsObj).forEach(([periodCode, periodData]) => {
-            periodData.groups.forEach((group, indexGroup) => {
+            periodData.groups.forEach((group: any, indexGroup: number) => {
                 if (group.isDisciplineGroup) {
-                    group.disciplines.forEach((discipline, indexDiscipline) => {
-                        const enriched = enrichDiscipline(
-                            discipline,
-                            periodCode,
-                            rawNotes
-                        );
-                        periodsObj[periodCode].groups[indexGroup].disciplines[
-                            indexDiscipline
-                        ] = enriched;
-                    });
+                    group.disciplines.forEach(
+                        (discipline: any, indexDiscipline: number) => {
+                            const enriched = enrichDiscipline(
+                                discipline,
+                                periodCode,
+                                rawNotes
+                            );
+                            (
+                                periodsObj[periodCode].groups[indexGroup] as any
+                            ).disciplines[indexDiscipline] = enriched;
+                        }
+                    );
                 } else {
                     const enriched = enrichDiscipline(group, periodCode, rawNotes);
                     periodsObj[periodCode].groups[indexGroup] = enriched;
@@ -89,20 +107,20 @@ export default async function gradesResolver({ token }) {
             });
         });
 
-        const result = streakDataInjectedIntoGrades(periodsObj);
+        const result = streakDataInjectedIntoGrades(periodsObj) as any;
 
-        const rawLastGrades = getLatestGrades(grades.notes, 10);
+        const rawLastGrades = getLatestGrades(grades.notes || [], 10);
         const lastGrades = rawLastGrades.map((grade) => {
             const periodCode = grade.codes.period;
             const disciplineCode = grade.codes.discipline;
             const period = result[periodCode];
-            let disciplineData = null;
+            let disciplineData: any = null;
 
             if (period?.groups) {
                 for (const group of period.groups) {
                     if (group.isDisciplineGroup) {
                         const found = group.disciplines.find(
-                            (d) => d.code === disciplineCode
+                            (d: any) => d.code === disciplineCode
                         );
                         if (found) {
                             disciplineData = found;
@@ -128,23 +146,24 @@ export default async function gradesResolver({ token }) {
             configurable: true,
         });
 
-        return result;
+        return result as ResolvedGrades;
     } catch (e) {
         console.log("Error inside grades resolver : ", e);
         throw e;
     }
 }
 
-function parseDiscipline(discipline) {
-    const teachersWithoutId = discipline.professeurs.map(({ nom }) => nom);
-    let decodedClassAssessment =
-        discipline?.appreciations?.map((chain) =>
+function parseDiscipline(discipline: ApiDiscipline) {
+    const teachersWithoutId = (discipline.professeurs || []).map(({ nom }) => nom);
+    const appreciationsList = discipline.appreciations || [];
+    const decodedClassAssessment =
+        appreciationsList.map((chain) =>
             base64Handler.decode(chain)
         )[1] /* atention if too many users report less appreciations ! */ ||
         undefined;
 
-    let decodedUserAssessment =
-        discipline?.appreciations?.map((chain) =>
+    const decodedUserAssessment =
+        appreciationsList.map((chain) =>
             base64Handler.decode(chain)
         )[0] /* atention if too many users report less appreciations ! */ ||
         undefined;
@@ -157,7 +176,7 @@ function parseDiscipline(discipline) {
             classAverage: parseNumber(discipline.moyenneClasse),
             minAverage: parseNumber(discipline.moyenneMin),
             maxAverage: parseNumber(discipline.moyenneMax),
-            userAverage: null,
+            userAverage: null as number | null,
         },
         coef: discipline.coef,
         isDisciplineGroup: discipline.groupeMatiere,
@@ -171,7 +190,7 @@ function parseDiscipline(discipline) {
     return obj;
 }
 
-function formatGrade(grade, periodCode) {
+function formatGrade(grade: ApiGrade, periodCode: string): FormattedGrade {
     const {
         codeMatiere,
         codePeriode,
@@ -189,7 +208,7 @@ function formatGrade(grade, periodCode) {
         typeDevoir,
     } = grade;
 
-    return {
+    const formatted: any = {
         libelle: devoir,
         notSignificant: nonSignificatif,
         date,
@@ -208,7 +227,7 @@ function formatGrade(grade, periodCode) {
             classMin: parseNumber(minClasse),
             grade: parseNumber(valeur),
         },
-        skills: elementsProgramme.map(
+        skills: (elementsProgramme || []).map(
             ({ descriptif, valeur, libelleCompetence }) => ({
                 name: libelleCompetence,
                 description: descriptif,
@@ -216,21 +235,31 @@ function formatGrade(grade, periodCode) {
             })
         ),
         onlySkills:
-            (valeur == null || valeur === undefined) && elementsProgramme.length > 0,
+            (valeur == null || valeur === undefined) &&
+            (elementsProgramme || []).length > 0,
 
         actionOnStreak: undefined,
         badges: [],
     };
+
+    return formatted as FormattedGrade;
 }
 
-function getGradesForDiscipline({ periodCode, disciplineCode }, rawGrades) {
+function getGradesForDiscipline(
+    { periodCode, disciplineCode }: { periodCode: string; disciplineCode: string },
+    rawGrades: ApiGrade[]
+): ApiGrade[] {
     return rawGrades.filter(
         ({ codePeriode, codeMatiere }) =>
             codePeriode.includes(periodCode) && codeMatiere === disciplineCode
     );
 }
 
-function enrichDiscipline(discipline, periodCode, rawGrades) {
+function enrichDiscipline(
+    discipline: any,
+    periodCode: string,
+    rawGrades: ApiGrade[]
+) {
     const gradesList = getGradesForDiscipline(
         { disciplineCode: discipline.code, periodCode },
         rawGrades
@@ -254,7 +283,7 @@ function enrichDiscipline(discipline, periodCode, rawGrades) {
     return enrichedDiscipline;
 }
 
-export function getLatestGrades(rawNotes, limit = 5) {
+export function getLatestGrades(rawNotes: ApiGrade[], limit = 5): FormattedGrade[] {
     if (!Array.isArray(rawNotes)) return [];
 
     return rawNotes
