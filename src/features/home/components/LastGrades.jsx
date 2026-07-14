@@ -1545,7 +1545,7 @@ export default function LastGrades({}) {
                             navigation.navigate(routesNames.client.grades.group, {
                                 screen: routesNames.client.grades.details,
                                 params: {
-                                    gradesData: item,
+                                    gradeData: item,
                                     disciplineData: item.disciplineData,
                                 },
                             });

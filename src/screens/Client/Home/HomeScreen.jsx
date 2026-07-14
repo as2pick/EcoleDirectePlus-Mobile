@@ -1,17 +1,17 @@
 import { Text } from "@/components";
+import { useGrades } from "@/features/grades";
 import ActiveCourseCard from "@/features/home/components/ActiveCourseCard";
 import GeneralAveragePreview from "@/features/home/components/GeneralAveragePreview";
 import HomeworksPreview from "@/features/home/components/HomeworksPreview";
 import LastGrades from "@/features/home/components/LastGrades";
+import { useHomeworks } from "@/features/homeworks";
 import { useCustomDataStore } from "@/hooks/useCustomDataStore";
-import { useGrades } from "@/hooks/useGrades";
-import { useHomeworks } from "@/hooks/useHomeworks";
 import { useSignIn } from "@/hooks/useSignIn";
 import { useUserStore } from "@/hooks/useUserStore";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import { View } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
+import { ScrollView, View } from "react-native";
+
 export default function HomeScreen() {
     const { signOut } = useSignIn();
     const navigation = useNavigation();
@@ -50,6 +50,4 @@ export default function HomeScreen() {
         </LinearGradient>
     );
 }
-
-const homeworks = () => {};
 
