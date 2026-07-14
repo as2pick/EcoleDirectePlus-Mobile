@@ -1,8 +1,10 @@
 import { Text } from "@/components";
 import { useHaptic } from "@/hooks/useHaptics";
+import { routesNames } from "@/router/config/routesNames";
 import { blendWithWhite } from "@/utils/colorGenerator";
+import { useNavigation } from "@react-navigation/native";
 import { useMemo, useRef, useState } from "react";
-import { FlatList, View } from "react-native";
+import { FlatList, TouchableOpacity, View } from "react-native";
 export default function LastGrades({}) {
     const [lastGrades, setLastGrades] = useState([
         {
@@ -1513,9 +1515,9 @@ export default function LastGrades({}) {
             },
         },
     ]);
-    const hapticFeedback = useHaptic("heavy");
 
-    const lastViewableId = useRef(null);
+    const navigation = useNavigation();
+    const hapticFeedback = useHaptic("heavy");
 
     const onViewableItemsChanged = useRef(({ viewableItems }) => {
         if (viewableItems.length > 0) {
@@ -1538,11 +1540,24 @@ export default function LastGrades({}) {
                 keyExtractor={(item) => item.libelle}
                 contentContainerStyle={{ gap: 10 }}
                 renderItem={({ item }) => (
-                    <GradeCard
-                        disciplineColor={item.disciplineColor}
-                        disciplineData={item.disciplineData}
-                        data={item.data}
-                    />
+                    <TouchableOpacity
+                        onPress={() => {
+                            console.log(item);
+                            navigation.navigate(routesNames.client.grades.group, {
+                                screen: routesNames.client.grades.details,
+                                params: {
+                                    gradesData: item,
+                                    disciplineData: item.disciplineData,
+                                },
+                            });
+                        }}
+                    >
+                        <GradeCard
+                            disciplineColor={item.disciplineColor}
+                            disciplineData={item.disciplineData}
+                            data={item.data}
+                        />
+                    </TouchableOpacity>
                 )}
             />
         </View>

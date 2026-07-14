@@ -1,9 +1,17 @@
 import { Text } from "@/components";
-import { View } from "react-native";
+import { routesNames } from "@/router/config/routesNames";
+import { useNavigation } from "@react-navigation/native";
+import { TouchableOpacity, View } from "react-native";
 
 export default function GeneralAveragePreview({}) {
+    const navigation = useNavigation();
     return (
-        <View
+        <TouchableOpacity
+            onPress={() => {
+                navigation.navigate(routesNames.client.grades.group, {
+                    screen: routesNames.client.grades.content,
+                });
+            }}
             style={{
                 width: "100%",
                 backgroundColor: "hsl(235, 28%, 15%)",
@@ -42,7 +50,7 @@ export default function GeneralAveragePreview({}) {
                     /20
                 </Text>
             </Text>
-        </View>
+        </TouchableOpacity>
     );
 }
 

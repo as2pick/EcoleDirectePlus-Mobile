@@ -1,11 +1,19 @@
 import { Text } from "@/components";
 import { ProgressBar } from "@/components/progression/ProgressBar";
 import { BackArrow } from "@/components/svg";
-import { View } from "react-native";
+import { routesNames } from "@/router/config/routesNames";
+import { useNavigation } from "@react-navigation/native";
+import { TouchableOpacity, View } from "react-native";
 
 export default function ActiveCourseCard({}) {
+    const navigation = useNavigation();
     return (
-        <View
+        <TouchableOpacity
+            onPress={() => {
+                navigation.navigate(routesNames.client.timetable.group, {
+                    screen: routesNames.client.timetable.content,
+                });
+            }}
             style={{
                 backgroundColor: "hsla(235, 28%, 15%, 1)",
                 borderColor: "hsla(219, 100%, 69%, 0.6)",
@@ -146,7 +154,7 @@ export default function ActiveCourseCard({}) {
                     <Text color="hsla(1, 0%, 100%, .9)">10h45 / 11h30</Text>
                 </View>
             </View>
-        </View>
+        </TouchableOpacity>
     );
 }
 

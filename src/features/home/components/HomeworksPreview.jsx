@@ -1,7 +1,9 @@
 import { Text } from "@/components";
+import { routesNames } from "@/router/config/routesNames";
 import { formatFrenchDate } from "@/utils/date";
+import { useNavigation } from "@react-navigation/native";
 import { useMemo, useState } from "react";
-import { View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 
 export default function HomeworksPreview({}) {
     const [hk] = useState([
@@ -426,6 +428,9 @@ export default function HomeworksPreview({}) {
             decodedHTMLHomework: "",
         },
     ]);
+
+    const navigation = useNavigation();
+
     const groupedHomeworks = useMemo(() => {
         const groups = new Map();
 
@@ -447,12 +452,26 @@ export default function HomeworksPreview({}) {
                     <DateHeader date={date} countForDate={homeworks.length} />
 
                     {homeworks.map((item, index) => (
-                        <Homework
+                        <TouchableOpacity
                             key={item.customHomeworkMd5Key}
-                            homework={item}
-                            index={index}
-                            countForDate={homeworks.length}
-                        />
+                            onPress={() => {
+                                console.log(item);
+                                navigation.navigate(
+                                    routesNames.client.homeworks.group,
+                                    {
+                                        screen: routesNames.client.homeworks.details,
+                                        params: { homeworksData: item },
+                                    }
+                                );
+                            }}
+                        >
+                            <Homework
+                                key={item.customHomeworkMd5Key}
+                                homework={item}
+                                index={index}
+                                countForDate={homeworks.length}
+                            />
+                        </TouchableOpacity>
                     ))}
                 </View>
             ))}
