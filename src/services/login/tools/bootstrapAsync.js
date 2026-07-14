@@ -68,9 +68,13 @@ export async function tryRestoreToken({ credentialsPassword }) {
             console.log(
                 "========================================================\n"
             );
-            const { loginAsGuest } = require("@/services/guestData");
-            await loginAsGuest(true);
-            return true;
+            try {
+                const { loginAsGuest } = require("../../../../test/guestData");
+                await loginAsGuest(true);
+                return true;
+            } catch (err) {
+                return false;
+            }
         }
 
         const gtkCookie = await authService.generateGTK();

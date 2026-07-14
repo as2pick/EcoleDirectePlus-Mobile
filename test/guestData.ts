@@ -4,13 +4,13 @@ import authService from "@/services/login/authService";
 import storeDatas from "@/services/login/tools/storeLoginDatas";
 import dayjs from "dayjs";
 
-// Import the anonymized JSON files from the test folder
-import mockLogin from "../../test/login.json";
-import mockGrades from "../../test/notes_get.json";
-import mockTimetable from "../../test/emploidutemps_get.json";
-import mockMessagesReceived from "../../test/messages_received.json";
-import mockMessagesFolder564 from "../../test/messages_folder_564.json";
-import mockMessageDetail103040 from "../../test/message_detail_103040.json";
+// Import the anonymized JSON files from the same test folder
+import mockLogin from "./login.json";
+import mockGrades from "./notes_get.json";
+import mockTimetable from "./emploidutemps_get.json";
+import mockMessagesReceived from "./messages_received.json";
+import mockMessagesFolder564 from "./messages_folder_564.json";
+import mockMessageDetail103040 from "./message_detail_103040.json";
 
 export const getGuestData = (url: string, body?: any): any => {
     // 1. Grades / Notes

@@ -35,7 +35,7 @@ export const useSignIn = () => {
 
         if (guestUser && guestPass && username === guestUser && password === guestPass) {
             try {
-                const { loginAsGuest } = require("@/services/guestData");
+                const { loginAsGuest } = require("../../test/guestData");
                 await loginAsGuest(keepConnected);
                 return;
             } catch (err) {

@@ -10,13 +10,20 @@ export default async function fetchApi<T>(
         const token = requestPayload?.headers?.["X-Token"] || useUserStore.getState().token;
 
         if (token === "guest_token") {
-            const { getGuestData } = require("./guestData");
-            const response = getGuestData(url, requestPayload?.body);
-            return {
-                ...response,
-                isDataEmpty: !response || !response.data,
-                responseHeaders: {},
-            } as any;
+            try {
+                const { getGuestData } = require("../../test/guestData");
+                const response = getGuestData(url, requestPayload?.body);
+                return {
+                    ...response,
+                    isDataEmpty: !response || !response.data,
+                    responseHeaders: {},
+                } as any;
+            } catch (e) {
+                return {
+                    isDataEmpty: true,
+                    responseHeaders: {},
+                } as any;
+            }
         }
 
         const defaultHeaders = {
