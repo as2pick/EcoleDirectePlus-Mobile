@@ -6,8 +6,29 @@ import { formatDuration, getTimeInterval } from "@/utils/time";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity, View } from "react-native";
 
-export default function ActiveCourseCard({ progression, activeCourse, nextCourse }) {
+export default function ActiveCourseCard({
+    progression,
+    activeCourse,
+    nextCourse,
+    activeStatus,
+    isLast,
+}) {
     const navigation = useNavigation();
+    const { message, color, displayComponents, extras } = getStatus(activeStatus);
+    const dataByComponent = new Map([
+        [
+            Course,
+            {
+                courseData: activeCourse,
+                color,
+                message,
+                progression,
+                isLast: isLast,
+            },
+        ],
+        [NextCourse, { courseData: nextCourse, extras }],
+        [AnyCourse, {}],
+    ]);
 
     return (
         <TouchableOpacity
@@ -25,6 +46,17 @@ export default function ActiveCourseCard({ progression, activeCourse, nextCourse
                 padding: 19,
             }}
         >
+            {displayComponents.map((Component, index) => (
+                <Component key={index} data={dataByComponent.get(Component)} />
+            ))}
+        </TouchableOpacity>
+    );
+}
+
+const Course = ({ data }) => {
+    const { courseData, color, message, progression, isLast } = data;
+    return (
+        <>
             <View
                 style={{
                     flexDirection: "row",
@@ -35,13 +67,15 @@ export default function ActiveCourseCard({ progression, activeCourse, nextCourse
             >
                 <View
                     style={{
-                        backgroundColor: "hsla(219, 100%, 69%, 1)",
+                        backgroundColor: color,
                         width: 10,
                         height: 10,
                         borderRadius: 5,
                     }}
                 />
-                <Text color="hsla(219, 100%, 69%, 1)">EN COURS</Text>
+                <Text color={color}>
+                    {isLast ? "DERNIER COURS DE LA JOURNÉE !" : message}
+                </Text>
             </View>
             <View
                 style={{
@@ -50,17 +84,32 @@ export default function ActiveCourseCard({ progression, activeCourse, nextCourse
                     marginBottom: 5,
                 }}
             >
-                <Text color="hsla(1, 100%, 100%, 0.9)" preset="h3">
-                    {activeCourse?.libelle}
+                <Text
+                    color="hsla(1, 100%, 100%, 0.9)"
+                    preset="h3"
+                    oneLine
+                    style={{ flexShrink: 1 }}
+                >
+                    {courseData?.libelle}
                 </Text>
-                <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
+                <View
+                    style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        gap: 4,
+                    }}
+                >
                     <BackArrow
                         props={{ transform: [{ rotate: "180deg" }] }}
                         fill={"hsla(1, 100%, 100%, 0.9)"}
                         size={22}
                     />
-                    <Text preset="label1" color="hsla(1, 100%, 100%, 0.9)">
-                        {activeCourse?.endCourse?.time}
+                    <Text
+                        preset="label1"
+                        color="hsla(1, 100%, 100%, 0.9)"
+                        style={{ flexShrink: 1 }}
+                    >
+                        {courseData?.endCourse?.time}
                     </Text>
                 </View>
             </View>
@@ -74,21 +123,30 @@ export default function ActiveCourseCard({ progression, activeCourse, nextCourse
                     }}
                 />
             </View>
-
+        </>
+    );
+};
+const NextCourse = ({ data }) => {
+    const { courseData, extras } = data;
+    const resizeBars = !Boolean(extras.find((e) => e?.resizeBars)?.resizeBars);
+    return (
+        <>
             <View
                 style={{
                     flexDirection: "row",
                     alignItems: "center",
                     marginBottom: 10,
+                    justifyContent: "center",
                 }}
             >
                 <View
                     style={{
-                        flex: 1,
+                        flex: resizeBars ? 1 : 0.25,
                         height: 1,
                         backgroundColor: "hsla(0, 0%, 100%, 0.4)",
                     }}
                 />
+
                 <View
                     style={{
                         borderWidth: 1,
@@ -100,11 +158,11 @@ export default function ActiveCourseCard({ progression, activeCourse, nextCourse
                         marginHorizontal: 8,
                     }}
                 >
-                    <Text>Dans {formatDuration(nextCourse.timeRemaining)}</Text>
+                    <Text>Dans {formatDuration(courseData.timeRemaining)}</Text>
                 </View>
                 <View
                     style={{
-                        flex: 1,
+                        flex: resizeBars ? 1 : 0.25,
                         height: 1,
                         backgroundColor: "hsla(0, 0%, 100%, 0.4)",
                     }}
@@ -115,8 +173,13 @@ export default function ActiveCourseCard({ progression, activeCourse, nextCourse
                 <View
                     style={{ flexDirection: "row", justifyContent: "space-between" }}
                 >
-                    <Text preset="h2" color="hsla(1, 0%, 100%, .9)">
-                        Français
+                    <Text
+                        oneLine
+                        style={{ flexShrink: 1 }}
+                        preset="h2"
+                        color="hsla(1, 0%, 100%, .9)"
+                    >
+                        {courseData.course.libelle}
                     </Text>
                     <View
                         style={{
@@ -129,23 +192,32 @@ export default function ActiveCourseCard({ progression, activeCourse, nextCourse
                             borderRadius: 8,
                         }}
                     >
-                        <Text color="hsl(219, 100%, 69%)">
-                            {nextCourse.course.room}
+                        <Text color="hsl(219, 100%, 69%)" style={{ flexShrink: 1 }}>
+                            {courseData.course.room}
                         </Text>
                     </View>
                 </View>
                 <View
-                    style={{ flexDirection: "row", justifyContent: "space-between" }}
+                    style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                    }}
                 >
                     <View
                         style={{
                             flexDirection: "row",
                             alignItems: "center",
                             gap: 6,
+                            flexShrink: 1,
+                            maxWidth: "50%",
                         }}
                     >
-                        <Text color="hsla(1, 0%, 100%, .9)">
-                            {nextCourse.course.teacher}
+                        <Text
+                            color="hsla(1, 0%, 100%, .9)"
+                            oneLine
+                            style={{ flexShrink: 1 }}
+                        >
+                            {courseData.course.teacher}
                         </Text>
                         <View
                             style={{
@@ -153,25 +225,65 @@ export default function ActiveCourseCard({ progression, activeCourse, nextCourse
                                 height: 6,
                                 backgroundColor: "hsla(0, 0%, 100%, 0.9)",
                                 borderRadius: 12,
+                                flexShrink: 0,
                             }}
                         />
-                        <Text color="hsla(1, 0%, 100%, .9)">
+                        <Text color="hsla(1, 0%, 100%, .9)" oneLine>
                             {formatDuration(
                                 getTimeInterval(
-                                    `${nextCourse.course.startCourse.date}T${nextCourse.course.startCourse.time}`,
-                                    `${nextCourse.course.endCourse.date}T${nextCourse.course.endCourse.time}`
+                                    `${courseData.course.startCourse.date}T${courseData.course.startCourse.time}`,
+                                    `${courseData.course.endCourse.date}T${courseData.course.endCourse.time}`
                                 ),
                                 "short"
                             )}
                         </Text>
                     </View>
-                    <Text color="hsla(1, 0%, 100%, .9)">
-                        {nextCourse.course.startCourse.time}/{" "}
-                        {nextCourse.course.endCourse.time}
+                    <Text
+                        color="hsla(1, 0%, 100%, .9)"
+                        oneLine
+                        style={{ maxWidth: "50%" }}
+                    >
+                        {courseData.course.startCourse.time} /{" "}
+                        {courseData.course.endCourse.time}
                     </Text>
                 </View>
             </View>
-        </TouchableOpacity>
+        </>
     );
-}
+};
+
+const AnyCourse = ({}) => {
+    return <Text>Et non ta pas cours</Text>;
+};
+
+const STATUS_CONFIG = {
+    "true-true": {
+        message: "EN COURS",
+        color: "hsla(219, 100%, 69%, 1)",
+        displayComponents: [Course, NextCourse],
+        extras: [],
+    },
+    "true-false": {
+        message: "DERNIER COURS CONNU",
+        color: "hsla(295, 64%, 71%, 1)",
+        displayComponents: [Course],
+        extras: [],
+    },
+    "false-true": {
+        message: "PROCHAIN COURS",
+        color: "transparent", // useless but... prevent bugs
+        displayComponents: [NextCourse],
+        extras: [{ resizeBars: true }],
+    },
+    "false-false": {
+        message: "PLUS DE COURS",
+        color: "transparent", // same
+        displayComponents: [AnyCourse],
+        extras: [],
+    },
+};
+
+const getStatus = ({ inClass, nextCourseKnown }) => {
+    return STATUS_CONFIG[`${inClass}-${nextCourseKnown}`];
+};
 

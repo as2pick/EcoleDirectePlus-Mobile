@@ -1,10 +1,12 @@
 import { Text } from "@/components";
+import { useCurrentTime } from "@/hooks/useCurrentTime";
 import { routesNames } from "@/router/config/routesNames";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity, View } from "react-native";
 
 export default function GeneralAveragePreview({}) {
     const navigation = useNavigation();
+    const currentTime = useCurrentTime();
     return (
         <TouchableOpacity
             onPress={() => {
@@ -40,7 +42,7 @@ export default function GeneralAveragePreview({}) {
                         }}
                     />
                     <Text preset="label2" color="hsla(0, 0%, 100%, 0.55)">
-                        2028
+                        {currentTime.date.split("-")[0]}
                     </Text>
                 </View>
             </View>

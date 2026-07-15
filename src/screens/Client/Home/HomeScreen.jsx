@@ -8,9 +8,11 @@ import getGreetingMessage from "@/features/home/utils/getGreetingMessage";
 import { useHomeworks } from "@/features/homeworks";
 import { useTimetable } from "@/features/timetable";
 import { useCurrentTime } from "@/hooks/useCurrentTime";
+import { useCustomDataStore } from "@/hooks/useCustomDataStore";
 import { useSignIn } from "@/hooks/useSignIn";
 import { useUserStore } from "@/hooks/useUserStore";
 import { getTodayDateString } from "@/utils/date";
+import { objectsEqual } from "@/utils/json";
 import {
     convertTimeHoursMinToMinutes,
     getTimeInterval,
@@ -30,6 +32,7 @@ export default function HomeScreen() {
     const { data: timetableData } = useTimetable(token);
     const { data: gradesData } = useGrades(token);
     const { data: homeworksData } = useHomeworks(token);
+    const customDataStore = useCustomDataStore();
     const currentTime = useCurrentTime();
     const [greetingMessage] = useState(getGreetingMessage);
 
@@ -41,16 +44,16 @@ export default function HomeScreen() {
     }, [timetableData]);
 
     const activeCourse = useMemo(() => {
-        if (!activeDate) return null;
+        if (!activeDate) return {};
         return (
             activeDate.courses.find(({ startCourse, endCourse }) =>
                 isInInterval(currentTime.time, startCourse.time, endCourse.time)
-            ) ?? null
+            ) ?? {}
         );
     }, [activeDate, currentTime.time]);
 
     const progression = useMemo(() => {
-        if (!activeCourse) return 0;
+        if (objectsEqual(activeCourse, {})) return 0;
         const [activeMinutes, startMinutes, endMinutes] =
             convertTimeHoursMinToMinutes(
                 currentTime.time,
@@ -62,17 +65,18 @@ export default function HomeScreen() {
         );
     }, [activeCourse, currentTime.time]);
 
-    const { nextCourse, nextDate } = useMemo(() => {
-        if (!activeDate) return { nextCourse: null, nextDate: null };
+    const { nextCourse, nextDate, isLastCourseOfTheDay } = useMemo(() => {
+        if (!activeDate)
+            return { nextCourse: {}, nextDate: null, isLastCourseOfTheDay: null };
 
-        const activeCourseIndex = activeCourse
+        const activeCourseIndex = !objectsEqual(activeCourse, {})
             ? activeDate.courses.indexOf(activeCourse)
             : -1;
-
         const isLastCourseOfTheDay =
             activeCourseIndex === -1 ||
             activeCourseIndex === activeDate.courses.length - 1;
 
+        console.log(isLastCourseOfTheDay);
         if (isLastCourseOfTheDay) {
             const activeDateIndex = timetableData.indexOf(activeDate);
             const hasNoNextDate =
@@ -80,19 +84,23 @@ export default function HomeScreen() {
                 activeDateIndex === timetableData.length - 1;
 
             if (hasNoNextDate) {
-                return { nextCourse: null, nextDate: null };
+                return {
+                    nextCourse: {},
+                    nextDate: null,
+                    isLastCourseOfTheDay,
+                };
             }
-            console.log(`${currentTime.date}T${currentTime.time}`);
             const followingDate = timetableData[activeDateIndex + 1];
             return {
                 nextCourse: {
-                    course: followingDate.courses[0] ?? null,
+                    course: followingDate.courses[0] ?? {},
                     timeRemaining: getTimeInterval(
                         `${currentTime.date}T${currentTime.time}`,
                         `${followingDate.courses[0].startCourse.date}T${followingDate.courses[0].startCourse.time}`
                     ),
                 },
                 nextDate: followingDate,
+                isLastCourseOfTheDay,
             };
         }
         const nextCourse = activeDate.courses[activeCourseIndex + 1];
@@ -102,13 +110,20 @@ export default function HomeScreen() {
                 course: nextCourse,
                 timeRemaining: getTimeInterval(
                     `${currentTime.date}T${currentTime.time}`,
-                    `${nextCourse.startCourse.date}T${nextCourse.courses[0].startCourse.time}`
+                    `${nextCourse.startCourse.date}T${nextCourse.startCourse.time}`
                 ),
             },
             nextDate: activeDate,
+            isLastCourseOfTheDay,
         };
-    }, [activeDate, activeCourse, timetableData]);
+    }, [activeDate, activeCourse, timetableData, currentTime]);
 
+    const activeStatus = useMemo(() => {
+        return {
+            inClass: !objectsEqual(activeCourse, {}),
+            nextCourseKnown: !objectsEqual(nextCourse, {}),
+        };
+    }, [activeCourse, nextCourse]);
     return (
         <LinearGradient
             colors={["hsla(228, 70%, 18%, 1)", "hsla(228, 30%, 8%, 0.85)"]}
@@ -133,6 +148,8 @@ export default function HomeScreen() {
                         progression={progression}
                         activeCourse={activeCourse}
                         nextCourse={nextCourse}
+                        activeStatus={activeStatus}
+                        isLast={isLastCourseOfTheDay}
                     />
                     <GeneralAveragePreview />
 
