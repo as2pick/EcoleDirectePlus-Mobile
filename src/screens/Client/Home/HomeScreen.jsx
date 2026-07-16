@@ -76,7 +76,6 @@ export default function HomeScreen() {
             activeCourseIndex === -1 ||
             activeCourseIndex === activeDate.courses.length - 1;
 
-        console.log(isLastCourseOfTheDay);
         if (isLastCourseOfTheDay) {
             const activeDateIndex = timetableData.indexOf(activeDate);
             const hasNoNextDate =
@@ -152,8 +151,7 @@ export default function HomeScreen() {
                         isLast={isLastCourseOfTheDay}
                     />
                     <GeneralAveragePreview />
-
-                    <LastGrades lastGradesObject={gradesData.lastGrades} />
+                    <LastGrades lastGradesObject={gradesData?.lastGrades ?? {}} />
                     <HomeworksPreview />
                 </View>
             </ScrollView>
