@@ -1,12 +1,22 @@
 import { Text } from "@/components";
+import Period from "@/features/grades/models/Period";
 import { useCurrentTime } from "@/hooks/useCurrentTime";
 import { routesNames } from "@/router/config/routesNames";
 import { useNavigation } from "@react-navigation/native";
+import { useMemo } from "react";
 import { TouchableOpacity, View } from "react-native";
 
-export default function GeneralAveragePreview({}) {
+export default function GeneralAveragePreview({ gradesData }) {
     const navigation = useNavigation();
     const currentTime = useCurrentTime();
+
+    const generalAverage = useMemo(
+        () =>
+            new Period(
+                gradesData[gradesData.activePeriod.periodCode]
+            ).makeGeneralAverage(),
+        []
+    ); // plz change this after
     return (
         <TouchableOpacity
             onPress={() => {
@@ -31,7 +41,7 @@ export default function GeneralAveragePreview({}) {
                 </Text>
                 <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
                     <Text preset="label2" color="hsla(0, 0%, 100%, 0.55)">
-                        Trimestre 1
+                        {gradesData.activePeriod.periodName}
                     </Text>
                     <View
                         style={{
@@ -47,7 +57,7 @@ export default function GeneralAveragePreview({}) {
                 </View>
             </View>
             <Text size={34} weight="bold">
-                15.50
+                {generalAverage}
                 <Text size={16} color="hsla(0, 0%, 100%, 0.55)">
                     /20
                 </Text>

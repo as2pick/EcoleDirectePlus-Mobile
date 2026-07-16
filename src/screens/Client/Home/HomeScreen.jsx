@@ -150,7 +150,7 @@ export default function HomeScreen() {
                         activeStatus={activeStatus}
                         isLast={isLastCourseOfTheDay}
                     />
-                    <GeneralAveragePreview />
+                    <GeneralAveragePreview gradesData={gradesData} />
                     <LastGrades lastGradesObject={gradesData?.lastGrades ?? {}} />
                     <HomeworksPreview />
                 </View>
