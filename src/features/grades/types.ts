@@ -40,6 +40,9 @@ export interface ApiPeriod {
     codePeriode: string;
     periode: string;
     ensembleMatieres: { disciplines: ApiDiscipline[] };
+    dateDebut: string;
+    dateFin: string;
+    cloture: boolean;
 }
 
 export interface ApiGradesResponse {
@@ -106,6 +109,10 @@ export interface FormattedPeriod {
     periodName: string;
     globalStreakScore?: number;
     groups: (FormattedDiscipline | FormattedDisciplineGroup)[];
+}
+export interface PeriodInfos {
+    periodName: "string";
+    periodCode: "string";
 }
 
 export type ResolvedGrades = Record<string, FormattedPeriod> & {

@@ -21,6 +21,7 @@
     "@tanstack/react-query-persist-client": "^5.100.6",
     "base-64": "^1.0.0",
     "crypto-js": "^4.2.0",
+    "dayjs": "^1.11.21",
     "dotenv": "^16.5.0",
     "expo": "54.0.21",
     "expo-constants": "~18.0.9",

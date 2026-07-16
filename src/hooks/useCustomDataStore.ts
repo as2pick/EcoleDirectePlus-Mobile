@@ -1,8 +1,12 @@
+import type {
+    FormattedPeriod,
+    PeriodInfos,
+    SimulatedGrade,
+} from "@/features/grades";
+import type { Homework } from "@/features/homeworks";
 import { createMMKV } from "react-native-mmkv";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import type { Homework } from "@/features/homeworks";
-import type { SimulatedGrade } from "@/features/grades";
 
 const storage = createMMKV({ id: "custom-data-store" });
 
@@ -15,6 +19,8 @@ const mmkvStorage = createJSONStorage(() => ({
 interface CustomDataState {
     customHomeworks: Homework[];
     simulatedGrades: SimulatedGrade[];
+    selectedGradePeriodInfos: PeriodInfos | null;
+    selectedGradePeriod: FormattedPeriod | null;
 
     addCustomHomework: (homework: Homework) => void;
     toggleCustomHomeworkDone: (id: number) => void;
@@ -23,6 +29,8 @@ interface CustomDataState {
     addSimulatedGrade: (grade: SimulatedGrade) => void;
     removeSimulatedGrade: (id: string) => void;
     clearSimulatedGrades: (disciplineCode?: string) => void;
+
+    setSelectedGradePeriod: (newPeriod: PeriodInfos) => void;
     reset: () => void;
 }
 
@@ -31,6 +39,8 @@ export const useCustomDataStore = create<CustomDataState>()(
         (set, get) => ({
             customHomeworks: [],
             simulatedGrades: [],
+            selectedGradePeriodInfos: null,
+            selectedGradePeriod: null,
 
             addCustomHomework: (homework) =>
                 set((state) => ({
@@ -77,6 +87,9 @@ export const useCustomDataStore = create<CustomDataState>()(
                         : [],
                 })),
 
+            setSelectedGradePeriod: (newPeriod: PeriodInfos) =>
+                set({ selectedGradePeriodInfos: newPeriod }),
+
             reset: () =>
                 set({
                     customHomeworks: [],
@@ -86,6 +99,10 @@ export const useCustomDataStore = create<CustomDataState>()(
         {
             name: "custom-data-store",
             storage: mmkvStorage,
+            partialize: (state) => ({
+                selectedGradePeriodInfos: state?.selectedGradePeriodInfos,
+                selectedGradePeriod: state?.selectedGradePeriod,
+            }),
         }
     )
 );
