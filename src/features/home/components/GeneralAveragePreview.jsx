@@ -15,8 +15,13 @@ export default function GeneralAveragePreview({ gradesData }) {
             new Period(
                 gradesData[gradesData.activePeriod.periodCode]
             ).makeGeneralAverage(),
-        []
-    ); // plz change this after
+        [gradesData]
+    );
+
+    if (!gradesData?.activePeriod) {
+        return null;
+    }
+
     return (
         <TouchableOpacity
             onPress={() => {
@@ -65,4 +70,3 @@ export default function GeneralAveragePreview({ gradesData }) {
         </TouchableOpacity>
     );
 }
-
