@@ -11,6 +11,8 @@ export interface UserProfile {
     phone: string;
     email: string;
     schoolName: string;
+    photoUrl?: string;
+    localPhotoUri?: string;
     class: {
         libelle: string;
         code: string;
