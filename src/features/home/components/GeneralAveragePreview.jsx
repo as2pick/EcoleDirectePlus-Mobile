@@ -10,13 +10,12 @@ export default function GeneralAveragePreview({ gradesData }) {
     const navigation = useNavigation();
     const currentTime = useCurrentTime();
 
-    const generalAverage = useMemo(
-        () =>
-            new Period(
-                gradesData[gradesData.activePeriod.periodCode]
-            ).makeGeneralAverage(),
-        [gradesData]
-    );
+    const generalAverage = useMemo(() => {
+        if (!gradesData?.activePeriod) return null;
+        return new Period(
+            gradesData[gradesData.activePeriod.periodCode]
+        ).makeGeneralAverage();
+    }, [gradesData]);
 
     if (!gradesData?.activePeriod) {
         return null;
@@ -70,3 +69,4 @@ export default function GeneralAveragePreview({ gradesData }) {
         </TouchableOpacity>
     );
 }
+

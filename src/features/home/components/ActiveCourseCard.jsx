@@ -193,7 +193,7 @@ const NextCourse = ({ data }) => {
                         }}
                     >
                         <Text color="hsl(219, 100%, 69%)" style={{ flexShrink: 1 }}>
-                            {courseData.course.room}
+                            {courseData.course.room ?? "Aucune salle"}
                         </Text>
                     </View>
                 </View>
@@ -217,7 +217,7 @@ const NextCourse = ({ data }) => {
                             oneLine
                             style={{ flexShrink: 1 }}
                         >
-                            {courseData.course.teacher}
+                            {courseData.course.teacher ?? "Pas de prof."}
                         </Text>
                         <View
                             style={{

@@ -1,29 +1,28 @@
 import { Text } from "@/components";
-import { useHaptic } from "@/hooks/useHaptics";
 import { routesNames } from "@/router/config/routesNames";
 import { blendWithWhite } from "@/utils/colorGenerator";
 import { useNavigation } from "@react-navigation/native";
-import { useMemo, useRef } from "react";
+import { useMemo } from "react";
 import { FlatList, TouchableOpacity, View } from "react-native";
 export default function LastGrades({ lastGradesObject }) {
     const navigation = useNavigation();
-    const hapticFeedback = useHaptic("heavy");
+    // const hapticFeedback = useHaptic("heavy");
 
-    const onViewableItemsChanged = useRef(({ viewableItems }) => {
-        if (viewableItems.length > 0) {
-            hapticFeedback(); // the haptics doesn't work, idk why, maybe regenerate dev client ?
-        }
-    }).current;
+    // const onViewableItemsChanged = useRef(({ viewableItems }) => {
+    //     if (viewableItems.length > 0) {
+    //         hapticFeedback(); // the haptics doesn't work, idk why, maybe regenerate dev client ?
+    //     }
+    // }).current;
 
-    const viewabilityConfig = useRef({
-        itemVisiblePercentThreshold: 50,
-    }).current;
+    // const viewabilityConfig = useRef({
+    //     itemVisiblePercentThreshold: 50,
+    // }).current;
 
     return (
         <View style={{ height: 100 }}>
             <FlatList
-                onViewableItemsChanged={onViewableItemsChanged}
-                viewabilityConfig={viewabilityConfig}
+                // onViewableItemsChanged={onViewableItemsChanged}
+                // viewabilityConfig={viewabilityConfig}
                 data={lastGradesObject}
                 horizontal
                 showsHorizontalScrollIndicator={false}
