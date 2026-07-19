@@ -1,6 +1,7 @@
 import { Text } from "@/components";
 import { ProgressBar } from "@/components/progression/ProgressBar";
 import { BackArrow } from "@/components/svg";
+import { useHaptic } from "@/hooks/useHaptics";
 import { routesNames } from "@/router/config/routesNames";
 import { formatDuration, getTimeInterval } from "@/utils/time";
 import { useNavigation } from "@react-navigation/native";
@@ -14,6 +15,7 @@ export default function ActiveCourseCard({
     isLast,
 }) {
     const navigation = useNavigation();
+    const haptic = useHaptic("light");
     const { message, color, displayComponents, extras } = getStatus(activeStatus);
     const dataByComponent = new Map([
         [
@@ -33,9 +35,12 @@ export default function ActiveCourseCard({
     return (
         <TouchableOpacity
             onPress={() => {
-                navigation.navigate(routesNames.client.timetable.group, {
-                    screen: routesNames.client.timetable.content,
-                });
+                {
+                    haptic();
+                    navigation.navigate(routesNames.client.timetable.group, {
+                        screen: routesNames.client.timetable.content,
+                    });
+                }
             }}
             style={{
                 backgroundColor: "hsla(235, 28%, 15%, 1)",
@@ -286,4 +291,3 @@ const STATUS_CONFIG = {
 const getStatus = ({ inClass, nextCourseKnown }) => {
     return STATUS_CONFIG[`${inClass}-${nextCourseKnown}`];
 };
-

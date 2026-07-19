@@ -1,4 +1,5 @@
 import { Text } from "@/components";
+import { useHaptic } from "@/hooks/useHaptics";
 import { routesNames } from "@/router/config/routesNames";
 import { formatFrenchDate } from "@/utils/date";
 import { useNavigation } from "@react-navigation/native";
@@ -430,7 +431,7 @@ export default function HomeworksPreview({}) {
     ]);
 
     const navigation = useNavigation();
-
+    const haptic = useHaptic("light");
     const groupedHomeworks = useMemo(() => {
         const groups = new Map();
 
@@ -455,6 +456,7 @@ export default function HomeworksPreview({}) {
                         <TouchableOpacity
                             key={item.customHomeworkMd5Key}
                             onPress={() => {
+                                haptic();
                                 navigation.navigate(
                                     routesNames.client.homeworks.group,
                                     {
@@ -496,8 +498,8 @@ const DateHeader = ({ date, countForDate }) => (
 
 const Homework = ({ homework, index, countForDate }) => {
     let borderRadiusStyle = {};
-    const BORDER_RADIUS_EXT = 18;
-    const BORDER_RADIUS_INT = 6;
+    const BORDER_RADIUS_EXT = 28;
+    const BORDER_RADIUS_INT = 8;
     if (index === 0) {
         borderRadiusStyle = {
             borderTopLeftRadius: BORDER_RADIUS_EXT,
@@ -575,4 +577,3 @@ const Homework = ({ homework, index, countForDate }) => {
         </View>
     );
 };
-

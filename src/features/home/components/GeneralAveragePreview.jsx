@@ -1,6 +1,7 @@
 import { Text } from "@/components";
 import Period from "@/features/grades/models/Period";
 import { useCurrentTime } from "@/hooks/useCurrentTime";
+import { useHaptic } from "@/hooks/useHaptics";
 import { routesNames } from "@/router/config/routesNames";
 import { useNavigation } from "@react-navigation/native";
 import { useMemo } from "react";
@@ -9,7 +10,7 @@ import { TouchableOpacity, View } from "react-native";
 export default function GeneralAveragePreview({ gradesData }) {
     const navigation = useNavigation();
     const currentTime = useCurrentTime();
-
+    const haptic = useHaptic("light");
     const generalAverage = useMemo(() => {
         if (!gradesData?.activePeriod) return null;
         return new Period(
@@ -24,6 +25,7 @@ export default function GeneralAveragePreview({ gradesData }) {
     return (
         <TouchableOpacity
             onPress={() => {
+                haptic();
                 navigation.navigate(routesNames.client.grades.group, {
                     screen: routesNames.client.grades.content,
                 });
@@ -69,4 +71,3 @@ export default function GeneralAveragePreview({ gradesData }) {
         </TouchableOpacity>
     );
 }
-

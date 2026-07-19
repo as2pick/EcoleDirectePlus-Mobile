@@ -1,4 +1,5 @@
 import { Text } from "@/components";
+import { useHaptic } from "@/hooks/useHaptics";
 import { routesNames } from "@/router/config/routesNames";
 import { blendWithWhite } from "@/utils/colorGenerator";
 import { useNavigation } from "@react-navigation/native";
@@ -6,6 +7,7 @@ import { useMemo } from "react";
 import { FlatList, TouchableOpacity, View } from "react-native";
 export default function LastGrades({ lastGradesObject }) {
     const navigation = useNavigation();
+    const haptic = useHaptic("light");
     // const hapticFeedback = useHaptic("heavy");
 
     // const onViewableItemsChanged = useRef(({ viewableItems }) => {
@@ -31,13 +33,19 @@ export default function LastGrades({ lastGradesObject }) {
                 renderItem={({ item }) => (
                     <TouchableOpacity
                         onPress={() => {
-                            navigation.navigate(routesNames.client.grades.group, {
-                                screen: routesNames.client.grades.details,
-                                params: {
-                                    gradeData: item,
-                                    disciplineData: item.disciplineData,
-                                },
-                            });
+                            {
+                                haptic();
+                                navigation.navigate(
+                                    routesNames.client.grades.group,
+                                    {
+                                        screen: routesNames.client.grades.details,
+                                        params: {
+                                            gradeData: item,
+                                            disciplineData: item.disciplineData,
+                                        },
+                                    }
+                                );
+                            }
                         }}
                     >
                         <GradeCard
@@ -70,6 +78,14 @@ const GradeCard = ({ disciplineColor, disciplineData, data }) => {
                 paddingHorizontal: 20,
                 paddingVertical: 19,
                 justifyContent: "space-between",
+                boxShadow: [
+                    {
+                        blurRadius: 6,
+                        offsetY: 6,
+                        spreadDistance: 0,
+                        color: "hsla(0, 0%, 0%, 0.25)",
+                    },
+                ],
             }}
         >
             <Text align="left" oneLine style={{ color: disciplineColor }}>
@@ -100,4 +116,3 @@ const GradeCard = ({ disciplineColor, disciplineData, data }) => {
         </View>
     );
 };
-
