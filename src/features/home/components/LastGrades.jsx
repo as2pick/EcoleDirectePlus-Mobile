@@ -51,11 +51,16 @@ export default function LastGrades({ lastGradesObject }) {
         </View>
     );
 }
-const GradeCard = ({ disciplineColor, disciplineData: { libelle }, data }) => {
+const GradeCard = ({ disciplineColor, disciplineData, data }) => {
     const lightColor = useMemo(
         () => blendWithWhite(disciplineColor, 0.35),
         [disciplineColor]
     );
+
+    if (!disciplineData?.libelle || !data) return null;
+
+    const { libelle } = disciplineData;
+
     return (
         <View
             style={{
