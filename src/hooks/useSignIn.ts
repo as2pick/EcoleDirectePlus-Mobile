@@ -41,7 +41,7 @@ export const useSignIn = () => {
                 password === guestPass
             ) {
                 try {
-                    const { loginAsGuest } = require("../mock/guest/guestData");
+                    const { loginAsGuest } = require("@/mock/guest/guestData");
                     await loginAsGuest(keepConnected);
                     return;
                 } catch (err) {
@@ -145,3 +145,4 @@ export const useSignIn = () => {
         setApiError: setError,
     };
 };
+
