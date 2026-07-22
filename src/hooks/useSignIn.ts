@@ -1,12 +1,12 @@
-import { useEffect, useCallback } from "react";
-import { useAuthStore } from "./useAuthStore";
-import { useUserStore } from "./useUserStore";
-import { useCustomDataStore } from "./useCustomDataStore";
+import { getApiMessage } from "@/constants/api/codes";
 import { queryClient } from "@/provider/QueryProvider";
 import authService from "@/services/login/authService";
-import { getApiMessage } from "@/constants/api/codes";
-import storeDatas from "@/services/login/tools/storeLoginDatas";
 import { handleA2fSubmit } from "@/services/login/tools/a2fHandler";
+import storeDatas from "@/services/login/tools/storeLoginDatas";
+import { useCallback, useEffect } from "react";
+import { useAuthStore } from "./useAuthStore";
+import { useCustomDataStore } from "./useCustomDataStore";
+import { useUserStore } from "./useUserStore";
 
 export const useSignIn = () => {
     const error = useAuthStore((state) => state.error);
@@ -27,77 +27,91 @@ export const useSignIn = () => {
     const setKeepConnected = useAuthStore((state) => state.setKeepConnected);
     const resetAuth = useAuthStore((state) => state.reset);
 
-    const signIn = useCallback(async ({ username, password, keepConnected }: any) => {
-        setKeepConnected(keepConnected);
+    const signIn = useCallback(
+        async ({ username, password, keepConnected }: any) => {
+            setKeepConnected(keepConnected);
 
-        const guestUser = process.env.EXPO_PUBLIC_GUEST_USERNAME;
-        const guestPass = process.env.EXPO_PUBLIC_GUEST_PASSWORD;
+            const guestUser = process.env.EXPO_PUBLIC_GUEST_USERNAME;
+            const guestPass = process.env.EXPO_PUBLIC_GUEST_PASSWORD;
 
-        if (guestUser && guestPass && username === guestUser && password === guestPass) {
-            try {
-                const { loginAsGuest } = require("@/services/guestData");
-                await loginAsGuest(keepConnected);
-                return;
-            } catch (err) {
-                setError("Erreur lors de la connexion invité");
-                return;
+            if (
+                guestUser &&
+                guestPass &&
+                username === guestUser &&
+                password === guestPass
+            ) {
+                try {
+                    const { loginAsGuest } = require("../mock/guest/guestData");
+                    await loginAsGuest(keepConnected);
+                    return;
+                } catch (err) {
+                    setError("Erreur lors de la connexion invité");
+                    return;
+                }
             }
-        }
 
-        try {
-            const gtkCookie = await authService.generateGTK();
-            const apiLoginData = await authService.login({
-                username,
-                password,
-                headers: {
-                    Cookie: gtkCookie,
-                    "X-GTK": gtkCookie.split("=")[1],
-                },
-            });
+            try {
+                const gtkCookie = await authService.generateGTK();
+                const apiLoginData = await authService.login({
+                    username,
+                    password,
+                    headers: {
+                        Cookie: gtkCookie,
+                        "X-GTK": gtkCookie.split("=")[1],
+                    },
+                });
 
-            setA2fInfos({
-                identifiant: encodeURIComponent(username),
-                motdepasse: encodeURIComponent(password),
-            });
+                setA2fInfos({
+                    identifiant: encodeURIComponent(username),
+                    motdepasse: encodeURIComponent(password),
+                });
 
-            const { token } = apiLoginData;
+                const { token } = apiLoginData;
 
-            switch (apiLoginData.code) {
-                case 200: {
-                    const { data } = apiLoginData;
-                    const accountData = data?.accounts?.[0];
-                    if (!accountData) {
-                        setError("Aucun compte valide trouvé");
+                switch (apiLoginData.code) {
+                    case 200: {
+                        const { data } = apiLoginData;
+                        const accountData = data?.accounts?.[0];
+                        if (!accountData) {
+                            setError("Aucun compte valide trouvé");
+                            break;
+                        }
+                        if (keepConnected) {
+                            await authService.saveCredentials(
+                                token,
+                                accountData.id,
+                                {
+                                    identifiant: encodeURIComponent(username),
+                                    motdepasse: encodeURIComponent(password),
+                                }
+                            );
+                        }
+                        storeDatas({ data: accountData, token });
+                        useAuthStore.getState().setAuthenticated(true);
+                        useAuthStore.getState().setBooting(false);
                         break;
                     }
-                    if (keepConnected) {
-                        await authService.saveCredentials(token, accountData.id, {
-                            identifiant: encodeURIComponent(username),
-                            motdepasse: encodeURIComponent(password),
-                        });
+                    case 250: {
+                        const a2fTokenHeader =
+                            apiLoginData.responseHeaders["2fa-token"];
+                        const { choices, question } =
+                            await authService.startA2fProcess(a2fTokenHeader);
+                        setMcqDatas({ choices, question });
+                        setA2fToken(a2fTokenHeader);
+                        break;
                     }
-                    storeDatas({ data: accountData, token });
-                    useAuthStore.getState().setAuthenticated(true);
-                    useAuthStore.getState().setBooting(false);
-                    break;
+                    default: {
+                        const message = getApiMessage(apiLoginData.code);
+                        setError(message || "Erreur de connexion");
+                        break;
+                    }
                 }
-                case 250: {
-                    const a2fTokenHeader = apiLoginData.responseHeaders["2fa-token"];
-                    const { choices, question } = await authService.startA2fProcess(a2fTokenHeader);
-                    setMcqDatas({ choices, question });
-                    setA2fToken(a2fTokenHeader);
-                    break;
-                }
-                default: {
-                    const message = getApiMessage(apiLoginData.code);
-                    setError(message || "Erreur de connexion");
-                    break;
-                }
+            } catch (err) {
+                setError("Une erreur inattendue est survenue");
             }
-        } catch (err) {
-            setError("Une erreur inattendue est survenue");
-        }
-    }, [setKeepConnected, setA2fInfos, setMcqDatas, setA2fToken, setError]);
+        },
+        [setKeepConnected, setA2fInfos, setMcqDatas, setA2fToken, setError]
+    );
 
     const signOut = useCallback(async () => {
         await authService.deleteCredentials();
@@ -109,7 +123,14 @@ export const useSignIn = () => {
 
     useEffect(() => {
         if (!choice) return;
-        handleA2fSubmit({ a2fToken, choice, setA2fInfos, setSelectedChoice, setGtk, keepConnected });
+        handleA2fSubmit({
+            a2fToken,
+            choice,
+            setA2fInfos,
+            setSelectedChoice,
+            setGtk,
+            keepConnected,
+        });
     }, [choice, a2fToken, setA2fInfos, setSelectedChoice, setGtk, keepConnected]);
 
     return {

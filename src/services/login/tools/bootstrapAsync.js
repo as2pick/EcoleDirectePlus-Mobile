@@ -1,8 +1,8 @@
-import dayjs from "dayjs";
 import { payloadHelper } from "@/helpers/cryptoHelper";
-import { useUserStore } from "@/hooks/useUserStore";
-import authService from "../authService";
 import { useAuthStore } from "@/hooks/useAuthStore";
+import { useUserStore } from "@/hooks/useUserStore";
+import dayjs from "dayjs";
+import authService from "../authService";
 import storeDatas from "./storeLoginDatas";
 
 /**
@@ -24,7 +24,7 @@ export async function tryLoginWithStoredCreds({ cipherText }) {
                 !getDataFromStorage &&
                 payload.superSecretUserToken === "guest_token"
             ) {
-                const mockLogin = require("../../../../test/login.json");
+                const mockLogin = require("@/mock/guest/login.json");
                 getDataFromStorage = mockLogin?.data?.accounts?.[0];
             }
 
@@ -68,7 +68,7 @@ export async function tryRestoreToken({ credentialsPassword }) {
             console.log(
                 "========================================================\n"
             );
-            const { loginAsGuest } = require("@/services/guestData");
+            const { loginAsGuest } = require("@/mock/guest/guestData");
             await loginAsGuest(true);
             return true;
         }
@@ -113,4 +113,3 @@ export async function tryRestoreToken({ credentialsPassword }) {
         return false;
     }
 }
-

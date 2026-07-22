@@ -7,10 +7,11 @@ export default async function fetchApi<T>(
     requestPayload?: { headers?: any; body?: any; method?: string }
 ): Promise<T> {
     try {
-        const token = requestPayload?.headers?.["X-Token"] || useUserStore.getState().token;
+        const token =
+            requestPayload?.headers?.["X-Token"] || useUserStore.getState().token;
 
         if (token === "guest_token") {
-            const { getGuestData } = require("./guestData");
+            const { getGuestData } = require("@/mock/guest/guestData");
             const response = getGuestData(url, requestPayload?.body);
             return {
                 ...response,
