@@ -12,3 +12,5 @@ export const CONFIG = {
     totalTokenExpirationTime: 1200, // sec
 };
 
+export const GUEST_CREDENTIALS = {username: "guest", password: "guest"}
+

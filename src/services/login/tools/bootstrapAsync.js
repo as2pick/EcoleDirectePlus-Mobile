@@ -1,3 +1,4 @@
+import { GUEST_CREDENTIALS } from "@/constants/config";
 import { payloadHelper } from "@/helpers/cryptoHelper";
 import { useAuthStore } from "@/hooks/useAuthStore";
 import { useUserStore } from "@/hooks/useUserStore";
@@ -51,8 +52,8 @@ export async function tryLoginWithStoredCreds({ cipherText }) {
 export async function tryRestoreToken({ credentialsPassword }) {
     try {
         const authData = JSON.parse(credentialsPassword);
-        const guestUser = process.env.EXPO_PUBLIC_GUEST_USERNAME || "guest";
-        const guestPass = process.env.EXPO_PUBLIC_GUEST_PASSWORD || "guest";
+        const guestUser = GUEST_CREDENTIALS.username;
+        const guestPass = GUEST_CREDENTIALS.password;
 
         if (
             authData?.identifiant === guestUser &&

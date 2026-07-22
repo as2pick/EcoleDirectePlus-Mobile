@@ -1,4 +1,5 @@
 import { getApiMessage } from "@/constants/api/codes";
+import { GUEST_CREDENTIALS } from "@/constants/config";
 import { queryClient } from "@/provider/QueryProvider";
 import authService from "@/services/login/authService";
 import { handleA2fSubmit } from "@/services/login/tools/a2fHandler";
@@ -31,14 +32,10 @@ export const useSignIn = () => {
         async ({ username, password, keepConnected }: any) => {
             setKeepConnected(keepConnected);
 
-            const guestUser = process.env.EXPO_PUBLIC_GUEST_USERNAME;
-            const guestPass = process.env.EXPO_PUBLIC_GUEST_PASSWORD;
-
             if (
-                guestUser &&
-                guestPass &&
-                username === guestUser &&
-                password === guestPass
+
+                username === GUEST_CREDENTIALS.username &&
+                password === GUEST_CREDENTIALS.password
             ) {
                 try {
                     const { loginAsGuest } = require("@/mock/guest/guestData");

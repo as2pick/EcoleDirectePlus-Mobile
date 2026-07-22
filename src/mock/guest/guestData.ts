@@ -3,6 +3,7 @@ import authService from "@/services/login/authService";
 import storeDatas from "@/services/login/tools/storeLoginDatas";
 import dayjs from "dayjs";
 
+import { GUEST_CREDENTIALS } from "@/constants/config";
 import mockGrades from "./grades.json";
 import mockHomeworks from "./homeworks.json";
 import mockHomeworksPreciseDay from "./homeworks_precise_day.json";
@@ -150,8 +151,8 @@ export const loginAsGuest = async (keepConnected: boolean = true) => {
 
     if (keepConnected) {
         await authService.saveCredentials("guest_token", accountData.id, {
-            identifiant: process.env.EXPO_PUBLIC_GUEST_USERNAME || "guest",
-            motdepasse: process.env.EXPO_PUBLIC_GUEST_PASSWORD || "guest",
+            identifiant: GUEST_CREDENTIALS.username,
+            motdepasse: GUEST_CREDENTIALS.password,
         });
     }
 
