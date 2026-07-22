@@ -1,20 +1,20 @@
 import { useColorStore } from "@/hooks/useColorStore";
-import Discipline from "../models/Discipline";
-import { parseNumber } from "../utils/averages";
-import { streakDataInjectedIntoGrades } from "../utils/streaks";
 import fetchApi from "@/services/fetchApi";
 import { FetchApiResponse } from "@/types";
+import { isInDateInterval } from "@/utils/date";
+import base64Handler from "@/utils/handleBase64";
+import Discipline from "../models/Discipline";
 import {
-    ApiGrade,
     ApiDiscipline,
-    ApiPeriod,
+    ApiGrade,
     ApiGradesResponse,
+    ApiPeriod,
     FormattedGrade,
-    FormattedDiscipline,
-    FormattedDisciplineGroup,
     FormattedPeriod,
     ResolvedGrades,
 } from "../types";
+import { parseNumber } from "../utils/averages";
+import { streakDataInjectedIntoGrades } from "../utils/streaks";
 
 const skillColorsCodes: Record<string, string> = {
     "1": "red",
@@ -41,6 +41,7 @@ export default async function gradesResolver(
             return {};
         }
         const grades = gradesResponse.data;
+        const activePeriod = extractActivePeriod(grades.periodes);
         const periodsObj = (grades.periodes || []).reduce<
             Record<string, FormattedPeriod>
         >((acc, period) => {
@@ -117,12 +118,33 @@ export default async function gradesResolver(
             configurable: true,
         });
 
-        return result as ResolvedGrades;
+        return { ...result, activePeriod } as ResolvedGrades;
     } catch (e) {
         console.log("Error inside grades resolver : ", e);
         throw e;
     }
 }
+const extractActivePeriod = (periods: ApiPeriod[]) => {
+    const date = new Date();
+    const todaysDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+    const validPeriods = periods.filter(({ annuel, dateDebut, dateFin }) => {
+        if (annuel) return false;
+        return isInDateInterval(todaysDate, dateDebut, dateFin) === true;
+    });
+    if (validPeriods.length === 0) {
+        if (periods.length === 0) return null;
+        const { codePeriode: periodCode, periode: periodName } = periods[0];
+        return { periodCode, periodName };
+    }
+    const nonClosedPeriods = validPeriods.find(({ cloture }) => !cloture);
+    if (!nonClosedPeriods) {
+        const { codePeriode: periodCode, periode: periodName } = validPeriods[0];
+
+        return { periodCode, periodName };
+    }
+    const { codePeriode: periodCode, periode: periodName } = nonClosedPeriods;
+    return { periodCode, periodName };
+};
 
 function parseDiscipline(discipline: ApiDiscipline) {
     const teachersWithoutId = (discipline.professeurs || []).map(({ nom }) => nom);

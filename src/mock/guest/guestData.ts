@@ -1,45 +1,50 @@
-import { useUserStore } from "@/hooks/useUserStore";
 import { useAuthStore } from "@/hooks/useAuthStore";
 import authService from "@/services/login/authService";
 import storeDatas from "@/services/login/tools/storeLoginDatas";
 import dayjs from "dayjs";
 
-// Import the anonymized JSON files from the same test folder
+import mockGrades from "./grades.json";
+import mockHomeworks from "./homeworks.json";
+import mockHomeworksPreciseDay from "./homeworks_precise_day.json";
 import mockLogin from "./login.json";
-import mockGrades from "./notes_get.json";
-import mockTimetable from "./emploidutemps_get.json";
+import mockMessageDetail from "./message_detail.json";
+import mockMessagesFolder from "./messages_folder.json";
 import mockMessagesReceived from "./messages_received.json";
-import mockMessagesFolder564 from "./messages_folder_564.json";
-import mockMessageDetail103040 from "./message_detail_103040.json";
+import mockTimetable from "./timetable.json";
 
 export const getGuestData = (url: string, body?: any): any => {
-    // 1. Grades / Notes
+    const messageDetailMatch = url.match(/\/messages\/(\d+)\.awp/);
+    const dateRegex = /\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])/;
+
     if (url.includes("/notes.awp")) {
         return mockGrades;
     }
 
-    // 2. Timetable / Emploi du temps
     if (url.includes("/emploidutemps.awp")) {
         return getShiftedTimetable(body?.dateDebut);
     }
 
-    // 3. Messages List
     if (url.includes("/messages.awp")) {
         if (
             url.includes("typeRecuperation=classeur") &&
             url.includes("idClasseur=564")
         ) {
-            return mockMessagesFolder564;
+            return mockMessagesFolder;
         }
         return mockMessagesReceived;
     }
+    if (url.includes("/cahierdetexte.awp") && !dateRegex.test(url)) {
+        return mockHomeworks;
+    }
+    if (url.includes("/cahierdetexte/") && dateRegex.test(url)) {
+        return mockHomeworksPreciseDay;
+    }
 
-    // 4. Message Content / Details (messages/{messageId}.awp)
-    const messageDetailMatch = url.match(/\/messages\/(\d+)\.awp/);
+    // (messages/{messageId}.awp)
     if (messageDetailMatch) {
         const messageId = messageDetailMatch[1];
         if (messageId === "103040") {
-            return mockMessageDetail103040;
+            return mockMessageDetail;
         }
         return getGenericMessageDetail(messageId);
     }
@@ -52,7 +57,7 @@ const getGenericMessageDetail = (messageId: string | number) => {
         mockMessagesReceived?.data?.messages?.received?.find(
             (m: any) => String(m.id) === String(messageId)
         ) ||
-        mockMessagesFolder564?.data?.messages?.received?.find(
+        mockMessagesFolder?.data?.messages?.received?.find(
             (m: any) => String(m.id) === String(messageId)
         );
 
@@ -96,17 +101,14 @@ const getShiftedTimetable = (requestedMonday?: string) => {
     const firstCourse = courses.find((c: any) => c.start_date);
     if (!firstCourse) return mockTimetable;
 
-    // Find the Monday of the first course in the mock data
     const mockFirstDate = dayjs(firstCourse.start_date.split(" ")[0]);
     const mockDayOfWeek = mockFirstDate.day();
     const daysToSubtract = mockDayOfWeek === 0 ? 6 : mockDayOfWeek - 1;
     const mockMonday = mockFirstDate.subtract(daysToSubtract, "day");
 
-    // Calculate diff between the requested Monday and the mock Monday in days
     const reqMonday = dayjs(requestedMonday);
     const diffInDays = reqMonday.diff(mockMonday, "day");
 
-    // Shift all courses by the difference in days
     const shiftedCourses = courses.map((course: any) => {
         if (!course.start_date || !course.end_date) return course;
 

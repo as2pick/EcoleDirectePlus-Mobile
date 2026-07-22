@@ -7,23 +7,17 @@ export default async function fetchApi<T>(
     requestPayload?: { headers?: any; body?: any; method?: string }
 ): Promise<T> {
     try {
-        const token = requestPayload?.headers?.["X-Token"] || useUserStore.getState().token;
+        const token =
+            requestPayload?.headers?.["X-Token"] || useUserStore.getState().token;
 
         if (token === "guest_token") {
-            try {
-                const { getGuestData } = require("../../test/guestData");
-                const response = getGuestData(url, requestPayload?.body);
-                return {
-                    ...response,
-                    isDataEmpty: !response || !response.data,
-                    responseHeaders: {},
-                } as any;
-            } catch (e) {
-                return {
-                    isDataEmpty: true,
-                    responseHeaders: {},
-                } as any;
-            }
+            const { getGuestData } = require("@/mock/guest/guestData");
+            const response = getGuestData(url, requestPayload?.body);
+            return {
+                ...response,
+                isDataEmpty: !response || !response.data,
+                responseHeaders: {},
+            } as any;
         }
 
         const defaultHeaders = {
@@ -78,3 +72,4 @@ export default async function fetchApi<T>(
         throw error;
     }
 }
+

@@ -1,4 +1,4 @@
-import { formatDate } from "@/utils/date";
+import { formatDate, formatFrenchDate } from "@/utils/date";
 import base64Handler from "@/utils/handleBase64";
 
 export function createHomework(raw) {
@@ -59,4 +59,32 @@ export const assignUnit = (size) => {
         return size.toString();
     }
 };
+
+export function injectHomeworksIntoModel(model = {}, homeworksList = []) {
+    const next = { ...model };
+    const formatedDates = { ...(model.formatedDates ?? {}) };
+
+    for (const homework of homeworksList) {
+        const { date } = homework;
+        if (!date) continue;
+
+        const existing = next[date] ?? [];
+        next[date] = [...existing, homework];
+
+        const dayHomeworks = next[date];
+        const totalEvaluations = dayHomeworks.filter((h) => h.isEvaluation).length;
+        const allTasksCompleted = dayHomeworks.every((h) => h.isDone === "done");
+
+        formatedDates[date] = {
+            allTasksCompleted,
+            isEvaluation: totalEvaluations > 0,
+            totalEvaluations,
+            long: formatedDates[date]?.long ?? formatFrenchDate(date),
+            contracted: formatedDates[date]?.contracted ?? formatFrenchDate(date),
+        };
+    }
+
+    next.formatedDates = formatedDates;
+    return next;
+}
 
