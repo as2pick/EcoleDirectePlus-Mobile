@@ -152,7 +152,10 @@ export default function HomeScreen() {
                     />
                     <GeneralAveragePreview gradesData={gradesData} />
                     <LastGrades lastGradesObject={gradesData?.lastGrades ?? {}} />
-                    <HomeworksPreview />
+                    <HomeworksPreview
+                        customHomeworks={customDataStore?.customHomeworks ?? {}}
+                        homeworksDatas={homeworksData}
+                    />
                 </View>
             </ScrollView>
         </LinearGradient>
